@@ -20,4 +20,9 @@ jobs:
         tar -xvzf aarch64-linux-musl-cross.tgz      
         ./aarch64-linux-musl-cross/bin/aarch64-linux-musl-gcc --version
         ls ./aarch64-linux-musl-cross/bin/
+        git clone https://github.com/hyoklee/hdf5
+        cd hdf5
+        ./autogen.sh
+        ./configure CC=../aarch64-linux-musl-cross/bin/aarch64-linux-musl-gcc
+        make
         
