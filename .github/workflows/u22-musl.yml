@@ -10,15 +10,12 @@ jobs:
     steps:
     - name: Install Musl Compiler
       run: |
-        sudo dpkg --add-architecture arm64
         sudo apt-get update
         sudo apt-get install -y gcc-aarch64-linux-gnu
-        sudo apt-get install -y musl:arm64
-        sudo apt-get install -y musl-dev:arm64
-        sudo apt-get install -y musl-tools:arm64
     - name: Get Sources
       uses: actions/checkout@v3
     - name: Build and Test
       run: |
-        which aarch64-linux-musl-gcc
-        aarch64-linux-musl-gcc -v
+        ./aarch64-linux-musl-cross/bin/aarch64-linux-musl-gcc --version
+        ls ./aarch64-linux-musl-cross/bin/
+        
