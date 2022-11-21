@@ -21,4 +21,4 @@ jobs:
       run: |
         mkdir build
         cd build
-        musl-gcc -v
+        aarch64-linux-musl-gcc -v
