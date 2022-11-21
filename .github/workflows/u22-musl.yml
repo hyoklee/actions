@@ -25,6 +25,6 @@ jobs:
         cd hdf5
         mkdir build
         cd build
-        cmake -DCMAKE_C_COMPILER=../../aarch64-linux-musl-cross/bin/aarch64-linux-musl-gcc -DCMAKE_AR=../../aarch64-linux-musl-cross/bin/aarch64-linux-musl-ar ..        
+        cmake -DCMAKE_C_COMPILER=/home/runner/work/actions/actions/aarch64-linux-musl-cross/bin/aarch64-linux-musl-gcc -DCMAKE_AR=/home/runner/work/actions/actions/aarch64-linux-musl-cross/bin/aarch64-linux-musl-ar ..        
         make
         
