@@ -22,6 +22,7 @@ jobs:
         tar -xvzf aarch64-linux-musl-cross.tgz      
         ./aarch64-linux-musl-cross/bin/aarch64-linux-musl-gcc --version
         ls ./aarch64-linux-musl-cross/bin/
+        sudo cp -r ./aarch64-linux-musl-cross/lib/* /lib/
         git clone https://github.com/hyoklee/hdf5
         cd hdf5
         mkdir build
