@@ -11,7 +11,9 @@ jobs:
     - name: Install Intel Compilers
       run: |
         sudo apt-get update
-        sudo apt-get install -q -y musl-dev
+        sudo apt-get install -y gcc-aarch64-linux-gnu
+        sudo apt-get install -y musl
+        sudo apt-get install -y musl-dev
     - name: Get Sources
       uses: actions/checkout@v3
     - name: Build and Test
