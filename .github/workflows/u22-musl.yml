@@ -1,0 +1,22 @@
+name: ubuntu 22.04 CMake aarch64-gcc-musl
+
+ on:
+   workflow_dispatch:
+   push:
+     branches: [ develop ]
+ jobs:
+   build:
+     runs-on: ubuntu-22.04
+     steps:
+     - name: Install Intel Compilers
+       run: |
+         sudo apt-get update
+         sudo apt-get install -q -y musl-dev
+     - name: Get Sources
+       uses: actions/checkout@v3
+     - name: Build and Test
+       run: |
+         mkdir build
+         cd build
+         musl-gcc -v
+         
