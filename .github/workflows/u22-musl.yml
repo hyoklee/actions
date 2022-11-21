@@ -12,6 +12,7 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y gcc-aarch64-linux-gnu
+        sudo apt-get install binfmt-support qemu qemu-user-static
     - name: Get Sources
       uses: actions/checkout@v3
     - name: Build and Test
@@ -25,6 +26,6 @@ jobs:
         cd hdf5
         mkdir build
         cd build
-        cmake -DCMAKE_C_COMPILER=/home/runner/work/actions/actions/aarch64-linux-musl-cross/bin/aarch64-linux-musl-gcc -DCMAKE_AR=/home/runner/work/actions/actions/aarch64-linux-musl-cross/bin/aarch64-linux-musl-ar ..        
+        cmake -DCMAKE_C_COMPILER=/home/runner/work/actions/actions/aarch64-linux-musl-cross/bin/aarch64-linux-musl-gcc -DCMAKE_AR=/home/runner/work/actions/actions/aarch64-linux-musl-cross/bin/aarch64-linux-musl-ar -DCMAKE_SYSTEM_PROCESSOR=arm ..        
         make
         
