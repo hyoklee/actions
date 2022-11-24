@@ -1,4 +1,4 @@
-name: ubuntu 22.04 netCDF-4 HDF5
+name: ubuntu 20.04 netCDF-4 HDF5
 
 on:
   workflow_dispatch:
