@@ -1,0 +1,23 @@
+name: ubuntu 22.04 netCDF-4 HDF5
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+    - name: Install NetCDF and HDF5
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y -q libhdf5-dev libhdf5-dev nco
+    - name: Get Sources
+      uses: actions/checkout@v3
+    - name: Check versions
+      run: |
+        echo $PWD
+        nc-config --version
+        h5ls -V
+        ncks
+        
