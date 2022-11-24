@@ -16,8 +16,7 @@ jobs:
       uses: actions/checkout@v3
     - name: Check versions
       run: |
-        echo $PWD
         nc-config --version
         h5ls -V
-        ncks
+
         
