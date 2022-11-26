@@ -13,3 +13,15 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y gfortran
         which gfortran
+    - name: Checkout Spack
+      uses: actions/checkout@v3
+      with:
+        repository: spack/spack
+        path: ./spack
+    - name: Run spack
+      run: |
+        . ./spack/share/spack/setup-env.sh
+        spack find compilers
+        spack compilers
+        
+        
