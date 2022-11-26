@@ -1,0 +1,15 @@
+name: ubuntu 22.04 gfortran
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+    - name: Install gfortran
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y gfortran
+        which gfortran
