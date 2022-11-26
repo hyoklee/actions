@@ -25,5 +25,6 @@ jobs:
         . ./spack/share/spack/setup-env.sh
         spack compiler find
         spack compilers
+        cat /home/runner/.spack/linux/compilers.yaml
         
         
