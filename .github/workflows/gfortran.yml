@@ -19,6 +19,8 @@ jobs:
         repository: spack/spack
         path: ./spack
     - name: Run spack
+      env:
+        FC: /usr/bin/gfortran
       run: |
         . ./spack/share/spack/setup-env.sh
         spack compiler find
