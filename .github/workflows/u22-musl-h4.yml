@@ -1,4 +1,4 @@
-name: ubuntu 22.04 CMake aarch64-gcc-musl
+name: ubuntu 22.04 CMake aarch64-gcc-musl hdf4
 
 on:
   workflow_dispatch:
