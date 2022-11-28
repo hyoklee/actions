@@ -3,7 +3,7 @@ name: ubuntu 22.04 gfortran
 on:
   workflow_dispatch:
   push:
-    branches: [ main ]
+    branches: [ main- ]
 jobs:
   build:
     runs-on: ubuntu-22.04
