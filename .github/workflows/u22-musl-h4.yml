@@ -8,13 +8,12 @@ jobs:
   build:
     runs-on: ubuntu-22.04
     steps:
-    - name: Install Musl Compiler
+    - name: Install Cross Compiler and Qemu
       run: |
         sudo apt-get update
-        sudo apt-get install -y gcc-aarch64-linux-gnu
-        sudo apt-get install binfmt-support qemu qemu-user-static
-        sudo apt-get install libjpeg-dev
-    - name: Get Sources
+        sudo apt-get install -y -q gcc-aarch64-linux-gnu
+        sudo apt-get install -y -q binfmt-support qemu qemu-user-static
+     - name: Get Sources
       uses: actions/checkout@v3
     - name: Build and Test
       run: |
@@ -29,7 +28,7 @@ jobs:
         cd hdf4
         mkdir build
         cd build
-        cmake -DCMAKE_C_COMPILER=/home/runner/work/actions/actions/aarch64-linux-musl-cross/bin/aarch64-linux-musl-gcc -DCMAKE_AR=/home/runner/work/actions/actions/aarch64-linux-musl-cross/bin/aarch64-linux-musl-ar -DBUILD_SHARED_LIBS=OFF -DCMAKE_SYSTEM_PROCESSOR=arm ..        
+        cmake -DCMAKE_C_COMPILER=/home/runner/work/actions/actions/aarch64-linux-musl-cross/bin/aarch64-linux-musl-gcc -DCMAKE_AR=/home/runner/work/actions/actions/aarch64-linux-musl-cross/bin/aarch64-linux-musl-ar -DCMAKE_SYSTEM_PROCESSOR=arm -DHDF4_ENALBE_JPEG_LIB_SUPPORT:BOOL=OFF ..
         make
         make test
         
