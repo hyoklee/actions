@@ -8,7 +8,7 @@ jobs:
   build:
     runs-on: ubuntu-22.04
     steps:
-    - name: Install Cross Compiler and Qemu
+    - name: Install Cross Compiler
       run: |
         sudo apt-get update
         sudo apt-get install -y -q gcc-aarch64-linux-gnu
