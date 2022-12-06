@@ -1,4 +1,4 @@
-name: OpenBSD2
+name: OpenBSD
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
 
 jobs:
   test: # make sure the action works on a clean machine without building
-    timeout-minutes: 5
+    timeout-minutes: 2
     name: ${{ matrix.os.name }} ${{ matrix.os.architecture }} ${{ matrix.os.version }} on ${{ matrix.os.host }}
     runs-on: ${{ matrix.os.host }}
     strategy:
