@@ -6,7 +6,6 @@ on:
 
 jobs:
   test: # make sure the action works on a clean machine without building
-    timeout-minutes: 2
     name: ${{ matrix.os.name }} ${{ matrix.os.architecture }} ${{ matrix.os.version }} on ${{ matrix.os.host }}
     runs-on: ${{ matrix.os.host }}
     strategy:
@@ -40,9 +39,9 @@ jobs:
             whoami
             env | sort
             sudo pkg_add git
-            sudo pkg_add cmake
             git clone https://github.com/hyoklee/hdf5
             cd hdf5
+            sudo pkg_add cmake            
             mkdir build
             cd build
             cmake ..
