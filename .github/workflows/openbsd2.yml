@@ -39,4 +39,7 @@ jobs:
             ls -lah
             whoami
             env | sort
+            su
+            pkg_add git
+            
 
