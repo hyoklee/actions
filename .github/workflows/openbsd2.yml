@@ -1,0 +1,58 @@
+name: OpenBSD2
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  test: # make sure the action works on a clean machine without building
+    timeout-minutes: 5
+    name: ${{ matrix.os.name }} ${{ matrix.os.architecture }} ${{ matrix.os.version }} on ${{ matrix.os.host }}
+    runs-on: ${{ matrix.os.host }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - name: OpenBSD
+            version: '7.1'
+            host: macos-12
+            workDirectory: /Users/runner/work/actions/actions
+            uname:
+              hardware: amd64
+
+          - name: OpenBSD
+            version: '7.1'
+            host: ubuntu-latest
+            workDirectory: /home/runner/work/actions/actions
+            uname:
+              hardware: amd64
+
+          - name: OpenBSD
+            architecture: ARM64
+            version: '7.1'
+            host: ubuntu-latest
+            workDirectory: /home/runner/work/actions/actions
+            uname:
+              hardware: arm64
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: ${{ matrix.os.name }}
+        uses: cross-platform-actions/action@v0.3.1
+        env:
+          FOO: A
+          BAR: B
+        with:
+          environment_variables: FOO BAR
+          operating_system: ${{ matrix.os.name }}
+          architecture: ${{ matrix.os.architecture }}
+          version: '${{ matrix.os.version }}'
+          run: |
+            uname -a
+            echo $SHELL
+            pwd
+            ls -lah
+            whoami
+            env | sort
+
