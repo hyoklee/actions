@@ -1,21 +1,10 @@
 
-name: Test
+name: OpenBSD
 
 on:
   workflow_dispatch:
-  release:
-    types: [ published ]
   push:
-    branches:
-      - '*'
-    paths:
-      - '**.sh'
-      - '.github/workflows/test.yml'
-      - 'index.js'
-      - 'conf/*'
-      - 'hooks/*'
-
-
+    branches: [main]
 
 concurrency: 
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -25,17 +14,16 @@ concurrency:
 
 jobs:
   testsshfs:
-    if: ${{ !contains(github.repository, 'solaris') && !contains(github.repository, 'dragonflybsd')}}
     strategy:
       matrix:
-        release: [ "7.1", "7.2", ""]
+        release: [ "7.2" ]
     runs-on: macos-12
     name: A job to run test sshfs OpenBSD
     env:
-      MYTOKEN : ${{ secrets.MYTOKEN }}
+      MYTOKEN : "value1"
       MYTOKEN2: "value2"
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Test in OpenBSD
       id: test
       uses: vmactions/openbsd-vm@main
