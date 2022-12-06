@@ -39,8 +39,8 @@ jobs:
             ls -lah
             whoami
             env | sort
-            pkg_add git
-            pkg_add cmake
+            sudo pkg_add git
+            sudo pkg_add cmake
             git clone https://github.com/hyoklee/hdf5
             cd hdf5
             mkdir build
