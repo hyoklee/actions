@@ -13,27 +13,10 @@ jobs:
       fail-fast: false
       matrix:
         os:
-          - name: OpenBSD
-            version: '7.1'
-            host: macos-12
-            workDirectory: /Users/runner/work/actions/actions
-            uname:
-              hardware: amd64
-
-          - name: OpenBSD
+          - name: openbsd
+            architecture: x86-64
             version: '7.1'
             host: ubuntu-latest
-            workDirectory: /home/runner/work/actions/actions
-            uname:
-              hardware: amd64
-
-          - name: OpenBSD
-            architecture: ARM64
-            version: '7.1'
-            host: ubuntu-latest
-            workDirectory: /home/runner/work/actions/actions
-            uname:
-              hardware: arm64
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -48,6 +31,7 @@ jobs:
           operating_system: ${{ matrix.os.name }}
           architecture: ${{ matrix.os.architecture }}
           version: '${{ matrix.os.version }}'
+          shell: bash          
           run: |
             uname -a
             echo $SHELL
