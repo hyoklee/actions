@@ -30,7 +30,7 @@ jobs:
             cd hdf4
             export EXT2LIB+=" -ltirpc"
             # echo $CFLAGS
-            echo $LDFLAGS
+            # echo $LDFLAGS
             echo $EXT2LIB
             autoreconf -fvi
             ./configure --enable-shared --disable-fortran --disable-netcdf
