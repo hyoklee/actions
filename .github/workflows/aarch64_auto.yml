@@ -3,7 +3,7 @@ name: arm64 Autotools
 on:
   push:
     branches:
-      - main
+      - main-
 
 jobs:
   aarch64_job:

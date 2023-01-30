@@ -22,7 +22,6 @@ jobs:
           sudo apt update
           sudo apt install intel-oneapi-compiler-dpcpp-cpp
           source /opt/intel/oneapi/setvars.sh
-          ls /opt/intel/oneapi/bin/
           which icx
       - name: install oneAPI MKL library
         shell: bash
