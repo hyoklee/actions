@@ -34,7 +34,7 @@ jobs:
           export SYCL_DEVICE_FILTER=opencl.cpu
           tar zxvf hdf5-1.14.0.tar.gz
           cd hdf5-1.14.0
-          ./configure CC=icx CXX=dpcpp --prefix=/usr/local
+          ./configure CC=/opt/intel/oneapi/compiler/2023.0.0/linux/bin/icx CXX=dpcpp --prefix=/usr/local
           make
           make check
           sudo make install
