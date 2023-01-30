@@ -3,7 +3,7 @@ name: ubuntu 20.04 netCDF-4 HDF5
 on:
   workflow_dispatch:
   push:
-    branches: [ main ]
+    branches: [ main- ]
 jobs:
   build:
     runs-on: ubuntu-20.04

@@ -1,4 +1,5 @@
 name: linux autotools icx
+
 on:
   push:
     branches:
@@ -20,7 +21,9 @@ jobs:
         run: |
           sudo apt update
           sudo apt install intel-oneapi-compiler-dpcpp-cpp
-          which icx 
+          source /opt/intel/oneapi/setvars.sh
+          ls /opt/intel/oneapi/bin/
+          which icx
       - name: install oneAPI MKL library
         shell: bash
         run: |

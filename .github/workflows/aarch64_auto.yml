@@ -1,6 +1,9 @@
 name: arm64 Autotools
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - main
 
 jobs:
   aarch64_job:
