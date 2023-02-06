@@ -16,7 +16,6 @@ jobs:
       with:
         repository: spack/spack
         path: ./spack      
-    - name: Run a multi-line script
     - name: Install APT Dependencies
       run: |
         sudo apt-get update
