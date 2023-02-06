@@ -11,6 +11,7 @@ jobs:
           lfs: true
       - name: Install Octave
         run: |
+          sudo apt-get update
           sudo apt-get install octave
           sudo apt-get install libnecdf-dev
           octave test.m
