@@ -13,6 +13,6 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install octave
-          sudo apt-get install libnecdf-dev
+          sudo apt-get install libnetcdf-dev
           octave test.m
           
