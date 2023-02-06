@@ -1,3 +1,4 @@
-pkg install netcdf
+pkg install -forge  netcdf
 pkg load netcdf
+
 
