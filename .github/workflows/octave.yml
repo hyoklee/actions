@@ -1,6 +1,9 @@
 name: Octave
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - main-
 
 jobs:
   build:
@@ -11,6 +14,7 @@ jobs:
           lfs: true
       - name: Install Octave
         run: |
+          sudo apt-add-repository ppa:octave/stable
           sudo apt-get update
           sudo apt-get install octave
           sudo apt-get install liboctave-dev
