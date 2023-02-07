@@ -2,9 +2,9 @@ name: spack hdf5 cmake@3.22.2
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main- ]
   pull_request:
-    branches: [ main ]
+    branches: [ main- ]
   workflow_dispatch:
 
 jobs:
