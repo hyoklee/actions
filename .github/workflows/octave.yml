@@ -14,7 +14,6 @@ jobs:
           lfs: true
       - name: Test Octave
         run: |
-          sudo apt-add-repository ppa:octave/stable
           sudo apt-get update
           sudo apt-get install octave
           sudo apt-get install liboctave-dev
