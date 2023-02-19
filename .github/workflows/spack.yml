@@ -2,9 +2,9 @@ name: spack hdf5
 
 on:
   push:
-    branches: [ main- ]
+    branches: [ main ]
   pull_request:
-    branches: [ main- ]
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
@@ -32,7 +32,7 @@ jobs:
         sudo apt-get install -q -y libncurses6
         sudo apt-get install -q -y libxml2-dev
         sudo apt-get install -q -y openssl        
-    - name: Run spack install hdf5
+    - name: Run spack install hermes
       run: |
         . ./spack/share/spack/setup-env.sh
         spack compiler find
@@ -54,4 +54,5 @@ jobs:
         spack external find pkgconf
         spack external find zlib
         spack external find xz        
-        spack install hdf5+mpi+fortran+hl
+        spack install hermes
+        
