@@ -26,8 +26,19 @@ jobs:
         ./configure --prefix=/usr/local --disable-static --enable-shared --enable-hl --with-szlib
         make -j
         sudo make install -j
-    - name: Install netCDF
+    - name: Checkout netCDF
       uses: actions/checkout@v3
       with:
         repository: unidata/netcdf-c
         path: netcdf-c
+    - name: Install netCDF
+      run: |
+        cd netcdf-c
+        autoreconf -if
+        CFLAGS=${CFLAGS} LDFLAGS=${LDFLAGS} LD_LIBRARY_PATH=${LD_LIBRARY_PATH} ./configure --enable-hdf5 --enable-dap --disable-dap-remote-tests  --enable-doxygen  --enable-external-server-tests
+        cat config.log
+        cat libnetcdf.settings
+        CFLAGS=${CFLAGS} LDFLAGS=${LDFLAGS} LD_LIBRARY_PATH=${LD_LIBRARY_PATH} make -j
+        CFLAGS=${CFLAGS} LDFLAGS=${LDFLAGS} LD_LIBRARY_PATH=${LD_LIBRARY_PATH} make check TESTS="" -j
+        LD_LIBRARY_PATH="/home/runner/work/actions/actoins/netcdf-c/liblib/.libs:${LD_LIBRARY_PATH}"
+        CFLAGS=${CFLAGS} LDFLAGS=${LDFLAGS} LD_LIBRARY_PATH=${LD_LIBRARY_PATH} make check -j
