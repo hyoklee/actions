@@ -26,3 +26,8 @@ jobs:
         ./configure --prefix=/usr/local --disable-static --enable-shared --enable-hl --with-szlib
         make -j
         sudo make install -j
+    - name: Install netCDF
+      uses: actions/checkout@v3
+      with:
+        repository: unidata/netcdf-c
+        path: netcdf-c
