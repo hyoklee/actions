@@ -21,6 +21,7 @@ concurrency:
 
 jobs:
   build:
+    name: Build netcdf
     runs-on: ubuntu-latest
     steps:
     - name: Install System dependencies
