@@ -1,4 +1,4 @@
-name: spack pmdk
+name: spack dpdk%oneapi
 
 on:
   push:
@@ -19,7 +19,9 @@ jobs:
     - name: Run spack install dpdk
       run: |
         . ./spack/share/spack/setup-env.sh
-        spack compiler find
-        spack compilers
-        spack spec dpdk
-        spack install dpdk
+        spack install intel-oneapi-compilers
+        spack compiler add `spack location -i intel-oneapi-compilers`/compiler/latest/linux/bin/intel64
+        spack compiler add `spack location -i intel-oneapi-compilers`/compiler/latest/linux/bin
+        spack compiler list
+        spack spec dpdk%oneapi
+        spack install dpdk%oneapi
