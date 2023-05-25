@@ -21,5 +21,5 @@ jobs:
         . ./spack/share/spack/setup-env.sh
         spack compiler find
         spack compilers
-        spack spec -I dpdk
-        
+        spack spec dpdk
+        spack install dpdk
