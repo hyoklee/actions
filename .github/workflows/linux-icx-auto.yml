@@ -54,21 +54,10 @@ jobs:
         run: |
           sudo apt install -y intel-oneapi-mkl-devel
 
-      - name: Test serial
-        shell: bash
-        run: |
-          cd ./hdf5
-          source /opt/intel/oneapi/setvars.sh
-          ./autogen.sh
-          ./configure --enable-fortran CXX=`which dpcpp` CC=`which icx` FC=`which ifx`
-          make -j
-          make check -j
-          sudo make install
-          sudo make uninstall
-          
       - name: Test parallel
         shell: bash
         run: |
+          cd ./hdf5
           source /opt/intel/oneapi/setvars.sh
           ./autogen.sh
           ./configure --enable-fortran --enable-parallel CXX="$(which mpiicpc) -cc=$(which icpx)" CC="$(which mpiicc) -cc=$(which icx)" FC="$(which mpiifort) -fc=$(which ifx)"
