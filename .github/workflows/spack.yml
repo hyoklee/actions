@@ -16,10 +16,10 @@ jobs:
       with:
         repository: hyoklee/spack
         path: ./spack      
-    - name: Run spack install pmdk
+    - name: Run spack install dpdk
       run: |
         . ./spack/share/spack/setup-env.sh
         spack compiler find
         spack compilers
-        spack install protobuf-c
+        spack spec -I dpdk
         
