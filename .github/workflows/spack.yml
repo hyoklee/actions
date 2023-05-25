@@ -1,10 +1,10 @@
-name: spack dpdk%oneapi
+name: spack daos%oneapi
 
 on:
   push:
-    branches: [ main- ]
+    branches: [ main ]
   pull_request:
-    branches: [ main- ]
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
@@ -23,5 +23,5 @@ jobs:
         spack compiler add `spack location -i intel-oneapi-compilers`/compiler/latest/linux/bin/intel64
         spack compiler add `spack location -i intel-oneapi-compilers`/compiler/latest/linux/bin
         spack compiler list
-        spack spec dpdk%oneapi
-        spack install dpdk%oneapi
+        spack spec daos%oneapi
+        spack install daos%oneapi
