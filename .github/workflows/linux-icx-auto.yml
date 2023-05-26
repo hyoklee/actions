@@ -59,6 +59,10 @@ jobs:
         run: |
           cd ./hdf5
           source /opt/intel/oneapi/setvars.sh
+          ls /opt/intel/oneapi/mpi/
+          export PATH=$PATH:/opt/intel/oneapi/mpi/2021.9.0/bin:/opt/intel/oneapi/compiler/2023.1.0/linux/bin
+          echo $PATH
+          which ifx
           ./autogen.sh
           ./configure --enable-fortran --enable-parallel CXX="$(which mpiicpc) -cc=$(which icpx)" CC="$(which mpiicc) -cc=$(which icx)" FC="$(which mpiifort) -fc=$(which ifx)" LDFLAGS="-L/opt/intel/oneapi/mpi/2021.5.1/lib/intel64/"
           make -j
