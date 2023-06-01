@@ -2,7 +2,7 @@ name: h5py
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main- ]
     paths-ignore:
     - 'doc/**'
     - 'release_docs/**'
