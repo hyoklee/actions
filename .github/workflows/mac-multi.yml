@@ -3,7 +3,7 @@ name: mac multi-config
 on:
   workflow_dispatch:
   push:
-    branches: [ main ]
+    branches: [ main- ]
     
 jobs:
   build:
