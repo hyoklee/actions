@@ -1,0 +1,25 @@
+name: mac multi-config
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+    
+jobs:
+  build:
+    name: Generate multi-config project
+    runs-on: macos-13
+    steps:
+      - uses: actions/checkout@v3
+      - name: Generate multi-config project
+        run: |
+          git clone https://github.com/HDFGroup/hdf5.git
+          cd hdf5
+          git checkout hdf5-1_14_1-2
+          mkdir build
+          cd build
+          cmake -G "Ninja Multi-Config" ..
+          cmake --build . --config Release -j8
+          touch ../CMakeLists.txt
+          cmake --build . --config Release -j8          
+          
