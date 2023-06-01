@@ -29,11 +29,12 @@ jobs:
           cd build
           cmake -DHDF5_BUILD_DOC:BOOL=ON ..
           make doxygen
+          ls -lrv
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
-          publish_dir: ./hdf5/build/hdf5lib_doc/html
+          publish_dir: ./hdf5/build/hdf5lib_docs/html
           destination_dir: html
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
