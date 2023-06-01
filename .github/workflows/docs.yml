@@ -1,0 +1,39 @@
+name: doxygen
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get Sources
+        uses: actions/checkout@v3
+
+      - name: Install Dependencies
+        run: |
+          sudo apt update -y
+          sudo apt install -y libunwind-dev
+          sudo apt-get install -y graphviz
+          sudo apt-get install -y --no-install-recommends doxygen
+          sudo apt-get install -y cmake
+          
+      - name: Build Develop Documentation
+        run: |
+          git clone https://github.com/HDFGroup/hdf5.git
+          cd hdf5
+          mkdir build
+          cd build
+          cmake -DHDF5_BUILD_DOC:BOOL=ON ..
+          make doxygen
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          publish_dir: ./build/hdf5hllib_doc/html
+          destination_dir: html
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
