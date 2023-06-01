@@ -13,6 +13,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: Generate multi-config project
         run: |
+          brew install cmake ninja
           git clone https://github.com/HDFGroup/hdf5.git
           cd hdf5
           git checkout hdf5-1_14_1-2
