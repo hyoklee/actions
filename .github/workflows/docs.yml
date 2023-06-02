@@ -1,7 +1,7 @@
 name: doxygen gh-pages
 on:
   push:
-    branches: [ main ]
+    branches: [ main- ]
   workflow_dispatch:
 
 jobs:
@@ -55,4 +55,3 @@ jobs:
           publish_dir: ./hdf5/build/hdf5lib_docs/html
           destination_dir: 1.14.1
           github_token: ${{ secrets.GITHUB_TOKEN }}
-
