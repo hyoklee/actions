@@ -17,4 +17,12 @@ jobs:
           awslocal s3 mb s3://test
           awslocal s3 ls
           echo "Test Execution complete!"
+      - name: Run some STS against LocalStack
+        run: |
+          awslocal sts get-caller-identity
+          awslocal sts get-session-token \
+              --duration-seconds 3600 \
+              --serial-number "YourMFADeviceSerialNumber" \
+              --token-code 123456          
+          echo "Test Execution complete!"
           
