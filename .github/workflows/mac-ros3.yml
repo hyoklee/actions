@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches: [ main ]
-    
+
 jobs:
   build:
     name: mac ros3
@@ -24,6 +24,7 @@ jobs:
           cd hdf5
           mkdir build
           cd build
+          brew install ninja
           cmake -G "Ninja" \
           -DBUILD_SHARED_LIBS:BOOL=ON \
           -DBUILD_STATIC_EXECS:BOOL=OFF \
