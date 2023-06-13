@@ -1,5 +1,7 @@
 name: localstack-action-example
-on: push
+on:
+  push:
+    branches: [ main- ]
 jobs:
   example-job:
     runs-on: ubuntu-latest
@@ -25,4 +27,5 @@ jobs:
               --serial-number "YourMFADeviceSerialNumber" \
               --token-code 123456          
           echo "Test Execution complete!"
+      
           
