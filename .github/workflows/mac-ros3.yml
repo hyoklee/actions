@@ -17,7 +17,9 @@ jobs:
           which openssl
           echo $SHELL
           echo $PKG_CONFIG_PATH
-          find / -name '*.pc'          
+          export PKG_CONFIG_PATH=/usr/local/Cellar/openssl@3/3.1.0/lib/pkgconfig:$PKG_CONFIG_PATH
+          echo $PKG_CONFIG_PATH
+          # find / -name '*.pc'          
           git clone https://github.com/HDFGroup/hdf5.git
           cd hdf5
           mkdir build
