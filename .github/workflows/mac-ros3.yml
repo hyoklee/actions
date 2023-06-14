@@ -14,7 +14,8 @@ jobs:
       - name: Start Docker Daemon
         run: |
           brew install docker
-          dockerd -H /var/run/docker.sock
+          brew install colima
+          colima start
       - name: Start LocalStack
         run: |
           pip install localstack awscli-local[ver1]
