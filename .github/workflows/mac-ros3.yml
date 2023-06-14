@@ -11,7 +11,7 @@ jobs:
     runs-on: macos-13
     steps:
       - uses: actions/checkout@v3
-            - name: Start LocalStack
+      - name: Start LocalStack
         run: |
           pip install localstack awscli-local[ver1]
           docker pull localstack/localstack
