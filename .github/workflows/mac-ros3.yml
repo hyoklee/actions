@@ -3,7 +3,7 @@ name: mac ros3
 on:
   workflow_dispatch:
   push:
-    branches: [ main ]
+    branches: [ main- ]
 
 jobs:
   build:
