@@ -20,6 +20,8 @@ jobs:
           export MINIO_ROOT_PASSWORD=test
           ls -lrv /usr/local/etc/minio
           brew services start minio
+          brew list minio
+          mc ls targets
           mc admin update homebrew.mxcl.minio
       - name: Create S3 bucket
         run: |
