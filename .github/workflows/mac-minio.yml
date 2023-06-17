@@ -16,6 +16,8 @@ jobs:
           brew install minio minio-mc
       - name: Start MinIO
         run: |
+          export MINIO_ROOT_USER=root
+          export MINIO_ROOT_PASSWORD=test
           ls -lrv /usr/local/etc/minio
           brew services start minio
           mc admin update homebrew.mxcl.minio
