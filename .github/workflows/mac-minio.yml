@@ -17,14 +17,14 @@ jobs:
       - name: Start MinIO
         run: |
           ls -lrv /usr/local/etc/minio
-          mc admin update
+          mc admin update local
           brew services start minio
       - name: Create S3 bucket
         run: |
           aws --endpoint-url http://localhost:9000 s3 mb s3://test
           aws --endpoint-url http://localhost:9000 s3 ls
           echo "Test Execution complete!"
-      - name: Run some STS against LocalStack
+      - name: Run STS against MinIO
         run: |
           aws --endpoint-url http://localhost:9000 sts assume-role --role-arn arn:minio:iam:::role/idmp-Rb3JifgxnVE15TjapS5zs1jO6Nk  --role-session-name anything
           echo "Test Execution complete!"
