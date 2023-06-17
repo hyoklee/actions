@@ -18,7 +18,7 @@ jobs:
         run: |
           ls -lrv /usr/local/etc/minio
           brew services start minio
-          mc admin update local
+          mc admin update homebrew.mxcl.minio
       - name: Create S3 bucket
         run: |
           aws --endpoint-url http://localhost:9000 s3 mb s3://test
