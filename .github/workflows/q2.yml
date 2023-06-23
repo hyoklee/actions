@@ -1,0 +1,20 @@
+name: Build Meta Quest app
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup OVR Platform Utility
+        uses: RageAgainstThePixel/setup-ovr-platform-util@v1
+      - name: Build app
+        run: |
+          ovrplatformutil build -f ./build.gradle
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: app-build
+          path: ./build/outputs/apk/release/app-release.apk
