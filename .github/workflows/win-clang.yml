@@ -19,7 +19,7 @@ jobs:
         run: |
           git clone https://github.com/HDFGroup/hdf5.git
           cd hdf5
-          cmake -B build --config Debug -G "Visual Studio 17 2022" -A x64 -T ClangCL 
+          cmake -B build -G "Visual Studio 17 2022" -A x64 -T ClangCL 
           cmake --build build --config Debug
           cd build && ctest -C Debug -VV 
           
