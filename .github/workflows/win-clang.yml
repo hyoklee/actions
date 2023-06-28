@@ -1,0 +1,23 @@
+name: windows CMake clang-cl
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Install Clang
+        uses: actions/setup-clang@v1
+
+      - name: Install CMake
+        uses: actions/setup-cmake@v2
+
+      - name: Build project
+        run: |
+          git clone https://github.com/HDFGroup/hdf5.git
+          cd hdf5
+          cmake . -Bbuild && cmake --build build
