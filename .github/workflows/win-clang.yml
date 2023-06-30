@@ -24,6 +24,6 @@ jobs:
           set CURL_ROOT C:\programdata\chocolatey\lib\curl\tools\curl-8.1.2_1-win64-mingw
           git clone https://github.com/hyoklee/hdf5.git
           cd hdf5
-          cmake -DCURL_USE_STATIC_LIBS:BOOL=ON -DBUILD_SHARED_LIBS:BOOL=OFF -DCURL_INCLUDE_DIR=C:\programdata\chocolatey\lib\curl\tools\curl-8.1.2_1-win64-mingw\include  -DCURL_LIBRARY=C:\programdata\chocolatey\lib\curl\tools\curl-8.1.2_1-win64-mingw\lib\libcurl.a -DHDF5_ENABLE_ROS3_VFD:BOOL=ON -B build -G "Visual Studio 17 2022" -A x64 -T ClangCL 
+          cmake -DBUILD_SHARED_LIBS:BOOL=OFF -DCURL_INCLUDE_DIR=C:\programdata\chocolatey\lib\curl\tools\curl-8.1.2_1-win64-mingw\include  -DCURL_LIBRARY=C:\programdata\chocolatey\lib\curl\tools\curl-8.1.2_1-win64-mingw\lib\libcurl.a -DHDF5_ENABLE_ROS3_VFD:BOOL=ON -B build -G "Visual Studio 17 2022" -A x64 -T ClangCL 
           cmake --build build --config Release
           cd build && ctest -C Release -VV 
