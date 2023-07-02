@@ -3,7 +3,7 @@ name: windows CMake clang-cl
 on:
   push:
     branches:
-      - main
+      - main-
 
 jobs:
   build:
