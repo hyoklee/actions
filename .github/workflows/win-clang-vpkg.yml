@@ -20,7 +20,7 @@ jobs:
           git clone https://github.com/microsoft/vcpkg.git
           .\vcpkg\bootstrap-vcpkg.bat
           .\vcpkg\vcpkg install curl:x64-windows-static-mdw
-          .\vcpkg\vcpkg install openssl
+          .\vcpkg\vcpkg install openssl:x64-windows-static-mdw
           pwd
 
       - name: Build project
