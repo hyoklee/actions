@@ -28,6 +28,6 @@ jobs:
           set CURL_ROOT D:\a\actions\actions\vcpkg\packages\curl_x64-windows-static-md
           git clone https://github.com/hyoklee/hdf5.git
           cd hdf5
-          cmake -DBUILD_SHARED_LIBS:BOOL=OFF -DCURL_INCLUDE_DIR=D:\a\actions\actions\vcpkg\packages\curl_x64-windows-static-md\include  -DCURL_LIBRARY=D:\a\actions\actions\vcpkg\packages\curl_x64-windows-static-md\lib\libcurl.lib -DOpenSSL_LIBRARY=C:\Program Files\OpenSSL\lib\VC\libcrypto64MD.lib  -DHDF5_ENABLE_ROS3_VFD:BOOL=ON -B build -G "Visual Studio 17 2022" -A x64 -T ClangCL 
+          cmake -DBUILD_SHARED_LIBS:BOOL=OFF -DCURL_INCLUDE_DIR=D:\a\actions\actions\vcpkg\packages\curl_x64-windows-static-md\include  -DCURL_LIBRARY=D:\a\actions\actions\vcpkg\packages\curl_x64-windows-static-md\lib\libcurl.lib -DHDF5_ENABLE_ROS3_VFD:BOOL=ON -B build -G "Visual Studio 17 2022" -A x64 -T ClangCL 
           cmake --build build --config Release
           cd build && ctest -C Release -VV 
