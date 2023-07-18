@@ -10,11 +10,16 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Install Intel OneAPI
-        uses: intel/oneapi-install-action@v1
-        with:
-          components: intel-oneapi-basekit,intel-oneapi-dpcpp
+        run: |
+          git clone https://github.com/microsoft/vcpkg.git
+          .\vcpkg\bootstrap-vcpkg.bat
+          .\vcpkg\vcpkg install intel-oneapi-basekit
 
       - name: Build application
         run: |
-          cmake ..
-          make
+          git clone https://github.com/hyoklee/hdf5.git
+          cd hdf5
+          cmake -B build
+          cmake --build build --config Release
+          cd build && ctest -C Release -VV           
+
