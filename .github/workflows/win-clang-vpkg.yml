@@ -3,7 +3,7 @@ name: windows CMake clang-cl vpkg
 on:
   push:
     branches:
-      - main
+      - main-
 
 jobs:
   build:

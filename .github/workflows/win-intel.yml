@@ -3,7 +3,7 @@ name: Run Intel OneAPI
 on:
   push:
     branches:
-      - main
+      - main-
 
 jobs:
   build:
