@@ -1,0 +1,25 @@
+name: Run Intel OneAPI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Install Intel OneAPI
+        uses: awvwgk/setup-fortran@v1
+        with:
+          compiler: intel
+          version: '2023.2'
+
+      - name: Build application
+        run: |
+          git clone https://github.com/hyoklee/hdf5.git
+          cd hdf5
+          cmake -B build
+          cmake --build build --config Release
+          cd build && ctest -C Release -VV           
+
