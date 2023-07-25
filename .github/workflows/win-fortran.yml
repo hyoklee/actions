@@ -1,4 +1,4 @@
-name: Run Intel OneAPI
+name: win setup-fortran
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: windows-2022
     steps:
       - name: Install Intel OneAPI
         uses: awvwgk/setup-fortran@v1
