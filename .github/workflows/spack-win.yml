@@ -18,7 +18,7 @@ jobs:
         path: ./spack      
     - name: Run spack install intel-oneapi-compilers
       run: |
-        . ./spack/share/spack/setup-env.sh
+        PowerShell.exe -command  "./spack/share/spack/setup-env.ps1"
         spack install intel-oneapi-compilers
         spack location -i intel-oneapi-compilers
         spack compiler list
