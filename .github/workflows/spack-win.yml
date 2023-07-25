@@ -1,0 +1,24 @@
+name: spack install intel-oneapi-compilers
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+    - name: Checkout spack
+      uses: actions/checkout@v3
+      with:
+        repository: spack/spack
+        path: ./spack      
+    - name: Run spack install intel-oneapi-compilers
+      run: |
+        . ./spack/share/spack/setup-env.sh
+        spack install intel-oneapi-compilers
+        spack location -i intel-oneapi-compilers
+        spack compiler list

@@ -10,13 +10,11 @@ jobs:
     runs-on: windows-2022
     steps:
       - name: Install Intel OneAPI
-        uses: awvwgk/setup-fortran@v1
-        with:
-          compiler: intel
-          version: '2023.2'
+        uses: modflowpy/install-intelfortran-action@v1
 
       - name: Build application
         run: |
+          call "%INTEL_HPCKIT_INSTALL_PATH%\compiler\%INTEL_COMPILER_VERSION%\env\vars.bat"
           git clone https://github.com/hyoklee/hdf5.git
           cd hdf5
           cmake -B build
