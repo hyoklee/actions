@@ -1,8 +1,8 @@
-name: h5py
+name: h5py no_pip
 on:
   workflow_dispatch:
   push:
-    branches: [ main ]  
+    branches: [ main- ]  
 
 jobs:
   build:

@@ -14,7 +14,7 @@ jobs:
 
       - name: Build application
         run: |
-          call "%INTEL_HPCKIT_INSTALL_PATH%\compiler\%INTEL_COMPILER_VERSION%\env\vars.bat"
+          "%INTEL_HPCKIT_INSTALL_PATH%\compiler\%INTEL_COMPILER_VERSION%\env\vars.bat"
           git clone https://github.com/hyoklee/hdf5.git
           cd hdf5
           cmake -B build

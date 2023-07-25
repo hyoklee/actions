@@ -11,6 +11,8 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
+    - name: Install pyWin32
+      run: pip install pywin32    
     - name: Checkout spack
       uses: actions/checkout@v3
       with:
