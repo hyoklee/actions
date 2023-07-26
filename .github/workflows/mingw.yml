@@ -1,0 +1,24 @@
+name: win awvwgk/setup-fortran
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Install Intel OneAPI
+        uses: awvwgk/setup-fortran@v1
+      - name: Install MPI
+        uses: mpi4py/setup-mpi@v1
+        with:
+          mpi: intelmpi
+      - name: Test HDF5
+        run: |
+          git clone https://github.com/HDFGroup/hdf5.git
+          cd hdf5
+          cmake -B build  -DHDF5_ENABLE_PARALLEL:BOOL=ON -DHDF5_BUILD_FORTRAN:BOOL=ON
+          cmake --build build --config Release
+          cd build && ctest -C Release -VV
