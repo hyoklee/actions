@@ -31,5 +31,6 @@ jobs:
     - name: Run spack install hdf5
       run: |
         ./spack/share/spack/setup-env.ps1
+        spack compiler find
         spack compiler list
-        spack install hdf5%oneapi
+        # spack install hdf5%oneapi
