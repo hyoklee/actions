@@ -33,4 +33,5 @@ jobs:
         ./spack/share/spack/setup-env.ps1
         spack compiler find
         spack compiler list
-        # spack install hdf5%oneapi
+        spack install hdf5%oneapi@2023.2.0
+        
