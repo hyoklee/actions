@@ -22,13 +22,13 @@ jobs:
         run: |
           cmd /c 'C:\Program Files (x86)\Intel\oneAPI\compiler\2022.2.0\env\vars.bat'
           dir 'C:\Program Files (x86)\Intel\oneAPI\compiler\2022.2.0\windows\bin\'
-          set CC icx
+          set CC icx.exe
           set FC ifx
           set CPP icpx
           git clone https://github.com/hyoklee/hdf5.git
           cd hdf5
-          # cmake -B build  -DCMAKE_C_COMPILER="C:\Program Files (x86)\Intel\oneAPI\compiler\2022.2.0\windows\bin\icx.exe" -DCMAKE_CXX_COMPILER="C:\Program Files (x86)\Intel\oneAPI\compiler\2022.2.0\windows\bin\icx.exe" -DCMAKE_Fortran_COMPILER="C:\Program Files (x86)\Intel\oneAPI\compiler\2022.2.0\windows\bin\ifx.exe" -DHDF5_ENABLE_PARALLEL:BOOL=ON -DHDF5_BUILD_FORTRAN:BOOL=ON
-          cmake -DCMAKE_C_COMPILER=icx -DCMAKE_CXX_COMPILER=icpx -DCMAKE_Fortran_COMPILER=ifx -DHDF5_ENABLE_PARALLEL:BOOL=ON -DHDF5_BUILD_FORTRAN:BOOL=ON -B build 
+          cmake -B build  -DCMAKE_C_COMPILER="C:\\Program Files (x86)\\Intel\\oneAPI\\compiler\\2022.2.0\\windows\\bin\\icx.exe" -DCMAKE_CXX_COMPILER="C:\\Program Files (x86)\\Intel\\oneAPI\\compiler\\2022.2.0\\windows\\bin\\icx.exe" -DCMAKE_Fortran_COMPILER="C:\\Program Files (x86)\\Intel\\oneAPI\\compiler\\2022.2.0\\windows\\bin\\ifx.exe" -DHDF5_ENABLE_PARALLEL:BOOL=ON -DHDF5_BUILD_FORTRAN:BOOL=ON
+          # cmake -DCMAKE_C_COMPILER=icx -DCMAKE_CXX_COMPILER=icpx -DCMAKE_Fortran_COMPILER=ifx -DHDF5_ENABLE_PARALLEL:BOOL=ON -DHDF5_BUILD_FORTRAN:BOOL=ON -B build 
           cmake --build build --config Release
           # cd build && ctest -C Release -VV
           
