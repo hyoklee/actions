@@ -10,7 +10,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Install Intel OneAPI
-        uses: awvwgk/setup-fortran@v1
+        uses: awvwgk/setup-fortran@main
         with:
           compiler: intel
           version: '2023.2'        
