@@ -1,4 +1,4 @@
-name: win awvwgk/setup-fortran
+name: win awvwgk/setup-fortran intel
 
 on:
   push:
@@ -11,7 +11,10 @@ jobs:
     steps:
       - name: Install Intel OneAPI
         uses: awvwgk/setup-fortran@v1
-      - name: Install MPI
+        with:
+          compiler: intel
+          version: '2023.2'        
+      - name: Install Intel MPI
         uses: mpi4py/setup-mpi@v1
         with:
           mpi: intelmpi

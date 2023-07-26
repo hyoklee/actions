@@ -9,6 +9,7 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
+      - uses: lukka/get-cmake@latest
       - name: Install Intel OneAPI
         uses: modflowpy/install-intelfortran-action@v1
       - name: Install MPI
@@ -25,7 +26,7 @@ jobs:
           set CC icx
           set FC ifx
           set CPP icpx
-          git clone https://github.com/hyoklee/hdf5.git
+          git clone https://github.com/HDFGroup/hdf5.git
           cd hdf5
           rm 'C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.35.32215\bin\HostX64\x64\cl.exe'
           cmake -B build  -DCMAKE_C_COMPILER="C:\\Program Files (x86)\\Intel\\oneAPI\\compiler\\2022.2.0\\windows\\bin\\icx.exe" -DCMAKE_CXX_COMPILER="C:\\Program Files (x86)\\Intel\\oneAPI\\compiler\\2022.2.0\\windows\\bin\\icx.exe" -DCMAKE_Fortran_COMPILER="C:\\Program Files (x86)\\Intel\\oneAPI\\compiler\\2022.2.0\\windows\\bin\\ifx.exe" -DHDF5_ENABLE_PARALLEL:BOOL=ON -DHDF5_BUILD_FORTRAN:BOOL=ON
