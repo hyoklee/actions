@@ -28,20 +28,20 @@ jobs:
           git clone https://github.com/hyoklee/hdf5.git
           cd hdf5      
       - name: Test HDF5
-        uses: lukka/run-cmake@v10
+        # uses: lukka/run-cmake@v10
         env:
           FC: ${{ steps.setup-fortran.outputs.fc }}
           CC: ${{ steps.setup-fortran.outputs.cc }}
         with:
-          cmakeListsTxtPath: '${{ github.workspace }}/hdf5/CMakeLists.txt'
-          configurePreset: 'ci-Intel'
+          # cmakeListsTxtPath: '${{ github.workspace }}/hdf5/CMakeLists.txt'
+          # configurePreset: 'ci-Intel'
           # set CC icx
           # set FC ifx
           # set CPP icpx
 
           # cmake -B build  -DCMAKE_C_COMPILER="C:/Program Files (x86)/Intel/oneAPI/compiler/2023.2.0/windows/bin/icx.exe" -DCMAKE_CXX_COMPILER="C:/Program Files (x86)/Intel/oneAPI/compiler/2023.2.0/windows/bin/icx.exe" -DCMAKE_Fortran_COMPILER="C:/Program Files (x86)/Intel/oneAPI/compiler/2023.2.0/windows/bin/ifx.exe" -DHDF5_ENABLE_PARALLEL:BOOL=ON -DHDF5_BUILD_FORTRAN:BOOL=ON
-          # cmake --preset="ci-Intel" -B build
-          # cat build\CMakeCache.txt
+          cmake --preset="ci-Intel" -B build -G Ninja
+          cat build\CMakeCache.txt
           # cmake -DCMAKE_C_COMPILER=icx -DCMAKE_CXX_COMPILER=icpx -DCMAKE_Fortran_COMPILER=ifx -DHDF5_ENABLE_PARALLEL:BOOL=ON -DHDF5_BUILD_FORTRAN:BOOL=ON -B build 
-          # cmake --preset="ci-Intel" --build build --config Release
+          cmake --preset="ci-Intel" --build build --config Release
       
