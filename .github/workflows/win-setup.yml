@@ -9,6 +9,7 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
+      - uses: actions/setup-winsdk@v1
       - uses: lukka/get-cmake@latest
       - name: Install Intel OneAPI
         uses: awvwgk/setup-fortran@main
