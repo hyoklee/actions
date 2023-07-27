@@ -33,5 +33,7 @@ jobs:
         ./spack/share/spack/setup-env.ps1
         spack compiler find
         spack compiler list
+        spack external find perl        
+        spack external find cmake
         spack install hdf5%oneapi@2023.2.0
         
