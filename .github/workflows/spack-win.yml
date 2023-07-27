@@ -11,14 +11,15 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-    - uses: lukka/get-cmake@latest        
+    - uses: lukka/get-cmake@latest
+    - uses: fbactions/setup-winsdk@v1
     - name: Install pyWin32
       run: pip install pywin32
     - name: Install Intel OneAPI
       uses: awvwgk/setup-fortran@main
       with:
         compiler: intel
-        version: '2023.2'        
+        version: '2023.2'
     - name: Install Intel MPI
       uses: mpi4py/setup-mpi@v1
       with:
@@ -27,13 +28,12 @@ jobs:
       uses: actions/checkout@v3
       with:
         repository: spack/spack
-        path: ./spack      
+        path: ./spack
     - name: Run spack install hdf5
       run: |
         ./spack/share/spack/setup-env.ps1
         spack compiler find
         spack compiler list
-        spack external find perl        
+        spack external find perl
         spack external find cmake
         spack install hdf5%oneapi@2023.2.0
-        
