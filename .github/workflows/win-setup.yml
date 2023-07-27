@@ -1,0 +1,42 @@
+name: windows Intel oneAPI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: lukka/get-cmake@latest
+      - name: Install Intel OneAPI
+        uses: awvwgk/setup-fortran@main
+        with:
+          compiler: intel
+          version: '2023.2'
+      - name: Install Intel MPI
+        uses: mpi4py/setup-mpi@v1
+        with:
+          mpi: intelmpi
+      - name: Check MPI
+        run: |
+          cmd /c 'C:\Program Files (x86)\Intel\oneAPI\compiler\2023.2.0\env\vars.bat'
+          dir 'C:\Program Files (x86)\Intel\oneAPI\compiler\2023.2.0\windows\bin\'
+      - name: Test HDF5
+        env:
+          FC: ${{ steps.setup-fortran.outputs.fc }}
+          CC: ${{ steps.setup-fortran.outputs.cc }}
+        run: |
+          # cmakeListsTxtPath: '${{ github.workspace }}/hdf5/CMakeLists.txt'
+          # configurePreset: 'ci-Intel'
+          # set CC icx
+          # set FC ifx
+          # set CPP icpx
+          git clone https://github.com/hyoklee/hdf5.git
+          cd hdf5
+          # cmake -B build  -DCMAKE_C_COMPILER="C:/Program Files (x86)/Intel/oneAPI/compiler/2023.2.0/windows/bin/icx.exe" -DCMAKE_CXX_COMPILER="C:/Program Files (x86)/Intel/oneAPI/compiler/2023.2.0/windows/bin/icx.exe" -DCMAKE_Fortran_COMPILER="C:/Program Files (x86)/Intel/oneAPI/compiler/2023.2.0/windows/bin/ifx.exe" -DHDF5_ENABLE_PARALLEL:BOOL=ON -DHDF5_BUILD_FORTRAN:BOOL=ON
+          cmake --preset="ci-Intel" -B build -G Ninja
+          cat build\CMakeCache.txt
+          # cmake -DCMAKE_C_COMPILER=icx -DCMAKE_CXX_COMPILER=icpx -DCMAKE_Fortran_COMPILER=ifx -DHDF5_ENABLE_PARALLEL:BOOL=ON -DHDF5_BUILD_FORTRAN:BOOL=ON -B build 
+          cmake --build build
