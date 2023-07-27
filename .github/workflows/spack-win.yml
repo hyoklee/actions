@@ -36,4 +36,5 @@ jobs:
         spack compiler list
         spack external find perl
         spack external find cmake
+        spack external find win-sdk
         spack install hdf5%oneapi@2023.2.0
