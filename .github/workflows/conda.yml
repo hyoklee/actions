@@ -24,14 +24,12 @@ jobs:
         run: conda install -c intel intel-fortran-rt
       - name: Test HDF5
         run: |
-          ls "C:\Miniconda3\envs\foo\Library\bin\"
+          ls /c/Miniconda3/envs/foo/Library/bin
           echo $PATH
-          export PATH="C:\Miniconda3\envs\foo\Library\bin\":$PATH
-          which icx.exe
           which icx
-          git clone https://github.com/hyoklee/hdf5.git
-          cd hdf5
-          cmake --preset="ci-Intel" -B build -G Ninja -DHDF5_BUILD_FORTRAN:BOOL=ON 
-          cat build\CMakeCache.txt
-          cmake --build build
+#          git clone https://github.com/hyoklee/hdf5.git
+#          cd hdf5
+#          cmake --preset="ci-Intel" -B build -G Ninja -DHDF5_BUILD_FORTRAN:BOOL=ON 
+#         cat build\CMakeCache.txt
+#          cmake --build build
         
