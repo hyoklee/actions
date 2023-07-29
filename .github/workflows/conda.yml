@@ -8,9 +8,9 @@ on:
 jobs:
   install:
     runs-on: windows-latest
-#    defaults:
-#      run:
-#        shell: bash -el {0}    
+    defaults:
+      run:
+        shell: bash -el {0}    
     steps:
       - uses: conda-incubator/setup-miniconda@v2
         with:
@@ -24,6 +24,11 @@ jobs:
         run: conda install -c intel intel-fortran-rt
       - name: Test HDF5
         run: |
+          ls "C:\Miniconda3\envs\foo\Library\bin\"
+          echo $PATH
+          export PATH="C:\Miniconda3\envs\foo\Library\bin\":$PATH
+          which icx.exe
+          which icx
           git clone https://github.com/hyoklee/hdf5.git
           cd hdf5
           cmake --preset="ci-Intel" -B build -G Ninja -DHDF5_BUILD_FORTRAN:BOOL=ON 
