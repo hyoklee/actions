@@ -3,13 +3,17 @@ name: windows Intel oneAPI
 on:
   push:
     branches:
-      - main-
+      - main
 
 jobs:
   build:
     runs-on: windows-latest
     steps:
       - uses: lukka/get-cmake@latest
+      - name: Install LLVM and Clang
+        uses: KyleMayes/install-llvm-action@v1
+        with:
+          version: "15"    
       - name: Install Intel OneAPI
         uses: awvwgk/setup-fortran@main
         with:

@@ -3,7 +3,7 @@ name: Install Intel OneAPI DPC++/C++ Compiler & Intel C++ Compiler Classic
 on:
   push:
     branches:
-      - main
+      - main-
 
 jobs:
   install:
