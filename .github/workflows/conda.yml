@@ -9,9 +9,8 @@ jobs:
   install:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v2
       - name: Install Intel® oneAPI Threading Building Blocks (oneTBB).
-        run: $CONDA/bin/conda install -c intel tbb-devel.
+        run: conda install -c intel tbb-devel.
       - name: Install Intel® oneAPI DPC++/C++ Compiler.
-        run: $CONDA/bin/conda install -c intel dpcpp_windows-64.
+        run: conda install -c intel dpcpp_windows-64.
         
