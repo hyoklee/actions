@@ -3,7 +3,7 @@ name: windows Intel oneAPI
 on:
   push:
     branches:
-      - main
+      - main-
 
 jobs:
   build:

@@ -2,10 +2,7 @@ name: windows spack install intel-oneapi-compilers
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-  workflow_dispatch:
+    branches: [ main- ]
 
 jobs:
   build:
