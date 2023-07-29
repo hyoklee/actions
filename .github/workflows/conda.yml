@@ -17,7 +17,7 @@ jobs:
           miniconda-version: "latest"
           activate-environment: foo
       - name: Install Intel® oneAPI Threading Building Blocks (oneTBB).
-        run: conda install -c conda-forge tbb-devel.
+        run: conda install -c conda-forge tbb-devel
       - name: Install Intel® oneAPI DPC++/C++ Compiler.
-        run: conda install -c conda-forge dpcpp_windows-64.
+        run: conda install -c conda-forge dpcpp_windows-64
         
