@@ -3,7 +3,7 @@ name: linux autotools icx
 on:
   push:
     branches:
-      - main-
+      - main
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -21,12 +21,14 @@ jobs:
         run: |
           sudo apt update
           sudo apt install intel-oneapi-compiler-dpcpp-cpp
+          sudo apt install -y intel-oneapi-compiler-fortran
+          sudo apt install -y intel-oneapi-mpi-devel
+          sudo apt install -y intel-oneapi-mkl-devel          
           source /opt/intel/oneapi/setvars.sh
+          ls /opt/intel/oneapi/mpi/
           which icx
-      - name: install oneAPI MKL library
-        shell: bash
-        run: |
-          sudo apt install intel-oneapi-mkl-devel
+          which mpicc
+          
       - name: Install HDF5
         run: |
           wget https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.14/hdf5-1.14.0/src/hdf5-1.14.0.tar.gz
