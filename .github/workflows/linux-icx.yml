@@ -25,11 +25,11 @@ jobs:
           sudo apt install -y intel-oneapi-mpi-devel
           sudo apt install -y intel-oneapi-mkl-devel          
           source /opt/intel/oneapi/setvars.sh
-          export PATH=$PATH:$HOME/intel/oneapi/compiler/latest/linux/bin
+          export PATH=$PATH:/opt/intel/oneapi/compiler/latest/linux/bin
           ls /opt/intel/oneapi/mpi/
-          ls $HOME/intel/oneapi/compiler/latest/linux/bin
-          which icx
-          which mpicc
+          find /opt/intel/oneapi/
+          locate icx
+          locate mpicc
           
       - name: Install HDF5
         run: |
