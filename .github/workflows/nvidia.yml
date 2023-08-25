@@ -10,9 +10,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install CUDA Toolkit
-        uses: Jimver/cuda-toolkit@v2
-      - run: echo "Installed cuda version is: ${{steps.cuda-toolkit.outputs.cuda}}"
-      - run: echo "Cuda install location: ${{steps.cuda-toolkit.outputs.CUDA_PATH}}"
-      - run: nvcc -V
+        uses: Jimver/cuda-toolkit@v0.2.11
+      - name: Check version
+        run: |
+          echo "Installed cuda version is: ${{steps.cuda-toolkit.outputs.cuda}}"
+          echo "Cuda install location: ${{steps.cuda-toolkit.outputs.CUDA_PATH}}"
+          nvcc -V
       
 
