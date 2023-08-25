@@ -11,6 +11,8 @@ jobs:
     steps:
       - name: Install CUDA Toolkit
         uses: Jimver/cuda-toolkit@v0.2.11
+        with:
+           method: network
       - name: Check version
         run: |
           echo "Installed cuda version is: ${{steps.cuda-toolkit.outputs.cuda}}"
