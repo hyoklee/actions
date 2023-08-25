@@ -32,7 +32,8 @@ jobs:
           git clone https://github.com/hyoklee/hdf5.git
           cd hdf5
           ./autogen.sh
-          ./configure CC=nvcc FC=nvfortran FFLAGS='-fPIC' --enable-fortran
+          ./configure CC=nvcc FC=nvfortran FCLAGS='-fPIC' --enable-fortran --enable-shared
+          caat config.log
           make -j
           make check -j
           
