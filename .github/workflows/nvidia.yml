@@ -1,0 +1,18 @@
+name: NVIDIA
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install CUDA Toolkit
+        uses: Jimver/cuda-toolkit@v2
+      - run: echo "Installed cuda version is: ${{steps.cuda-toolkit.outputs.cuda}}"
+      - run: echo "Cuda install location: ${{steps.cuda-toolkit.outputs.CUDA_PATH}}"
+      - run: nvcc -V
+      
+
