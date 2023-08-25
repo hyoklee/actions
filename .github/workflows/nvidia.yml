@@ -25,6 +25,6 @@ jobs:
         run: |
           git clone https://github.com/hyoklee/hdf5.git
           cd hdf5
-          cmake -B build -G Ninja -DHDF5_BUILD_FORTRAN:BOOL=ON 
+          cmake -B build -DHDF5_BUILD_FORTRAN:BOOL=ON 
           cat build\CMakeCache.txt
           cmake --build build
