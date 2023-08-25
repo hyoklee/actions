@@ -9,6 +9,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Install System dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y libaec-dev zlib1g-dev automake autoconf libcurl4-openssl-dev libjpeg-dev wget curl bzip2 m4 flex bison cmake libzip-dev doxygen openssl libtool libtool-bin
+    
       - name: Install CUDA Toolkit
         uses: Jimver/cuda-toolkit@v0.2.11
         with:
@@ -25,6 +30,6 @@ jobs:
         run: |
           git clone https://github.com/hyoklee/hdf5.git
           cd hdf5
-          cmake -B build -DHDF5_BUILD_FORTRAN:BOOL=ON 
+          cmake -B build
           cat build\CMakeCache.txt
           cmake --build build
