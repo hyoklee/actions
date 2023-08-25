@@ -33,7 +33,7 @@ jobs:
           cd hdf5
           ./autogen.sh
           ./configure CC=nvcc FC=nvfortran FCLAGS='-fPIC' --enable-fortran --enable-shared
-          caat config.log
+          cat config.log
           make -j
           make check -j
           
