@@ -28,6 +28,7 @@ jobs:
           FC: nvfortran
           CC: nvcc
           CFLAGS: -std=c++11
+          CXXFLAGS: -std=c++11
         run: |
           git clone https://github.com/hyoklee/hdf5.git
           cd hdf5
