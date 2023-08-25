@@ -32,5 +32,10 @@ jobs:
         run: |
           git clone https://github.com/hyoklee/hdf5.git
           cd hdf5
-          cmake -B build -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF -DHDF5_ENABLE_Z_LIB_SUPPORT:BOOL=OFF
-          cmake --build build
+          # cmake -B build -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF -DHDF5_ENABLE_Z_LIB_SUPPORT:BOOL=OFF
+          # cmake --build build
+          ./autogen.sh
+          ./configure CC=nvcc
+          make -j
+          make check -j
+          
