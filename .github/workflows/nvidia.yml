@@ -16,7 +16,15 @@ jobs:
       - name: Check version
         run: |
           echo "Installed cuda version is: ${{steps.cuda-toolkit.outputs.cuda}}"
-          echo "Cuda install location: ${{steps.cuda-toolkit.outputs.CUDA_PATH}}"
+          echo "cuda location: ${{steps.cuda-toolkit.outputs.CUDA_PATH}}"
           nvcc -V
-      
-
+      - name: Test HDF5
+        env:
+          FC: nvfortran
+          CC: nvcc
+        run: |
+          git clone https://github.com/hyoklee/hdf5.git
+          cd hdf5
+          cmake -B build -G Ninja -DHDF5_BUILD_FORTRAN:BOOL=ON 
+          cat build\CMakeCache.txt
+          cmake --build build
