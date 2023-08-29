@@ -3,7 +3,7 @@ name: aocc
 on:
   push:
     branches:
-      - main-
+      - main
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -32,9 +32,7 @@ jobs:
           git clone https://github.com/HDFGroup/hdf5.git
           cd hdf5
           ./autogen.sh
-          # ./configure  --enable-parallel --enable-fortran --enable-shared --enable-static
-          # ./configure  --enable-parallel --enable-fortran --enable-shared  CXX="$(which mpiicpc) -cc=$(which clang)" CC="$(which mpiicc) -cc=$(which clang)" FC="$(which mpif90) -fc=$(which flang)" LDFLAGS="-L/home/runner/work/actions/actions/aocc-compiler-4.1.0/lib -L/home/runner/work/actions/actions/aocc-compiler-4.1.0/lib32"
-          ./configure  --disable-shared  CXX="$(which clang)" CC="$(which clang)"
+          ./configure  --enable-parallel --enable-fortran --enable-shared  CXX="$(which mpiicpc) -cc=$(which clang)" CC="$(which mpiicc) -cc=$(which clang)" FC="$(which mpif90) -fc=$(which flang)" LDFLAGS="-L/home/runner/work/actions/actions/aocc-compiler-4.1.0/lib -L/home/runner/work/actions/actions/aocc-compiler-4.1.0/lib32 -L../src/.libs/"
           cat config.log
           make -j
           make check -j
