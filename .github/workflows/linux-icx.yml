@@ -55,7 +55,8 @@ jobs:
         shell: bash
         run: |
           source /opt/intel/oneapi/setvars.sh
-          export PATH=$PATH:/opt/intel/oneapi/mpi/2021.10.0/bin:/opt/intel/oneapi/compiler/2023.2.1/linux/bin          
+          export PATH=$PATH:/opt/intel/oneapi/mpi/2021.10.0/bin:/opt/intel/oneapi/compiler/2023.2.1/linux/bin
+          cd hdf5
           cmake --build build
 
       - name: test
@@ -64,4 +65,5 @@ jobs:
           source /opt/intel/oneapi/setvars.sh
           export PATH=$PATH:/opt/intel/oneapi/mpi/2021.10.0/bin:/opt/intel/oneapi/compiler/2023.2.1/linux/bin          
           export SYCL_DEVICE_FILTER=opencl.cpu
+          cd hdf5
           ctest --test-dir build --output-on-failure          
