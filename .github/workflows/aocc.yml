@@ -16,3 +16,21 @@ jobs:
           tar -xvf aocc-compiler-4.1.0.tar
           cd aocc-compiler-4.1.0
           bash install.sh
+          source /home/runner/work/actions/actions/setenv_AOCC.sh
+          which clang
+          which flang
+          clang -v
+          export FC=mpif77
+          export F90=mpif90
+          export F77=mpif77
+          export CXX=mpic++
+          export LD=mpif90
+          export MPIF90=mpif90
+          export OMPI_CC=clang
+          export OMPI_FC=flang
+          export OMPI_CXX=clang++
+          git clone https://github.com/HDFGroup/hdf5.git
+          cd hdf5          
+          ./configure  --enable-parallel --enable-fortran --enable-shared --enable-static
+          cat config.log
+          
