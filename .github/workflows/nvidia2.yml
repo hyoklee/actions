@@ -3,7 +3,7 @@ name: NVIDIA nvfortran
 on:
   push:
     branches:
-      - main
+      - main-
 
 jobs:
   build:
