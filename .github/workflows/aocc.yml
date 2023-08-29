@@ -33,6 +33,8 @@ jobs:
           cd hdf5
           ./autogen.sh
           # ./configure  --enable-parallel --enable-fortran --enable-shared --enable-static
-          ./configure  --enable-parallel --enable-shared
+          ./configure  --enable-parallel --enable-fortran --enable-shared  CXX="$(which mpiicpc) -cc=$(which aocc)" CC="$(which mpiicc) -cc=$(which aocc)" FC="$(which mpif90) -fc=$(which flang)" LDFLAGS="-L/home/runner/work/actions/actions/aocc-compiler-4.1.0/lib -L/home/runner/work/actions/actions/aocc-compiler-4.1.0/lib32"
           cat config.log
+          make -j
+          make check -j
           
