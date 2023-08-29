@@ -32,6 +32,7 @@ jobs:
           git clone https://github.com/HDFGroup/hdf5.git
           cd hdf5
           ./autogen.sh
-          ./configure  --enable-parallel --enable-fortran --enable-shared --enable-static
+          # ./configure  --enable-parallel --enable-fortran --enable-shared --enable-static
+          ./configure  --enable-parallel --enable-shared
           cat config.log
           
