@@ -1,4 +1,4 @@
-name: spack hdf5@develop cmake@3.22.2
+name: spack --test root hdf5@develop
 
 on:
   push:
@@ -51,6 +51,7 @@ jobs:
         spack external find perl
         spack external find pkgconf
         spack external find zlib
-        spack external find xz        
-        spack install hdf5@develop+mpi+fortran+hl
+        spack external find xz
+        
+        spack install --test root hdf5@develop+mpi+fortran+hl
         
