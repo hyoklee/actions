@@ -29,6 +29,7 @@ jobs:
           export OMPI_CC=clang
           export OMPI_FC=flang
           export OMPI_CXX=clang++
+          export LD_LIBRARY_PATH=/home/runner/work/actions/actions/aocc-compiler-4.1.0/lib
           git clone https://github.com/HDFGroup/hdf5.git
           cd hdf5
           ./autogen.sh
