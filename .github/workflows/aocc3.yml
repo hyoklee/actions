@@ -1,4 +1,4 @@
-name: aocc2
+name: aocc3
 
 on:
   push:
@@ -27,14 +27,15 @@ jobs:
           ./configure CC=/home/runner/work/actions/actions/aocc-compiler-4.1.0/bin/clang FC=/home/runner/work/actions/actions/aocc-compiler-4.1.0/bin/flang --prefix=/usr/local
           make
           sudo make install
-          export LD_LIBRARY_PATH=/home/runner/work/actions/actions/aocc-compiler-4.1.0/lib:/usr/local/lib/openmpi:/usr/local/lib          
+          export LD_LIBRARY_PATH=/home/runner/work/actions/actions/aocc-compiler-4.1.0/lib:/usr/local/lib/openmpi:/usr/local/lib
+          export LD_RUN_PATH=/home/runner/work/actions/actions/aocc-compiler-4.1.0/lib:/usr/local/lib/openmpi:/usr/local/lib          
           export PATH=/usr/local/bin:$PATH
+          ls /usr/local/bin
           cd ..
           git clone https://github.com/HDFGroup/hdf5.git
           cd hdf5
           ./autogen.sh
-          # ./configure  --enable-parallel --enable-fortran --enable-shared  CXX="$(which mpic++) -cc=$(which clang++)" CC="$(which mpicc) -cc=$(which clang)" FC="$(which mpif90) -fc=$(which flang)" LDFLAGS="-L/home/runner/work/actions/actions/aocc-compiler-4.1.0/lib -L/home/runner/work/actions/actions/aocc-compiler-4.1.0/lib32 -L../src/.libs/"
-          ./configure  --enable-parallel --enable-fortran --enable-shared CC=/home/runner/work/actions/actions/aocc-compiler-4.1.0/bin/clang FC=/home/runner/work/actions/actions/aocc-compiler-4.1.0/bin/flang LDFLAGS="-L/home/runner/work/actions/actions/aocc-compiler-4.1.0/lib -L/usr/local/lib/openmpi"
+          ./configure  --enable-parallel --enable-fortran --enable-shared CC=/usr/local/bin/mpicc FC=/usr/local/bin/mpif90 LDFLAGS="-L/home/runner/work/actions/actions/aocc-compiler-4.1.0/lib -L/usr/local/lib/openmpi"
           cat config.log
           make -j
           make check -j
