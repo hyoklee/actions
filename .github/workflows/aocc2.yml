@@ -20,21 +20,22 @@ jobs:
           which clang
           which flang
           clang -v
-          export FC=mpif77
-          export F90=mpif90
-          export F77=mpif77
-          export CXX=mpic++
-          export LD=mpif90
-          export MPIF90=mpif90
-          export OMPI_CC=clang
-          export OMPI_FC=flang
-          export OMPI_CXX=clang++
+          # export FC=mpif77
+          # export F90=mpif90
+          # export F77=mpif77
+          # export CXX=mpic++
+          # export LD=mpif90
+          # export MPIF90=mpif90
+          # export OMPI_CC=clang
+          # export OMPI_FC=flang
+          # export OMPI_CXX=clang++
           export LD_LIBRARY_PATH=/home/runner/work/actions/actions/aocc-compiler-4.1.0/lib
           git clone https://github.com/HDFGroup/hdf5.git
           cd hdf5
           ./autogen.sh
           # ./configure  --enable-parallel --enable-fortran --enable-shared  CXX="$(which mpic++) -cc=$(which clang++)" CC="$(which mpicc) -cc=$(which clang)" FC="$(which mpif90) -fc=$(which flang)" LDFLAGS="-L/home/runner/work/actions/actions/aocc-compiler-4.1.0/lib -L/home/runner/work/actions/actions/aocc-compiler-4.1.0/lib32 -L../src/.libs/"
-          ./configure  --enable-parallel --enable-fortran --enable-shared  LDFLAGS="-L/home/runner/work/actions/actions/aocc-compiler-4.1.0/lib"
+          ./configure  --enable-parallel --enable-fortran --enable-shared
+          # LDFLAGS="-L/home/runner/work/actions/actions/aocc-compiler-4.1.0/lib"
           cat config.log
           make -j
           make check -j
