@@ -27,8 +27,6 @@ jobs:
         env:
           FC: nvfortran
           CC: nvcc
-          CFLAGS: --std=c++11
-          CXXFLAGS: --std=c++11
           FCFLAGS: -fPIC
         run: |
           git clone https://github.com/HDFGroup/hdf5.git
