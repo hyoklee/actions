@@ -20,20 +20,11 @@ jobs:
           which clang
           which flang
           clang -v
-          # export FC=mpif77
-          # export F90=mpif90
-          # export F77=mpif77
-          # export CXX=mpic++
-          # export LD=mpif90
-          # export MPIF90=mpif90
-          # export OMPI_CC=clang
-          # export OMPI_FC=flang
-          # export OMPI_CXX=clang++
           export LD_LIBRARY_PATH=/home/runner/work/actions/actions/aocc-compiler-4.1.0/lib:/usr/local/lib
           wget https://download.open-mpi.org/release/open-mpi/v4.1/openmpi-4.1.5.tar.gz
           tar zxvf openmpi-4.1.5.tar.gz
           cd openmpi-4.1.5
-          ./configure CC=clang FC=flang --prefix=/usr/local
+          ./configure CC=/home/runner/work/actions/actions/aocc-compiler-4.1.0/bin/clang FC=/home/runner/work/actions/actions/aocc-compiler-4.1.0/bin/flang --prefix=/usr/local
           make
           sudo make install
           export PATH=/usr/local/bin:$PATH
