@@ -52,4 +52,5 @@ jobs:
         spack external find pkgconf
         spack external find zlib
         spack external find xz        
-        spack install hdf5@develop+mpi+fortran+hl ^cmake@3.22.2
+        spack install hdf5@develop+mpi+fortran+hl
+        
