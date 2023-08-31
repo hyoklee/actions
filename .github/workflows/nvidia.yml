@@ -27,9 +27,10 @@ jobs:
         env:
           FC: nvfortran
           CC: nvcc
-          CFLAGS: -std c++03
-          FCFLAGS: -fPIC
         run: |
+          export CFLAGS='-std=c++11'
+          export NVFLAGS='-std=c++11'
+          export FCLAGS='-fPIC'
           git clone https://github.com/HDFGroup/hdf5.git
           cd hdf5
           cmake -B build -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF -DCMAKE_CXX_COMPILER_ID=NVHPC
