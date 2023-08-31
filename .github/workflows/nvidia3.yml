@@ -1,0 +1,38 @@
+name: NVIDIA CMake nvfortran 
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install System dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y libaec-dev zlib1g-dev automake autoconf libcurl4-openssl-dev libjpeg-dev wget curl bzip2 m4 flex bison cmake libzip-dev doxygen openssl libtool libtool-bin build-essential
+          sudo apt-cache depends nvhpc
+          sudo apt-get install -y $(apt-cache depends nvhpc)
+          wget https://developer.download.nvidia.com/hpc-sdk/ubuntu/amd64/nvhpc_23.7_amd64.deb
+          sudo apt install -y ./nvhpc_23.7_amd64.deb
+
+      - name: Check version
+        run: |
+          echo "Installed cuda version is: ${{steps.cuda-toolkit.outputs.cuda}}"
+          echo "cuda location: ${{steps.cuda-toolkit.outputs.CUDA_PATH}}"
+          nvcc -V
+      - name: Test HDF5
+        env:
+          FC: nvfortran
+          CC: nvcc
+        run: |
+          export CFLAGS='-std=c++11'
+          export NVFLAGS='-std=c++11'
+          export FCLAGS='-fPIC'        
+          git clone https://github.com/hyoklee/hdf5.git
+          cd hdf5
+          cmake -B build -DHDF5_BUILD_FORTRAN:BOOL=ON 
+          cat build\CMakeCache.txt
+          cmake --build build
