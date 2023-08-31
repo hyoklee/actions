@@ -38,6 +38,7 @@ jobs:
           export PATH=$PATH:/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/compilers/bin:$NVHPC_CUDA_HOME/bin          
           git clone https://github.com/HDFGroup/hdf5.git
           cd hdf5
-          cmake -B build -DHDF5_BUILD_FORTRAN:BOOL=ON 
+          cmake -B build  -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF
+          # -DHDF5_BUILD_FORTRAN:BOOL=ON 
           cat build/CMakeCache.txt
           cmake --build build
