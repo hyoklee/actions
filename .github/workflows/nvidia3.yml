@@ -28,10 +28,9 @@ jobs:
       - name: Test HDF5
         env:
           FC: nvfortran
-          CC: nvcc -std=c++11
+          CC: nvc
+          FCFLAGS: -fPIC
         run: |
-          export FCLAGS='-fPIC'
-          export CC=nvc
           export NVHPC_CUDA_HOME=/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/cuda/12.2
           export LD_LIBRARY_PATH=/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/cuda/12.2/lib64:/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/compilers/lib
           export PATH=$PATH:/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/compilers/bin:$NVHPC_CUDA_HOME/bin          
@@ -41,3 +40,4 @@ jobs:
           # -DHDF5_BUILD_FORTRAN:BOOL=ON 
           cat build/CMakeCache.txt
           cmake --build build
+          ctest --test-dir build --output-on-failure
