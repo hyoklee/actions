@@ -28,11 +28,12 @@ jobs:
       - name: Test HDF5
         env:
           FC: nvfortran
-          CC: nvcc
+          CC: nvcc -std=c++11
         run: |
           export CFLAGS='-std=c++11'
           export NVFLAGS='-std=c++11'
           export FCLAGS='-fPIC'
+          export CC='nvcc -std=c++11'
           export NVHPC_CUDA_HOME=/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/cuda/12.2
           export LD_LIBRARY_PATH=/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/cuda/12.2/lib64:/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/compilers/lib
           export PATH=$PATH:/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/compilers/bin:$NVHPC_CUDA_HOME/bin          
