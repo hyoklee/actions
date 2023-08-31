@@ -37,7 +37,7 @@ jobs:
           which mpicc
           ./autogen.sh
           # ./configure CC="$(which nvc)" FC="$(which nvfortran)" FCFLAGS='-fPIC' --enable-fortran --enable-shared --enable-parallel
-          ./configure CC="$(which mpicc)" FC="$(whichi mpifort)" FCFLAGS='-fPIC' --enable-fortran --enable-shared --enable-parallel          
+          ./configure CC="$(which mpicc)" FC="$(which mpifort)" FCFLAGS='-fPIC' --enable-fortran --enable-shared --enable-parallel          
           cat config.log
           make -j
           make check -j
