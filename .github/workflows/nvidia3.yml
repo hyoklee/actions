@@ -20,8 +20,9 @@ jobs:
 
       - name: Check version
         run: |
-          echo "Installed cuda version is: ${{steps.cuda-toolkit.outputs.cuda}}"
-          echo "cuda location: ${{steps.cuda-toolkit.outputs.CUDA_PATH}}"
+          export NVHPC_CUDA_HOME=/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/cuda/12.2
+          export LD_LIBRARY_PATH=/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/cuda/12.2/lib64:/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/compilers/lib
+          export PATH=$PATH:/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/compilers/bin:$NVHPC_CUDA_HOME/bin        
           nvcc -V
           
       - name: Test HDF5
@@ -31,8 +32,11 @@ jobs:
         run: |
           export CFLAGS='-std=c++11'
           export NVFLAGS='-std=c++11'
-          export FCLAGS='-fPIC'        
-          git clone https://github.com/hyoklee/hdf5.git
+          export FCLAGS='-fPIC'
+          export NVHPC_CUDA_HOME=/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/cuda/12.2
+          export LD_LIBRARY_PATH=/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/cuda/12.2/lib64:/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/compilers/lib
+          export PATH=$PATH:/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/compilers/bin:$NVHPC_CUDA_HOME/bin          
+          git clone https://github.com/HDFGroup/hdf5.git
           cd hdf5
           cmake -B build -DHDF5_BUILD_FORTRAN:BOOL=ON 
           cat build/CMakeCache.txt
