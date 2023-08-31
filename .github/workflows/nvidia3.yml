@@ -1,9 +1,9 @@
-name: NVIDIA CMake nvfortran 
+name: NVIDIA CMake parallel
 
 on:
   push:
     branches:
-      - main
+      - main-
 
 jobs:
   build:
