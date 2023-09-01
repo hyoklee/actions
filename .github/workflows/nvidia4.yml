@@ -49,6 +49,7 @@ jobs:
           # sudo make uninstall
         shell: bash
       - name: Upload config.log
+        if: always()
         uses: actions/upload-artifact@v2
         with:
           name: config.log
