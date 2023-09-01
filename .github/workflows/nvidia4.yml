@@ -1,4 +1,4 @@
-name: NVHPC Autotools
+name: NVHPC Autotools parallel
 
 on:
   push:
@@ -36,7 +36,8 @@ jobs:
           git clone https://github.com/hyoklee/hdf5.git
           cd hdf5
           ./autogen.sh          
-          ./configure CC="$(which nvc)" FC="$(which nvfortran)" FCFLAGS='-fPIC' --enable-fortran --enable-shared
+          which mpicc
+          ./configure CC=/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/comm_libs/openmpi4/bin/mpicc FC=/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/comm_libs/openmpi4/bin/mpifort FCFLAGS=-fPIC --enable-fortran --enable-shared --enable-parallel
           cat config.log
           make -j
           make check -j
