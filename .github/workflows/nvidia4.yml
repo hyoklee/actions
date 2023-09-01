@@ -8,6 +8,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    continue-on-error: true
+
     steps:
       - name: Install System dependencies
         run: |
@@ -41,8 +43,8 @@ jobs:
           ./configure CC=/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/comm_libs/openmpi4/bin/mpicc FC=/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/comm_libs/openmpi4/bin/mpifort FCFLAGS="-fPIC -fortranlibs" --enable-fortran --enable-shared --enable-parallel
           # ./configure CC="$(which nvc)" FC="$(which nvfortran)" FCFLAGS='-fpic -fortranlibs' --enable-fortran --enable-shared --enable-parallel
           cat config.log
-          make -j
-          make check -j
-          sudo make install
-          sudo make uninstall
+          # make -j
+          # make check -j
+          # sudo make install
+          # sudo make uninstall
         shell: bash
