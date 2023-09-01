@@ -48,3 +48,9 @@ jobs:
           # sudo make install
           # sudo make uninstall
         shell: bash
+      - name: Upload config.log
+        uses: actions/upload-artifact@v2
+        with:
+          name: config.log
+          path: ./hdf5/config.log
+        
