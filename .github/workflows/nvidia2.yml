@@ -3,7 +3,7 @@ name: NVHPC Autotools
 on:
   push:
     branches:
-      - main-
+      - main
 
 jobs:
   build:
@@ -13,6 +13,8 @@ jobs:
         run: |
           sudo apt update
           sudo apt install -y libaec-dev zlib1g-dev automake autoconf libcurl4-openssl-dev libjpeg-dev wget curl bzip2 m4 flex bison cmake libzip-dev doxygen openssl libtool libtool-bin build-essential
+      - name: Install NVHPC
+        run: |          
           curl https://developer.download.nvidia.com/hpc-sdk/ubuntu/DEB-GPG-KEY-NVIDIA-HPC-SDK | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-hpcsdk-archive-keyring.gpg
           echo 'deb [signed-by=/usr/share/keyrings/nvidia-hpcsdk-archive-keyring.gpg] https://developer.download.nvidia.com/hpc-sdk/ubuntu/amd64 /' | sudo tee /etc/apt/sources.list.d/nvhpc.list
           sudo apt-get update -y
@@ -33,7 +35,7 @@ jobs:
           export LD_LIBRARY_PATH=/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/cuda/12.2/lib64:/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/compilers/lib
           export PATH=/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/comm_libs/openmpi4/bin:/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/compilers/bin:$NVHPC_CUDA_HOME/bin:$PATH
           env
-          git clone https://github.com/hyoklee/hdf5.git
+          git clone https://github.com/HDFGroup/hdf5.git
           cd hdf5
           ./autogen.sh          
           ./configure CC="$(which nvc)" FC="$(which nvfortran)" FCFLAGS='-fPIC' --enable-fortran --enable-shared
