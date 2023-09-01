@@ -26,7 +26,8 @@ jobs:
           nvfortran -V
       - name: Test HDF5
         run: |
-          export OMPI_CXX=/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/compilers/bin/nvcc
+          export NVHPCSDK=/opt/nvidia/hpc_sdk
+          export OMPI_CXX=/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/compilers/bin/nvc++
           export OMPI_CC=/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/compilers/bin/nvc
           export OMPI_FC=/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/compilers/bin/nvfortran
           export NVHPC_CUDA_HOME=/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/cuda/12.2
@@ -35,9 +36,10 @@ jobs:
           env
           git clone https://github.com/hyoklee/hdf5.git
           cd hdf5
-          ./autogen.sh          
+          autreconf -fvi
           which mpicc
-          ./configure CC=/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/comm_libs/openmpi4/bin/mpicc FC=/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/comm_libs/openmpi4/bin/mpifort FCFLAGS=-fPIC --enable-fortran --enable-shared --enable-parallel
+          #./configure CC=/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/comm_libs/openmpi4/bin/mpicc FC=/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/comm_libs/openmpi4/bin/mpifort FCFLAGS=-fPIC --enable-fortran --enable-shared --enable-parallel
+          ./configure CC="$(which nvc)" FC="$(which nvfortran)" FCFLAGS='-fPIC' --enable-fortran --enable-shared --enable-parallel
           cat config.log
           make -j
           make check -j

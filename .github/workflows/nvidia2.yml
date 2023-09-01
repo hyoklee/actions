@@ -3,7 +3,7 @@ name: NVHPC Autotools
 on:
   push:
     branches:
-      - main
+      - main-
 
 jobs:
   build:
