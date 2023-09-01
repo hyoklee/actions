@@ -3,7 +3,7 @@ name: NVIDIA CMake parallel built-in
 on:
   push:
     branches:
-      - main
+      - main-
 
 jobs:
   build:
