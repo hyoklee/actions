@@ -38,8 +38,8 @@ jobs:
           cd hdf5
           autoreconf -fvi
           which mpicc
-          #./configure CC=/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/comm_libs/openmpi4/bin/mpicc FC=/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/comm_libs/openmpi4/bin/mpifort FCFLAGS=-fPIC --enable-fortran --enable-shared --enable-parallel
-          ./configure CC="$(which nvc)" FC="$(which nvfortran)" FCFLAGS='-fPIC' --enable-fortran --enable-shared --enable-parallel
+          ./configure CC=/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/comm_libs/openmpi4/bin/mpicc FC=/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/comm_libs/openmpi4/bin/mpifort FCFLAGS="-fPIC -fortranlibs" --enable-fortran --enable-shared --enable-parallel
+          # ./configure CC="$(which nvc)" FC="$(which nvfortran)" FCFLAGS='-fpic -fortranlibs' --enable-fortran --enable-shared --enable-parallel
           cat config.log
           make -j
           make check -j
