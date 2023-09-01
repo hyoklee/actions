@@ -19,21 +19,12 @@ jobs:
           echo 'deb [signed-by=/usr/share/keyrings/nvidia-hpcsdk-archive-keyring.gpg] https://developer.download.nvidia.com/hpc-sdk/ubuntu/amd64 /' | sudo tee /etc/apt/sources.list.d/nvhpc.list
           sudo apt-get update -y
           sudo apt-get install -y nvhpc-23-7          
-      - name: Check version
-        run: |
-          export NVHPC_CUDA_HOME=/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/cuda/12.2
-          export LD_LIBRARY_PATH=/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/cuda/12.2/lib64:/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/compilers/lib
-          export PATH=/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/comm_libs/openmpi4/bin:/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/compilers/bin:$NVHPC_CUDA_HOME/bin:$PATH
-          nvcc -V
-          nvfortran -V
       - name: Test HDF5
         run: |
-          export OMPI_CXX=/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/compilers/bin/nvcc
-          export OMPI_CC=/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/compilers/bin/nvc
-          export OMPI_FC=/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/compilers/bin/nvfortran
-          export NVHPC_CUDA_HOME=/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/cuda/12.2
+          # export NVHPC_CUDA_HOME=/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/cuda/12.2
           export LD_LIBRARY_PATH=/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/cuda/12.2/lib64:/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/compilers/lib
-          export PATH=/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/comm_libs/openmpi4/bin:/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/compilers/bin:$NVHPC_CUDA_HOME/bin:$PATH
+          # export PATH=/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/compilers/bin:$NVHPC_CUDA_HOME/bin:$PATH
+          export PATH=/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/compilers/bin:$PATH
           env
           git clone https://github.com/HDFGroup/hdf5.git
           cd hdf5
@@ -44,4 +35,4 @@ jobs:
           make check -j
           sudo make install
           sudo make uninstall
-        shell: bash
+#        shell: bash

@@ -27,7 +27,6 @@ jobs:
           export OMPI_CXX=/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/compilers/bin/nvc++
           export OMPI_CC=/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/compilers/bin/nvc
           export OMPI_FC=/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/compilers/bin/nvfortran
-          export LD_LIBRARY_PATH=/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/cuda/12.2/lib64:/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/compilers/lib
           export LD_LIBRARY_PATH=/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/compilers/lib
           export PATH=/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/comm_libs/openmpi4/bin:/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/compilers/bin:$PATH
           env
@@ -40,7 +39,6 @@ jobs:
           make check -j
           sudo make install
           sudo make uninstall
-        shell: bash
       - name: Upload config.log
         if: always()
         uses: actions/upload-artifact@v2
