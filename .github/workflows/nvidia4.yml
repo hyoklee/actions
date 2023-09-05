@@ -23,7 +23,8 @@ jobs:
           sudo apt-get install -y nvhpc-23-7          
       - name: Test HDF5
         run: |
-          export RUNPARALLEL="mpiexec -n 4"
+          export OMPI_UNIVERSE_SIZE=4
+          export RUNPARALLEL="mpiexec -n 4 -host localhost:4"
           export NVHPCSDK=/opt/nvidia/hpc_sdk
           export OMPI_CXX=/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/compilers/bin/nvc++
           export OMPI_CC=/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/compilers/bin/nvc
