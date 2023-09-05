@@ -35,7 +35,7 @@ jobs:
           git clone https://github.com/HDFGroup/hdf5.git
           cd hdf5
           ./autogen.sh
-          ./configure CC=/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/comm_libs/openmpi4/bin/mpicc FC=/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/comm_libs/openmpi4/bin/mpifort FCFLAGS="-fPIC -fortranlibs" --enable-fortran --enable-shared --enable-parallel
+          ./configure CC=/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/comm_libs/openmpi4/bin/mpicc FC=/opt/nvidia/hpc_sdk/Linux_x86_64/23.7/comm_libs/openmpi4/bin/mpifort FCFLAGS="-fPIC -fortranlibs" --enable-fortran --enable-shared --enable-static --enable-parallel
           cat config.log
           make -j
           make check -j
