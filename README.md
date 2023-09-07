@@ -10,3 +10,8 @@ Test GitHub Actions
 |ubuntu-20.04 |4.7.3   |1.10.4|
 
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=HDFGroup/hdf5&type=Date&theme=dark" />
+  <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=HDFGroup/hdf5&type=Date" />
+  <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=HDFGroup/hdf5&type=Date" />
+</picture>
