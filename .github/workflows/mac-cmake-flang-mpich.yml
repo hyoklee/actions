@@ -35,7 +35,6 @@ jobs:
     - name: Install flang
       run : |
         git clone https://github.com/llvm/llvm-project.git
-        cd llvm-project
         mkdir build
         mkdir install
         ROOTDIR=`pwd`
@@ -63,12 +62,12 @@ jobs:
 
     - name: Configure
       run: |
-        export LV=${{ runner.workspace }}/llvm-project/install
+        export LV=${{ runner.workspace }}/install
         ls $LV
-        export PATH="/usr/local/opt/llvm/bin:$LV/bin:$PATH"
-        export LDFLAGS="-L/usr/local/opt/llvm/lib"
-        export CPPFLAGS="-I/usr/local/opt/llvm/include"
-        export CFLAGS="-I/usr/local/opt/llvm/include"
+        export PATH="$LV/bin:/usr/local/opt/llvm/bin:$PATH"
+        export LDFLAGS="-L$LV/lib"
+        export CPPFLAGS="-I$LV/include"
+        export CFLAGS="-I$LV/include"
         which flang-new
         export FC="$(which flang-new)"
         export CC="$(which clang)"
