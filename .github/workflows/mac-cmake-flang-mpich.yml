@@ -56,10 +56,7 @@ jobs:
           -DLLVM_ENABLE_PROJECTS="clang;mlir;flang;openmp" \
           -DLLVM_ENABLE_RUNTIMES="compiler-rt" \
           ../llvm-project/llvm
-        ninja
-
-    - name: Get Sources
-      uses: actions/checkout@v4
+        ninja install
 
     - name: Configure
       run: |
@@ -76,8 +73,10 @@ jobs:
         export CC="$(which clang)"
         echo $CC
         echo $FC
-        mkdir "${{ runner.workspace }}/build"
-        cd "${{ runner.workspace }}/build"
+        git clone https://github.com/HDFGroup/hdf5.git
+        cd hdf5
+        mkdir build
+        cd build
         cmake ${{ matrix.generator }} \
         -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
         -DCMAKE_TOOLCHAIN_FILE=${{ matrix.toolchain }} \
@@ -92,7 +91,8 @@ jobs:
         -DHDF5_ENABLE_SUBFILING_VFD:BOOL=ON \
         -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF \
         -DMPIEXEC_MAX_NUMPROCS:STRING=2 \
-        $GITHUB_WORKSPACE
+        ..
+        make -j
       shell: bash
 
     - name: Build
