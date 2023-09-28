@@ -34,7 +34,8 @@ jobs:
       run: brew install llvm mpich ninja # carlocab/personal/flang
     - name: Install flang
       run : |
-        git clone https://github.com/llvm/llvm-project.git
+        git clone --single-branch --branch llvmorg-17.0.1 \
+          https://github.com/llvm/llvm-project.git
         mkdir build
         mkdir install
         ROOTDIR=`pwd`
@@ -72,7 +73,7 @@ jobs:
         export FC="$(which flang-new)"
         export CC="$(which clang)"
         echo $CC
-        # echo $FC
+        echo $FC
         mkdir "${{ runner.workspace }}/build"
         cd "${{ runner.workspace }}/build"
         cmake ${{ matrix.generator }} \
@@ -86,6 +87,7 @@ jobs:
         -DHDF5_BUILD_CPP_LIB:BOOL=${{ matrix.cpp }} \
         -DHDF5_BUILD_FORTRAN=${{ matrix.fortran }} \
         -DHDF5_BUILD_JAVA=${{ matrix.java }} \
+        -DHDF5_ENABLE_SUBFILING_VFD:BOOL=ON \
         -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF \
         -DMPIEXEC_MAX_NUMPROCS:STRING=2 \
         $GITHUB_WORKSPACE
