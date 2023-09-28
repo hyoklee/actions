@@ -63,7 +63,9 @@ jobs:
 
     - name: Configure
       run: |
-        export LV=${{ runner.workspace }}/install
+        pwd
+        ls
+        export LV=${{ runner.workspace }}/actions/install
         ls $LV
         export PATH="$LV/bin:/usr/local/opt/llvm/bin:$PATH"
         export LDFLAGS="-L$LV/lib"
