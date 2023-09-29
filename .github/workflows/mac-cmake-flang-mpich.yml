@@ -3,7 +3,7 @@ name: mac-13 CMake llvm17 flang java parallel mpich
 on:
   workflow_dispatch:
   push:
-    branches: [ main- ]
+    branches: [ main ]
 
 jobs:
   build:
@@ -44,9 +44,6 @@ jobs:
         cd build
         cmake \
           -G Ninja \
-          -DBUILD_SHARED_LIBS:BOOL=ON \	  
-          -DBUILD_STATIC_EXECS:BOOL=OFF \
-          -DBUILD_STATIC_LIBS:BOOL=OFF \
           -DCMAKE_BUILD_TYPE=Release \
           -DCMAKE_INSTALL_PREFIX=$INSTALLDIR \
           -DCMAKE_CXX_STANDARD=17 \
@@ -83,7 +80,9 @@ jobs:
         cmake ${{ matrix.generator }} \
         -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
         -DCMAKE_TOOLCHAIN_FILE=${{ matrix.toolchain }} \
-        -DBUILD_SHARED_LIBS=ON \
+        -DBUILD_SHARED_LIBS:BOOL=ON \
+        -DBUILD_STATIC_EXECS:BOOL=OFF \
+        -DBUILD_STATIC_LIBS:BOOL=OFF \
         -DHDF5_ENABLE_ALL_WARNINGS=ON \
         -DHDF5_ENABLE_THREADSAFE:BOOL=${{ matrix.ts }} \
         -DHDF5_BUILD_HL_LIB:BOOL=${{ matrix.hl }} \

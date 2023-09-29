@@ -27,6 +27,7 @@ jobs:
         run: |
           cmd /c 'C:\Program Files (x86)\Intel\oneAPI\compiler\2023.2.0\env\vars.bat'
           dir 'C:\Program Files (x86)\Intel\oneAPI\compiler\2023.2.0\windows\bin\'
+          dir 'C:\Program Files (x86)\Intel\oneAPI\mpi\'
       - name: Test HDF5
         env:
           FC: ${{ steps.setup-fortran.outputs.fc }}
