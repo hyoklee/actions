@@ -32,10 +32,13 @@ jobs:
           dir 'C:\Program Files (x86)\Intel\oneAPI\compiler\2023.2.0\windows\bin\'
           cmd /c 'C:\Program Files (x86)\Intel\oneAPI\mpi\2021.10.0\env\vars.bat'
           dir 'C:\Program Files (x86)\Intel\oneAPI\mpi\2021.10.0\bin\'
-      - name: Test CMD
+      - name: Test Compiler Vars
         shell: cmd
         run: |
           "C:\Program Files (x86)\Intel\oneAPI\compiler\2023.2.0\env\vars.bat"
+      - name: Test MPI Vars
+        shell: cmd
+        run: |
           "C:\Program Files (x86)\Intel\oneAPI\mpi\2021.10.0\env\vars.bat"
       - name: Checkout HDF5
         shell: cmd
@@ -44,10 +47,11 @@ jobs:
       - name: Configure
         shell: cmd
         run: |
+          set
           cd hdf5
           mkdir build
           cd build
-          cmake -G Ninja -DCMAKE_C_COMPILER="C:/Program Files (x86)/Intel/oneAPI/mpi/2021.10.0/bin/mpicc" -DCMAKE_CXX_COMPILER="C:/Program Files (x86)/Intel/oneAPI/mpi/2021.10.0/bin/mpicxx" -DCMAKE_Fortran_COMPILER="C:/Program Files (x86)/Intel/oneAPI/mpi/2021.10.0/bin/mpiifort" -DHDF5_BUILD_FORTRAN:BOOL=ON -DHDF5_ENABLE_PARALLEL:BOOL=ON -DHDF5_ENABLE_Z_LIB_SUPPORT:BOOL=OFF -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF ..
+          cmake -G Ninja -DCMAKE_C_COMPILER="C:/Program Files (x86)/Intel/oneAPI/compiler/2023.2.0/windows/bin/icx.exe" -DCMAKE_CXX_COMPILER="C:/Program Files (x86)/Intel/oneAPI/compiler/2023.2.0/windows/bin/icx.exe" -DCMAKE_Fortran_COMPILER="C:/Program Files (x86)/Intel/oneAPI/compiler/2023.2.0/windows/bin/ifx.exe" -DHDF5_BUILD_FORTRAN:BOOL=ON -DHDF5_ENABLE_PARALLEL:BOOL=ON -DHDF5_ENABLE_Z_LIB_SUPPORT:BOOL=OFF -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF ..
       - name: Build & Test
         shell: cmd
         run: |
