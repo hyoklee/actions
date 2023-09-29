@@ -3,7 +3,7 @@ name: mac-13 CMake llvm17 flang java parallel mpich
 on:
   workflow_dispatch:
   push:
-    branches: [ main ]
+    branches: [ main- ]
 
 jobs:
   build:
