@@ -37,8 +37,10 @@ jobs:
           cmd /c 'C:\Program Files (x86)\Intel\oneAPI\compiler\2023.2.0\env\vars.bat'
           cmd /c 'C:\Program Files (x86)\Intel\oneAPI\mpi\2021.10.0\env\vars.bat'
           Get-ChildItem env:
-          $env:MPI_HOME="C:\Program Files (x86)\Intel\oneAPI\mpi\2021.10.0"
-          $env:I_MPI_ROOT="C:\Program Files (x86)\Intel\oneAPI\mpi\2021.10.0"
+          $env:MPI_HOME="C:/Program Files (x86)/Intel/oneAPI/mpi/2021.10.0"
+          $env:I_MPI_ROOT="C:/Program Files (x86)/Intel/oneAPI/mpi/2021.10.0"
+          $env:CC="C:/Program Files (x86)/Intel/oneAPI/compiler/2023.2.0/windows/bin/icx.exe" 
+          $env:FC="C:/Program Files (x86)/Intel/oneAPI/compiler/2023.2.0/windows/bin/ifx.exe" 
           Get-ChildItem env:
           git clone https://github.com/hyoklee/hdf5.git
           cd hdf5
