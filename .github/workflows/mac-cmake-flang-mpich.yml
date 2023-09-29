@@ -44,6 +44,9 @@ jobs:
         cd build
         cmake \
           -G Ninja \
+          -DBUILD_SHARED_LIBS:BOOL=ON \	  
+          -DBUILD_STATIC_EXECS:BOOL=OFF \
+          -DBUILD_STATIC_LIBS:BOOL=OFF \
           -DCMAKE_BUILD_TYPE=Release \
           -DCMAKE_INSTALL_PREFIX=$INSTALLDIR \
           -DCMAKE_CXX_STANDARD=17 \
