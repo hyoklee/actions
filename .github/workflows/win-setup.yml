@@ -47,7 +47,7 @@ jobs:
       - name: Configure
         shell: cmd
         run: |
-	  "c:\Program Files (x86)\Intel\oneAPI\setvars.bat"
+          "c:\Program Files (x86)\Intel\oneAPI\setvars.bat"
           cd hdf5
           mkdir build
           cd build
