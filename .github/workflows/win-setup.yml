@@ -48,6 +48,7 @@ jobs:
         shell: cmd
         run: |
           set
+	  mpicc
           cd hdf5
           mkdir build
           cd build
