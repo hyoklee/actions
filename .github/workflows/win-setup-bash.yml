@@ -47,12 +47,12 @@ jobs:
       - name: Configure
         shell: bash
         run: |
-          export PATH="/c/Program Files (x86)/Intel/oneAPI/mpi/2021.10.0//bin":$PATH
+          export PATH="/c/Program Files (x86)/Intel/oneAPI/mpi/2021.10.0/bin":$PATH
           env
           mpicc --version
           cd hdf5
           mkdir build
           cd build
-          cmake -G Ninja -DCMAKE_C_COMPILER="mpicc -cc=icx" -DHDF5_ENABLE_PARALLEL=ON -DHDF5_ENABLE_SUBFILING_VFD:BOOL=ON ..
+          cmake -G Ninja -DCMAKE_C_COMPILER="/c/Program Files (x86)/Intel/oneAPI/mpi/2021.10.0/bin/mpicc -cc=icx" -DHDF5_ENABLE_PARALLEL=ON -DHDF5_ENABLE_SUBFILING_VFD:BOOL=ON ..
           ninja
           ninja test
