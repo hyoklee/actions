@@ -44,11 +44,18 @@ jobs:
         shell: cmd
         run: |
           git clone https://github.com/HDFGroup/hdf5.git
-      - name: Configure
+      - name: Set oneAPI
         shell: cmd
         run: |
           "C:\Program Files (x86)\Intel\oneAPI\setvars.bat"
+      - name: Set MPI
+        shell: cmd
+        run: |
           "C:\Program Files (x86)\Intel\oneAPI\mpi\2021.10.0\env\vars.bat"	          cd hdf5
+      - name: Configure
+        shell: cmd
+        run: |
+          set
           mkdir build
           cd build
           cmake -G Ninja -DCMAKE_C_COMPILER="C:/Program Files (x86)/Intel/oneAPI/mpi/2021.10.0/bin/mpicc.bat" ..
