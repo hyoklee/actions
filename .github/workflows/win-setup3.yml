@@ -52,13 +52,13 @@ jobs:
         shell: cmd
         run: |
           "C:\Program Files (x86)\Intel\oneAPI\mpi\2021.10.0\env\vars.bat"	          cd hdf5
-      - name: Configure
+      - name: Test
         shell: cmd
         run: |
           set
           cd hdf5
           mkdir build
           cd build
-          cmake -G Ninja -DCMAKE_C_COMPILER="C:/Program Files (x86)/Intel/oneAPI/mpi/2021.10.0/bin/mpicc.bat" ..
+          cmake -G Ninja -DCMAKE_C_COMPILER="C:/Program Files (x86)/Intel/oneAPI/mpi/2021.10.0/bin/mpicc.bat" -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF -DHDF5_ENABLE_PARALLEL:BOOL=ON ..
           ninja
           ninja test
