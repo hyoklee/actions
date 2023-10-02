@@ -1,9 +1,9 @@
-name: win mpicc mpiifort
+name: win mpicc mpiifort 3
 
 on:
   push:
     branches:
-      - main-
+      - main
 
 jobs:
   build:
@@ -45,14 +45,12 @@ jobs:
         run: |
           git clone https://github.com/HDFGroup/hdf5.git
       - name: Configure
-        shell: bash
+        shell: cmd
         run: |
-          export PATH="/c/Program Files (x86)/Intel/oneAPI/mpi/2021.10.0/bin":$PATH
-          env
-          mpicc --version
-          cd hdf5
+          "C:\Program Files (x86)\Intel\oneAPI\setvars.bat"
+          "C:\Program Files (x86)\Intel\oneAPI\mpi\2021.10.0\env\vars.bat"	          cd hdf5
           mkdir build
           cd build
-          cmake -G Ninja -DCMAKE_C_COMPILER="/c/Program Files (x86)/Intel/oneAPI/mpi/2021.10.0/bin/mpicc -cc=icx" -DHDF5_ENABLE_PARALLEL=ON -DHDF5_ENABLE_SUBFILING_VFD:BOOL=ON ..
+          cmake -G Ninja -DCMAKE_C_COMPILER="C:/Program Files (x86)/Intel/oneAPI/mpi/2021.10.0/bin/mpicc.bat" ..
           ninja
           ninja test
