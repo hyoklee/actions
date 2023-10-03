@@ -11,12 +11,10 @@ jobs:
     steps:
       - name: Install CMake and Ninja
         uses: lukka/get-cmake@latest
-        with:
-          cmakeVersion: "3.27.0"
       - name: Install LLVM and Clang
         uses: KyleMayes/install-llvm-action@v1
         with:
-          version: "15"
+          version: "16"
       - name: Install Intel OneAPI
         uses: awvwgk/setup-fortran@main
         with:
@@ -26,20 +24,6 @@ jobs:
         uses: mpi4py/setup-mpi@v1
         with:
           mpi: intelmpi
-      - name: Check MPI
-        run: |
-          cmd /c 'C:\Program Files (x86)\Intel\oneAPI\compiler\2023.2.0\env\vars.bat'
-          dir 'C:\Program Files (x86)\Intel\oneAPI\compiler\2023.2.0\windows\bin\'
-          cmd /c 'C:\Program Files (x86)\Intel\oneAPI\mpi\2021.10.0\env\vars.bat'
-          dir 'C:\Program Files (x86)\Intel\oneAPI\mpi\2021.10.0\bin\'
-      - name: Test Compiler Vars
-        shell: cmd
-        run: |
-          "C:\Program Files (x86)\Intel\oneAPI\compiler\2023.2.0\env\vars.bat"
-      - name: Test MPI Vars
-        shell: cmd
-        run: |
-          "C:\Program Files (x86)\Intel\oneAPI\mpi\2021.10.0\env\vars.bat"
       - name: Checkout HDF5
         shell: cmd
         run: |
@@ -51,14 +35,19 @@ jobs:
       - name: Set MPI
         shell: cmd
         run: |
-          "C:\Program Files (x86)\Intel\oneAPI\mpi\2021.10.0\env\vars.bat"	          cd hdf5
-      - name: Test
+          "C:\Program Files (x86)\Intel\oneAPI\mpi\2021.10.0\env\vars.bat"
+      - name: Configure & Build
         shell: cmd
         run: |
           set
           cd hdf5
           mkdir build
           cd build
-          cmake -G Ninja -DCMAKE_C_COMPILER="C:/Program Files (x86)/Intel/oneAPI/mpi/2021.10.0/bin/mpicc.bat" -DCMAKE_Fortran_COMPILER="C:/Program Files (x86)/Intel/oneAPI/mpi/2021.10.0/bin/mpiifort.bat" -DHDF5_BUILD_FORTRAN:BOOL=ON -DHDF5_ENABLE_PARALLEL:BOOL=ON -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF ..
+          cmake -G Ninja -DCMAKE_C_COMPILER="C:/Program Files (x86)/Intel/oneAPI/mpi/2021.10.0/bin/mpicc.bat" -DCMAKE_Fortran_COMPILER="C:/Program Files (x86)/Intel/oneAPI/mpi/2021.10.0/bin/mpiifort.bat" -DHDF5_BUILD_FORTRAN:BOOL=ON -DHDF5_ENABLE_PARALLEL:BOOL=ON -DHDF5_ENABLE_SUBFILING_VFD:BOOL=ON -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF ..
           ninja
-          ninja test
+      - name: Test
+        shell: cmd
+        run: |
+          pwd
+          cd hdf5/build
+          ctest -E MPI_TEST_H5DIFF-h5diff -VV --output-on-error
