@@ -12,7 +12,7 @@ jobs:
       - name: Install CMake
         uses: lukka/get-cmake@latest
         with:
-          cmakeVersion: "3.27.5"
+          cmakeVersion: "3.27.6"
       - name: Install Intel OneAPI
         uses: awvwgk/setup-fortran@main
         with:
