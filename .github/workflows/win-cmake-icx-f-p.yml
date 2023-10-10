@@ -3,7 +3,7 @@ name: windows CMake icx ifx parallel
 on:
   push:
     branches:
-      - main
+      - main-
 
 jobs:
   build:
