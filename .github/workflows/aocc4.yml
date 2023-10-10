@@ -43,7 +43,7 @@ jobs:
           git clone https://github.com/HDFGroup/hdf5.git
           cd hdf5
           ./autogen.sh
-          ./configure  --dsiable-fortran --enable-parallel --enable-shared CC=/usr/local/bin/mpicc LDFLAGS="-L/home/runner/work/actions/actions/aocc-compiler-4.1.0/lib -L/usr/local/lib/openmpi"
+          ./configure  --enable-parallel --enable-shared CC=/usr/local/bin/mpicc LDFLAGS="-L/home/runner/work/actions/actions/aocc-compiler-4.1.0/lib -L/usr/local/lib/openmpi"
           cat config.log
           make -j
           make check -j
