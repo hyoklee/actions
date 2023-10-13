@@ -64,16 +64,16 @@ jobs:
       with:
         repository: HDFGroup/hdf5
         path: hdf5
- 
+
     - name: Configure
-      shell: bash    
+      shell: bash
       run: |
-        cd hdf5      
+        cd hdf5
         export PATH="/Users/runner/work/actions/actions/install/bin:$PATH"
         export LDFLAGS="-L/Users/runner/work/actions/actions/install/lib"
         export CPPFLAGS="-I/Users/runner/work/actions/actions/install/include"
         export CFLAGS="-I/Users/runner/work/actions/actions/install/include"
-	export FCFLAGS="-flang-experimental-exec"
+        export FCFLAGS="-flang-experimental-exec"
         find .
         find ..
         export FC="$(which flang-new)"
