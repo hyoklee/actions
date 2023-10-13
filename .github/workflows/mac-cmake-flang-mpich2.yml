@@ -31,7 +31,7 @@ jobs:
 
     steps:
     - name: Install Dependencies (macOS)
-      run: brew install mpich ninja
+      run: brew install llvm mpich ninja
     - name: Install flang
       run : |
         git clone --single-branch --branch llvmorg-17.0.1 \
@@ -53,7 +53,7 @@ jobs:
           -DLLVM_ENABLE_ASSERTIONS=ON \
           -DLLVM_TARGETS_TO_BUILD=host \
           -DLLVM_LIT_ARGS=-v \
-          -DLLVM_ENABLE_PROJECTS="clang;mlir;flang;openmp" \
+          -DLLVM_ENABLE_PROJECTS="clang;flang" \
           -DLLVM_ENABLE_RUNTIMES="compiler-rt" \
           ../llvm-project/llvm
         ninja
@@ -73,6 +73,7 @@ jobs:
         export LDFLAGS="-L/Users/runner/work/actions/actions/install/lib"
         export CPPFLAGS="-I/Users/runner/work/actions/actions/install/include"
         export CFLAGS="-I/Users/runner/work/actions/actions/install/include"
+	export FCFLAGS="-flang-experimental-exec"
         find .
         find ..
         export FC="$(which flang-new)"
