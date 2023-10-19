@@ -15,5 +15,5 @@ jobs:
       run: echo "/usr/local/bin/bash" >> ~/.bashrc
 
     - name: Test
-      run: mapfile
+      run: mapfile -v
       shell: bash
