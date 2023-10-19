@@ -4,6 +4,9 @@ on:
   workflow_dispatch:
   push:
     branches: [ main ]
+jobs:
+  build:
+    runs-on: macos-latest
     steps:
     - name: Install Dependencies (macOS)
       run: brew install bash
