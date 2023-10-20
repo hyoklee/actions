@@ -3,7 +3,7 @@ name: mac bash
 on:
   workflow_dispatch:
   push:
-    branches: [ main ]
+    branches: [ main- ]
 jobs:
   build:
     runs-on: macos-latest
