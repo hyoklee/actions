@@ -58,5 +58,5 @@ jobs:
         spack external find zlib
         spack external find xz
         
-        spack install --test root hdf5@develop+mpi+fortran+hl+subfiling+map
+        spack install --verbose --test root hdf5@develop+mpi+fortran+hl+subfiling+map
         
