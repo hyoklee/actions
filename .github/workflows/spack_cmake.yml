@@ -2,9 +2,9 @@ name: spack --test root hdf5@develop
 
 on:
   push:
-    branches: [ main- ]
+    branches: [ main ]
   pull_request:
-    branches: [ main- ]
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
@@ -14,7 +14,7 @@ jobs:
     - name: Checkout spack
       uses: actions/checkout@v3
       with:
-        repository: spack/spack
+        repository: hyoklee/spack
         path: ./spack      
     - name: Install APT Dependencies
       run: |
@@ -53,5 +53,5 @@ jobs:
         spack external find zlib
         spack external find xz
         
-        spack install --test root hdf5@develop+mpi+fortran+hl
+        spack install --test root hdf5@develop+mpi+fortran+hl+subfiling+map
         
