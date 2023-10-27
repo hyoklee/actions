@@ -30,7 +30,8 @@ jobs:
         sudo apt-get install -q -y libedit-dev
         sudo apt-get install -q -y libncurses6
         sudo apt-get install -q -y libxml2-dev
-        sudo apt-get install -q -y openssl        
+        sudo apt-get install -q -y openssl
+        sudo apt-get isntall -q -y gfortran-13
     - name: Run spack install hdf5
       run: |
         . ./spack/share/spack/setup-env.sh
