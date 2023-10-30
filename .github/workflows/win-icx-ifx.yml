@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: Install CMake and Ninja
         uses: lukka/get-cmake@latest
-	cmakeVersion: "3.27.0"
+        cmakeVersion: "3.27.0"
       - name: Install LLVM and Clang
         uses: KyleMayes/install-llvm-action@v1
         with:
