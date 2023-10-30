@@ -1,0 +1,58 @@
+name: win icx ifx
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Install CMake and Ninja
+        uses: lukka/get-cmake@latest
+	cmakeVersion: "3.27.0"
+      - name: Install LLVM and Clang
+        uses: KyleMayes/install-llvm-action@v1
+        with:
+          version: "15"
+      - name: Install Intel OneAPI
+        uses: awvwgk/setup-fortran@main
+        with:
+          compiler: intel
+          version: '2023.2'
+      - name: Install Intel MPI
+        uses: mpi4py/setup-mpi@v1
+        with:
+          mpi: intelmpi
+      - name: Check MPI
+        run: |
+          cmd /c 'C:\Program Files (x86)\Intel\oneAPI\compiler\2023.2.0\env\vars.bat'
+          dir 'C:\Program Files (x86)\Intel\oneAPI\compiler\2023.2.0\windows\bin\'
+          cmd /c 'C:\Program Files (x86)\Intel\oneAPI\mpi\2021.10.0\env\vars.bat'
+          dir 'C:\Program Files (x86)\Intel\oneAPI\mpi\2021.10.0\bin\'
+      - name: Test HDF5
+        env:
+          FC: ${{ steps.setup-fortran.outputs.fc }}
+          CC: ${{ steps.setup-fortran.outputs.cc }}
+        run: |
+          cmd /c 'C:\Program Files (x86)\Intel\oneAPI\compiler\2023.2.0\env\vars.bat'
+          cmd /c 'C:\Program Files (x86)\Intel\oneAPI\mpi\2021.10.0\env\vars.bat'
+          Get-ChildItem env:
+          $env:MPI_HOME="C:\Program Files (x86)\Intel\oneAPI\mpi\2021.10.0"
+          $env:I_MPI_ROOT="C:\Program Files (x86)\Intel\oneAPI\mpi\2021.10.0"
+          Get-ChildItem env:
+          git clone https://github.com/HDFGroup/hdf5.git
+          cd hdf5
+          mkdir build
+          cd build
+          cmake -G Ninja `
+          -DCMAKE_C_COMPILER="C:/Program Files (x86)/Intel/oneAPI/compiler/2023.2.0/windows/bin/icx.exe" `
+          -DCMAKE_CXX_COMPILER="C:/Program Files (x86)/Intel/oneAPI/compiler/2023.2.0/windows/bin/icx.exe" `
+	  -DBUILD_SHARED_LIBS:BOOL = OFF `
+          -DHDF5_BUILD_FORTRAN:BOOL=ON `
+          -DHDF5_ENABLE_Z_LIB_SUPPORT:BOOL=OFF `
+          -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF  `
+          ..
+          ninja
+          ninja test
