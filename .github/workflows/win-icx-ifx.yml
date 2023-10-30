@@ -49,7 +49,7 @@ jobs:
           cmake -G Ninja `
           -DCMAKE_C_COMPILER="C:/Program Files (x86)/Intel/oneAPI/compiler/2023.2.0/windows/bin/icx.exe" `
           -DCMAKE_CXX_COMPILER="C:/Program Files (x86)/Intel/oneAPI/compiler/2023.2.0/windows/bin/icx.exe" `
-	  -DBUILD_SHARED_LIBS:BOOL = OFF `
+          -DBUILD_SHARED_LIBS:BOOL = OFF `
           -DHDF5_BUILD_FORTRAN:BOOL=ON `
           -DHDF5_ENABLE_Z_LIB_SUPPORT:BOOL=OFF `
           -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF  `
