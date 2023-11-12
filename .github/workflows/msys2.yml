@@ -25,7 +25,7 @@ jobs:
             curl
             git
             cmake
-            ninjae
+            ninja
       - name: Test HDF5
         shell: msys2 {0}
         run: |
