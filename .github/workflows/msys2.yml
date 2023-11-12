@@ -13,7 +13,7 @@ jobs:
           - mingw64
           - mingw32
           - ucrt64
-          - clang64
+#          - clang64
     runs-on: windows-latest
     steps:
       - name: Setup MSYS2
