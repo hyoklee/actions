@@ -22,11 +22,11 @@ jobs:
           msystem: ${{matrix.sys}}
           update: true
           install: >-
-            toolchain
-            curl
             git
-            cmake
-            ninja
+          pacboy: >-
+            toolchain:p
+            cmake:p
+            ninja:p
       - name: Test HDF5
         shell: msys2 {0}
         run: |
