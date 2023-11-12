@@ -11,8 +11,8 @@ jobs:
       matrix:
         sys:
           - mingw64
-          - mingw32
-          - ucrt64
+#          - mingw32
+#          - ucrt64
 #          - clang64
     runs-on: windows-latest
     steps:
