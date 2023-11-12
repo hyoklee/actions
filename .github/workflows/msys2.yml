@@ -1,0 +1,31 @@
+name: msys2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-latest
+  strategy:
+    matrix:
+      sys:
+        - mingw64
+        - mingw32
+        - ucrt64
+        - clang64
+  steps:
+    - uses: msys2/setup-msys2@v2
+      with:
+        msystem: ${{matrix.sys}}
+    - shell: msys2 {0}
+      run: |
+        uname -a	
+        git clone https://github.com/HDFgroup/hdf5.git
+        cd hdf5
+        mkdir build
+        cd build
+        cmake ..
+        ninja
+        ninja test

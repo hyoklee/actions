@@ -1,12 +1,15 @@
 name: riscv64 lin
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - main-
 
 jobs:
   aarch64_job:
     # The host should always be Linux
     runs-on: ubuntu-latest
-    name: Build on ubuntu-latest aarch64
+    name: Build on ubuntu-latest riscv64
     steps:
       - uses: actions/checkout@v4
       - uses: uraimo/run-on-arch-action@v2
