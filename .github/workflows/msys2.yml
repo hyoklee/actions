@@ -20,6 +20,11 @@ jobs:
         uses: msys2/setup-msys2@v2
         with:
           msystem: ${{matrix.sys}}
+          update: true
+          install: >-
+            curl
+            git
+            cmake
       - name: Test HDF5
         shell: msys2 {0}
         run: |
