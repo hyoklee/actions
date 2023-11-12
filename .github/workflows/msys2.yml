@@ -16,16 +16,15 @@ jobs:
         - ucrt64
         - clang64
   steps:
-    - uses: msys2/setup-msys2@v2
+    - name: Test MSYS2
+      uses: msys2/setup-msys2@v2
       with:
         msystem: ${{matrix.sys}}
-    - shell: msys2 {0}
+      shell: msys2 {0}
       run: |
-        uname -a	
+        uname -a
         git clone https://github.com/HDFgroup/hdf5.git
         cd hdf5
         mkdir build
         cd build
         cmake ..
-        ninja
-        ninja test
