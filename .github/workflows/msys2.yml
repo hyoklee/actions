@@ -8,12 +8,12 @@ on:
 jobs:
   build:
     strategy:
-    matrix:
-      sys:
-        - mingw64
-        - mingw32
-        - ucrt64
-        - clang64
+      matrix:
+        sys:
+          - mingw64
+          - mingw32
+          - ucrt64
+          - clang64
     runs-on: windows-latest
     steps:
       - name: Test MSYS2
