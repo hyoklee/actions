@@ -10,9 +10,9 @@ jobs:
     strategy:
       matrix:
         sys:
-          - mingw64
+#          - mingw64
 #          - mingw32
-#          - ucrt64
+          - ucrt64
 #          - clang64
     runs-on: windows-latest
     steps:
