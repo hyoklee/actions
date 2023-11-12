@@ -25,6 +25,7 @@ jobs:
             curl
             git
             cmake
+            ninjae
       - name: Test HDF5
         shell: msys2 {0}
         run: |
@@ -33,4 +34,6 @@ jobs:
           cd hdf5
           mkdir build
           cd build
-          cmake ..
+          cmake -G Ninja ..
+          ninja
+          ninja test
