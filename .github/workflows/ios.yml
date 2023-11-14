@@ -19,8 +19,8 @@ jobs:
         path: ./hdf5
     - name: Configure
       run: |
-        mkdir "${{ runner.workspace }}/hdf5/build"
-        cd "${{ runner.workspace }}/hdf5/build"
+        mkdir ./hdf5
+        cd ./hdf5/build"
         cmake \
         -GXcode \
         -DCMAKE_SYSTEM_NAME=iOS \
