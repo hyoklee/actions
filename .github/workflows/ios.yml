@@ -19,7 +19,6 @@ jobs:
         path: ./hdf5
     - name: Configure
       run: |
-        mkdir ./hdf5
         cd ./hdf5/build"
         cmake \
         -GXcode \
