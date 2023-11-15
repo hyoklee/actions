@@ -87,6 +87,6 @@ jobs:
         -DUSE_LIBAEC_STATIC:BOOL=OFF \
         -DZLIB_USE_EXTERNAL:BOOL=OFF \
         ..
-      cmake --build .
-      ctest --build . -V
+        cmake --build .
+        ctest --build . -V
       shell: bash
