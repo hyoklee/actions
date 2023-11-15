@@ -85,7 +85,7 @@ jobs:
         -DTEST_SHELL_SCRIPTS:BOOL=OFF \
         -DUSE_LIBAEC_STATIC:BOOL=OFF \
         -DZLIB_USE_EXTERNAL:BOOL=OFF \
-        $GITHUB_WORKSPACE
+        ..
       shell: bash
 
     - name: Build
