@@ -20,7 +20,7 @@ jobs:
     - name: Configure
       run: |
         mkdir ./hdf5/build
-        cd ./hdf5/build"
+        cd ./hdf5/build
         cmake \
         -GXcode \
         -DCMAKE_SYSTEM_NAME=iOS \
