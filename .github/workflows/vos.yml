@@ -7,7 +7,7 @@ on:
 jobs:
   build_with_15_OS:
     name: "Xcode version 15.0.0, Target visionOS [arm64] Target SDK 1.0"
-    runs-on: macos-13
+    runs-on: macos-13-xlarge
     env:
       PLATFORM: VISIONOS
       DEPLOYMENT_TARGET: 1.0
