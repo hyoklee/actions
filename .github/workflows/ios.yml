@@ -3,7 +3,7 @@ name: mac13 ios
 on:
   workflow_dispatch:
   push:
-    branches: [ main ]
+    branches: [ main- ]
 
 jobs:
   build:
