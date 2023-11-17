@@ -7,7 +7,7 @@ on:
 jobs:
   build_with_15_OS:
     name: "Xcode version 15.0.0, Target visionOS [arm64] Target SDK 1.0"
-    runs-on: macos-13-xlarge
+    runs-on: macos-13
     env:
       PLATFORM: VISIONOS
       DEPLOYMENT_TARGET: 1.0
@@ -34,7 +34,7 @@ jobs:
         xcodes runtimes install visionOS
         mkdir ./hdf5/build
         cd ./hdf5/build
-        cmake -GXcode \
+        cmake -G Xcode \
         -DCMAKE_SYSTEM_NAME=visionOS \
         -DCMAKE_OSX_ARCHITECTURES=arm64 ..
   build_with_15_SIMULATOR64:
