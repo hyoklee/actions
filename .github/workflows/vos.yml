@@ -55,7 +55,7 @@ jobs:
         path: ./hdf5
     - uses: maxim-lobanov/setup-xcode@v1
       with:
-        xcode-version: '15.0'
+        xcode-version: '15.1-beta'
     - name: Build
       continue-on-error: true
       run: |
@@ -82,7 +82,7 @@ jobs:
         path: ./hdf5
     - uses: maxim-lobanov/setup-xcode@v1
       with:
-        xcode-version: '15.0'
+        xcode-version: '15.1-beta.3'
     - name: Build
       continue-on-error: true
       run: |
