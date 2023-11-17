@@ -29,7 +29,8 @@ jobs:
       continue-on-error: true
       run: |
         brew install xcodesorg/made/xcodes
-        xcodes runtimes install 'visionOS 1.0 Beta 2'
+        xcodes runtimes
+        xcodes runtimes install visionOS
         mkdir ./hdf5/build
         cd ./hdf5/build
         cmake -GXcode \
