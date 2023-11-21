@@ -2,7 +2,7 @@ name: mac13 vos
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main- ]
 
 jobs:
   build_with_15_OS:

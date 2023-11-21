@@ -3,7 +3,7 @@ name: msys2
 on:
   push:
     branches:
-      - main-
+      - main
 
 jobs:
   build:
@@ -28,13 +28,13 @@ jobs:
             cmake:p
             ninja:p
       - name: Test HDF5
-        shell: msys2 {0}
+        shell: mingw64 {0}
         run: |
           uname -a
           git clone https://github.com/HDFgroup/hdf5.git
           cd hdf5
           mkdir build
           cd build
-          cmake -DH5_HAVE_ALARM:INTERNAL=0 -DH5_HAVE_ASPRINTF:INTERNAL=0 -DH5_HAVE_VASPRINTF:INTERNAL=0 ..
+          cmake ..
           ninja
 #          ninja test
