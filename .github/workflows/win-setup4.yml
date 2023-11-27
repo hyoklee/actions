@@ -37,7 +37,7 @@ jobs:
       - name: Set MPI
         shell: cmd
         run: |
-          "C:\Program Files (x86)\Intel\oneAPI\mpi\2021.11.0\env\vars.bat"
+          "C:\Program Files (x86)\Intel\oneAPI\mpi\latest\env\vars.bat"
       - name: Configure & Build
         shell: cmd
         run: |
