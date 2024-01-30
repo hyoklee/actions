@@ -15,3 +15,14 @@ jobs:
         run: |
           sudo apt update
           sudo apt install -y abi-compliance-checker
+      - name: Download previous version
+        run: |
+          wget https://github.com/HDFGroup/hdf5/releases/download/hdf5-1_14_3/hdf5-1_14_3-ubuntu-2204.tar.gz
+          tar zxvf hdf5-1_14_3-ubuntu-2204.tar.gz
+          find .
+      - name: Download current version
+        run: |
+          wget https://github.com/HDFGroup/hdf5/releases/download/snapshot/last-file.txt
+          cat last-file.txt
+          
+          
