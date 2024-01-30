@@ -1,0 +1,17 @@
+name: ABI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+
+    steps:
+      - name: Install System dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y abi-compliance-checker
