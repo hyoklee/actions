@@ -44,3 +44,8 @@ jobs:
           abi-dumper hdf5/HDF5-1.15.0.365e233-Linux/HDF_Group/HDF5/1.15.0.365e233/lib/libhdf5.so -o ABI-1.dump -public-headers hdf5/HDF5-1.15.0.365e233-Linux/HDF_Group/HDF5/1.15.0.365e233/include
           ls
           abi-compliance-checker -l HDF5-1.14.4  -old ABI-0.dump -new ABI-1.dump
+      - name: Save output as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: output-file
+          path: compat_reports/HDF5-1.14.4/X_to_Y/compat_report.html
