@@ -22,10 +22,14 @@ jobs:
       - name: Read base-name file
         id: gethdf5base
         run: |
-          echo "HDF5_NAME_BASE=$(cat last-file.txt)"
-          echo $HDF5_NAME_BASE
-          wget https://github.com/HDFGroup/hdf5/releases/download/snapshot/$HDF5_NAME_BASE.tar.gz
-          tar zxvf $HDF5_NAME_BASE.tar.gz
+          echo "HDF5_NAME_BASE=$(cat last-file.txt)" >> $GITHUB_ENV
+      - name: Use the variable in a subsequent step
+        env:
+          H5: $HDF5_NAME_BASE
+        run: |
+          echo $H5
+          wget https://github.com/HDFGroup/hdf5/releases/download/snapshot/$H5.tar.gz
+          tar zxvf $H5.tar.gz
           ls
 
       - name: Generate Xcode project
