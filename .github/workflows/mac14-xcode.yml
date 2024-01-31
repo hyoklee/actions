@@ -1,0 +1,42 @@
+name: mac14 Xcode
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ develop ]
+    
+jobs:
+  build:
+    name: Generate Xcode project
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4.1.1
+      - name: Install Dependencies
+        run: brew install curl openssl libaec
+      - name: Get hdf5 release base name
+        uses: dsaltares/fetch-gh-release-asset@master
+       with:
+         repo: 'HDFGroup/hdf5'
+         version: 'tags/snapshot'
+         file: 'last-file.txt'
+      - name: Read base-name file
+        id: gethdf5base
+        run: |
+          echo "HDF5_NAME_BASE=$(cat last-file.txt).tar.gz"
+          echo $HDF5_NAME_BASE
+          wget https://github.com/HDFGroup/hdf5/releases/download/snapshot/$HDF5_NAME_BASE
+          tar zxvf $HDF5_NAME_BASE
+          
+        
+      - run: echo "hdf5 base name is ${{ steps.gethdf5base.outputs.HDF5_NAME_BASE }}."
+    
+      - name: Generate Xcode project
+        run: |
+          export OPENSSL_ROOT_DIR=/usr/local/Cellar/openssl@3/3.1.1
+          mkdir build
+          cd build
+          cmake -DHDF5_ENABLE_ROS3_VFD:BOOL=ON -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF -G Xcode ..
+          cmake --build . --config Debug
+          ctest --build . -C Debug
+          sudo cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DCMAKE_INSTALL_CONFIG_NAME=Debug -P cmake_install.cmake
+          
