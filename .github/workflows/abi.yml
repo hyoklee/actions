@@ -24,8 +24,7 @@ jobs:
         run: |
           wget https://github.com/HDFGroup/hdf5/releases/download/snapshot/last-file.txt
           cat last-file.txt
-          echo "HDF5_NAME_BASE=$(cat last-file.txt).tar.gz"
+          echo "HDF5_NAME_BASE=$(cat last-file.txt)"
           echo $HDF5_NAME_BASE
-          wget https://github.com/HDFGroup/hdf5/releases/download/snapshot/$HDF5_NAME_BASE
-          tar zxvf $HDF5_NAME_BASE          
-          
+          wget https://github.com/HDFGroup/hdf5/releases/download/snapshot/$HDF5_NAME_BASE.tar.gz
+          tar zxvf $HDF5_NAME_BASE.tar.gz
