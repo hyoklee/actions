@@ -20,16 +20,27 @@ jobs:
           wget https://github.com/HDFGroup/hdf5/releases/download/hdf5-1_14_3/hdf5-1_14_3-ubuntu-2204.tar.gz
           tar zxvf hdf5-1_14_3-ubuntu-2204.tar.gz
           find .
-      - name: Download current version
+          cd hdf5
+          tar zxvf HDF5-1.14.3-Linux.tar.gz
+      - name: Get snapshot hash
         id: gethdf5base
         run: |
           wget https://github.com/HDFGroup/hdf5/releases/download/snapshot/last-file.txt
           cat last-file.txt
           echo "HDF5_NAME_BASE=$(cat last-file.txt)" >> $GITHUB_OUTPUT
-      - name: Use the variable in a subsequent step
+      - name: Download snapshot
         env:
           H5: ${{ steps.gethdf5base.outputs.HDF5_NAME_BASE }}
         run: |
           echo $H5
-          wget https://github.com/HDFGroup/hdf5/releases/download/snapshot/$H5.tar.gz
-          tar zxvf $H5.tar.gz
+          wget https://github.com/HDFGroup/hdf5/releases/download/snapshot/$H5-ubuntu-2204_gcc.tar.gz
+          tar zxvf $H5-ubuntu-2204_gcc.tar.gz
+          find .
+          cd hdf5
+          tar zxvf HDF5-1.15.0.365e233-Linux.tar.gz
+      - name: Run ABI report
+        run: |
+          abi-dumper hdf5/HDF5-1.14.3-Linux/HDF_Group/HDF5/1.14.3/lib/libhdf5.so -o ABI-0.dump -public-headers hdf5/HDF5-1.14.3-Linux/HDF_Group/HDF5/1.14.3/include
+          abi-dumper hdf5/HDF5-1.15.0.365e233-Linux/HDF_Group/HDF5/1.15.0.365e233/lib/libhdf5.so -o ABI-1.dump -public-headers hdf5/HDF5-1.15.0.365e233-Linux/HDF_Group/HDF5/1.15.0.365e233/include
+          ls
+          abi-compliance-checker -l HDF5-1.14.4  -old ABI-0.dump -new ABI-1.dump
