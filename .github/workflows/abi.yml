@@ -14,7 +14,7 @@ jobs:
       - name: Install System dependencies
         run: |
           sudo apt update
-          sudo apt install -y abi-compliance-checker
+          sudo apt install -y abi-compliance-checker abi-dumper
       - name: Download previous version
         run: |
           wget https://github.com/HDFGroup/hdf5/releases/download/hdf5-1_14_3/hdf5-1_14_3-ubuntu-2204.tar.gz
