@@ -21,6 +21,7 @@ jobs:
           tar zxvf hdf5-1_14_3-ubuntu-2204.tar.gz
           find .
       - name: Download current version
+        id: gethdf5base
         run: |
           wget https://github.com/HDFGroup/hdf5/releases/download/snapshot/last-file.txt
           cat last-file.txt
@@ -32,6 +33,3 @@ jobs:
           echo $H5
           wget https://github.com/HDFGroup/hdf5/releases/download/snapshot/$H5.tar.gz
           tar zxvf $H5.tar.gz
-          ls
-          wget https://github.com/HDFGroup/hdf5/releases/download/snapshot/$HDF5_NAME_BASE.tar.gz
-          tar zxvf $HDF5_NAME_BASE.tar.gz
