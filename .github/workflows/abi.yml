@@ -1,9 +1,25 @@
 name: ABI
 
 on:
+  workflow_call:
+    inputs:
+      old:
+        description: 'Previous Release Version'
+        type: string
+        required: false
+        default: 14.3
+      new:
+        description: 'New Release Version'
+        type: string
+        required: false
+        default: 15.0        
+      
   push:
     branches:
       - main
+
+permissions:
+  contents: read
 
 jobs:
   build:
