@@ -58,6 +58,11 @@ jobs:
           find .
           cd hdf5
           tar zxvf HDF5-1.15.0.365e233-Linux.tar.gz
+
+      - name: Run Java API report
+        run: |
+          japi-compliance-checker hdf5/HDF5-1.14.3-Linux/HDF_Group/HDF5/1.14.3/lib/jarhdf5-1.14.3.jar hdf5/HDF5-1.15.0.365e233-Linux/HDF_Group/HDF5/1.15.0.365e233/lib/jarhdf5-1.15.0.jar
+
       - name: Run ABI report
         run: |
           abi-dumper hdf5/HDF5-1.14.3-Linux/HDF_Group/HDF5/1.14.3/lib/libhdf5.so -o ABI-0.dump -public-headers hdf5/HDF5-1.14.3-Linux/HDF_Group/HDF5/1.14.3/include
