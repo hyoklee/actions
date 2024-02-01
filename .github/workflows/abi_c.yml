@@ -32,7 +32,8 @@ jobs:
         run: |
           echo ${{ inputs.old }}
           sudo apt update
-          sudo apt install -q -y abi-compliance-checker abi-dumper jabi-compliance-checker
+          sudo apt install -q -y abi-compliance-checker abi-dumper
+          sudo apt install -q -y japi-compliance-checker
       - name: Download previous version
         run: |
           echo ${{ inputs.old }}
