@@ -56,8 +56,8 @@ jobs:
           h: ${{ steps.get_hash.outputs.HASH }}
         run: |
           echo $h
-          wget https://github.com/HDFGroup/hdf5/releases/download/snapshot/$H5-ubuntu-2204_gcc.tar.gz
-          tar zxvf hdf5-develop-$H5-ubuntu-2204_gcc.tar.gz
+          wget https://github.com/HDFGroup/hdf5/releases/download/snapshot/hdf5-develop-$h-ubuntu-2204_gcc.tar.gz
+          tar zxvf hdf5-develop-$h-ubuntu-2204_gcc.tar.gz
           find .
           cd hdf5
           tar zxvf HDF5-1.${{ inputs.y1 }}.0.$h-Linux.tar.gz
