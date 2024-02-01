@@ -6,17 +6,17 @@ on:
       old:
         description: 'Previous Release Version'
         type: string
-        required: false
+        required: true
         default: 14.3
       new:
         description: 'New Release Version'
         type: string
-        required: false
+        required: true
         default: 14.4
       dev:
         description: 'Develop Version'
         type: string
-        required: false
+        required: true
         default: 15.0        
 
 permissions:
@@ -34,6 +34,7 @@ jobs:
           sudo apt install -y abi-compliance-checker abi-dumper
       - name: Download previous version
         run: |
+          echo ${{ inputs.old }}
           wget https://github.com/HDFGroup/hdf5/releases/download/hdf5-1_14_3/hdf5-1_14_3-ubuntu-2204.tar.gz
           tar zxvf hdf5-1_14_3-ubuntu-2204.tar.gz
           find .
