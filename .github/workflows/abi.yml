@@ -12,6 +12,11 @@ on:
         description: 'New Release Version'
         type: string
         required: false
+        default: 14.4
+      dev:
+        description: 'New Release Version'
+        type: string
+        required: false
         default: 15.0        
       
   push:
@@ -37,7 +42,7 @@ jobs:
           tar zxvf hdf5-1_14_3-ubuntu-2204.tar.gz
           find .
           cd hdf5
-          tar zxvf HDF5-1.14.3-Linux.tar.gz
+          tar zxvf HDF5-${{ inputs.old }}.3-Linux.tar.gz
       - name: Get snapshot hash
         id: gethdf5base
         run: |
@@ -57,7 +62,7 @@ jobs:
       - name: Run ABI report
         run: |
           abi-dumper hdf5/HDF5-1.14.3-Linux/HDF_Group/HDF5/1.14.3/lib/libhdf5.so -o ABI-0.dump -public-headers hdf5/HDF5-1.14.3-Linux/HDF_Group/HDF5/1.14.3/include
-          abi-dumper hdf5/HDF5-1.15.0.365e233-Linux/HDF_Group/HDF5/1.15.0.365e233/lib/libhdf5.so -o ABI-1.dump -public-headers hdf5/HDF5-1.15.0.365e233-Linux/HDF_Group/HDF5/1.15.0.365e233/include
+          abi-dumper hdf5/HDF5-1.${{ inputs.dev }}.365e233-Linux/HDF_Group/HDF5/1.15.0.365e233/lib/libhdf5.so -o ABI-1.dump -public-headers hdf5/HDF5-1.15.0.365e233-Linux/HDF_Group/HDF5/1.15.0.365e233/include
           ls
           abi-compliance-checker -l HDF5-1.14.4  -old ABI-0.dump -new ABI-1.dump
         continue-on-error: true
