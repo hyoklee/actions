@@ -28,7 +28,7 @@ permissions:
   contents: read
 
 jobs:
-  build:
+  check:
     runs-on: ubuntu-latest
     continue-on-error: true
 
@@ -41,14 +41,14 @@ jobs:
       - name: Download previous version
         run: |
           wget -q https://github.com/HDFGroup/hdf5/releases/download/hdf5-1_14_3/hdf5-1_${{ inputs.y0 }}_${{ inputs.z0 }}-ubuntu-2204.tar.gz
-          tar zxvf hdf5-1_${{ inputs.y0 }}_${{ inputs.z0 }}-ubuntu-2204.tar.gz
+          tar zxf hdf5-1_${{ inputs.y0 }}_${{ inputs.z0 }}-ubuntu-2204.tar.gz
           find .
           cd hdf5
-          tar zxvf HDF5-1.${{ inputs.y0 }}.${{ inputs.z0 }}-Linux.tar.gz
+          tar zxf HDF5-1.${{ inputs.y0 }}.${{ inputs.z0 }}-Linux.tar.gz
       - name: Get snapshot hash
         id: get_hash
         run: |
-          wget https://github.com/HDFGroup/hdf5/releases/download/snapshot/last-file.txt
+          wget -q https://github.com/HDFGroup/hdf5/releases/download/snapshot/last-file.txt
           cat last-file.txt
           echo "HASH=$(cat last-file.txt | cut -d '-' -f3)" >> $GITHUB_OUTPUT
       - name: Download snapshot
@@ -56,11 +56,11 @@ jobs:
           h: ${{ steps.get_hash.outputs.HASH }}
         run: |
           echo $h
-          wget https://github.com/HDFGroup/hdf5/releases/download/snapshot/hdf5-develop-$h-ubuntu-2204_gcc.tar.gz
-          tar zxvf hdf5-develop-$h-ubuntu-2204_gcc.tar.gz
+          wget -q https://github.com/HDFGroup/hdf5/releases/download/snapshot/hdf5-develop-$h-ubuntu-2204_gcc.tar.gz
+          tar zxf hdf5-develop-$h-ubuntu-2204_gcc.tar.gz
           find .
           cd hdf5
-          tar zxvf HDF5-1.${{ inputs.y1 }}.0.$h-Linux.tar.gz
+          tar zxf HDF5-1.${{ inputs.y1 }}.0.$h-Linux.tar.gz
 
       - name: Run Java API report
         env:
