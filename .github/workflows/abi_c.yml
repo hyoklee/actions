@@ -40,7 +40,7 @@ jobs:
           tar zxvf hdf5-1_14_3-ubuntu-2204.tar.gz
           find .
           cd hdf5
-          tar zxvf HDF5-${{ inputs.old }}.3-Linux.tar.gz
+          tar zxvf HDF5-1.${{ inputs.old }}-Linux.tar.gz
       - name: Get snapshot hash
         id: gethdf5base
         run: |
