@@ -76,6 +76,5 @@ jobs:
         with:
           name: output-file
           path: |
-	    compat_reports/HDF5-1.14.4/X_to_Y/compat_report.html
+            compat_reports/HDF5-1.14.4/X_to_Y/compat_report.html
             compat_reports/jarhdf5-/1.14.3_to_1.15.0/compat_report.html
-	    
