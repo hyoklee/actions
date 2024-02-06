@@ -39,7 +39,7 @@ jobs:
           cd hdfsrc
           mkdir build
           cd build
-          cmake -D CTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF -G Ninja ..
+          cmake -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF -G Ninja ..
           ctest -T Build --output-on-error -j
           ctest -T Test --output-on-error -j
           ctest -T Submit
