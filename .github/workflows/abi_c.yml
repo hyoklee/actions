@@ -1,4 +1,4 @@
-name: ABI C
+name: Check Application Binary Interface (ABI)
 
 on:
   workflow_call:
