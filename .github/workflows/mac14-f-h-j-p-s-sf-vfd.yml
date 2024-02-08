@@ -1,9 +1,9 @@
-name: mac14
+name: mac14 f h j p s sf vfd
 
 on:
   workflow_dispatch:
   push:
-    branches: [ main- ]
+    branches: [ main ]
 
 jobs:
   build:
@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4.1.1
       - name: Install Dependencies
-        run: brew install curl openssl libaec
+        run: brew install curl openssl libaec gfortran openmpi
       - name: Get hdf5 release base name
         uses: dsaltares/fetch-gh-release-asset@master
         with:
@@ -42,6 +42,19 @@ jobs:
           cmake \
           -D SITE:STRING=mac14 \
           -D CTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
+          -DHDF5_BUILD_JAVA=ON \
+          -DHDF5_BUILD_FORTRAN:BOOL=ON \
+          -DHDF5_BUILD_HL_LIB:BOOL=ON \
+          -DHDF5_ENABLE_ALL_WARNINGS=ON \
+          -DHDF5_ENABLE_ANALYZER_TOOLS:BOOL=ON \
+          -DHDF5_ENABLE_PARALLEL:BOOL=ON \
+          -DHDF5_ENABLE_THREADSAFE:BOOL=OFF \
+          -DHDF5_ENABLE_SANITIZERS:BOOL=ON \
+          -DHDF5_ENABLE_SUBFILING_VFD:BOOL=ON \
+          -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF \
+          -DHDF5_TEST_VFD:BOOL=ON \
+          -DMPIEXEC_MAX_NUMPROCS:STRING=2 \
+          -DUSE_SANITIZER:STRING='Address;Memory;MemoryWithOrigins;Undefined;Thread;Leak'	  
           ..
           ctest -T Build --output-on-error -j
           ctest -T Test --output-on-error -j
