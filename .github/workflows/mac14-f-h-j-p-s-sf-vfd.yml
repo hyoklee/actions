@@ -33,7 +33,11 @@ jobs:
           ls
 
       - name: Build Ninja
+        env:
+          FC: /usr/local/bin/gfortran
         run: |
+          echo $FC
+          which gfortran
           pwd
           ls
           cd hdfsrc
