@@ -54,7 +54,7 @@ jobs:
           -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF \
           -DHDF5_TEST_VFD:BOOL=ON \
           -DMPIEXEC_MAX_NUMPROCS:STRING=2 \
-          -DUSE_SANITIZER:STRING='Address;Memory;MemoryWithOrigins;Undefined;Thread;Leak'	  
+          -DUSE_SANITIZER:STRING='Address;Memory;MemoryWithOrigins;Undefined;Thread;Leak' \
           ..
           ctest -T Build --output-on-error -j
           ctest -T Test --output-on-error -j
