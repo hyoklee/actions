@@ -47,7 +47,7 @@ jobs:
           -D SITE:STRING=mac14 \
           -D CTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
           -DHDF5_BUILD_JAVA=ON \
-          -DHDF5_BUILD_FORTRAN:BOOL=ON \
+          -DHDF5_BUILD_FORTRAN:BOOL=OFF \
           -DHDF5_BUILD_HL_LIB:BOOL=ON \
           -DHDF5_ENABLE_ALL_WARNINGS=ON \
           -DHDF5_ENABLE_ANALYZER_TOOLS:BOOL=ON \
