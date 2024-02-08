@@ -37,7 +37,6 @@ jobs:
           FC: /usr/local/bin/gfortran
         run: |
           echo $FC
-          which gfortran
           pwd
           ls
           cd hdfsrc
