@@ -34,8 +34,9 @@ jobs:
 
       - name: Build Ninja
         env:
-          FC: /usr/local/bin/gfortran
+          FC: /opt/homebrew/Cellar/gcc/13.2.0/bin/gfortran
         run: |
+          find /opt/homebrew/Cellar/
           echo $FC
           pwd
           ls
