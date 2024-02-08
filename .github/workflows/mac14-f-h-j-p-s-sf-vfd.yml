@@ -36,7 +36,7 @@ jobs:
         env:
           FC: /opt/homebrew/Cellar/gcc/13.2.0/bin/gfortran
         run: |
-          find /opt/homebrew/Cellar/
+          cmake --version
           echo $FC
           pwd
           ls
