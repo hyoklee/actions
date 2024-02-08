@@ -63,4 +63,11 @@ jobs:
           ..
           ctest -T Build --output-on-error -j
           ctest -T Test --output-on-error -j
-          ctest -T Submit
+        continue-on-error: true
+      - name: Submit
+        run: |
+	  ls
+          cd hdfsrc
+          cd build
+          ctest -T Submit	  
+	
