@@ -48,8 +48,7 @@ jobs:
           uname -a
           git clone https://github.com/HDFgroup/hdf5.git
           cd hdf5
-	  ./autogen.sh
-	  ./configure
-	  make
-	  
+          ./autogen.sh
+          ./configure
+          make
 
