@@ -40,6 +40,7 @@ jobs:
           update: true
           install: >-
             git
+            autotools
           pacboy: >-
             toolchain:p
       - name: Test HDF5
