@@ -44,12 +44,11 @@ jobs:
           pacboy: >-
             toolchain:p
       - name: Test HDF5
-        shell: msys2 {0}
         run: |
           uname -a
-          git clone https://github.com/HDFgroup/hdf5.git
+          git clone https://github.com/hyoklee/hdf5.git
           cd hdf5
           ./autogen.sh
-          ./configure
+          ./configure LDFLAGS="-lws2_32"
           make
 
