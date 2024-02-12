@@ -44,6 +44,7 @@ jobs:
           pacboy: >-
             toolchain:p
       - name: Test HDF5
+        shell: msys2 {0}
         run: |
           uname -a
           git clone https://github.com/hyoklee/hdf5.git
