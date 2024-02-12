@@ -50,6 +50,6 @@ jobs:
           git clone https://github.com/hyoklee/hdf5.git
           cd hdf5
           ./autogen.sh
-          ./configure LDFLAGS="-lws2_32"
+          ./configure CFLAGS="-DH5_HAVE_WIN32_API" LDFLAGS="-lws2_32"
           make
 
