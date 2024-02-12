@@ -52,4 +52,4 @@ jobs:
           ./autogen.sh
           ./configure CFLAGS="-Wno-implicit-function-declaration" LDFLAGS="-lws2_32"
           make
-
+          make check
