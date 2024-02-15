@@ -19,13 +19,13 @@ jobs:
         uses: cross-platform-actions/action@v0.22.0
         env:
           FOO: A
-          BAR: B        
+          BAR: B
         with:
-          environment_variables: FOO BAR        
+          environment_variables: FOO BAR
           operating_system: ${{ matrix.os.name }}
           architecture: ${{ matrix.os.architecture }}
           version: '${{ matrix.os.version }}'
-          shell: bash          
+          shell: bash
           run: |
             uname -a
             echo $SHELL
@@ -38,12 +38,12 @@ jobs:
             cd hdf4
             sudo pkg_add cmake
             sudo pkg_add jpeg
-	    pkg_info -Q jdk
+            pkg_info -Q jdk
             sudo pkg_add jdk-17.0.8.7.1p0v0
+            export PATH=/usr/local/jdk-17/bin/:$PATH
             mkdir build
             cd build
             cmake -DHDF4_BUILD_FORTRAN:BOOL=OFF -D HDF4_BUILD_JAVA=ON -D CTEST_DROP_SITE_INIT:STRING="my.cdash.org" -D SITE:STRING=j.obsd  ..
             ctest -T Build --output-on-error -j
             ctest -T Test --output-on-error -j
-            ctest -T Submit	    
-
+            ctest -T Submit
