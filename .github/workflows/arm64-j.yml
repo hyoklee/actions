@@ -44,6 +44,6 @@ jobs:
             cd build
             cmake -DHDF4_BUILD_FORTRAN:BOOL=OFF -D HDF4_BUILD_JAVA=ON -D CTEST_DROP_SITE_INIT:STRING="my.cdash.org" -D SITE:STRING=j.obsd.arm64  ..
             ctest -T Build --output-on-error -j
-            ctest -T -VVV Test --output-on-error -j
+            ctest -T Test -VV --output-on-error -j
             ctest -T Submit
           continue-on-error: true
