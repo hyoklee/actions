@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4.1.1
       - name: Install Dependencies
-        run: brew install curl openssl libaec
+        run: brew install curl openssl libaec llvm mpich gfortran
       - name: Get hdf5 release base name
         uses: dsaltares/fetch-gh-release-asset@master
         with:
@@ -27,6 +27,11 @@ jobs:
         env:
           H5: ${{ steps.gethdf5base.outputs.HDF5_NAME_BASE }}
         run: |
+          export PATH=/usr/local/opt/llvm/bin:$PATH
+          export LDFLAGS="-L/usr/local/opt/llvm/lib"
+          export CPPFLAGS="-I/usr/local/opt/llvm/include"
+          export CC=$(brew --prefix llvm)/bin/clang
+          clang --version	
           echo $H5
           wget https://github.com/HDFGroup/hdf5/releases/download/snapshot/$H5.tar.gz
           tar zxvf $H5.tar.gz
