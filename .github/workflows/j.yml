@@ -1,7 +1,9 @@
 name: j
 
-on: [push, pull_request]
-
+on:
+  push:
+    branches:
+      - main
 jobs:
   test: # make sure the action works on a clean machine without building
     name: ${{ matrix.os.name }} ${{ matrix.os.architecture }} ${{ matrix.os.version }} on ${{ matrix.os.host }}
@@ -34,11 +36,10 @@ jobs:
             whoami
             env | sort
             sudo pkg_add git
-            git clone https://github.com/hyoklee/hdf4-1 hdf4
+            git clone https://github.com/HDFGroup/hdf4
             cd hdf4
             sudo pkg_add cmake
             sudo pkg_add jpeg
-            pkg_info -Q jdk
             sudo pkg_add jdk-17.0.8.7.1p0v0
             export PATH=/usr/local/jdk-17/bin/:$PATH
             mkdir build
