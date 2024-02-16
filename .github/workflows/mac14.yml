@@ -3,12 +3,12 @@ name: mac14
 on:
   workflow_dispatch:
   push:
-    branches: [ main- ]
+    branches: [ main ]
 
 jobs:
   build:
     name: Test snapshot
-    runs-on: macos-14
+    runs-on: macos-14-xl
     steps:
       - uses: actions/checkout@v4.1.1
       - name: Install Dependencies
@@ -40,7 +40,7 @@ jobs:
           mkdir build
           cd build
           cmake \
-          -D SITE:STRING=mac14 \
+          -D SITE:STRING=mac14xl \
           -D CTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
           ..
           ctest -T Build --output-on-error -j
