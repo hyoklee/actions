@@ -42,8 +42,8 @@ jobs:
           export CC=$(brew --prefix llvm)/bin/clang
           export FC=/usr/local/bin/gfortran
           clang --version
-	  which gfortran
-	  gfortran --version
+          which gfortran
+          gfortran --version
           /usr/local/bin/gfortran --version
           pwd
           ls /usr/local/bin/
