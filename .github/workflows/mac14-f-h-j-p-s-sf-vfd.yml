@@ -3,7 +3,7 @@ name: mac14 f h j p s sf vfd
 on:
   workflow_dispatch:
   push:
-    branches: [ main- ]
+    branches: [ main ]
 
 jobs:
   build:
@@ -11,44 +11,26 @@ jobs:
     runs-on: macos-14
     continue-on-error: true
     steps:
-      - uses: actions/checkout@v4.1.1
       - name: Install Dependencies
         run: brew install curl openssl libaec gfortran openmpi
-      - name: Get hdf5 release base name
-        uses: dsaltares/fetch-gh-release-asset@master
-        with:
-          repo: 'HDFGroup/hdf5'
-          version: 'tags/snapshot'
-          file: 'last-file.txt'
-      - name: Read base-name file
-        id: gethdf5base
+      - name: Build HDF5
         run: |
-          echo "HDF5_NAME_BASE=$(cat last-file.txt)" >> $GITHUB_OUTPUT
-      - name: Use the variable in a subsequent step
-        env:
-          H5: ${{ steps.gethdf5base.outputs.HDF5_NAME_BASE }}
-        run: |
-          echo $H5
-          wget https://github.com/HDFGroup/hdf5/releases/download/snapshot/$H5.tar.gz
-          tar zxvf $H5.tar.gz
-          ls
-
-      - name: Build Ninja
-        env:
-          FC: /opt/homebrew/Cellar/gcc/13.2.0/bin/gfortran
-        run: |
+          export PATH=/opt/homebrew/opt/llvm/bin:$PATH
+          export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
+          export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
+          export CC=$(brew --prefix llvm)/bin/clang
+          export FC=/opt/homebrew/bin/gfortran
           cmake --version
           echo $FC
-          pwd
-          ls
-          cd hdfsrc
+          git clone https://github.com/hyoklee/hdf5
+          cd hdf5
           mkdir build
           cd build
           cmake \
-          -D SITE:STRING=mac14 \
+          -D SITE:STRING=vfd.sf.s.p.j.h.f.mac14 \
           -D CTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
           -DHDF5_BUILD_JAVA=ON \
-          -DHDF5_BUILD_FORTRAN:BOOL=OFF \
+          -DHDF5_BUILD_FORTRAN:BOOL=ON \
           -DHDF5_BUILD_HL_LIB:BOOL=ON \
           -DHDF5_ENABLE_ALL_WARNINGS=ON \
           -DHDF5_ENABLE_ANALYZER_TOOLS:BOOL=ON \
@@ -66,7 +48,6 @@ jobs:
         continue-on-error: true
       - name: Submit
         run: |
-          ls
-          cd hdfsrc
+          cd hdf5
           cd build
           ctest -T Submit
