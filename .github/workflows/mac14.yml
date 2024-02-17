@@ -29,12 +29,6 @@ jobs:
         env:
           H5: ${{ steps.gethdf5base.outputs.HDF5_NAME_BASE }}
         run: |
-          export PATH=/usr/local/opt/llvm/bin:$PATH
-          export LDFLAGS="-L/usr/local/opt/llvm/lib"
-          export CPPFLAGS="-I/usr/local/opt/llvm/include"
-          export CC=$(brew --prefix llvm)/bin/clang
-          export FC=/usr/local/bin/gfortran-13
-          clang --version	
           echo $H5
           wget https://github.com/HDFGroup/hdf5/releases/download/snapshot/$H5.tar.gz
           tar zxvf $H5.tar.gz
@@ -42,8 +36,14 @@ jobs:
 
       - name: Build Ninja
         run: |
+          export PATH=/usr/local/opt/llvm/bin:$PATH
+          export LDFLAGS="-L/usr/local/opt/llvm/lib"
+          export CPPFLAGS="-I/usr/local/opt/llvm/include"
+          export CC=$(brew --prefix llvm)/bin/clang
+          export FC=/usr/local/bin/gfortran-13
+          clang --version	
           pwd
-          ls
+          ls /usr/local/bin/
           cd hdfsrc
           mkdir build
           cd build
