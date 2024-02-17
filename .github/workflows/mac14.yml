@@ -34,15 +34,14 @@ jobs:
 
       - name: Build Ninja
         run: |
-          export PATH=/usr/local/opt/llvm/bin:$PATH
-          export LDFLAGS="-L/usr/local/opt/llvm/lib"
-          export CPPFLAGS="-I/usr/local/opt/llvm/include"
+          export PATH=/opt/homebrew/opt/llvm/bin:$PATH
+          export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
+          export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
           export CC=$(brew --prefix llvm)/bin/clang
-          export FC=/usr/local/bin/gfortran
+          export FC=/opt/homebrew/bin/gfortran
           clang --version
           which gfortran
           gfortran --version
-          /usr/local/bin/gfortran --version
           pwd
           ls /usr/local/bin/
           cd hdfsrc
