@@ -42,6 +42,7 @@ jobs:
           export CC=$(brew --prefix llvm)/bin/clang
           export FC=/usr/local/bin/gfortran
           clang --version
+          /usr/local/bin/gfortran --version
           pwd
           ls /usr/local/bin/
           cd hdfsrc
