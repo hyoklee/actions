@@ -1,4 +1,4 @@
-name: mac14 f h j p s sf vfd
+name: mac14 clang17 f h j p s sf vfd
 
 on:
   workflow_dispatch:
@@ -12,7 +12,7 @@ jobs:
     continue-on-error: true
     steps:
       - name: Install Dependencies
-        run: brew install curl openssl libaec gfortran openmpi
+        run: brew install curl gfortran libaec llvm  openmpi openssl
       - name: Build HDF5
         run: |
           export PATH=/opt/homebrew/opt/llvm/bin:$PATH
@@ -27,7 +27,7 @@ jobs:
           mkdir build
           cd build
           cmake \
-          -D SITE:STRING=vfd.sf.s.p.j.h.f.mac14 \
+          -D SITE:STRING=vfd.sf.s.p.j.h.f.clang17.mac14 \
           -D CTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
           -DHDF5_BUILD_JAVA=ON \
           -DHDF5_BUILD_FORTRAN:BOOL=ON \
