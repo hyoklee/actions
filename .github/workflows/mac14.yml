@@ -33,6 +33,7 @@ jobs:
           export LDFLAGS="-L/usr/local/opt/llvm/lib"
           export CPPFLAGS="-I/usr/local/opt/llvm/include"
           export CC=$(brew --prefix llvm)/bin/clang
+          export FC= /usr/local/bin/gfortran-13
           clang --version	
           echo $H5
           wget https://github.com/HDFGroup/hdf5/releases/download/snapshot/$H5.tar.gz
