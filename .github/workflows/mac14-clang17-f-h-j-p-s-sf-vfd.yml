@@ -12,7 +12,9 @@ jobs:
     continue-on-error: true
     steps:
       - name: Install Dependencies
-        run: brew install curl gfortran libaec llvm  openmpi openssl
+        run: |
+          brew install libaec llvm  openmpi
+          brew reinstall gfortran
       - name: Build HDF5
         run: |
           export PATH=/opt/homebrew/opt/llvm/bin:$PATH
