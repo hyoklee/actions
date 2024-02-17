@@ -13,25 +13,6 @@ jobs:
       - uses: actions/checkout@v4.1.1
       - name: Install Dependencies
         run: brew reinstall curl openssl libaec llvm mpich gfortran cmake
-      - name: Get hdf5 release base name
-        uses: dsaltares/fetch-gh-release-asset@master
-        with:
-          repo: 'HDFGroup/hdf5'
-          version: 'tags/snapshot'
-          file: 'last-file.txt'
-      - name: Read base-name file
-        id: gethdf5base
-        run: |
-          echo "HDF5_NAME_BASE=$(cat last-file.txt)" >> $GITHUB_OUTPUT
-      - name: Use the variable in a subsequent step
-        env:
-          H5: ${{ steps.gethdf5base.outputs.HDF5_NAME_BASE }}
-        run: |
-          echo $H5
-          wget https://github.com/HDFGroup/hdf5/releases/download/snapshot/$H5.tar.gz
-          tar zxvf $H5.tar.gz
-          ls
-
       - name: Build Ninja
         run: |
           export PATH=/opt/homebrew/opt/llvm/bin:$PATH
@@ -44,7 +25,8 @@ jobs:
           gfortran --version
           pwd
           ls /usr/local/bin/
-          cd hdfsrc
+          git clone https://github.com/HDFGroup/hdf5 
+          cd hdf5
           mkdir build
           cd build
           cmake \
