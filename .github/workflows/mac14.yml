@@ -40,8 +40,8 @@ jobs:
           export LDFLAGS="-L/usr/local/opt/llvm/lib"
           export CPPFLAGS="-I/usr/local/opt/llvm/include"
           export CC=$(brew --prefix llvm)/bin/clang
-          export FC=/usr/local/bin/gfortran-13
-          clang --version	
+          export FC=/usr/local/bin/gfortran
+          clang --version
           pwd
           ls /usr/local/bin/
           cd hdfsrc
