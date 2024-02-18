@@ -3,7 +3,7 @@ name: mac14 clang17 f h j p s sf vfd
 on:
   workflow_dispatch:
   push:
-    branches: [ main ]
+    branches: [ main- ]
 
 jobs:
   build:
