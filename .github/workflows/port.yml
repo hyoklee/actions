@@ -1,0 +1,20 @@
+name: mac port
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - name: Download MacPorts
+        run: curl -LO https://raw.githubusercontent.com/macports/install/master/install.zsh
+      - name: Install MacPorts
+        run: |
+          chmod +x install.zsh
+          sudo ./install.zsh
+      - name: Install Port
+        run: sudo port install flang
+	
