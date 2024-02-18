@@ -15,4 +15,4 @@ jobs:
         run: |
           sudo installer -pkg MacPorts-2.9.1-14-Sonoma.pkg  -target /
       - name: Install Port
-        run: sudo port install flang
+        run: sudo /opt/local/bin/port install flang
