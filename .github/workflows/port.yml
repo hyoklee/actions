@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: macos-14
     steps:
       - name: Download MacPorts
         run: curl -LO https://github.com/macports/macports-base/releases/download/v2.9.1/MacPorts-2.9.1-14-Sonoma.pkg
