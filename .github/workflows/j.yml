@@ -42,7 +42,6 @@ jobs:
             sudo pkg_add cmake
             sudo pkg_add jpeg
             sudo pkg_add jdk-17.0.8.7.1p0v0
-            find / -name 'java*'
             export PATH=/usr/local/jdk-17/bin/:$PATH
             mkdir build
             cd build
