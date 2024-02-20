@@ -3,7 +3,7 @@ name: mac14 auto clang17 f
 on:
   workflow_dispatch:
   push:
-    branches: [ main ]
+    branches: [ main- ]
 
 jobs:
   build:
@@ -22,7 +22,6 @@ jobs:
           export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
           export CC=$(brew --prefix llvm)/bin/clang
           export FC=/opt/homebrew/bin/gfortran
-          cmake --version
           echo $FC
           git clone https://github.com/hyoklee/hdf5
           cd hdf5
