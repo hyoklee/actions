@@ -43,7 +43,7 @@ jobs:
             sudo pkg_add jpeg
             sudo pkg_add jdk-17.0.8.7.1p0v0
             sudo pkg_add g95-11.2.0p9
-            export FC=/usr/local/bin/egfotran
+            export FC=/usr/local/bin/egfortran
             export PATH=/usr/local/jdk-17/bin/:$PATH
             mkdir build
             cd build
