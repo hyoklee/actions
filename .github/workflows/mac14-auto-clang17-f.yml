@@ -13,7 +13,7 @@ jobs:
     steps:
       - name: Install Dependencies
         run: |
-          brew install libaec llvm
+          brew install libaec llvm autoconf automake libtool
           brew reinstall gfortran
       - name: Build HDF5
         run: |
