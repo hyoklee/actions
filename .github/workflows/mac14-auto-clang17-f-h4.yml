@@ -13,9 +13,9 @@ jobs:
     steps:
       - name: Install Dependencies
         run: |
-          brew install libaec llvm autoconf automake libtool
+          brew install autoconf automake jpeg libaec libtool llvm
           brew reinstall gfortran
-      - name: Build HDF5
+      - name: Test HDF4
         run: |
           export PATH=/opt/homebrew/opt/llvm/bin:$PATH
           export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
