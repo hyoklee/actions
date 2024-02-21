@@ -28,7 +28,7 @@ jobs:
           shell: bash
           run: |
             sudo pkg_add git
-            sudo pkg_add autoconf automake libtool
+            sudo pkg_add autoconf-2.71 automake-1.14.1p1 libtool
             sudo pkg_add jpeg
             sudo pkg_add jdk-17.0.8.7.1p0v0
             export PATH=/usr/local/jdk-17/bin/:$PATH
