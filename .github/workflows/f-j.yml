@@ -3,7 +3,7 @@ name: hdf4 f j
 on:
   workflow_dispatch:
   push:
-    branches: [ main ]
+    branches: [ main- ]
 
 jobs:
   test: # make sure the action works on a clean machine without building
