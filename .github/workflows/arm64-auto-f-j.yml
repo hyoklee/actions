@@ -1,0 +1,41 @@
+name: arm64 auto f j
+
+on: [push, pull_request]
+
+jobs:
+  test: # make sure the action works on a clean machine without building
+    name: ${{ matrix.os.name }} ${{ matrix.os.architecture }} ${{ matrix.os.version }} on ${{ matrix.os.host }}
+    runs-on: ${{ matrix.os.host }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - name: openbsd
+            architecture: arm64
+            version: '7.4'
+            host: ubuntu-latest
+    steps:
+      - name: ${{ matrix.os.name }}
+        uses: cross-platform-actions/action@v0.22.0
+        env:
+          FOO: A
+          BAR: B
+        with:
+          environment_variables: FOO BAR
+          operating_system: ${{ matrix.os.name }}
+          architecture: ${{ matrix.os.architecture }}
+          version: '${{ matrix.os.version }}'
+          shell: bash
+          run: |
+            sudo pkg_add git
+            sudo pkg_add autoconf automake libtool
+            sudo pkg_add jpeg
+            sudo pkg_add jdk-17.0.8.7.1p0v0
+            export PATH=/usr/local/jdk-17/bin/:$PATH
+            git clone https://github.com/hdfeos/hdf4
+            cd hdf4
+            autoreconf -fvi
+            ./configure --enable-fortran --enable-java
+            make
+            make check
+            sudo make install
