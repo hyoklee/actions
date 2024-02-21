@@ -22,6 +22,7 @@ jobs:
           export CC=$(brew --prefix llvm)/bin/clang
           export FC=/opt/homebrew/bin/gfortran
           echo $FC
+          brew info jpeg
           git clone https://github.com/hyoklee/hdf4
           cd hdf4
           ./autogen.sh
