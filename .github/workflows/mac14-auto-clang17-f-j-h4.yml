@@ -26,6 +26,6 @@ jobs:
           git clone https://github.com/hyoklee/hdf4
           cd hdf4
           ./autogen.sh
-          ./configure --enable-fortran --enable-java --with-jpeg=/opt/homebrew/opt/jpeg
+          ./configure --enable-fortran --enable-java --enable-shared --with-jpeg=/opt/homebrew/opt/jpeg
           make
           make check
