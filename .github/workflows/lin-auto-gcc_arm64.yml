@@ -25,7 +25,7 @@ jobs:
         wget https://raw.githubusercontent.com/openbsd/src/master/sys/sys/queue.h
         wget https://raw.githubusercontent.com/openbsd/src/master/sys/sys/_null.h
         ls /home/runner/work/actions/actions/aarch64-linux-musl-cross/include/
-        mv queue.h /home/runner/work/actions/actions/aarch64-linux-musl-cross/include/sy/s
+        mv queue.h /home/runner/work/actions/actions/aarch64-linux-musl-cross/include/sys/
         mv _null.h /home/runner/work/actions/actions/aarch64-linux-musl-cross/include/sys/
         wget -q https://hdfeos.org/software/h4map/h4map.tar.gz
         tar -xzf h4map.tar.gz
