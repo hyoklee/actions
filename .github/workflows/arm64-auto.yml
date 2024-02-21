@@ -42,6 +42,6 @@ jobs:
             export AUTOCONF_VERSION=2.71
             export AUTOMAKE_VERSION=1.16
             ./autogen.sh
-            ./configure
+            ./configure --with-jpeg=/usr/local
             make
             make check
