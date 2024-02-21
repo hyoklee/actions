@@ -3,13 +3,12 @@ name: mac14 auto clang17 f
 on:
   workflow_dispatch:
   push:
-    branches: [ main- ]
+    branches: [ main ]
 
 jobs:
   build:
     name: Test snapshot
     runs-on: macos-14
-    continue-on-error: true
     steps:
       - name: Install Dependencies
         run: |

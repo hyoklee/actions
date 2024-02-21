@@ -9,7 +9,6 @@ jobs:
   build:
     name: Test snapshot
     runs-on: macos-14
-    continue-on-error: true
     steps:
       - name: Install Dependencies
         run: |
