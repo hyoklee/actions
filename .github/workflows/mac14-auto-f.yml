@@ -3,11 +3,11 @@ name: mac14 auto f
 on:
   workflow_dispatch:
   push:
-    branches: [ main ]
+    branches: [ main- ]
 
 jobs:
   build:
-    name: Test snapshot
+    name: mac14 auto f
     runs-on: macos-14
     steps:
       - name: Install Dependencies

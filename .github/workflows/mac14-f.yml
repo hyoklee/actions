@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: Install Dependencies
         run: |
-          brew install autoconf automake jpeg libaec libtool
+          brew install jpeg libaec ninja
           brew reinstall gfortran
       - name: Test HDF4
         run: |
