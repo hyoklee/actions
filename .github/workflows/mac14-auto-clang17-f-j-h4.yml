@@ -3,7 +3,7 @@ name: mac14 auto clang17 f j h4
 on:
   workflow_dispatch:
   push:
-    branches: [ main ]
+    branches: [ main- ]
 
 jobs:
   build:

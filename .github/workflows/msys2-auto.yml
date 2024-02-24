@@ -1,18 +1,12 @@
 name: msys2 auto
 
 on:
-  workflow_dispatch:
   push:
-    branches:
-      - main-
+    branches: [ main ]
 
 permissions:
   contents: read
 
-# Using concurrency to cancel any in-progress job or run
-concurrency:
-  group: ${{ github.workflow }}-${{ github.head_ref && github.ref || github.run_id }}
-  cancel-in-progress: true
 
 jobs:
   build:
@@ -35,13 +29,14 @@ jobs:
             autotools
           pacboy: >-
             toolchain:p
-      - name: Test HDF5
+            libjpeg-turbo:p
+      - name: Test HDF4
         shell: msys2 {0}
         run: |
           uname -a
-          git clone https://github.com/hyoklee/hdf5.git
-          cd hdf5
+          git clone https://github.com/hyoklee/hdf4.git
+          cd hdf4
           ./autogen.sh
-          ./configure CFLAGS="-Wno-implicit-function-declaration" LDFLAGS="-lws2_32"
+          ./configure
           make
           make check
