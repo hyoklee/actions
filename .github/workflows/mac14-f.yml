@@ -1,0 +1,28 @@
+name: mac14 f
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    name: mac14 f
+    runs-on: macos-14
+    steps:
+      - name: Install Dependencies
+        run: |
+          brew install autoconf automake jpeg libaec libtool
+          brew reinstall gfortran
+      - name: Test HDF4
+        run: |
+          export FC=/opt/homebrew/bin/gfortran
+          git clone https://github.com/hyoklee/hdf4
+          cd hdf4
+          mkdir build
+          cd build
+          cmake -G Ninja \
+          -D HDF4_BUILD_FORTRAN:BOOL=ON \
+          ..
+          ctest -T Build --output-on-error -j
+          ctest -T Test --output-on-error -j
