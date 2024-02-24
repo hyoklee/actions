@@ -37,6 +37,6 @@ jobs:
           git clone https://github.com/hyoklee/hdf4.git
           cd hdf4
           ./autogen.sh
-          ./configure --disable-netcdf
+          ./configure --disable-netcdf-tools
           make
           make check
