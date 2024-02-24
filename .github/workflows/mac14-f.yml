@@ -23,6 +23,7 @@ jobs:
           cd build
           cmake -G Ninja \
           -D HDF4_BUILD_FORTRAN:BOOL=ON \
+          -D BUILD_SHARED_LIBS:BOOL=OFF \
           ..
           ctest -T Build --output-on-error -j
           ctest -T Test --output-on-error -j
