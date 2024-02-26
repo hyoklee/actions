@@ -50,12 +50,12 @@ jobs:
       - name: Autotools Build
         shell: msys2 {0}
         run: |
-          cd hdf4	
+          cd hdf4
           make
-	  
+
       - name: Autotools Run Tests
         shell: msys2 {0}
         run: |
-          cd hdf4	
+          cd hdf4
           make check
 
