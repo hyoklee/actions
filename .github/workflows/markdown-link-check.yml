@@ -3,9 +3,9 @@ name: Check Markdown links
 on:
   workflow_dispatch:
   push:
-    branches: [ main- ]  
+    branches: [ main ]  
   pull_request:
-    branches: [ main- ]
+    branches: [ main ]
 
 jobs:
   markdown-link-check:
@@ -13,3 +13,5 @@ jobs:
     steps:
     - uses: actions/checkout@master
     - uses: gaurav-nelson/github-action-markdown-link-check@v1
+      with:
+        file-extension: .php
