@@ -31,6 +31,7 @@ jobs:
             sudo pkg install -y cmake
             sudo pkg install -y jpeg-turbo
             sudo pkg install -y openjdk21
+            sudo pkg install -y gfortran
             pkg info -l openjdk21
             export JAVA_HOME=/usr/local/openjdk21
             sudo mount -t fdescfs fdesc /dev/fd
@@ -39,10 +40,10 @@ jobs:
             cd hdf4
             mkdir build
             cd build
-            cmake -DHDF4_BUILD_FORTRAN:BOOL=OFF \
+            cmake -DHDF4_BUILD_FORTRAN:BOOL=ON \
             -DHDF4_BUILD_JAVA:BOOL=ON \
             -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
-            -DSITE:STRING=j.fbsd ..
+            -DSITE:STRING=j.f.fbsd ..
             ctest -T Build
             ctest -T Test
 
