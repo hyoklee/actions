@@ -30,6 +30,7 @@ jobs:
             sudo pkg install -y git
             sudo pkg install -y cmake
             sudo pkg install -y jpeg-turbo
+            sudo pkg install -y openjdk21
             git clone https://github.com/HDFGroup/hdf4
             cd hdf4
             mkdir build
