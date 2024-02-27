@@ -27,9 +27,9 @@ jobs:
           version: '${{ matrix.os.version }}'
           shell: bash          
           run: |
-            sudo pkg_add git
-            sudo pkg_add cmake
-            sudo pkg_add jpeg
+            sudo pkg install git
+            sudo pkg install cmake
+            sudo pkg install jpeg
             git clone https://github.com/hyoklee/hdf4
             cd hdf4
             mkdir build
