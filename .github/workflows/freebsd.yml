@@ -25,12 +25,15 @@ jobs:
           operating_system: ${{ matrix.os.name }}
           architecture: ${{ matrix.os.architecture }}
           version: '${{ matrix.os.version }}'
-          shell: bash          
+          shell: bash
           run: |
             sudo pkg install -y git
             sudo pkg install -y cmake
             sudo pkg install -y jpeg-turbo
             sudo pkg install -y openjdk21
+            pkg info -l openjdk21
+            sudo mount -t fdescfs fdesc /dev/fd
+            sudo mount -t procfs proc /proc
             git clone https://github.com/HDFGroup/hdf4
             cd hdf4
             mkdir build
