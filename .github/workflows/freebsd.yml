@@ -36,9 +36,9 @@ jobs:
             mkdir build
             cd build
             cmake -DHDF4_BUILD_FORTRAN:BOOL=OFF \
-            -DHDF4_BUILD_JAVA:BOOL=OFF \
+            -DHDF4_BUILD_JAVA:BOOL=ON \
             -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
-            -DSITE:STRING=fbsd ..
+            -DSITE:STRING=j.fbsd ..
             ctest -T Build
             ctest -T Test
-            ctest -T Submit
+
