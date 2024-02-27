@@ -1,4 +1,4 @@
-name: freebsd
+name: fbsd
 
 on: [push, pull_request]
 
@@ -30,10 +30,14 @@ jobs:
             sudo pkg install -y git
             sudo pkg install -y cmake
             sudo pkg install -y jpeg-turbo
-            git clone https://github.com/hyoklee/hdf4
+            git clone https://github.com/HDFGroup/hdf4
             cd hdf4
             mkdir build
             cd build
-            cmake ..
+            cmake -DHDF4_BUILD_FORTRAN:BOOL=OFF \
+            -DHDF4_BUILD_JAVA:BOOL=OFF \
+            -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
+            -DSITE:STRING=fbsd ..
             ctest -T Build
             ctest -T Test
+            ctest -T Submit
