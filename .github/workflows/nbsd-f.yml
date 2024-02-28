@@ -38,6 +38,7 @@ jobs:
             sudo pkgin -y install mozilla-rootcerts
             sudo pkgin -y install mozilla-rootcerts-openssl
             export LD_LIBRARY_PATH=/usr/pkg/lib
+            export FC=/usr/pkg/bin/gfortran
             ls /usr/pkg/lib
             git clone https://github.com/HDFGroup/hdf4
             cd hdf4
