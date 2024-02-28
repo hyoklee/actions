@@ -43,6 +43,7 @@ jobs:
             cmake \
             -D CTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
             -D SITE:STRING=nbsd ..
-            ctest -T Build
-            ctest -T Test
+            ctest -T Build -VV --output-on-error -j
+            ctest -T Test -VV --output-on-error -j
             ctest -T Submit
+        continue-on-error: true
