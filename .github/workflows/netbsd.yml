@@ -35,7 +35,7 @@ jobs:
             sudo pkgin -y install cmake
             sudo pkgin -y install jpeg-9e
             sudo pkgin -y install mozilla-rootcerts
-            sudo mozilla-rootcerts install
+            sudo pkgin -y install mozilla-rootcerts-openssl
             git clone https://github.com/HDFGroup/hdf4
             cd hdf4
             mkdir build
