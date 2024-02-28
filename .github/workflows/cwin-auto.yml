@@ -28,4 +28,4 @@ jobs:
           ./autogen.sh
           ./configure CFLAGS="-I/usr/include"
           make
-        shell: C:\cygwin\bin\bash.exe -o igncr '{0}'
+        shell: C:\cygwin\bin\bash.exe --noprofile --norc -o igncr -eo pipefail '{0}'
