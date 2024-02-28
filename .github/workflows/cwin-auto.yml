@@ -22,6 +22,6 @@ jobs:
           git clone https://github.com/HDFGroup/hdf4
           cd hdf4
           ./autogen.sh
-          ./configure
+          ./configure CFLAGS="-I/usr/include/jpeg"
           make
         shell: C:\cygwin\bin\bash.exe -o igncr '{0}'
