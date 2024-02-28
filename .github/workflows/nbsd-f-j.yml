@@ -41,6 +41,7 @@ jobs:
             export LD_LIBRARY_PATH=/usr/pkg/lib
             export FC=/usr/pkg/gcc7/bin/gfortran
             export JAVA_HOME=/usr/pkg/java/openjdk21
+            export JAVA_INCLUDE_PATH2=/usr/pkg/java/openjdk21/include/netbsd
             ls /usr/pkg/java/openjdk21
             git clone https://github.com/HDFGroup/hdf4
             cd hdf4
