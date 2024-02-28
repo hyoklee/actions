@@ -7,10 +7,6 @@ on:
 jobs:
   test:
     runs-on: windows-latest
-    defaults:
-      run:
-        shell: pwsh
-
     steps:
       - name: Clean up PATH
         uses: cygwin/cygwin-install-action@master
@@ -25,7 +21,7 @@ jobs:
           echo $CFLAGS
           export CFLAGS=-I/usr/include
           echo $CFLAGS
-          ./autogen.sh
-          ./configure --with-jpeg=/usr LDFLAGS="-L/usr/lib -llibjpeg.dll"
+          autoreconf -fvi
+          ./configure --with-jpeg=/usr LDFLAGS="-L/usr/lib -ljpeg.dll"
           make
-        shell: C:\cygwin\bin\bash.exe --noprofile --norc -o igncr -eo pipefail '{0}'
+        shell: C:\cygwin\bin\bash.exe -o igncr -eo pipefail '{0}'
