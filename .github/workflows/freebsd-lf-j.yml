@@ -32,6 +32,8 @@ jobs:
             sudo pkg install -y jpeg-turbo
             sudo pkg install -y openjdk21
             sudo pkg install -y lfortran
+            export FC=lfortran
+            export FFLAGS="--backend=llvm"
             pkg info -l openjdk21
             export JAVA_HOME=/usr/local/openjdk21
             sudo mount -t fdescfs fdesc /dev/fd
