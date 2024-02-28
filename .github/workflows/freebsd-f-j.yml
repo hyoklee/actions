@@ -34,6 +34,7 @@ jobs:
             sudo pkg install -y gcc13
             pkg info -l openjdk21
             export JAVA_HOME=/usr/local/openjdk21
+            export FC=gfortran13
             sudo mount -t fdescfs fdesc /dev/fd
             sudo mount -t procfs proc /proc
             git clone https://github.com/HDFGroup/hdf4
