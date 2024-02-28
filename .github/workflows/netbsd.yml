@@ -45,3 +45,4 @@ jobs:
             -D SITE:STRING=nbsd ..
             ctest -T Build
             ctest -T Test
+            ctest -T Submit
