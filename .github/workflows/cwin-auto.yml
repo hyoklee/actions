@@ -24,6 +24,7 @@ jobs:
           ls /usr/include
           ls /usr/include/jpeg
           ./autogen.sh
-          ./configure CFLAGS="-I/usr/include/jpeg"
+          echo $CFLAGS
+          ./configure CFLAGS='-I/mingw64/x86_64-w64-mingw32/usr/include'
           make
         shell: C:\cygwin\bin\bash.exe -o igncr '{0}'
