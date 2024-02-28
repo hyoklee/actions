@@ -21,6 +21,8 @@ jobs:
         run: |
           git clone https://github.com/HDFGroup/hdf4
           cd hdf4
+          mkdir build
+          cd build
           $((Get-Command cmake.exe).Path -eq 'C:\cygwin\bin\cmake.exe') -or $(throw (Get-Command cmake.exe))
           cmake.exe -D CTEST_DROP_SITE_INIT:STRING="my.cdash.org" -D SITE:STRING=cwin ..
           ctest.exe -D Experimental
