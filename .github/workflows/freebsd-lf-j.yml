@@ -1,6 +1,8 @@
 name: fbsd lf j
 
-on: [push, pull_request]
+on:
+  push:
+    branches: [ main ]
 
 jobs:
   test: # make sure the action works on a clean machine without building
@@ -44,7 +46,7 @@ jobs:
             cd build
             cmake \
             -D BUILD_SHARED_LIBS=OFF \
-            -D CMAKE_Fortran_FLAGS="--backend=llvm"
+            -D CMAKE_Fortran_FLAGS="--backend=llvm" \
             -D HDF4_BUILD_FORTRAN:BOOL=ON \
             -D HDF4_BUILD_JAVA:BOOL=ON \
             -D CTEST_DROP_SITE_INIT:STRING="my.cdash.org" \

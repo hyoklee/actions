@@ -1,6 +1,10 @@
 name: fbsd f j
 
-on: [push, pull_request]
+on:
+  push:
+    branches: [ main- ]
+
+
 
 jobs:
   test: # make sure the action works on a clean machine without building
