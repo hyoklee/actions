@@ -32,8 +32,8 @@ jobs:
           shell: bash
           run: |
             sudo pkgin -y install git
-            sudo pkgin -y install  cmake
-            sudo pkgin -y install  jpeg-turbo
+            sudo pkgin -y install cmake
+            sudo pkgin -y install jpeg-9e
             git clone https://github.com/HDFGroup/hdf4
             cd hdf4
             mkdir build
