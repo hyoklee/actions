@@ -45,7 +45,7 @@ jobs:
             -D HDF4_BUILD_FORTRAN:BOOL=ON \
             -D HDF4_BUILD_JAVA:BOOL=ON \
             -D CTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
-            -D SITE:STRING=j.f.fbsd ..
+            -D SITE:STRING=j.f.fbsd.arm64 ..
             ctest -T Build
             ctest -T Test
             ctest -T Submit
