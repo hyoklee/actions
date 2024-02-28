@@ -16,6 +16,8 @@ jobs:
         uses: cygwin/cygwin-install-action@master
         with:
           packages: make automake gcc gcc-g++
+      - run: git config --global core.autocrlf input
+        shell: pwsh -command ". '{0}'".
       - name: Test HDF4
         run: |
           git clone https://github.com/HDFGroup/hdf4
