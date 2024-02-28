@@ -23,4 +23,4 @@ jobs:
           ./autogen.sh
           ./configure
           make
-        shell: C:\cygwin\bin\bash.exe '{0}'
+        shell: C:\cygwin\bin\bash.exe -o igncr '{0}'
