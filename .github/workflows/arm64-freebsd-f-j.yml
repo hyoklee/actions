@@ -1,4 +1,4 @@
-name: fbsd f j
+name: arm64 fbsd f j
 
 on: [push, pull_request]
 
@@ -11,7 +11,7 @@ jobs:
       matrix:
         os:
           - name: freebsd
-            architecture: x86-64
+            architecture: arm64
             version: '14.0'
             host: ubuntu-latest
     steps:
