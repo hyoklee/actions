@@ -36,8 +36,8 @@ jobs:
             sudo pkgin -y install jpeg-9e
             sudo pkgin -y install mozilla-rootcerts
             sudo pkgin -y install mozilla-rootcerts-openssl
-            export LD_LIBRARY_PATH=/usr/local/lib
-            ls /usr/local/lib
+            export LD_LIBRARY_PATH=/usr/pkg/lib
+            ls /usr/pkg/lib
             git clone https://github.com/HDFGroup/hdf4
             cd hdf4
             mkdir build
