@@ -21,6 +21,8 @@ jobs:
           git config --global core.autocrlf input
           git clone https://github.com/HDFGroup/hdf4
           cd hdf4
+          ls /usr/include
+          ls /usr/include/jpeg
           ./autogen.sh
           ./configure CFLAGS="-I/usr/include/jpeg"
           make
