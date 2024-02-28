@@ -1,0 +1,72 @@
+name: Test
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        env: ['', 'winsymlinks:nativestrict']
+        hardlinks: [0, 1]
+
+        include:
+          - {env: '', env_descr: 'nativestrict: 0'}
+          - {env: 'winsymlinks:nativestrict', env_descr: 'nativestrict: 1'}
+
+          - {hardlinks: 0, hardlinks_descr: 'Hardlinks: 0'}
+          - {hardlinks: 1, hardlinks_descr: 'Hardlinks: 1'}
+
+    runs-on: windows-latest
+
+    name: '${{ matrix.env_descr }} / ${{ matrix.hardlinks_descr }}'
+
+    defaults:
+      run:
+        shell: pwsh
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Clean up PATH
+        uses: egor-tensin/cleanup-path@v3
+        if: runner.os == 'Windows'
+
+      - name: Set up Cygwin
+        uses: ./
+        with:
+          install-dir: C:\cg
+          packages: cmake gcc-g++
+          env: '${{ matrix.env }}'
+          hardlinks: '${{ matrix.hardlinks }}'
+
+      - name: Run bash
+        run: |
+          $((Get-Command bash.exe).Path -eq 'C:\cg\bin\bash.exe') -or $(throw (Get-Command bash.exe))
+          $output = bash.exe --login -c 'echo foobar'
+          $($output -eq 'foobar') -or $(throw $output)
+
+      - name: Run cmake
+        run: |
+          $((Get-Command cmake.exe).Path -eq 'C:\cg\bin\cmake.exe') -or $(throw (Get-Command cmake.exe))
+          cmake.exe --version
+
+      - name: Check CYGWIN environment variable
+        run: |
+          $(Test-Path env:CYGWIN) -or $(throw '%CYGWIN% is not set!')
+          $($env:CYGWIN -eq '${{ matrix.env }}') -or $(throw "Unexpected %CYGWIN% value: $env:CYGWIN")
+
+      - name: cc is a symlink
+        run: |
+          $(Get-Command cc.exe -ErrorAction SilentlyContinue) -and $(throw (Get-Command cc.exe))
+        if: '!matrix.hardlinks'
+
+      - name: cc is a hardlink
+        run: |
+          $((Get-Command cc.exe).Path -eq 'C:\cg\bin\cc.exe') -or $(throw (Get-Command cc.exe))
+          cc.exe --version
+        if: matrix.hardlinks
