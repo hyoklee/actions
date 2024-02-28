@@ -15,7 +15,7 @@ jobs:
       - name: Clean up PATH
         uses: cygwin/cygwin-install-action@master
         with:
-          packages: automake make gcc libjpeg-turbo libtool
+          packages: automake make gcc libjpeg8 libtool
       - name: Test HDF4
         run: |
           git config --global core.autocrlf input
