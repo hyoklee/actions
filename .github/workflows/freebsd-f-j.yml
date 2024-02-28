@@ -42,7 +42,6 @@ jobs:
             mkdir build
             cd build
             cmake \
-            -D BUILD_SHARED_LIBS=OFF \
             -D HDF4_BUILD_FORTRAN:BOOL=ON \
             -D HDF4_BUILD_JAVA:BOOL=ON \
             -D CTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
