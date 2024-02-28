@@ -23,9 +23,9 @@ jobs:
           cd hdf4
           ls /usr/lib
           echo $CFLAGS
-          export CFLAGS=-I/cygwin/usr/include
+          export CFLAGS=-I/usr/include
           echo $CFLAGS
           ./autogen.sh
-          ./configure --with-jpeg=/usr
+          ./configure --with-jpeg=/usr LDFLAGS="-L/usr/lib -llibjpeg.dll"
           make
         shell: C:\cygwin\bin\bash.exe --noprofile --norc -o igncr -eo pipefail '{0}'
