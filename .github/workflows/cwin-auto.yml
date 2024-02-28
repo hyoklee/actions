@@ -15,7 +15,7 @@ jobs:
       - name: Clean up PATH
         uses: cygwin/cygwin-install-action@master
         with:
-          packages: make automake gcc gcc-g++
+          packages: automake make gcc libtool
       - name: Test HDF4
         run: |
           git config --global core.autocrlf input
