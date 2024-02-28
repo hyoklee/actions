@@ -32,7 +32,7 @@ jobs:
           shell: bash
           run: |
             sudo pkgin -y install cmake
-            sudo pkgin -y install gfortran
+            sudo pkgin -y install gcc7
             sudo pkgin -y install git
             sudo pkgin -y install jpeg-9e
             sudo pkgin -y install mozilla-rootcerts
