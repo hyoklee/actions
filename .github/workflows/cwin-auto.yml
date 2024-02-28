@@ -21,11 +21,11 @@ jobs:
           git config --global core.autocrlf input
           git clone https://github.com/HDFGroup/hdf4
           cd hdf4
-          ls /usr/include
+          cat /usr/include/jpeglib.h
           echo $CFLAGS
-          export CFLAGS=-I/usr/include
+          export CFLAGS=-I/cygwin/usr/include
           echo $CFLAGS
           ./autogen.sh
-          ./configure CFLAGS="-I/usr/include"
+          ./configure CFLAGS="-I/cygwin/usr/include"
           make
         shell: C:\cygwin\bin\bash.exe --noprofile --norc -o igncr -eo pipefail '{0}'
