@@ -31,9 +31,9 @@ jobs:
           version: '${{ matrix.os.version }}'
           shell: bash
           run: |
-            sudo pkg_add install -y git
-            sudo pkg_add install -y cmake
-            sudo pkg_add install -y jpeg-turbo
+            sudo pkgin install -y git
+            sudo pkgin install -y cmake
+            sudo pkgin install -y jpeg-turbo
             git clone https://github.com/HDFGroup/hdf4
             cd hdf4
             mkdir build
