@@ -50,7 +50,7 @@ jobs:
             cmake \
             -D CTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
             -D HDF4_BUILD_FORTRAN:BOOL=ON \
-            -D HDF4_BUILD_JAVA:BOOL=ON
+            -D HDF4_BUILD_JAVA:BOOL=ON \
             -D JAVA_INCLUDE_PATH2="/usr/pkg/java/openjdk21/include/netbsd" \
             -D SITE:STRING=j.f.nbsd ..
             ctest -T Build -VV --output-on-error -j
