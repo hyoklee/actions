@@ -8,33 +8,17 @@ on:
 jobs:
   test:
     runs-on: windows-latest
-    name: cwin
-
     defaults:
       run:
         shell: pwsh
 
     steps:
       - name: Clean up PATH
-        uses: egor-tensin/cleanup-path@v3
-        if: runner.os == 'Windows'
-
-      - name: Set up Cygwin
-        uses: ./
+        uses: cygwin/cygwin-install-action@master    
         with:
-          install-dir: C:\cg
           packages: cmake gcc-g++
-          env: '${{ matrix.env }}'
-          hardlinks: '${{ matrix.hardlinks }}'
-
-      - name: Run bash
-        run: |
-          $((Get-Command bash.exe).Path -eq 'C:\cg\bin\bash.exe') -or $(throw (Get-Command bash.exe))
-          $output = bash.exe --login -c 'echo foobar'
-          $($output -eq 'foobar') -or $(throw $output)
-
       - name: Run cmake
         run: |
-          $((Get-Command cmake.exe).Path -eq 'C:\cg\bin\cmake.exe') -or $(throw (Get-Command cmake.exe))
+          $((Get-Command cmake.exe).Path -eq 'C:\cygwin\bin\cmake.exe') -or $(throw (Get-Command cmake.exe))
           cmake.exe --version
 
