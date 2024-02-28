@@ -1,4 +1,4 @@
-name: fbsd
+name: fbsd f j
 
 on: [push, pull_request]
 
@@ -30,12 +30,21 @@ jobs:
             sudo pkg install -y git
             sudo pkg install -y cmake
             sudo pkg install -y jpeg-turbo
+            sudo pkg install -y openjdk21
+            sudo pkg install -y gcc13
+            pkg info -l openjdk21
+            export JAVA_HOME=/usr/local/openjdk21
+            sudo mount -t fdescfs fdesc /dev/fd
+            sudo mount -t procfs proc /proc
             git clone https://github.com/HDFGroup/hdf4
             cd hdf4
             mkdir build
             cd build
             cmake \
+            -D BUILD_SHARED_LIBS=OFF \
+            -D HDF4_BUILD_FORTRAN:BOOL=ON \
+            -D HDF4_BUILD_JAVA:BOOL=ON \
             -D CTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
-            -D SITE:STRING=fbsd ..
+            -D SITE:STRING=j.f.fbsd ..
             ctest -T Build
             ctest -T Test
