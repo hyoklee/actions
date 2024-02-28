@@ -22,6 +22,6 @@ jobs:
           export CFLAGS=-I/usr/include
           echo $CFLAGS
           autoreconf -fvi
-          ./configure --with-jpeg=/usr LDFLAGS="-L/usr/lib -ljpeg.dll"
+          ./configure --with-jpeg=/usr LDFLAGS="-L/usr/lib -ljpeg"
           make
         shell: C:\cygwin\bin\bash.exe -o igncr -eo pipefail '{0}'
