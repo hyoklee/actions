@@ -22,9 +22,10 @@ jobs:
           git clone https://github.com/HDFGroup/hdf4
           cd hdf4
           ls /usr/include
-          ls /usr/include/jpeg
-          ./autogen.sh
           echo $CFLAGS
-          ./configure CFLAGS='-I/mingw64/x86_64-w64-mingw32/usr/include'
+          export CFLAGS=-I/usr/include
+          echo $CFLAGS
+          ./autogen.sh
+          ./configure CFLAGS="-I/usr/include"
           make
         shell: C:\cygwin\bin\bash.exe -o igncr '{0}'
