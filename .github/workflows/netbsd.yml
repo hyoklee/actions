@@ -1,8 +1,8 @@
-name: fbsd lf j
+name: nbsd
 
 on:
   push:
-    branches: [ main- ]
+    branches: [ main ]
 
 jobs:
   test: # make sure the action works on a clean machine without building
@@ -12,11 +12,13 @@ jobs:
       fail-fast: false
       matrix:
         os:
-          - name: freebsd
+          - name: netbsd
             architecture: x86-64
-            version: '14.0'
+            version: '9.3'
             host: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
+
       - name: ${{ matrix.os.name }}
         uses: cross-platform-actions/action@v0.23.0
         env:
@@ -29,27 +31,15 @@ jobs:
           version: '${{ matrix.os.version }}'
           shell: bash
           run: |
-            sudo pkg install -y git
-            sudo pkg install -y cmake
-            sudo pkg install -y jpeg-turbo
-            sudo pkg install -y openjdk21
-            sudo pkg install -y lfortran
-            export FC=lfortran
-            export FFLAGS="--backend=llvm"
-            pkg info -l openjdk21
-            export JAVA_HOME=/usr/local/openjdk21
-            sudo mount -t fdescfs fdesc /dev/fd
-            sudo mount -t procfs proc /proc
+            sudo pkg_add install -y git
+            sudo pkg_add install -y cmake
+            sudo pkg_add install -y jpeg-turbo
             git clone https://github.com/HDFGroup/hdf4
             cd hdf4
             mkdir build
             cd build
             cmake \
-            -DBUILD_SHARED_LIBS:BOOL=OFF \
-            -DCMAKE_Fortran_FLAGS="--backend=llvm -fPIC" \
-            -DHDF4_BUILD_FORTRAN:BOOL=ON \
-            -DHDF4_BUILD_JAVA:BOOL=ON \
-            -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
-            -DSITE:STRING=j.lf.fbsd ..
+            -D CTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
+            -D SITE:STRING=nbsd ..
             ctest -T Build
             ctest -T Test
