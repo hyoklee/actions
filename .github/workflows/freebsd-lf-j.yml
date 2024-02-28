@@ -45,11 +45,11 @@ jobs:
             mkdir build
             cd build
             cmake \
-            -D BUILD_SHARED_LIBS=OFF \
-            -D CMAKE_Fortran_FLAGS="--backend=llvm" \
-            -D HDF4_BUILD_FORTRAN:BOOL=ON \
-            -D HDF4_BUILD_JAVA:BOOL=ON \
-            -D CTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
-            -D SITE:STRING=j.lf.fbsd ..
+            -DBUILD_SHARED_LIBS:BOOL=OFF \
+            -DCMAKE_Fortran_FLAGS="--backend=llvm -fPIC" \
+            -DHDF4_BUILD_FORTRAN:BOOL=ON \
+            -DHDF4_BUILD_JAVA:BOOL=ON \
+            -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
+            -DSITE:STRING=j.lf.fbsd ..
             ctest -T Build
             ctest -T Test
