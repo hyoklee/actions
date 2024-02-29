@@ -1,8 +1,8 @@
-name: cwin
+name: cwin hk
 
 on:
   push:
-    branches: [ main- ]
+    branches: [ main ]
 
 jobs:
   test:
@@ -14,7 +14,7 @@ jobs:
           packages: cmake gcc-fortran libjpeg-devel make zlib-devel
       - name: Run cmake
         run: |
-          git clone https://github.com/HDFGroup/hdf4
+          git clone https://github.com/hyoklee/hdf4
           cd hdf4
           export PATH=/usr/bin:$PATH
           mkdir build
