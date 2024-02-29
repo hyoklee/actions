@@ -9,17 +9,15 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Clean up PATH
-        uses: cygwin/cygwin-install-action@master
+        uses: cygwin/cygwin-install-action@v4r
         with:
-          packages: automake make libjpeg-devel libturbojpeg-devel libjpeg8 libtool
+          packages: automake make libjpeg-devel libtool
       - name: Test HDF4
         run: |
           git config --global core.autocrlf input
           git clone https://github.com/HDFGroup/hdf4
           cd hdf4
           ls /usr/lib
-          env
-          echo $CFLAGS
           autoreconf -fvi
           ./configure
           make
