@@ -9,11 +9,12 @@ jobs:
     runs-on: windows-latest
     steps:
       - name: Clean up PATH
-        uses: cygwin/cygwin-install-action@master
+        uses: cygwin/cygwin-install-action@v4
         with:
           packages: cmake gcc-fortran libjpeg-devel make ninja zlib-devel
       - name: Run cmake
         run: |
+          git config --global core.autocrlf input
           git clone https://github.com/HDFGroup/hdf4
           cd hdf4
           export PATH=/usr/bin:$PATH
