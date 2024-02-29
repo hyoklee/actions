@@ -19,6 +19,8 @@ jobs:
           cd hdf4
           ls /usr/lib
           autoreconf -fvi
-          ./configure CC=cc
+          echo $CC
+          echo $FC
+          ./configure --disable-shared
           make
-        shell: C:\cygwin\bin\bash.exe -o igncr -eo pipefail '{0}'
+        shell: C:\cygwin\bin\bash.exe -eo pipefail -o igncr '{0}'
