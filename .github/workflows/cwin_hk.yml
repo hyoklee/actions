@@ -14,8 +14,8 @@ jobs:
           packages: cmake gcc-fortran libjpeg-devel make zlib-devel
       - name: Run cmake
         run: |
-          git clone https://github.com/hyoklee/hdf4
-          cd hdf4
+          git clone https://github.com/hyoklee/h4
+          cd h4
           export PATH=/usr/bin:$PATH
           mkdir build
           cd build
