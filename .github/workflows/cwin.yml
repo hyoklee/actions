@@ -2,7 +2,7 @@ name: cwin
 
 on:
   push:
-    branches: [ main- ]
+    branches: [ main ]
 
 jobs:
   test:
@@ -11,7 +11,7 @@ jobs:
       - name: Clean up PATH
         uses: cygwin/cygwin-install-action@master
         with:
-          packages: cmake gcc-fortran libjpeg-devel make zlib-devel
+          packages: cmake gcc-fortran libjpeg-devel zlib-devel
       - name: Run cmake
         run: |
           git clone https://github.com/HDFGroup/hdf4
@@ -20,7 +20,8 @@ jobs:
           mkdir build
           cd build
           which cmake
-          cmake -D BUILD_SHARED_LIBS:BOOL=OFF \
+          cmake \
+           -D BUILD_SHARED_LIBS:BOOL=OFF \
            -D CTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
            -D SITE:STRING=cwin ..
           make -j
