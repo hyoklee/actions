@@ -11,16 +11,15 @@ jobs:
       - name: Clean up PATH
         uses: cygwin/cygwin-install-action@v4
         with:
-          packages: automake make gcc-g++ libjpeg-devel libtool
+          packages: automake make gcc-fortran libjpeg-devel libtool zlib-devel
       - name: Test HDF4
         run: |
           git config --global core.autocrlf input
           git clone https://github.com/HDFGroup/hdf4
           cd hdf4
-          ls /usr/lib
-          ls /usr/bin/
+          export PATH=/usr/bin:$PATH
           autoreconf -fvi
-          export CC=/usr/bin/gcc
+          export CC=/usr/bin/gcc FC=/usr/bin/gfortran
           ./configure
           make
         shell: C:\cygwin\bin\bash.exe -eo pipefail -o igncr '{0}'
