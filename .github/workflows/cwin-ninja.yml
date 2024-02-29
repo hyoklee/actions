@@ -1,8 +1,8 @@
-name: cwin sh
+name: cwin ninja
 
 on:
   push:
-    branches: [ main- ]
+    branches: [ main ]
 
 jobs:
   test:
@@ -11,7 +11,7 @@ jobs:
       - name: Clean up PATH
         uses: cygwin/cygwin-install-action@master
         with:
-          packages: cmake gcc-fortran libjpeg-devel make zlib-devel
+          packages: cmake gcc-fortran libjpeg-devel make ninja zlib-devel
       - name: Run cmake
         run: |
           git clone https://github.com/HDFGroup/hdf4
@@ -20,9 +20,11 @@ jobs:
           mkdir build
           cd build
           which cmake
-          cmake \
+          cmake -G Ninja \
+           -D BUILD_SHARED_LIBS:BOOL=OFF \
            -D CTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
            -D SITE:STRING=cwin ..
-          make -j
-          make test -j
+          ninja
+          ninja test
+          ctest -T Submit
         shell: C:\cygwin\bin\bash.exe -eo pipefail -o igncr '{0}'
