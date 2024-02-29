@@ -18,10 +18,9 @@ jobs:
           git clone https://github.com/HDFGroup/hdf4
           cd hdf4
           ls /usr/lib
-          echo $CFLAGS
-          export CFLAGS=-I/usr/include
+          env
           echo $CFLAGS
           autoreconf -fvi
-          ./configure --with-jpeg=/usr LDFLAGS="-L/usr/lib -ljpeg"
+          ./configure
           make
         shell: C:\cygwin\bin\bash.exe -o igncr -eo pipefail '{0}'
