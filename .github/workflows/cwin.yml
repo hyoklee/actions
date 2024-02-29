@@ -2,7 +2,7 @@ name: cwin
 
 on:
   push:
-    branches: [ main- ]
+    branches: [ main ]
 
 jobs:
   test:
@@ -14,6 +14,7 @@ jobs:
           packages: cmake gcc-fortran libjpeg-devel make zlib-devel
       - name: Run cmake
         run: |
+          git config --global core.autocrlf input
           git clone https://github.com/HDFGroup/hdf4
           cd hdf4
           export PATH=/usr/bin:$PATH
