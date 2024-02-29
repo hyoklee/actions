@@ -25,7 +25,5 @@ jobs:
            -D BUILD_SHARED_LIBS:BOOL=OFF \
            -D CTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
            -D SITE:STRING=cwin ..
-          ninja
-          ninja test
-          ctest -T Submit
+          ctest -D Experimental
         shell: C:\cygwin\bin\bash.exe -eo pipefail -o igncr '{0}'
