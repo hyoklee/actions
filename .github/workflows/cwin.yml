@@ -23,6 +23,7 @@ jobs:
           export PATH=/usr/bin:$PATH
           mkdir build
           cd build
-          cmake -D CTEST_DROP_SITE_INIT:STRING="my.cdash.org" -D SITE:STRING=cwin ..
-          ctest -D Experimental
+          which cmake
+          /usr/bin/cmake -D CTEST_DROP_SITE_INIT:STRING="my.cdash.org" -D SITE:STRING=cwin ..
+          /usr/bin/ctest -D Experimental
         shell: C:\cygwin\bin\bash.exe -eo pipefail -o igncr '{0}'
