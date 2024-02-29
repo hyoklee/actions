@@ -2,7 +2,7 @@ name: cwin auto
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main- ]
 
 jobs:
   test:

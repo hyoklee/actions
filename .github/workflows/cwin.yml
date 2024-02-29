@@ -2,7 +2,7 @@ name: cwin
 
 on:
   push:
-    branches: [ main- ]
+    branches: [ main ]
 
 jobs:
   test:
@@ -15,14 +15,14 @@ jobs:
       - name: Clean up PATH
         uses: cygwin/cygwin-install-action@master
         with:
-          packages: cmake gcc gcc-g++
+          packages: cmake gcc-fortran libjpeg-devel zlib-devel
       - name: Run cmake
         run: |
           git clone https://github.com/HDFGroup/hdf4
           cd hdf4
+          export PATH=/usr/bin:$PATH
           mkdir build
           cd build
-          $((Get-Command cmake.exe).Path -eq 'C:\cygwin\bin\cmake.exe') -or $(throw (Get-Command cmake.exe))
-          cmake.exe -D CTEST_DROP_SITE_INIT:STRING="my.cdash.org" -D SITE:STRING=cwin ..
-          ctest.exe -D Experimental
-
+          cmake -D CTEST_DROP_SITE_INIT:STRING="my.cdash.org" -D SITE:STRING=cwin ..
+          ctest -D Experimental
+        shell: C:\cygwin\bin\bash.exe -eo pipefail -o igncr '{0}'
