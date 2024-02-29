@@ -11,7 +11,7 @@ jobs:
       - name: Clean up PATH
         uses: cygwin/cygwin-install-action@v4
         with:
-          packages: automake make libjpeg-devel libtool
+          packages: automake make gcc libjpeg-devel libtool
       - name: Test HDF4
         run: |
           git config --global core.autocrlf input
@@ -19,8 +19,7 @@ jobs:
           cd hdf4
           ls /usr/lib
           autoreconf -fvi
-          echo $CC
-          echo $FC
-          ./configure --disable-shared
+          export CC=/usr/bin/gcc
+          ./configure
           make
         shell: C:\cygwin\bin\bash.exe -eo pipefail -o igncr '{0}'
