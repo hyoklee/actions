@@ -1,4 +1,4 @@
-name: cwin
+name: cwin h5
 
 on:
   push:
@@ -15,12 +15,12 @@ jobs:
       - name: Run cmake
         run: |
           git config --global core.autocrlf input
-          git clone https://github.com/HDFGroup/hdf4
-          cd hdf4
+          git clone https://github.com/HDFGroup/hdf5
+          cd hdf5
           export PATH=/usr/bin:$PATH
           mkdir build
           cd build
-          which cmake
+          which perl
           cmake -G Ninja \
            -D BUILD_SHARED_LIBS:BOOL=OFF \
            -D CTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
