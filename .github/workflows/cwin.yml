@@ -21,7 +21,7 @@ jobs:
           mkdir build
           cd build
           which perl
-          cmake -G Ninja
+          cmake -G Ninja \
            -D CMAKE_SYSTEM_NAME="Linux" \
            -D BUILD_SHARED_LIBS:BOOL=OFF \
            -D CTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
