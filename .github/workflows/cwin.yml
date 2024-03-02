@@ -11,7 +11,7 @@ jobs:
       - name: Clean up PATH
         uses: cygwin/cygwin-install-action@master
         with:
-          packages: cmake gcc-fortran libjpeg-devel make zlib-devel
+          packages: cmake gcc-fortran libjpeg-devel make ninja perl zlib-devel
       - name: Run cmake
         run: |
           git config --global core.autocrlf input
