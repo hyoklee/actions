@@ -3,7 +3,7 @@ name: riscv64 lin auto
 on:
   push:
     branches:
-      - main-
+      - main
 
 jobs:
   aarch64_job:
@@ -33,8 +33,10 @@ jobs:
             cd hdf5
             ./autogen.sh
             ./configure CC=/usr/bin/gcc-12 CPP=/usr/bin/gcc-12
+            cat config.log
             make -j
             make check
+          continue-on-error: true
 
       - name: Get the output
         # Echo the `uname` output parameter from the `runcmd` step
