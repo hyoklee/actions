@@ -19,7 +19,7 @@ jobs:
           git clone --quiet https://github.com/HDFGroup/hdf4
           cd hdf4
           ./autogen.sh
-          ./configure --prefix=/tmp --enable-fortran --with-jpeg=/opt/homebrew/opt/jpeg
+          ./configure --prefix=/tmp --with-jpeg=/opt/homebrew/opt/jpeg
           make -j
           make check -j
           make install
