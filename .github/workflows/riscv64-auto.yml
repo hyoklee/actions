@@ -29,10 +29,11 @@ jobs:
           run: |
             echo ::set-output name=uname::$(uname -a)
             ls /usr/bin/
-            git clone https://github.com/HDFGroup/hdf5
+            git clone --quiet https://github.com/HDFGroup/hdf5
             cd hdf5
+            export CFLGAS="-v -fPIC"
             ./autogen.sh
-            ./configure CC=/usr/bin/gcc-12 CPP=/usr/bin/gcc-12
+            ./configure --verbose CC=/usr/bin/gcc-12 CPP=/usr/bin/gcc-12
             cat config.log
             make -j
             make check
