@@ -1,4 +1,4 @@
-name: mac14 auto
+name: mac14 auto jt
 
 on:
   workflow_dispatch:
@@ -12,14 +12,14 @@ jobs:
     steps:
       - name: Install Dependencies
         run: |
-          brew install autoconf automake jpeg libaec libtool
+          brew install autoconf automake jpeg-turbo libaec libtool
       - name: Test HDF4
         run: |
           brew info jpeg-turbo
           git clone --quiet https://github.com/HDFGroup/hdf4
           cd hdf4
           ./autogen.sh
-          ./configure --prefix=/tmp --with-jpeg=/opt/homebrew/opt/jpeg
+          ./configure --prefix=/tmp --with-jpeg=/opt/homebrew/opt/jpeg-turbo
           make -j
           make check -j
           make install
