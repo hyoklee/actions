@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    name: mac14 auto jt
+    name: mac14 auto
     runs-on: macos-14
     steps:
       - name: Install Dependencies
