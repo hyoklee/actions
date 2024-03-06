@@ -1,0 +1,26 @@
+name: mac14 auto jt
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    name: mac14 auto jt
+    runs-on: macos-14
+    steps:
+      - name: Install Dependencies
+        run: |
+          brew install autoconf automake jpeg-turbo libaec libtool
+      - name: Test HDF4
+        run: |
+          brew info jpeg-turbo
+          git clone --quiet https://github.com/HDFGroup/hdf4
+          cd hdf4
+          ./autogen.sh
+          ./configure --prefix=/tmp --enable-fortran --with-jpeg=/opt/homebrew/opt/jpeg
+          make -j
+          make check -j
+          make install
+          make uninstall
