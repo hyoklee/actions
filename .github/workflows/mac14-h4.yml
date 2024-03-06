@@ -1,0 +1,26 @@
+name: mac14
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    name: mac14
+    runs-on: macos-14
+    steps:
+      - name: Install Dependencies
+        run: |
+          brew install ninja
+      - name: Test HDF4
+        run: |
+          git clone --quiet https://github.com/HDFGroup/hdf4
+          cd hdf4
+          mkdir build
+          cd build
+          cmake -G Ninja \
+          -D BUILD_SHARED_LIBS:BOOL=OFF \
+          ..
+          ctest -T Build --output-on-error -j
+          ctest -T Test --output-on-error -j
