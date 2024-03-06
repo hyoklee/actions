@@ -2,7 +2,7 @@ name: s390x h5 auto
 
 on:
   push:
-    branches: [ main- ]
+    branches: [ main ]
 
 jobs:
   aarch64_job:
@@ -27,7 +27,7 @@ jobs:
           run: |
             echo ::set-output name=uname::$(uname -a)
             git clone https://github.com/HDFGroup/hdf5
-            cd hdf4
+            cd hdf5
             ./autogen.sh
             ./configure
             make
