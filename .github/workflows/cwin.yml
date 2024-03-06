@@ -2,7 +2,7 @@ name: cwin h5
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main- ]
 
 jobs:
   test:
