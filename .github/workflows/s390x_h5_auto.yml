@@ -1,0 +1,38 @@
+name: s390x h5 auto
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  aarch64_job:
+    # The host should always be Linux
+    runs-on: ubuntu-latest
+    name: Build on ubuntu-latest aarch64
+    steps:
+      - uses: uraimo/run-on-arch-action@v2
+        name: Run commands
+        id: runcmd
+        with:
+          arch: s390x
+          distro: ubuntu_latest
+
+          # Not required, but speeds up builds by storing container images in
+          # a GitHub package registry.
+          githubToken: ${{ github.token }}
+          install: |
+            apt-get update -q -y
+            apt-get install -q -y git cmake libjpeg-dev zlib1g zlib1g-dev
+            apt-get install -q -y gfortran g++  yacc flex libtool autotools-dev
+          run: |
+            echo ::set-output name=uname::$(uname -a)
+            git clone https://github.com/HDFGroup/hdf5
+            cd hdf4
+            ./autogen.sh
+            ./configure
+            make
+
+      - name: Get the output
+        # Echo the `uname` output parameter from the `runcmd` step
+        run: |
+          echo "The uname output was ${{ steps.runcmd.outputs.uname }}"
