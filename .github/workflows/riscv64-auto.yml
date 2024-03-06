@@ -28,10 +28,11 @@ jobs:
             apt-get install -q -y autoconf automake libtool libtool-bin
           run: |
             echo ::set-output name=uname::$(uname -a)
+            ls /usr/bin/
             git clone https://github.com/HDFGroup/hdf5
             cd hdf5
             ./autogen.sh
-            ./configure
+            ./configure CC=/usr/bin/gcc-12 CPP=/usr/bin/gcc-12
             make -j
             make check
 
