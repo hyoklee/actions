@@ -3,7 +3,7 @@ name: riscv64 lin
 on:
   push:
     branches:
-      - main
+      - main-
 
 jobs:
   aarch64_job:
