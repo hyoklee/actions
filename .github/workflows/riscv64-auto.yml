@@ -31,7 +31,7 @@ jobs:
             git clone https://github.com/HDFGroup/hdf5
             cd hdf5
             ./autogen.sh
-            ./configure --prefix=/usr --disable-static --disable-sharedlib-rpath --enable-build-mode=production
+            ./configure
             make -j
             make check
 
