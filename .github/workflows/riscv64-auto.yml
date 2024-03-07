@@ -1,4 +1,4 @@
-name: riscv64 lin auto-
+name: riscv64 lin auto
 
 on:
   push:
@@ -24,11 +24,11 @@ jobs:
           githubToken: ${{ github.token }}
           install: |
             apt-get update -q -y
-            apt-get install -q -y git
+            apt-get install -q -y git g++
             apt-get install -q -y autoconf automake libtool libtool-bin
           run: |
             echo ::set-output name=uname::$(uname -a)
-            ls -l /usr/bin/cc
+            ls -l /usr/bin/
             git clone --quiet https://github.com/HDFGroup/hdf5
             cd hdf5
             export CFLGAS="-v -fPIC -static"
