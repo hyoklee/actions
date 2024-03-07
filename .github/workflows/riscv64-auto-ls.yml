@@ -1,4 +1,4 @@
-name: riscv64 lin auto-
+name: riscv64 lin auto ls
 
 on:
   push:
@@ -28,16 +28,9 @@ jobs:
             apt-get install -q -y autoconf automake libtool libtool-bin
           run: |
             echo ::set-output name=uname::$(uname -a)
-            ls -l /usr/bin/cc
-            git clone --quiet https://github.com/HDFGroup/hdf5
-            cd hdf5
-            export CFLGAS="-v -fPIC -static"
-            export CPPFLGAS="-v -fPIC -static"
-            ./autogen.sh
-            ./configure --enable-static --disable-shared --verbose
-            cat config.log
-            make -j
-            make check
+            ls -l /usr/bin/
+            ls -l /lib
+            ls -l /etc/alternatives/
           continue-on-error: true
 
       - name: Get the output
