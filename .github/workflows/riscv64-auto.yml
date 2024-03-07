@@ -31,9 +31,9 @@ jobs:
             ls /usr/bin/
             git clone --quiet https://github.com/HDFGroup/hdf5
             cd hdf5
-            export CFLGAS="-v -fPIC"
+            export CFLGAS="-v -fPIC -static"
             autoreconf -fvi
-            ./configure CC=/usr/bin/cc AR=/usr/bin/gcc-ar-11 CPP=/usr/bin/cpp --disable-cxx  --verbose 
+            ./configure CC=/usr/bin/cc AR=/usr/bin/gcc-ar-11 CPP=/usr/bin/cpp --disable-cxx  --disable-shared --verbose 
             cat config.log
             make -j
             make check
