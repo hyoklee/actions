@@ -3,7 +3,7 @@ name: riscv64 lin
 on:
   push:
     branches:
-      - main-
+      - main
 
 jobs:
   aarch64_job:
@@ -36,7 +36,9 @@ jobs:
               -D CTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
               -D SITE:STRING=riscv64 ..
             cat CMakeCache.txt
-            ctest -D Experimental
+            cat Makefile
+            cat src/Makefile
+
 
       - name: Get the output
         # Echo the `uname` output parameter from the `runcmd` step

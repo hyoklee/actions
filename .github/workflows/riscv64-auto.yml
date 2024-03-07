@@ -32,8 +32,8 @@ jobs:
             git clone --quiet https://github.com/HDFGroup/hdf5
             cd hdf5
             export CFLGAS="-v -fPIC"
-            ./autogen.sh
-            ./configure --verbose --disable-cxx CC=/usr/bin/cc AR=/usr/bin/gcc-ar-11 
+            auoreconf -fvi
+            ./configure CC=/usr/bin/cc AR=/usr/bin/gcc-ar-11 CPP=/usr/bin/cpp --disable-cxx  --verbose 
             cat config.log
             make -j
             make check
