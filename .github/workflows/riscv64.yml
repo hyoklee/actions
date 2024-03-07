@@ -3,7 +3,7 @@ name: riscv64 lin
 on:
   push:
     branches:
-      - main
+      - main-
 
 jobs:
   aarch64_job:
@@ -36,8 +36,10 @@ jobs:
               -D CTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
               -D SITE:STRING=riscv64 ..
             cat CMakeCache.txt
-            cat Makefile
-            cat src/Makefile
+            cat CMakeFiles/Makefile2
+            cat CMakeFiles/Experimental.dir/build.make
+            cat src/CMakeFiles/hdf5-static.dir/build.make
+
 
 
       - name: Get the output

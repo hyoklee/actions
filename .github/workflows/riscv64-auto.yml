@@ -32,7 +32,7 @@ jobs:
             git clone --quiet https://github.com/HDFGroup/hdf5
             cd hdf5
             export CFLGAS="-v -fPIC"
-            auoreconf -fvi
+            autoreconf -fvi
             ./configure CC=/usr/bin/cc AR=/usr/bin/gcc-ar-11 CPP=/usr/bin/cpp --disable-cxx  --verbose 
             cat config.log
             make -j
