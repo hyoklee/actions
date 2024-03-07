@@ -28,17 +28,14 @@ jobs:
             apt-get install -q -y autoconf automake libtool libtool-bin
           run: |
             echo ::set-output name=uname::$(uname -a)
-            ls -l /usr/bin/
             git clone --quiet https://github.com/HDFGroup/hdf5
             cd hdf5
             export CFLGAS="-v -fPIC -static"
             export CPPFLGAS="-v -fPIC -static"
             ./autogen.sh
-            ./configure --enable-static --disable-shared --verbose
-            cat config.log
+            ./configure --enable-static --disable-shared --disable-dependency-tracking --verbose 
             make -j
             make check
-          continue-on-error: true
 
       - name: Get the output
         # Echo the `uname` output parameter from the `runcmd` step
