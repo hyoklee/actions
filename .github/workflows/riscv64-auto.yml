@@ -28,12 +28,13 @@ jobs:
             apt-get install -q -y autoconf automake libtool libtool-bin
           run: |
             echo ::set-output name=uname::$(uname -a)
-            ls /usr/bin/
+            ls -l /usr/bin/cc
             git clone --quiet https://github.com/HDFGroup/hdf5
             cd hdf5
             export CFLGAS="-v -fPIC -static"
-            autoreconf -fvi
-            ./configure CC=/usr/bin/cc AR=/usr/bin/gcc-ar-11 CPP=/usr/bin/cpp --disable-cxx  --disable-shared --verbose 
+            export CPPFLGAS="-v -fPIC -static"
+            ./autogen.sh
+            ./configure --enable-static --disable-shared --verbose
             cat config.log
             make -j
             make check
