@@ -16,7 +16,6 @@ jobs:
       - name: Test HDF4
         run: |
           git clone --quiet  --single-branch --branch hdf_4_2_16-2 https://github.com/HDFGroup/hdf4
-
           cd hdf4
           mkdir build
           cd build
