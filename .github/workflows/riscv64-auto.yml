@@ -30,10 +30,8 @@ jobs:
             echo ::set-output name=uname::$(uname -a)
             git clone --quiet https://github.com/HDFGroup/hdf5
             cd hdf5
-            export CFLGAS="-v -fPIC -static"
-            export CPPFLGAS="-v -fPIC -static"
             ./autogen.sh
-            ./configure --enable-static --disable-shared --disable-dependency-tracking --with-szlib=no --verbose 
+            ./configure 
             make -j
             make check
 
