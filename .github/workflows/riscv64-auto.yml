@@ -3,7 +3,7 @@ name: riscv64 lin auto
 on:
   push:
     branches:
-      - main-
+      - main
 
 jobs:
   aarch64_job:
@@ -33,7 +33,7 @@ jobs:
             cd hdf5
             export CFLGAS="-v -fPIC"
             ./autogen.sh
-            ./configure --verbose CC=/usr/bin/gcc-12 CPP=/usr/bin/gcc-12
+            ./configure --verbose CC=/usr/bin/cc AR=/usr/bin/gcc-ar-11
             cat config.log
             make -j
             make check
