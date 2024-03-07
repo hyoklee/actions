@@ -19,7 +19,7 @@ jobs:
           git clone --quiet  --single-branch --branch hdf_4_2_16-2 https://github.com/HDFGroup/hdf4
           cd hdf4
           ./autogen.sh
-          ./configure --prefix=/tmp --with-jpeg=/opt/homebrew/opt/jpeg-turbo
+          ./configure --prefix=/tmp --with-jpeg=/opt/homebrew/opt/jpeg-turbo  --enable-hdf4-xdr 
           make -j
           make check -j
           make install
