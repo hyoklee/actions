@@ -2,7 +2,7 @@ name: cwin auto
 
 on:
   push:
-    branches: [ main- ]
+    branches: [ main ]
 
 jobs:
   test:
@@ -15,11 +15,14 @@ jobs:
       - name: Test HDF4
         run: |
           git config --global core.autocrlf input
-          git clone https://github.com/HDFGroup/hdf4
-          cd hdf4
+          git clone https://github.com/HDFGroup/hdf5
+          cd hdf5
           export PATH=/usr/bin:$PATH
-          autoreconf -fvi
           export CC=/usr/bin/gcc FC=/usr/bin/gfortran
+          ./autogen.sh
           ./configure
           make
+          make check
+          make install
+          make uninstall
         shell: C:\cygwin\bin\bash.exe -eo pipefail -o igncr '{0}'
