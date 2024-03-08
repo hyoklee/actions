@@ -1,9 +1,9 @@
-name: NVHPC Autotools fortran parallel NPROC
+name: NVHPC 24.1
 
 on:
   push:
     branches:
-      - main-
+      - main
 
 jobs:
   build:
@@ -20,23 +20,23 @@ jobs:
           curl https://developer.download.nvidia.com/hpc-sdk/ubuntu/DEB-GPG-KEY-NVIDIA-HPC-SDK | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-hpcsdk-archive-keyring.gpg
           echo 'deb [signed-by=/usr/share/keyrings/nvidia-hpcsdk-archive-keyring.gpg] https://developer.download.nvidia.com/hpc-sdk/ubuntu/amd64 /' | sudo tee /etc/apt/sources.list.d/nvhpc.list
           sudo apt-get update -y
-          sudo apt-get install -y nvhpc-23-9          
+          sudo apt-get install -y nvhpc-24-1          
       - name: Test HDF5
         env:
           NPROCS: 2      
         run: |
           export NVHPCSDK=/opt/nvidia/hpc_sdk
-          export OMPI_CXX=/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/compilers/bin/nvc++
-          export OMPI_CC=/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/compilers/bin/nvc
-          export OMPI_FC=/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/compilers/bin/nvfortran
-          export LD_LIBRARY_PATH=/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/compilers/lib
-          export PATH=/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/comm_libs/openmpi4/bin:/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/compilers/bin:$PATH
+          export OMPI_CXX=/opt/nvidia/hpc_sdk/Linux_x86_64/24.1/compilers/bin/nvc++
+          export OMPI_CC=/opt/nvidia/hpc_sdk/Linux_x86_64/24.1/compilers/bin/nvc
+          export OMPI_FC=/opt/nvidia/hpc_sdk/Linux_x86_64/24.1/compilers/bin/nvfortran
+          export LD_LIBRARY_PATH=/opt/nvidia/hpc_sdk/Linux_x86_64/24.1/compilers/lib
+          export PATH=/opt/nvidia/hpc_sdk/Linux_x86_64/24.1/comm_libs/openmpi4/bin:/opt/nvidia/hpc_sdk/Linux_x86_64/24.1/compilers/bin:$PATH
           export DESTDIR=/tmp
           env
           git clone https://github.com/HDFGroup/hdf5.git
           cd hdf5
           ./autogen.sh
-          ./configure CC=/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/comm_libs/openmpi4/bin/mpicc FC=/opt/nvidia/hpc_sdk/Linux_x86_64/23.9/comm_libs/openmpi4/bin/mpifort FCFLAGS="-fPIC -fortranlibs" --enable-fortran --enable-shared --enable-parallel
+          ./configure CC=/opt/nvidia/hpc_sdk/Linux_x86_64/24.1/comm_libs/openmpi4/bin/mpicc FC=/opt/nvidia/hpc_sdk/Linux_x86_64/24.1/comm_libs/openmpi4/bin/mpifort FCFLAGS="-fPIC -fortranlibs" --enable-fortran --enable-shared --enable-parallel
           cat config.log
           make -j
           make check -j
