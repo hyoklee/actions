@@ -21,7 +21,7 @@ jobs:
           path: .
       - name: Dowload LocalPreferences
         run: |
-          curl https://https://raw.githubusercontent.com/hyoklee/HDF5.jl/master/LocalPreferences.toml
+          curl https://raw.githubusercontent.com/hyoklee/HDF5.jl/master/LocalPreferences.toml
           ls
       - uses: julia-actions/julia-buildpkg@latest
       - uses: julia-actions/julia-runtest@latest
