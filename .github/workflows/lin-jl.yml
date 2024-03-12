@@ -3,7 +3,7 @@ name: lin jl
 on:
   push:
     branches:
-      - main
+      - main-
 
 permissions:
   contents: read
