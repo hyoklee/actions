@@ -1,4 +1,4 @@
-name: lin jl
+name: lin auto jl
 
 on:
   push:
@@ -20,12 +20,10 @@ jobs:
       - name: Install HDF5
         run: |
           cd hdf5
-          mkdir build
-          cd build
-          cmake -DCMAKE_INSTALL_PREFIX=/tmp ..
+          ./autogen.sh
+          ./configure --prefix=/tmp
           make -j
           make install
-          cd ..
 
       - uses: julia-actions/setup-julia@latest
         with:
