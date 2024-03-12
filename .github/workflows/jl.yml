@@ -16,15 +16,15 @@ jobs:
           repository: HDFGroup/hdf5
           path: hdf5
       - name: Install HDF5
-          run: |
-            cd hdf5
-            ./autogen.sh
-            ./configure --prefix=/tmp
-            make
-            make check
-            make install
-            ls /tmp
-            cd ..
+        run: |
+          cd hdf5
+          ./autogen.sh
+          ./configure --prefix=/tmp
+          make
+          make check
+          make install
+          ls /tmp
+          cd ..
       - uses: julia-actions/setup-julia@latest
         with:
           version: '1.6'
