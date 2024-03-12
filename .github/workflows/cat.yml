@@ -1,0 +1,17 @@
+name: cat
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  cat:
+    name: cat
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build LocalPreferences.toml
+        run: |
+          echo '[HDF5]' >> LocalPreferences.toml
+          echo 'libhdf5 = "/tmp/lib/libhdf5.so"' >> LocalPreferences.toml
+          echo 'libhdf5_hl = "/tmp/lib/libhdf5_hl.so"'  >> LocalPreferences.toml
+          cat LocalPreferences.toml
