@@ -3,7 +3,7 @@ name: cat
 on:
   push:
     branches:
-      - main
+      - main-
 jobs:
   cat:
     name: cat
