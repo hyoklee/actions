@@ -20,8 +20,8 @@ jobs:
           cd hdf5
           ./autogen.sh
           ./configure --prefix=/tmp
-          make
-          make check
+          make -j
+          make -j check
           make install
           ls /tmp
           cd ..
