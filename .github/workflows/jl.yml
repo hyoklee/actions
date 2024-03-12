@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          repository: my-org/my-tools
+          repository: JuliaIO/HDF5.jl
           path: .
       - uses: julia-actions/setup-julia@latest
         with:
