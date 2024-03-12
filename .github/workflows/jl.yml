@@ -19,7 +19,6 @@ jobs:
         with:
           version: '1.6'
           arch: 'x64'
-      - uses: julia-actions/julia-buildpkg@latest
       - uses: julia-actions/julia-runtest@latest
         env:
           JULIA_DEBUG: Main
