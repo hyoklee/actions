@@ -3,7 +3,7 @@ name: lin gcc_min
 on:
   push:
     branches:
-      - main
+      - main-
 jobs:
   gcc_min:
     name: gcc_min
