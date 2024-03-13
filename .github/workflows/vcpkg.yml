@@ -12,9 +12,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt update
-          sudo apt install -y mingw-w64 \
-          libmingw-w64-dev \
-          libmingw-w64-sdl2-dev
+          sudo apt install -y mingw-w64 mingw-w64-tools
       - name: Install vcpkg
         run: |
           git clone https://github.com/microsoft/vcpkg
