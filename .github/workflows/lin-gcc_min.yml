@@ -23,9 +23,4 @@ jobs:
           -D CTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
           -D SITE:STRING=gcc_min.lin \
            ..
-          ctest -T Build --output-on-error -j
-          ctest -T Test --output-on-error -j
-          if [[ $? -ne 0 ]]; then
-            ctest -T Submit
-          fi
-        continue-on-error: true
+          ctest -D Experimental
