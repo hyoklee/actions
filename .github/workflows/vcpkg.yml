@@ -20,5 +20,6 @@ jobs:
           cd vcpkg
           mkdir downloads
           cd downloads
-	  curl -O https://gamma.hdfgroup.org/ftp/pub/outgoing/joe/HDFGroup-hdf5-hdf5-1_14_4.tar.gz
+          curl -O https://gamma.hdfgroup.org/ftp/pub/outgoing/joe/HDFGroup-hdf5-hdf5-1_14_4.tar.gz
+          cd ..
           ./vcpkg install hdf5:x64-mingw-dynamic
