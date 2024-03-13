@@ -14,4 +14,4 @@ jobs:
           git clone https://github.com/microsoft/vcpkg
           ./vcpkg/bootstrap-vcpkg.sh
           cd vcpkg
-          ./vcpkg install hdf5:x64-mingw-dynamic
+          ./vcpkg install hdf5[core]:x64-mingw-dynamic
