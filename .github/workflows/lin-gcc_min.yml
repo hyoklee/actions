@@ -1,0 +1,30 @@
+name: lin gcc_min
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  gcc_min:
+    name: gcc_min
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y mingw-w64 mingw-w64-tools wine64
+      - name: Test HDF5
+        run: |
+          git clone https://github.com/HDFGroup/hdf5
+          cd hdf5
+          mkdir build
+          cd build
+          cmake --toolchain ../config/toolchain/mingw64.cmake \
+          -D CTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
+          -D SITE:STRING=gcc_min.lin \
+           ..
+          ctest -T Build
+          ctest -T Test --output-on-error -j
+          if [[ $? -ne 0 ]]; then
+            ctest -T Submit
+          fi
