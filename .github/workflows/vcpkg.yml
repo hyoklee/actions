@@ -3,7 +3,7 @@ name: vcpkg hdf5 1.14.4 snapshot
 on:
   push:
     branches:
-      - main
+      - main-
 jobs:
   vcpkg:
     name: vcpkg
