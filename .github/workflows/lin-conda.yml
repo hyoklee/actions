@@ -1,4 +1,4 @@
-name: mac14 lf sf
+name: lin conda
 
 on:
   workflow_dispatch:
@@ -7,27 +7,17 @@ on:
 
 jobs:
   build:
-    name: mac14 lf
-    runs-on: macos-latest
+    name: lin conda
+    runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4.1.1
       - uses: conda-incubator/setup-miniconda@v3
         with:
          auto-activate-base: true
          activate-environment: ""
-      - uses: actions/checkout@v4.1.1
-      - name: Install Dependencies
+      - name: Test HDF5
         run: |
-          brew upgrade
-          brew install libaec llvm mpich
-      - name: Build Ninja
-        run: |
-          export PATH=/opt/homebrew/opt/llvm/bin:$PATH
-          export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
-          export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
-          export CC=$(brew --prefix llvm)/bin/clang
-          brew tap fortran-lang/homebrew-fortran
-          brew install lfortran
-          export FC=/opt/homebrew/bin/lfortran
+          conda install -v lfortran -c conda-forge
           clang --version
           which lfortran
           lfortran --version
@@ -58,7 +48,7 @@ jobs:
           -DHDF5_TEST_VFD:BOOL=ON \
           -DMPIEXEC_MAX_NUMPROCS:STRING=3 \
           -DUSE_SANITIZER:STRING='Address;Memory;MemoryWithOrigins;Undefined;Thread;Leak' \
-          -DSITE:STRING='mac14' \
+          -DSITE:STRING='lin' \
           ..
           ctest -T Build --output-on-error -j
           ctest -T Test --output-on-error -j
