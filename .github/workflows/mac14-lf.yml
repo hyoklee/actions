@@ -1,0 +1,60 @@
+name: mac14 lf sf
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    name: mac14 lf
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4.1.1
+      - name: Install Dependencies
+        run: |
+          brew install cmake curl libaec llvm mpich openssl
+          brew tap fortran-lang/homebrew-fortran
+          brew install lfortran
+      - name: Build Ninja
+        run: |
+          export PATH=/opt/homebrew/opt/llvm/bin:$PATH
+          export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
+          export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
+          export CC=$(brew --prefix llvm)/bin/clang
+          export FC=/opt/homebrew/bin/lfortran
+          clang --version
+          which lfortran
+          lfortran --version
+          pwd
+          ls /usr/local/bin/
+          git clone https://github.com/HDFGroup/hdf5
+          cd hdf5
+          mkdir build
+          cd build
+          cmake \
+          -DBUILDNAME:STRING=1f.h.j.mpich.sf.sa.cd \
+          -DBUILD_SHARED_LIBS=ON \
+          -DCMAKE_BUILD_TYPE=Release \
+          -DCMAKE_TOOLCHAIN_FILE=config/toolchain/clang.cmake \
+          -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
+          -DHDF5_BUILD_CPP_LIB:BOOL=OFF \
+          -DHDF5_BUILD_JAVA=ON \
+          -DHDF5_BUILD_FORTRAN:BOOL=ON \
+          -DHDF5_BUILD_HL_LIB:BOOL=ON \
+          -DHDF5_ENABLE_ALL_WARNINGS=ON \
+          -DHDF5_ENABLE_ANALYZER_TOOLS:BOOL=ON \
+          -DHDF5_ENABLE_PARALLEL:BOOL=ON \
+          -DHDF5_ENABLE_THREADSAFE:BOOL=OFF \
+          -DHDF5_ENABLE_SANITIZERS:BOOL=ON \
+          -DHDF5_ENABLE_SUBFILING_VFD:BOOL=ON \
+          -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF \
+          -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF \
+          -DHDF5_TEST_VFD:BOOL=ON \
+          -DMPIEXEC_MAX_NUMPROCS:STRING=3 \
+          -DUSE_SANITIZER:STRING='Address;Memory;MemoryWithOrigins;Undefined;Thread;Leak' \
+          -DSITE:STRING='mac14' \
+          ..
+          ctest -T Build --output-on-error -j
+          ctest -T Test --output-on-error -j
+          ctest -T Submit
