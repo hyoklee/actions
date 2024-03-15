@@ -15,14 +15,14 @@ jobs:
         run: |
           brew upgrade
           brew install libaec llvm mpich
-          brew tap fortran-lang/homebrew-fortran
-          brew install lfortran
       - name: Build Ninja
         run: |
           export PATH=/opt/homebrew/opt/llvm/bin:$PATH
           export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
           export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
           export CC=$(brew --prefix llvm)/bin/clang
+          brew tap fortran-lang/homebrew-fortran
+          brew install lfortran
           export FC=/opt/homebrew/bin/lfortran
           clang --version
           which lfortran
