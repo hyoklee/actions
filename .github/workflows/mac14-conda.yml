@@ -11,16 +11,12 @@ jobs:
     runs-on: macos-14
     steps:
       - uses: actions/checkout@v4.1.1
-      - name: Install Dependencies
-        run: |
-          brew upgrade
-          brew install libaec llvm
+      - uses: conda-incubator/setup-miniconda@v3
+        with:
+         auto-activate-base: true
+         activate-environment: ""
       - name: Build Ninja
         run: |
-          export PATH=/opt/homebrew/opt/llvm/bin:$PATH
-          export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
-          export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
-          export CC=$(brew --prefix llvm)/bin/clang
           conda install lfortran -c conda-forge
           clang --version
           which lfortran
