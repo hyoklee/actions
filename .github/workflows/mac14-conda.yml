@@ -3,7 +3,7 @@ name: mac14 conda
 on:
   workflow_dispatch:
   push:
-    branches: [ main- ]
+    branches: [ main ]
 
 jobs:
   build:
@@ -38,24 +38,24 @@ jobs:
           mkdir build
           cd build
           cmake \
-          -DBUILDNAME:STRING=1f.h.f.j.ompi.sf.sa.cd \
-          -DBUILD_SHARED_LIBS=ON \
+          -DBUILDNAME:STRING=1f.f.cd \
+          -DBUILD_SHARED_LIBS=OFF \
           -DCMAKE_BUILD_TYPE=Release \
           -DCMAKE_TOOLCHAIN_FILE=config/toolchain/clang.cmake \
           -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
           -DHDF5_BUILD_CPP_LIB:BOOL=OFF \
-          -DHDF5_BUILD_JAVA=ON \
+          -DHDF5_BUILD_JAVA=OFF \
           -DHDF5_BUILD_FORTRAN:BOOL=ON \
-          -DHDF5_BUILD_HL_LIB:BOOL=ON \
+          -DHDF5_BUILD_HL_LIB:BOOL=OFF \
           -DHDF5_ENABLE_ALL_WARNINGS=ON \
-          -DHDF5_ENABLE_ANALYZER_TOOLS:BOOL=ON \
-          -DHDF5_ENABLE_PARALLEL:BOOL=ON \
+          -DHDF5_ENABLE_ANALYZER_TOOLS:BOOL=OFF \
+          -DHDF5_ENABLE_PARALLEL:BOOL=OFF \
           -DHDF5_ENABLE_THREADSAFE:BOOL=OFF \
-          -DHDF5_ENABLE_SANITIZERS:BOOL=ON \
-          -DHDF5_ENABLE_SUBFILING_VFD:BOOL=ON \
+          -DHDF5_ENABLE_SANITIZERS:BOOL=OFF \
+          -DHDF5_ENABLE_SUBFILING_VFD:BOOL=OFF \
           -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF \
           -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF \
-          -DHDF5_TEST_VFD:BOOL=ON \
+          -DHDF5_TEST_VFD:BOOL=OFF \
           -DMPIEXEC_MAX_NUMPROCS:STRING=3 \
           -DUSE_SANITIZER:STRING='Address;Undefined' \
           -DSITE:STRING='mac14' \
