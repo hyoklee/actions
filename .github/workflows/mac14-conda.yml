@@ -18,13 +18,14 @@ jobs:
       - name: Install Dependencies
         run: |
           brew upgrade
-          brew install openmpi
+          brew install llvm openmpi
       - uses: conda-incubator/setup-miniconda@v3
         with:
          auto-activate-base: true
          activate-environment: ""
       - name: Install lfortran
         run: |
+          export CC=$(brew --prefix llvm)/bin/clang
           conda install -y lfortran -c conda-forge
           which lfortran
           lfortran --version
