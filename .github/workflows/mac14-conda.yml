@@ -18,7 +18,7 @@ jobs:
       - name: Install Dependencies
         run: |
           brew upgrade
-          brew install llvm openmpi
+          brew install llvm ninja openmpi
       - uses: conda-incubator/setup-miniconda@v3
         with:
          auto-activate-base: true
@@ -45,7 +45,7 @@ jobs:
           cd hdf5
           mkdir build
           cd build
-          cmake \
+          cmake -G Ninja \
           -DBUILDNAME:STRING=1f.f.cd \
           -DBUILD_SHARED_LIBS=OFF \
           -DCMAKE_BUILD_TYPE=Release \
@@ -68,6 +68,4 @@ jobs:
           -DUSE_SANITIZER:STRING='Address;Undefined' \
           -DSITE:STRING='mac14' \
           ..
-          ctest -T Build --output-on-error -j
-          ctest -T Test --output-on-error -j
-          ctest -T Submit
+          ninja
