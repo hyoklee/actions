@@ -25,6 +25,10 @@ jobs:
          activate-environment: ""
       - name: Install lfortran
         run: |
+          echo 'export PATH="/opt/homebrew/opt/llvm/bin:$PATH"' >> /Users/runner/.bash_profile
+          export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
+          export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
+          export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
           export CC=$(brew --prefix llvm)/bin/clang
           conda install -y lfortran -c conda-forge
           which lfortran
