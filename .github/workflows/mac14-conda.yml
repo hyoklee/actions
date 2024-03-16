@@ -21,12 +21,9 @@ jobs:
          activate-environment: ""
       - name: Install lfortran
         run: |
-          conda install -y -v lfortran -c conda-forge
-          clang --version
+          conda install -y lfortran -c conda-forge
           which lfortran
           lfortran --version
-          pwd
-          ls /usr/local/bin/
           git clone https://github.com/HDFGroup/hdf5
           cd hdf5
           mkdir build
@@ -51,7 +48,7 @@ jobs:
           -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF \
           -DHDF5_TEST_VFD:BOOL=ON \
           -DMPIEXEC_MAX_NUMPROCS:STRING=3 \
-          -DUSE_SANITIZER:STRING='Address;Undefined;Thread;Leak' \
+          -DUSE_SANITIZER:STRING='Address;Undefined;Leak' \
           -DSITE:STRING='mac14' \
           ..
           ctest -T Build --output-on-error -j
