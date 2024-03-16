@@ -17,7 +17,7 @@ jobs:
          activate-environment: ""
       - name: Test HDF5
         run: |
-          sudo conda install -v lfortran -c conda-forge
+          conda install -y -v lfortran -c conda-forge
           clang --version
           which lfortran
           lfortran --version

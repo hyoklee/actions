@@ -15,9 +15,9 @@ jobs:
         with:
          auto-activate-base: true
          activate-environment: ""
-      - name: Build Ninja
+      - name: Install lfortran
         run: |
-          conda install -v lfortran -c conda-forge
+          conda install -y -v lfortran -c conda-forge
           clang --version
           which lfortran
           lfortran --version
