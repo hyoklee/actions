@@ -30,6 +30,14 @@ jobs:
           export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
           export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
           export CC=$(brew --prefix llvm)/bin/clang
+          export CC=$(brew --prefix llvm)/bin/clang++
+          export AR=/opt/homebrew/opt/llvm/bin/llvm-ar
+          export NM=/opt/homebrew/opt/llvm/bin/llvm-nm
+          export LD=/opt/homebrew/opt/llvm/bin/ld.lld
+          export STRIP=/opt/homebrew/opt/llvm/bin/llvm-strip
+          export RANLIB=/opt/homebrew/opt/llvm/bin/llvm-ranlib
+          export OBJDUMP=/opt/homebrew/opt/llvm/bin/llvm-objdump
+          export OBJCOPY=/opt/homebrew/opt/llvm/bin/llvm-objcopy
           conda install -y lfortran -c conda-forge
           which lfortran
           lfortran --version
