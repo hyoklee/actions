@@ -32,8 +32,6 @@ jobs:
           export OMPI_CXX=/opt/nvidia/hpc_sdk/Linux_x86_64/24.3/compilers/bin/nvc++
           export OMPI_FC=/opt/nvidia/hpc_sdk/Linux_x86_64/24.3/compilers/bin/nvfortran
           export PATH=/opt/nvidia/hpc_sdk/Linux_x86_64/24.3/comm_libs/openmpi4/bin:/opt/nvidia/hpc_sdk/Linux_x86_64/24.3/compilers/bin:$PATH
-/mpifort
-
           git clone https://github.com/HDFGroup/hdf5.git
           cd hdf5
           mkdir build

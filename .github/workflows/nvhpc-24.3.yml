@@ -28,8 +28,6 @@ jobs:
           export LD_LIBRARY_PATH=/opt/nvidia/hpc_sdk/Linux_x86_64/24.3/cuda/12.3/lib64:/opt/nvidia/hpc_sdk/Linux_x86_64/24.3/compilers/lib
           export NVHPCSDK=/opt/nvidia/hpc_sdk
           export PATH=/opt/nvidia/hpc_sdk/Linux_x86_64/24.3/comm_libs/openmpi4/bin:/opt/nvidia/hpc_sdk/Linux_x86_64/24.3/compilers/bin:$PATH
-/mpifort
-
           git clone https://github.com/HDFGroup/hdf5.git
           cd hdf5
           mkdir build
