@@ -1,9 +1,9 @@
-name: nvhpc 24.3
+name: nvhpc auto
 
 on:
   push:
     branches:
-      - main
+      - main-
 
 jobs:
   build:
@@ -14,7 +14,7 @@ jobs:
       - name: Install System dependencies
         run: |
           sudo apt update
-          sudo apt install -y cmake zlib1g-dev libzip-dev
+          sudo apt install -y libaec-dev zlib1g-dev automake autoconf libcurl4-openssl-dev libjpeg-dev wget curl bzip2 m4 flex bison cmake libzip-dev doxygen openssl libtool libtool-bin build-essential
       - name: Install NVHPC
         run: |
           curl https://developer.download.nvidia.com/hpc-sdk/ubuntu/DEB-GPG-KEY-NVIDIA-HPC-SDK | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-hpcsdk-archive-keyring.gpg
@@ -35,8 +35,16 @@ jobs:
           env
           git clone https://github.com/HDFGroup/hdf5.git
           cd hdf5
-          mkdir build
-          cd build
-          cmake-DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF ..
-          ctest -T Build
-          ctest -T Test
+          ./autogen.sh
+          ./configure CC=/opt/nvidia/hpc_sdk/Linux_x86_64/24.3/comm_libs/openmpi4/bin/mpicc FC=/opt/nvidia/hpc_sdk/Linux_x86_64/24.3/comm_libs/openmpi4/bin/mpifort FCFLAGS="-fPIC -fortranlibs" --enable-fortran --enable-shared --enable-parallel
+          cat config.log
+          make -j
+          make check -j
+          make install
+          make uninstall
+      - name: Upload config.log
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: config.log
+          path: ./hdf5/config.log
