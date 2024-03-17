@@ -14,7 +14,7 @@ jobs:
       - name: Install System dependencies
         run: |
           sudo apt update
-          sudo apt install -y cmake zlib1g-dev libzip-dev
+          sudo apt install -y cmake libzip-dev
       - name: Install NVHPC
         run: |
           curl https://developer.download.nvidia.com/hpc-sdk/ubuntu/DEB-GPG-KEY-NVIDIA-HPC-SDK | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-hpcsdk-archive-keyring.gpg
@@ -37,6 +37,6 @@ jobs:
           cd hdf5
           mkdir build
           cd build
-          cmake-DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF ..
+          cmake -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF ..
           ctest -T Build
           ctest -T Test
