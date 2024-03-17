@@ -8,7 +8,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    continue-on-error: true
 
     steps:
       - name: Install System dependencies
@@ -38,6 +37,7 @@ jobs:
           mkdir build
           cd build
           cmake \
+            -G Ninja \
             -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF \
             -DHDF5_ENABLE_PARALLEL:BOOL=ON \
             -DHDF5_BUILD_FORTRAN:BOOL=ON \
