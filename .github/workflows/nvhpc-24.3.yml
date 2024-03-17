@@ -38,7 +38,8 @@ jobs:
           cd build
           cmake \
             -C ../config/cmake/cacheinit.cmake \
-            -G Ninja \
+            -G Ninja
+            -DCMAKE_BUILD_TYPE=Release \
             -DHDF5_BUILD_CPP_LIB:BOOL=OFF \
             -DHDF5_BUILD_FORTRAN:BOOL=ON \
             -DHDF5_BUILD_JAVA:BOOL=OFF \
