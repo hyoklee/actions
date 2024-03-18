@@ -30,7 +30,6 @@ jobs:
       - name: Configure CMake
         working-directory: build
         run: |
-          find /usr/local/lib/android/
           cmake -DCMAKE_TOOLCHAIN_FILE=/usr/local/lib/android/sdk/ndk/26.2.11394342/build/cmake/android.toolchain.cmakee -DANDROID_ABI=arm64i-v8a ..
 
       - name: Build with Make
