@@ -2,7 +2,7 @@ name: Android CMake Build (GCC & QEMU)
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main- ]
 
 jobs:
   build:
