@@ -8,20 +8,21 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Install CMake
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake
+
+      - name: Install Android NDK
+      - uses: nttld/setup-ndk@v1
+        with:
+          ndk-version: r26c
+
+      - name: Checkout HDF5
       - uses: actions/checkout@v4
         with:
           repository: HDFGroup/hdf5
           path: .
-      - name: Install Android NDK
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y unzip
-          curl -sL https://dl.google.com/android/repository/android-ndk-r23c-x86_64.zip -o ndk.zip
-          unzip ndk.zip
-          export ANDROID_NDK_HOME=$PWD/android-ndk-r23c  # Replace with downloaded NDK version
-
-      - name: Install CMake
-        run: sudo apt-get install -y cmake
 
       - name: Create build directory
         run: mkdir build
