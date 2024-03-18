@@ -1,4 +1,4 @@
-name: Android CMake Build (GCC & QEMU)
+name: auto ndk
 
 on:
   push:
@@ -22,9 +22,11 @@ jobs:
       - name: Test HDF5
         run: |
           echo $NDK
+          export NDK=/usr/local/lib/android/sdk/ndk/26.2.11394342/
           export TOOLCHAIN=$NDK/toolchains/llvm/prebuilt/linux-x86_64
-          export TARGET=arm-linux-androideabi
+          export TARGET=aarch64-linux-android
           export AR=$TOOLCHAIN/bin/llvm-ar
+          export API=34
           export CC=$TOOLCHAIN/bin/$TARGET$API-clang
           export AS=$CC
           export CXX=$TOOLCHAIN/bin/$TARGET$API-clang++
