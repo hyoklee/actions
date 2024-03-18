@@ -2,7 +2,7 @@ name: Android CMake Build (GCC & QEMU)
 
 on:
   push:
-    branches: [ main- ]
+    branches: [ main ]
 
 jobs:
   build:
@@ -14,12 +14,12 @@ jobs:
           sudo apt-get install -y cmake
 
       - name: Install Android NDK
-      - uses: nttld/setup-ndk@v1
+        uses: nttld/setup-ndk@v1
         with:
           ndk-version: r26c
 
       - name: Checkout HDF5
-      - uses: actions/checkout@v4
+        uses: actions/checkout@v4
         with:
           repository: HDFGroup/hdf5
           path: .
@@ -34,4 +34,3 @@ jobs:
       - name: Build with Make
         working-directory: build
         run: make
-
