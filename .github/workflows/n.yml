@@ -1,0 +1,36 @@
+name: Android CMake Build (GCC & QEMU)
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: HDFGroup/hdf5
+          path: .
+      - name: Install Android NDK
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y unzip
+          curl -sL https://dl.google.com/android/repository/android-ndk-r23c-x86_64.zip -o ndk.zip
+          unzip ndk.zip
+          export ANDROID_NDK_HOME=$PWD/android-ndk-r23c  # Replace with downloaded NDK version
+
+      - name: Install CMake
+        run: sudo apt-get install -y cmake
+
+      - name: Create build directory
+        run: mkdir build
+
+      - name: Configure CMake
+        working-directory: build
+        run: cmake -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK_HOME/build/toolchain/gcc.cmake -DANDROID_ABI=armeabi-v7a ..
+
+      - name: Build with Make
+        working-directory: build
+        run: make
+

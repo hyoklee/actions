@@ -3,7 +3,7 @@ name: nvhpc 24.3 f
 on:
   push:
     branches:
-      - main
+      - main-
 
 jobs:
   build:
