@@ -36,3 +36,4 @@ jobs:
           ./autogen.sh
           ./configure --host $TARGET
           make
+          make check
