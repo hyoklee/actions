@@ -2,7 +2,7 @@ name: nbsd f
 
 on:
   push:
-    branches: [ main- ]
+    branches: [ main ]
 
 jobs:
   test: # make sure the action works on a clean machine without building
@@ -40,15 +40,15 @@ jobs:
             export LD_LIBRARY_PATH=/usr/pkg/lib
             export FC=/usr/pkg/gcc7/bin/gfortran
             ls /usr/pkg/gcc7/bin
-            git clone https://github.com/HDFGroup/hdf4
-            cd hdf4
+            git clone https://github.com/HDFGroup/hdf5
+            cd hdf5
             mkdir build
             cd build
             cmake \
-            -D BUILD_SHARED_LIBS:BOOL=OFF \
+            -DBUILDNAME:STRING=f \
             -D CTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
-            -D HDF4_BUILD_FORTRAN:BOOL=ON \
-            -D SITE:STRING=f.nbsd ..
+            -D HDF5_BUILD_FORTRAN:BOOL=ON \
+            -D SITE:STRING=nbsd ..
             ctest -T Build -VV --output-on-error -j
             ctest -T Test -VV --output-on-error -j
             ctest -T Submit
