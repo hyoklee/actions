@@ -2,7 +2,7 @@ name: arm64 fbsd
 
 on:
   push:
-    branches: [ main- ]
+    branches: [ main ]
 
 jobs:
   test: # make sure the action works on a clean machine without building
@@ -37,7 +37,8 @@ jobs:
             cd build
             cmake \
             -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
-            -DCTEST_TEST_TIMEOUT=3600 \
+            -DCTEST_TEST_TIMEOUT:STRING="3600" \
+            -DDART_TESTING_TIMEOUT:STRING="3600" \
             -DSITE:STRING=arm64.fbsd ..
             ctest -T Build
-            ctest -T Test
+            ctest -timeout 3600 -T Test
