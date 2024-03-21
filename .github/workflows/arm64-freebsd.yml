@@ -1,4 +1,4 @@
-name: fbsd
+name: arm64 fbsd
 
 on:
   push:
@@ -37,7 +37,7 @@ jobs:
             cd build
             cmake \
             -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
-            -DDART_TESTING_TIMEOUT=3600 \
+            -DCTEST_TEST_TIMEOUT=3600 \
             -DSITE:STRING=arm64.fbsd ..
             ctest -T Build
             ctest -T Test
