@@ -30,7 +30,7 @@ jobs:
             pkg install autoconf automake libtool
           run: |
             set -e
-            cd hdf5	    
+            cd work/actions/actions/hdf5	    
             ./autogen.sh
             ./configure
             make
