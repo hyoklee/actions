@@ -34,7 +34,7 @@ jobs:
             toolchain:p
             libjpeg-turbo:p
 
-      - name: Test HDF4
+      - name: Test HDF5
         shell: msys2 {0}
         run: |
           uname -a
@@ -43,7 +43,7 @@ jobs:
       - name: Autotools Configure
         shell: msys2 {0}
         run: |
-          cd hdf4
+          cd hdf5
           ./autogen.sh
           ./configure LDFLAGS="-lws2_32"
 
