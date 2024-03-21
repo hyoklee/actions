@@ -1,0 +1,61 @@
+name: msys2 auto h5
+
+on:
+  push:
+    branches: [ main ]
+
+permissions:
+  contents: read
+
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        sys:
+          - mingw64
+          - mingw32
+          - ucrt64
+          - clang64
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4.1.1
+
+
+      - name: Setup MSYS2
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: ${{matrix.sys}}
+          update: true
+          install: >-
+            git
+            autotools
+          pacboy: >-
+            toolchain:p
+            libjpeg-turbo:p
+
+      - name: Test HDF4
+        shell: msys2 {0}
+        run: |
+          uname -a
+          git clone https://github.com/HDFGroup/hdf5.git
+
+      - name: Autotools Configure
+        shell: msys2 {0}
+        run: |
+          cd hdf4
+          ./autogen.sh
+          ./configure LDFLAGS="-lws2_32"
+
+      - name: Autotools Build
+        shell: msys2 {0}
+        run: |
+          cd hdf5
+          make
+
+      - name: Autotools Run Tests
+        shell: msys2 {0}
+        run: |
+          cd hdf5
+          make check
+
