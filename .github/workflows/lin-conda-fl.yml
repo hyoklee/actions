@@ -21,7 +21,7 @@ jobs:
          activate-environment: ""
       - name: Test HDF5
         run: |
-          conda install -y -v flang -c conda-forge
+          sudo conda install -y -v flang -c conda-forge
           clang --version
           which flang
           flang --version
