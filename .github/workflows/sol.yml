@@ -1,0 +1,35 @@
+name: sol
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: bash
+jobs:
+  build:
+    name: solaris-gcc
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          repository: HDFGroup/hdf5
+          path: .
+
+      - name: Test with gcc
+        uses: vmactions/solaris-vm@v1
+        with:
+          release: 11.4
+          usesh: true
+          copyback: false
+          prepare: |
+            set -e
+            pkg install cmake gcc
+          run: |
+            set -e
+            mkdir build
+            cmake -S . -Bbuild -DCMAKE_BUILD_TYPE=Release
+            cmake --build build -- -j
