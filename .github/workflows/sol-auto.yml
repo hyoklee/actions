@@ -13,12 +13,6 @@ jobs:
     name: solaris-gcc
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          repository: HDFGroup/hdf5
-          path: hdf5
-
       - name: Test with gcc
         uses: vmactions/solaris-vm@v1
         with:
@@ -27,10 +21,11 @@ jobs:
           copyback: false
           prepare: |
             set -e
-            pkg install autoconf automake libtool
+            pkg install autoconf automake git libtool
           run: |
             set -e
-            cd work/actions/actions/hdf5	    
+            git clone https://github.com/HDFGroup/hdf5
+            cd hdf5
             ./autogen.sh
             ./configure
             make
