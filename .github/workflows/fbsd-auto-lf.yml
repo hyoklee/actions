@@ -38,6 +38,6 @@ jobs:
             git clone https://github.com/HDFGroup/hdf5
             cd hdf5
             ./autogen.sh
-            ./configure
+            ./configure --enable-fortran
             make
             make check
