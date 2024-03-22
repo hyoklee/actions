@@ -2,7 +2,7 @@ name: msys2 auto
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main- ]
 
 permissions:
   contents: read

@@ -8,8 +8,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Dockcross
-      
       - name: Install CMake
         run: |
           sudo apt-get update
