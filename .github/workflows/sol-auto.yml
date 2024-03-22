@@ -21,7 +21,7 @@ jobs:
           copyback: false
           prepare: |
             set -e
-            pkg install autoconf automake git libtool
+            pkg update autoconf automake git libtool
           run: |
             set -e
             git clone https://github.com/HDFGroup/hdf5

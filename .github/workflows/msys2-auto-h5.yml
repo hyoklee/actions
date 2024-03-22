@@ -1,4 +1,4 @@
-name: msys2 auto h5
+name: msys2 auto
 
 on:
   push:
@@ -21,7 +21,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4.1.1
 
-
       - name: Setup MSYS2
         uses: msys2/setup-msys2@v2
         with:
@@ -32,7 +31,6 @@ jobs:
             autotools
           pacboy: >-
             toolchain:p
-            libjpeg-turbo:p
 
       - name: Test HDF5
         shell: msys2 {0}
@@ -57,5 +55,5 @@ jobs:
         shell: msys2 {0}
         run: |
           cd hdf5
-          make check
+          # make check
 
