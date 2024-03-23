@@ -19,13 +19,6 @@ jobs:
           - clang64
     runs-on: windows-latest
     steps:
-      - name: Checkout HDF5
-        uses: actions/checkout@v4
-        with:
-          repository: hyoklee/hdf5
-          path: .
-      
-
       - name: Setup MSYS2
         uses: msys2/setup-msys2@v2
         with:
@@ -37,6 +30,11 @@ jobs:
           pacboy: >-
             toolchain:p
 
+      - name: Checkout HDF5
+        uses: actions/checkout@v4
+        with:
+          repository: hyoklee/hdf5
+          path: .
 
       - name: Autotools Configure
         shell: msys2 {0}
