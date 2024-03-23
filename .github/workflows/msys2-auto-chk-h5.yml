@@ -30,6 +30,9 @@ jobs:
           pacboy: >-
             toolchain:p
 
+      - name: Git
+        run: git config --global core.autocrlf input
+
       - name: Checkout HDF5
         uses: actions/checkout@v4
         with:
