@@ -2,7 +2,7 @@ name: msys2 auto chk h5
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main- ]
 
 permissions:
   contents: read

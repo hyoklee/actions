@@ -40,7 +40,7 @@ jobs:
         run: |
           source /opt/intel/oneapi/setvars.sh
           ./autogen.sh
-          ./configure --prefix=/tmp --enable-internal-debug=all CC="(which icx)"
+          ./configure --prefix=/tmp --enable-internal-debug=all CC="$(which icx)"
           make -j
           make check -j
           make install
