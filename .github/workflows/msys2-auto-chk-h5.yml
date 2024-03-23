@@ -48,5 +48,4 @@ jobs:
       - name: Autotools Build
         shell: msys2 {0}
         run: |
-          cd hdf5
           make
