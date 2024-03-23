@@ -1,8 +1,8 @@
-name: msys2 auto h5
+name: msys2 auto chk h5
 
 on:
   push:
-    branches: [ main- ]
+    branches: [ main ]
 
 permissions:
   contents: read
@@ -19,7 +19,12 @@ jobs:
           - clang64
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4.1.1
+      - name: Checkout HDF5
+        uses: actions/checkout@v4
+        with:
+          repository: hyoklee/hdf5
+          path: .
+      
 
       - name: Setup MSYS2
         uses: msys2/setup-msys2@v2
@@ -32,16 +37,10 @@ jobs:
           pacboy: >-
             toolchain:p
 
-      - name: Test HDF5
-        shell: msys2 {0}
-        run: |
-          uname -a
-          git clone https://github.com/HDFGroup/hdf5.git
 
       - name: Autotools Configure
         shell: msys2 {0}
         run: |
-          cd hdf5
           ./autogen.sh
           ./configure LDFLAGS="-lws2_32"
 
@@ -50,10 +49,3 @@ jobs:
         run: |
           cd hdf5
           make
-
-      - name: Autotools Run Tests
-        shell: msys2 {0}
-        run: |
-          cd hdf5
-          # make check
-
