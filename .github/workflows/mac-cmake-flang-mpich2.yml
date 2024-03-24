@@ -44,6 +44,7 @@ jobs:
         cmake \
           -G Ninja \
           -DCMAKE_INSTALL_PREFIX=$INSTALLDIR \
+           -DCMAKE_BUILD_TYPE=Release \
           -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
           -DCMAKE_CXX_LINK_FLAGS="-Wl,-rpath,$LD_LIBRARY_PATH" \
           -DLLVM_TARGETS_TO_BUILD=host \
@@ -53,4 +54,3 @@ jobs:
           ../llvm-project/llvm
         ninja
         ninja install
-
