@@ -60,6 +60,7 @@ jobs:
         export PATH=$ROOTDIR/install/bin:$PATH
         export LD_LIBRARY_PATH=$ROOTDIR/install/lib:$LD_LIBRARY_PATH
         mkdir build
-         cmake -G Ninja -DCMAKE_C_COMPILER="/Users/runner/work/actions/actions//install/bin/clang" -DCMAKE_Fortran_COMPILER="/Users/runner/work/actions/actions/install/bin/flang-new" -DHDF5_BUILD_FORTRAN:BOOL=ON -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF -DHDF5_ENABLE_Z_LIB_SUPPORT:BOOL=OFF ..
+        d build
+        ccmake -G Ninja -DCMAKE_C_COMPILER="/Users/runner/work/actions/actions//install/bin/clang" -DCMAKE_Fortran_COMPILER="/Users/runner/work/actions/actions/install/bin/flang-new" -DHDF5_BUILD_FORTRAN:BOOL=ON -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF -DHDF5_ENABLE_Z_LIB_SUPPORT:BOOL=OFF ..
         ninja
         ninja test
