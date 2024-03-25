@@ -3,7 +3,7 @@ name: riscv64 lin auto
 on:
   push:
     branches:
-      - main-
+      - main
 
 jobs:
   aarch64_job:
@@ -26,12 +26,13 @@ jobs:
             apt-get update -q -y
             apt-get install -q -y git g++
             apt-get install -q -y autoconf automake libtool libtool-bin make
+            apt list --installed
           run: |
             echo ::set-output name=uname::$(uname -a)
             git clone --quiet https://github.com/HDFGroup/hdf5
             cd hdf5
             ./autogen.sh
-            ./configure 
+            ./configure
             make -j
             make check
 
