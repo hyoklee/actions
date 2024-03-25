@@ -59,8 +59,21 @@ jobs:
         cd hdf5
         export PATH=$ROOTDIR/install/bin:$PATH
         export LD_LIBRARY_PATH=$ROOTDIR/install/lib:$LD_LIBRARY_PATH
+        export LIBRARY_PATH=/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib
         mkdir build
-        d build
-        ccmake -G Ninja -DCMAKE_C_COMPILER="/Users/runner/work/actions/actions//install/bin/clang" -DCMAKE_Fortran_COMPILER="/Users/runner/work/actions/actions/install/bin/flang-new" -DHDF5_BUILD_FORTRAN:BOOL=ON -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF -DHDF5_ENABLE_Z_LIB_SUPPORT:BOOL=OFF ..
+        cd build
+        ccmake -G Ninja \
+          -DBUILDNAME:STRING=ninja.clang19.fl \
+          -DCMAKE_C_COMPILER="/Users/runner/work/actions/actions//install/bin/clang" \
+          -DCMAKE_Fortran_COMPILER="/Users/runner/work/actions/actions/install/bin/flang-new" \
+         -DHDF5_BUILD_FORTRAN:BOOL=ON \
+         -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF \
+         -DHDF5_ENABLE_Z_LIB_SUPPORT:BOOL=OFF \
+         -DCMAKE_AR=/Users/runner/work/actions/actions/install/bin/llvm-ar \
+         -DCMAKE_LINKER=/Users/runner/work/actions/actions/install/bin/llvm-link \
+         -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
+         -DCMAKE_TOOLCHAIN_FILE=config/toolchain/clang.cmake \
+         -DSITE:STRING=mac14 \
+         ..
         ninja
         ninja test
