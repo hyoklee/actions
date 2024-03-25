@@ -28,15 +28,9 @@ jobs:
             apt-get install -q -y autoconf automake libtool libtool-bin make
             apt list --installed
           run: |
-            echo ::set-output name=uname::$(uname -a)
             git clone --quiet https://github.com/HDFGroup/hdf5
             cd hdf5
             ./autogen.sh
             ./configure
-            make -j
+            make
             make check
-
-      - name: Get the output
-        # Echo the `uname` output parameter from the `runcmd` step
-        run: |
-          echo "The uname output was ${{ steps.runcmd.outputs.uname }}"
