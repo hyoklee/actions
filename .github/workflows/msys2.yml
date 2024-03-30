@@ -42,6 +42,6 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake ..
+          cmake  -DH5_HAVE_ALARM:INTERNAL=0 -DH5_HAVE_ASPRINTF:INTERNAL=0 -DH5_HAVE_VASPRINTF:INTERNAL=0 ..
           ninja
 #          ninja test
