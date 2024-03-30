@@ -16,7 +16,16 @@ jobs:
           - clang64
     runs-on: windows-latest
     steps:
-      - name: setup
+      - name: git
+        run: git config --global core.autocrlf input
+
+      - name: get
+        uses: actions/checkout@v4
+        with:
+          repository: hyoklee/hdf5
+          path: .
+
+      - name: set
         uses: msys2/setup-msys2@v2
         with:
           msystem: ${{matrix.sys}}
@@ -28,17 +37,8 @@ jobs:
             cmake:p
             ninja:p
 
-      - name: git
-        run: git config --global core.autocrlf input
-
-      - name: get
-        uses: actions/checkout@v4
-        with:
-          repository: hyoklee/hdf5
-          path: .
-
       - name: build
-        shell: mingw64 {0}
+        shell: msys2 {0}
         run: |
           mkdir build
           cd build
