@@ -26,6 +26,8 @@ jobs:
            -DBUILDNAME:STRING="ninja.-sh.ompi" \
            -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
            -DCMAKE_SYSTEM_NAME="Linux" \
+           -DCMAKE_C_COMPILER=/usr/bin/mpicc \
+           -DCMAKE_CXX_COMPILER=/usr/bin/mpicxx \
            -DBUILD_SHARED_LIBS:BOOL=OFF \
            -DHDF5_ENABLE_PARALLEL:BOOL=ON \
            ..
