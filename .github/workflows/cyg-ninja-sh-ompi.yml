@@ -18,7 +18,7 @@ jobs:
       - name: set
         uses: cygwin/cygwin-install-action@master
         with:
-          packages: cmake gcc-fortran libhwloc-devel libevent-devel ninja openmpi libopenmpi-devel zlib-devel
+          packages: cmake gcc-fortran libhwloc-devel libevent-devel ninja openmpi libopenmpi-devel perl zlib-devel
       - name: test
         run: |
           export PATH=/usr/bin:$PATH
