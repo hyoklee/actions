@@ -8,15 +8,19 @@ jobs:
   test:
     runs-on: windows-latest
     steps:
-      - name: Clean up PATH
+      - name: git
+        run: git config --global core.autocrlf input
+      - name: get
+        uses: actions/checkout@v4
+        with:
+          repository: hyoklee/hdf5
+          path: .
+      - name: set
         uses: cygwin/cygwin-install-action@master
         with:
           packages: cmake gcc-fortran libhwloc-devel libevent-devel make ninja openmpi libopenmpi-devel perl zlib-devel
-      - name: Run cmake
+      - name: test
         run: |
-          git config --global core.autocrlf input
-          git clone https://github.com/HDFGroup/hdf5
-          cd hdf5
           export PATH=/usr/bin:$PATH
           mkdir build
           cd build
