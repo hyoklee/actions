@@ -3,7 +3,7 @@ name: mac14 auto f
 on:
   workflow_dispatch:
   push:
-    branches: [ main- ]
+    branches: [ main ]
 
 jobs:
   build:
@@ -12,14 +12,16 @@ jobs:
     steps:
       - name: Install Dependencies
         run: |
-          brew install autoconf automake jpeg libaec libtool
-          brew reinstall gfortran
+          brew install autoconf automake libaec libtool
+          brew reinstall gcc gfortran
       - name: Test HDF4
         run: |
           export FC=/opt/homebrew/bin/gfortran
-          git clone https://github.com/hyoklee/hdf4
-          cd hdf4
+          git clone https://github.com/hyoklee/hdf5
+          cd hdf5
+          which gcc
           ./autogen.sh
-          ./configure --enable-fortran --disable-shared --with-jpeg=/opt/homebrew/opt/jpeg
+          ./configure --enable-fortran
           make
           make check
+          make install

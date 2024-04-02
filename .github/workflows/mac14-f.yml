@@ -3,7 +3,7 @@ name: mac14 f
 on:
   workflow_dispatch:
   push:
-    branches: [ main ]
+    branches: [ main- ]
 
 jobs:
   build:
@@ -12,8 +12,8 @@ jobs:
     steps:
       - name: Install Dependencies
         run: |
-          brew install gcc libaec ninja
-          brew reinstall gfortran
+          brew install libaec ninja
+          brew reinstall gcc gfortran
       - name: Test HDF4
         run: |
           export FC=/opt/homebrew/bin/gfortran
