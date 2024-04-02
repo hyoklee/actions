@@ -3,7 +3,7 @@ name: mac14 f
 on:
   workflow_dispatch:
   push:
-    branches: [ main- ]
+    branches: [ main ]
 
 jobs:
   build:
@@ -12,18 +12,20 @@ jobs:
     steps:
       - name: Install Dependencies
         run: |
-          brew install jpeg libaec ninja
+          brew install gcc libaec ninja
           brew reinstall gfortran
       - name: Test HDF4
         run: |
           export FC=/opt/homebrew/bin/gfortran
-          git clone https://github.com/hyoklee/hdf4
-          cd hdf4
+          export CC=/opt/homebrew/bin/gcc
+          git clone https://github.com/HDFGroup/hdf5
+          cd hdf5
           mkdir build
           cd build
           cmake -G Ninja \
-          -D HDF4_BUILD_FORTRAN:BOOL=ON \
-          -D BUILD_SHARED_LIBS:BOOL=OFF \
+          -DSITE:STRING=mac14 \
+          -DBUILDNAME:STRING=f \
+          -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
+          -DHDF4_BUILD_FORTRAN:BOOL=ON \
           ..
-          ctest -T Build --output-on-error -j
-          ctest -T Test --output-on-error -j
+          ctest -D Experimental
