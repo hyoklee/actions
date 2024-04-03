@@ -1,0 +1,32 @@
+name: mac14 auto clang f 
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    name: mac14 auto clang f
+    runs-on: macos-14
+    steps:
+      - name: install
+        run: |
+          brew install autoconf automake libaec libtool
+          brew reinstall gfortran
+      - name: get
+        uses: actions/checkout@v4
+        with:
+          repository: HDFGroup/hdf5
+          ref: hdf5_1_14
+          path: .
+      - name: test
+        run: |
+          export FC=/opt/homebrew/bin/gfortran
+          which gcc
+          ./autogen.sh
+          ./configure --enable-fortran --prefix=/tmp
+          make
+          make install
+          find /tmp
+          /tmp/bin/h5fc
