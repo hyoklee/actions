@@ -31,7 +31,5 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake -DSITE:STRING=win19 \
-           -DBUILDNAME:STRING="4/icx" \
-           -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
+          cmake -DSITE:STRING=win19 -DBUILDNAME:STRING="4/icx" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org"
           ctest -D Experimental -C Release
