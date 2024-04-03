@@ -1,9 +1,9 @@
-name: win19 14 vcpkg-icx
+name: win19 4 vcpkg-icx
 
 on:
   push:
     branches:
-      - main
+      - main-
 
 jobs:
   build:
