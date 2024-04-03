@@ -1,0 +1,30 @@
+name: win19 14 vcpkg-icx
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-2019
+    steps:
+      - name: install
+        run: |
+          git clone https://github.com/microsoft/vcpkg.git
+          .\vcpkg\bootstrap-vcpkg.bat
+          .\vcpkg\vcpkg install intel-oneapi-basekit
+      - name: get
+        uses: actions/checkout@v4
+        with:
+          repository: HDFGroup/hdf5
+          ref: hdf5_1_14
+          path: .
+      - name: test
+        run: |
+          mkdir build
+          cd build
+          cmake -DSITE:STRING=win19 \
+           -DBUILDNAME:STRING="14.vcpkg-icx" \
+           -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
+          ctest -D Experimental -C Release
