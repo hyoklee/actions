@@ -10,18 +10,25 @@ jobs:
     name: mac14 auto f
     runs-on: macos-14
     steps:
-      - name: Install Dependencies
+      - name: install
         run: |
           brew install autoconf automake libaec libtool
           brew reinstall gcc gfortran
-      - name: Test HDF4
+      - name: get
+        uses: actions/checkout@v4
+        with:
+          repository: HDFGroup/hdf5
+          ref: hdf5_1_14
+          path: .          
+      - name: test
         run: |
           export FC=/opt/homebrew/bin/gfortran
           git clone https://github.com/hyoklee/hdf5
           cd hdf5
           which gcc
           ./autogen.sh
-          ./configure --enable-fortran
+          ./configure --enable-fortran --prefix=/tmp
           make
-          make check
           make install
+          /tmp/bin/h5fc /tmp/share/hdf5_examples/hl/fortran/ex_ds1.f90
+          ./a.out

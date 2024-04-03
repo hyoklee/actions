@@ -28,5 +28,5 @@ jobs:
           ./configure --enable-fortran --prefix=/tmp
           make
           make install
-          find /tmp
-          /tmp/bin/h5fc
+          /tmp/bin/h5fc /tmp/share/hdf5_examples/hl/fortran/ex_ds1.f90
+          ./a.out
