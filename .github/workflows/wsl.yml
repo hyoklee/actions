@@ -13,4 +13,4 @@ jobs:
     steps:
       - name: Run the script
         run: |
-          wsl --install ${{ matrix.os }}
+          wsl --install -d ${{ matrix.os }}
