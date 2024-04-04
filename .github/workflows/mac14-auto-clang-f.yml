@@ -30,3 +30,4 @@ jobs:
           make install
           /tmp/bin/h5fc /tmp/share/hdf5_examples/hl/fortran/ex_ds1.f90
           ./a.out
+          /tmp/bin/h5fc -show
