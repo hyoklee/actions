@@ -1,0 +1,16 @@
+name: wsl
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [windows-2019, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Run the script
+        run: |
+          wsl --list
