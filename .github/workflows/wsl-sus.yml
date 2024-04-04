@@ -22,7 +22,7 @@ jobs:
             dos2unix
             cmake
             git
-            devel_basis
+            patterns-devel-base-devel_basis
       - name: Run the script
         run: |
           ls
