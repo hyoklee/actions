@@ -8,9 +8,9 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [kali-linux, openSUSE]
+        os: [kali-linux, openSUSE-Leap-15.5]
     runs-on: windows-latest
     steps:
       - name: Run the script
         run: |
-          wsl --install -d ${{ matrix.os }}
+          wsl --install --online -d ${{ matrix.os }}
