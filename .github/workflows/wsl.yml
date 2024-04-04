@@ -1,16 +1,25 @@
 name: wsl
 
+
 on:
   push:
     branches:
       - main
+
+
 jobs:
   build:
     strategy:
       matrix:
-        os: [kali-linux, openSUSE-Leap-15.5]
+        os: [Debian, Alpine, kali-linux, openSUSE-Leap-15.5]
+    defaults:
+      run:
+        shell: wsl-bash {0}        
     runs-on: windows-latest
     steps:
+      - uses: Vampire/setup-wsl@v3
+        with:
+          distribution: ${{ matrix.os }}
       - name: Run the script
         run: |
-          wsl --install -d ${{ matrix.os }}
+          echo "Hello World"
