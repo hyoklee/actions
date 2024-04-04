@@ -9,7 +9,7 @@ jobs:
     strategy:
       matrix:
         os: [kali-linux, openSUSE]
-    runs-on: ${{ matrix.os }}
+    runs-on: windows-latest
     steps:
       - name: Run the script
         run: |
