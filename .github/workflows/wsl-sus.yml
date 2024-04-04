@@ -1,17 +1,15 @@
-name: wsl
-
+name: wsl sus
 
 on:
   push:
     branches:
       - main
 
-
 jobs:
   build:
     strategy:
       matrix:
-        os: [Debian, kali-linux]
+        os: [openSUSE-Leap-15.2]
     defaults:
       run:
         shell: wsl-bash {0}        
@@ -24,7 +22,7 @@ jobs:
             dos2unix
             cmake
             git
-            build-essential
+            devel_basis
       - name: Run the script
         run: |
           ls
