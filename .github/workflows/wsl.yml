@@ -13,4 +13,4 @@ jobs:
     steps:
       - name: Run the script
         run: |
-          wsl --list
+          wsl --list --online
