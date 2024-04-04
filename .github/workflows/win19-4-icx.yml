@@ -3,7 +3,7 @@ name: win19 4 icx
 on:
   push:
     branches:
-      - main
+      - main-
 
 jobs:
   build:

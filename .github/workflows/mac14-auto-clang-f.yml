@@ -3,7 +3,7 @@ name: mac14 auto clang f
 on:
   workflow_dispatch:
   push:
-    branches: [ main- ]
+    branches: [ main ]
 
 jobs:
   build:
@@ -31,3 +31,4 @@ jobs:
           /tmp/bin/h5fc /tmp/share/hdf5_examples/hl/fortran/ex_ds1.f90
           ./a.out
           /tmp/bin/h5fc -show
+
