@@ -23,8 +23,15 @@ jobs:
           additional-packages:
             dos2unix
             cmake
+            git
+            build-essential
       - name: Run the script
         run: |
           ls
           whoami
-          
+          git clone https://github.com/HDFGroup/hdf5
+          cd hdf5
+          mkdir build
+          cd build
+          cmake -DSITE:STRING=${{ matrix.os }} -DBUILDNAME:STRING="gcc" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" ..
+          ctest -D Experimental
