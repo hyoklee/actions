@@ -8,9 +8,9 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [windows-2019, windows-latest]
+        os: [kali-linux, openSUSE]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Run the script
         run: |
-          wsl --list --online
+          wsl --install ${{ matrix.os }}
