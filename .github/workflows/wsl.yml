@@ -20,6 +20,11 @@ jobs:
       - uses: Vampire/setup-wsl@v3
         with:
           distribution: ${{ matrix.os }}
+          additional-packages:
+            dos2unix
+            cmake
       - name: Run the script
         run: |
-          echo "Hello World"
+          ls
+          whoami
+          
