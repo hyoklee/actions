@@ -1,4 +1,4 @@
-name: wsl sus
+name: wsl suse-15.2
 
 on:
   push:
@@ -27,7 +27,7 @@ jobs:
           curl -O https://cmake.org/files/v3.18/cmake-3.18.0-Linux-x86_64.sh
           chmod u+x ./cmake-3.18.0-Linux-x86_64.sh 
           ./cmake-3.18.0-Linux-x86_64.sh --skip-license
-          curl -O https://github.com/HDFGroup/hdf5/archive/refs/tags/snapshot-1.14.tar.gz
+          curl -O -L https://github.com/HDFGroup/hdf5/archive/refs/tags/snapshot-1.14.tar.gz
           tar zxvf snapshot-1.14.tar.gz
           cd hdf5-snapshot-1.14
           mkdir build
