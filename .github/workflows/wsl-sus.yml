@@ -30,7 +30,8 @@ jobs:
           curl -O https://cmake.org/files/v3.18/cmake-3.18.0-Linux-x86_64.sh
           chmod u+x ./cmake-3.18.0-Linux-x86_64.sh 
           ./cmake-3.18.0-Linux-x86_64.sh --skip-license
-          git clone https://github.com/HDFGroup/hdf5
+          git config --global core.autocrlf input
+          git clone  -b hdf5_1_14_4 https://github.com/HDFGroup/hdf5
           cd hdf5
           mkdir build
           cd build
