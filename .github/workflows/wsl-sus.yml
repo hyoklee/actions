@@ -35,4 +35,5 @@ jobs:
           mkdir build
           cd build
           /mnt/d/a/actions/actions/bin/cmake -DSITE:STRING=${{ matrix.os }} -DBUILDNAME:STRING="gcc" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" ..
-          /mnt/d/a/actions/actions/bin/ctest -D Experimental
+          /mnt/d/a/actions/actions/bin/ctest -T Build
+          /mnt/d/a/actions/actions/bin/ctest -T Test
