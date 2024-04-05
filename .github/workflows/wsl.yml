@@ -11,7 +11,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [Debian, kali-linux]
+        os: [kali-linux]
     defaults:
       run:
         shell: wsl-bash {0}        
