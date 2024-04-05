@@ -27,6 +27,5 @@ jobs:
           curl -O -L https://github.com/HDFGroup/hdf5/archive/refs/tags/snapshot-1.14.tar.gz
           tar zxf snapshot-1.14.tar.gz
           cd hdf5-snapshot-1.14
-          cd hdf5
           ./configure
           make
