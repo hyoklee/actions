@@ -29,6 +29,7 @@ jobs:
         run: |
           ls
           whoami
+          update-ca-certificates
           git config --global http.sslverify false
           git clone https://github.com/HDFGroup/hdf5
           cd hdf5

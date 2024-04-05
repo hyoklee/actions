@@ -23,13 +23,17 @@ jobs:
             cmake
             git
             patterns-devel-base-devel_basis
+            curl
       - name: Run the script
         run: |
           ls
           whoami
+          curl -O https://cmake.org/files/v3.18/cmake-3.18.0-Linux-x86_64.sh
+          chmod u+x ./cmake-3.18.0-Linux-x86_64.sh 
+          ./cmake-3.18.0-Linux-x86_64.sh --skip-license
           git clone https://github.com/HDFGroup/hdf5
           cd hdf5
           mkdir build
           cd build
-          cmake -DSITE:STRING=${{ matrix.os }} -DBUILDNAME:STRING="gcc" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" ..
+          $HOME/bin/cmake -DSITE:STRING=${{ matrix.os }} -DBUILDNAME:STRING="gcc" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" ..
           ctest -D Experimental
