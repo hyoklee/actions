@@ -1,0 +1,31 @@
+name: wsl sus auto
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [openSUSE-Leap-15.2]
+    defaults:
+      run:
+        shell: wsl-bash {0}
+    runs-on: windows-latest
+    steps:
+      - uses: Vampire/setup-wsl@v3
+        with:
+          distribution: ${{ matrix.os }}
+          additional-packages:
+            dos2unix
+            git
+            patterns-devel-base-devel_basis
+            curl
+      - name: build
+        run: |
+          git clone -b hdf5_1_14_4 https://github.com/HDFGroup/hdf5
+          cd hdf5
+          ./configure
+          make

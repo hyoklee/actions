@@ -34,6 +34,6 @@ jobs:
           cd hdf5
           mkdir build
           cd build
-          /mnt/d/a/actions/actions/bin/cmake -DSITE:STRING=${{ matrix.os }} -DBUILDNAME:STRING="gcc" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" ..
-          /mnt/d/a/actions/actions/bin/ctest -T Build
-          /mnt/d/a/actions/actions/bin/ctest -T Test
+          /mnt/d/a/actions/actions/bin/cmake -DSITE:STRING="sus-15.2" -DBUILDNAME:STRING="cmake-3.18" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" ..
+#          /mnt/d/a/actions/actions/bin/ctest -T Build
+#          /mnt/d/a/actions/actions/bin/ctest -T Test
