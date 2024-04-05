@@ -20,7 +20,6 @@ jobs:
           distribution: ${{ matrix.os }}
           additional-packages:
             dos2unix
-            cmake
             git
             patterns-devel-base-devel_basis
             curl
@@ -36,4 +35,4 @@ jobs:
           mkdir build
           cd build
           /mnt/d/a/actions/actions/bin/cmake -DSITE:STRING=${{ matrix.os }} -DBUILDNAME:STRING="gcc" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" ..
-          ctest -D Experimental
+          /mnt/d/a/actions/actions/bin/ctest -D Experimental
