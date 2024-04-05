@@ -20,12 +20,13 @@ jobs:
           distribution: ${{ matrix.os }}
           additional-packages:
             dos2unix
-            git
             patterns-devel-base-devel_basis
             curl
       - name: build
         run: |
-          git clone -b hdf5_1_14_4 https://github.com/HDFGroup/hdf5
+          curl -O https://github.com/HDFGroup/hdf5/archive/refs/tags/snapshot-1.14.tar.gz
+          tar zxvf snapshot-1.14.tar.gz
+          cd hdf5-snapshot-1.14
           cd hdf5
           ./configure
           make

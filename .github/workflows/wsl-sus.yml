@@ -20,21 +20,18 @@ jobs:
           distribution: ${{ matrix.os }}
           additional-packages:
             dos2unix
-            git
             patterns-devel-base-devel_basis
             curl
       - name: Run the script
         run: |
-          ls
-          whoami
           curl -O https://cmake.org/files/v3.18/cmake-3.18.0-Linux-x86_64.sh
           chmod u+x ./cmake-3.18.0-Linux-x86_64.sh 
           ./cmake-3.18.0-Linux-x86_64.sh --skip-license
-          git config --global core.autocrlf input
-          git clone  -b hdf5_1_14_4 https://github.com/HDFGroup/hdf5
-          cd hdf5
+          curl -O https://github.com/HDFGroup/hdf5/archive/refs/tags/snapshot-1.14.tar.gz
+          tar zxvf snapshot-1.14.tar.gz
+          cd hdf5-snapshot-1.14
           mkdir build
           cd build
-          /mnt/d/a/actions/actions/bin/cmake -DSITE:STRING="sus-15.2" -DBUILDNAME:STRING="cmake-3.18" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" ..
+          /mnt/d/a/actions/actions/bin/cmake -DSITE:STRING="sus-15.2" -DBUILDNAME:STRING="cmake-3.18" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" ..
 #          /mnt/d/a/actions/actions/bin/ctest -T Build
 #          /mnt/d/a/actions/actions/bin/ctest -T Test
