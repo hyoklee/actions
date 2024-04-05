@@ -1,0 +1,23 @@
+name: win19
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-2019
+    steps:
+      - name: ninja
+        run: choco install ninja
+      - name: get
+        run: |
+          curl -O -L  https://github.com/HDFGroup/hdf5/archive/refs/tags/snapshot-1.14.zip
+          unzip snapshot-1.14.zip
+      - name: test
+        run: |
+          mkdir build
+          cd build
+          cmake -DSITE:STRING=win19 -DBUILDNAME:STRING="msvc" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" ..
+          ctest -D Experimental -C Release
