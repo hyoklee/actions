@@ -1,9 +1,9 @@
-name: win19
+name: win19 d
 
 on:
   push:
     branches:
-      - main-
+      - main
 
 jobs:
   build:
@@ -20,5 +20,5 @@ jobs:
           cd  hdf5-snapshot-1.14
           mkdir build
           cd build
-          cmake -DSITE:STRING=win19 -DBUILDNAME:STRING="4/r" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" ..
-          ctest -D Experimental -C Release
+          cmake -DSITE:STRING=win19 -DBUILDNAME:STRING="4/d" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" ..
+          ctest -D Experimental -C Debug
