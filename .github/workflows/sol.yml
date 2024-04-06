@@ -21,10 +21,12 @@ jobs:
           prepare: |
             set -e
             pkg install curl gnu-tar
+            pkg install gnu-tar
+            pkg install cmake
           run: |
             set -e
             curl -O -L https://github.com/HDFGroup/hdf5/archive/refs/tags/snapshot-1.14.tar.gz
-            gtar zxf snapshot-1.14.tar.gz
+            gtar zxvf snapshot-1.14.tar.gz
             cd hdf5-snapshot-1.14
             mkdir build
             cd build
