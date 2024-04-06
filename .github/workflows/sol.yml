@@ -19,9 +19,7 @@ jobs:
           release: "11.4-gcc"
           usesh: true
           prepare: |
-            pkgutil -y -i gnu-tar
-#            pkg install curl
-#            pkg install cmake
+            pkg install gnu-tar
           run:
             env
             ls
