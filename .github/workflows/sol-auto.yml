@@ -20,7 +20,7 @@ jobs:
           copyback: false
           prepare: |
             set -e
-            pkg install autoconf@latest automake@latest curl libtool@latest
+            pkg install autoconf automake curl libtool
           run: |
             set -e
             curl -O -L https://github.com/HDFGroup/hdf5/archive/refs/tags/snapshot-1.14.tar.gz
