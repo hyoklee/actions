@@ -15,17 +15,17 @@ jobs:
       - name: test
         uses: vmactions/solaris-vm@v1
         with:
+          envs: 'MYTOKEN MYTOKEN2'
           release: "11.4-gcc"
           usesh: true
-          copyback: false
           prepare: |
-            set -e
-            pkg install gnu-tar
+            pkgutil -y -i gnu-tar
 #            pkg install curl
 #            pkg install cmake
-          run: |
-            set -e
+          run:
+            env
             ls
+            echo "OK"
 #            curl -O -L https://github.com/HDFGroup/hdf5/archive/refs/tags/snapshot-1.14.tar.gz
 #            gtar zxvf snapshot-1.14.tar.gz
 #            cd hdf5-snapshot-1.14

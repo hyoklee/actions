@@ -38,7 +38,7 @@ jobs:
             sudo pkgin -y install mozilla-rootcerts-openssl
             export LD_LIBRARY_PATH=/usr/pkg/lib
             curl -O -L https://github.com/HDFGroup/hdf5/archive/refs/tags/snapshot-1.14.tar.gz
-            gtar zxvf snapshot-1.14.tar.gz
+            tar zxvf snapshot-1.14.tar.gz
             cd hdf5-snapshot-1.14
             mkdir build
             cd build
