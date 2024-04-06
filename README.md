@@ -16,6 +16,8 @@ Actions speak louder than codes.
 | --------| ------ |
 | VisionOS | [![mac14 vos](https://github.com/hyoklee/actions/actions/workflows/mac14-vos.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac14-vos.yml) |
 
+### Solaris
+| Solaris 11.4 | [![sol](https://github.com/hyoklee/actions/actions/workflows/sol.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/sol.yml) |
 ### Windows
 
 | Test    | Status |
@@ -33,7 +35,7 @@ Actions speak louder than codes.
 
 | Test  | Status |
 | ------| ------ |
-| Autotools | [![auto](https://github.com/hyoklee/hdf5/actions/workflows/auto.yml/badge.svg)](https://github.com/hyoklee/hdf5/actions/workflows/auto.yml)   [![arm64 auto](https://github.com/hyoklee/hdf5/actions/workflows/arm64-auto.yml/badge.svg)](https://github.com/hyoklee/hdf5/actions/workflows/arm64-auto.yml)  [![riscv64 lin auto](https://github.com/hyoklee/hdf5/actions/workflows/riscv64-lin-auto.yml/badge.svg)](https://github.com/hyoklee/hdf5/actions/workflows/riscv64-lin-auto.yml) [![wsl suse-15.2 auto](https://github.com/hyoklee/actions/actions/workflows/wsl-suse-15.2-auto.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/wsl-suse-15.2-auto.yml) |
+| Autotools | [![auto](https://github.com/hyoklee/hdf5/actions/workflows/auto.yml/badge.svg)](https://github.com/hyoklee/hdf5/actions/workflows/auto.yml)   [![arm64 auto](https://github.com/hyoklee/hdf5/actions/workflows/arm64-auto.yml/badge.svg)](https://github.com/hyoklee/hdf5/actions/workflows/arm64-auto.yml)  [![riscv64 lin auto](https://github.com/hyoklee/hdf5/actions/workflows/riscv64-lin-auto.yml/badge.svg)](https://github.com/hyoklee/hdf5/actions/workflows/riscv64-lin-auto.yml) [![wsl suse-15.2 auto](https://github.com/hyoklee/actions/actions/workflows/wsl-suse-15.2-auto.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/wsl-suse-15.2-auto.yml) [![sol auto](https://github.com/hyoklee/actions/actions/workflows/sol-auto.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/sol-auto.yml) |
 
 ## Compilers
 

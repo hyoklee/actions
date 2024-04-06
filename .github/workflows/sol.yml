@@ -1,9 +1,8 @@
-name: sol
+name: sol gcc
 
 on:
   push:
-    branches: main-
-
+    branches: main
 
 defaults:
   run:
@@ -13,23 +12,17 @@ jobs:
     name: solaris-gcc
     runs-on: ubuntu-latest
     steps:
-      # - name: Checkout repository
-      #   uses: actions/checkout@v4
-      #   with:
-      #     repository: HDFGroup/hdf5
-      #     path: .
-
-      - name: Test with gcc
+      - name: test
         uses: vmactions/solaris-vm@v1
         with:
-          release: 11.4
+          release: "11.4-gcc"
           usesh: true
           copyback: false
           prepare: |
             set -e
-            pkg install cmake gcc
+            pkg install cmake
           run: |
             set -e
             mkdir build
-            cmake -S . -Bbuild -DCMAKE_BUILD_TYPE=Release
-            cmake --build build -- -j
+            cmake -DSITE:STRING="sol-11.4" -DBUILDNAME:STRING="4/r" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" ..	    
+            ctest -D Experimental -C Release

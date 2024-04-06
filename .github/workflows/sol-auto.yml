@@ -1,9 +1,8 @@
-name: sol auto
+name: sol auto gcc
 
 on:
   push:
-    branches: main-
-
+    branches: main
 
 defaults:
   run:
@@ -13,19 +12,20 @@ jobs:
     name: solaris-gcc
     runs-on: ubuntu-latest
     steps:
-      - name: Test with gcc
+      - name: test
         uses: vmactions/solaris-vm@v1
         with:
-          release: 11.4
+          release: "11.4-gcc"
           usesh: true
           copyback: false
           prepare: |
             set -e
-            pkg install autoconf@latest automake@latest git libtool@latest
+            pkg install autoconf@latest automake@latest curl libtool@latest
           run: |
             set -e
-            git clone https://github.com/HDFGroup/hdf5
-            cd hdf5
+            curl -O -L https://github.com/HDFGroup/hdf5/archive/refs/tags/snapshot-1.14.tar.gz
+            tar zxf snapshot-1.14.tar.gz
+            cd hdf5-snapshot-1.14
             ./autogen.sh
             ./configure
             make
