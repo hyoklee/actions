@@ -20,7 +20,7 @@ jobs:
           copyback: false
           prepare: |
             set -e
-            pkg install developer/gcc/gcc-c++-11
+            pkg install developer/gcc/gcc-c++
           run: |
             gcc --version
             g++ --version
