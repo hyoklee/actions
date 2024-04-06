@@ -42,6 +42,7 @@ Actions speak louder than codes.
 ### WSL
 | Test    | Status |
 | --------| ------ |
+| Debian |[![wsl deb](https://github.com/hyoklee/actions/actions/workflows/wsl-deb.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/wsl-deb.yml) |
 | Kali |[![wsl kali](https://github.com/hyoklee/actions/actions/workflows/wsl-kali.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/wsl-kali.yml) |
 | OpenSuse 15.2 |[![wsl suse-15.2](https://github.com/hyoklee/actions/actions/workflows/wsl-suse-15.2.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/wsl-suse-15.2.yml) |
 
