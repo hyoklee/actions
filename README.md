@@ -6,7 +6,7 @@ Actions speak louder than codes.
 
 | Test | Status |
 | -----| ------ |
-| amd64 | [![amd64](https://github.com/hyoklee/hdf5/actions/workflows/obsd.yml/badge.svg)](https://github.com/hyoklee/hdf5/actions/workflows/obsd.yml) |
+| amd64 | [![amd64](https://github.com/hyoklee/actions/actions/workflows/obsd.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/obsd.yml) |
 | arm64 | [![arm64](https://github.com/hyoklee/actions/actions/workflows/arm64-nbsd.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/arm64-nbsd.yml) |
 
 
