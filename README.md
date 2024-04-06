@@ -10,8 +10,12 @@ Actions speak louder than codes.
 | --------| ------ |
 | Server 2022 | [![win ninja icx](https://github.com/hyoklee/hdf5/actions/workflows/win-ninja-icx.yml/badge.svg)](https://github.com/hyoklee/hdf5/actions/workflows/win-ninja-icx.yml)  [![win ninja icx ifx p sf](https://github.com/hyoklee/hdf5/actions/workflows/win-ninja-icx-f-p-sf.yml/badge.svg)](https://github.com/hyoklee/hdf5/actions/workflows/win-ninja-icx-f-p-sf.yml) |
 | Server 2019 |[![win19](https://github.com/hyoklee/actions/actions/workflows/win19.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/win19.yml) |
-[ WSL/Kali |![wsl kali](https://github.com/hyoklee/actions/actions/workflows/wsl-kali.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/wsl-kali.yml) |
-| WSL/OpenSuse 15.2 |[![wsl suse-15.2](https://github.com/hyoklee/actions/actions/workflows/wsl-suse-15.2.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/wsl-suse-15.2.yml)|
+
+### WSL
+| Test    | Status |
+| --------| ------ |
+| Kali |[![wsl kali](https://github.com/hyoklee/actions/actions/workflows/wsl-kali.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/wsl-kali.yml) |
+| OpenSuse 15.2 |[![wsl suse-15.2](https://github.com/hyoklee/actions/actions/workflows/wsl-suse-15.2.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/wsl-suse-15.2.yml) |
 
 ## Build
 
@@ -23,7 +27,7 @@ Actions speak louder than codes.
 
 | Test | Status |
 | -----| ------ |
-| gcc-7.5.0 |  [![nbsd](https://github.com/hyoklee/hdf5/actions/workflows/nbsd.yml/badge.svg)](https://github.com/hyoklee/hdf5/actions/workflows/nbsd.yml) |
+| gcc-7.5.0 | [![nbsd](https://github.com/hyoklee/hdf5/actions/workflows/nbsd.yml/badge.svg)](https://github.com/hyoklee/hdf5/actions/workflows/nbsd.yml) |
 
 ## Options
 
@@ -31,5 +35,5 @@ Actions speak louder than codes.
 
 | Test  | Status |
 | ------| ------ |
-| Debug | [![d](https://github.com/hyoklee/hdf5/actions/workflows/d.yml/badge.svg)](https://github.com/hyoklee/hdf5/actions/workflows/d.yml) [![win19 d](https://github.com/hyoklee/actions/actions/workflows/win19.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/win19-d.yml)|
+| Debug | [![d](https://github.com/hyoklee/hdf5/actions/workflows/d.yml/badge.svg)](https://github.com/hyoklee/hdf5/actions/workflows/d.yml) [![win19 d](https://github.com/hyoklee/actions/actions/workflows/win19-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/win19-d.yml)|
 
