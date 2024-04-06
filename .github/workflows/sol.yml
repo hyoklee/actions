@@ -19,7 +19,7 @@ jobs:
           usesh: true
           prepare: |
             pkg install cmake
-          run:
+          run: |
             curl -O -L https://github.com/HDFGroup/hdf5/archive/refs/tags/snapshot-1.14.tar.gz
             gtar zxvf snapshot-1.14.tar.gz
             cd hdf5-snapshot-1.14
