@@ -1,4 +1,4 @@
-name: nbsd
+name: arm64 nbsd
 
 on:
   push:
@@ -13,7 +13,7 @@ jobs:
       matrix:
         os:
           - name: netbsd
-            architecture: x86-64
+            architecture: arm64
             version: ['9.3', '10.0']
             host: ubuntu-latest
     steps:
