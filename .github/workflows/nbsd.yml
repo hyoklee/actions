@@ -28,7 +28,7 @@ jobs:
           environment_variables: FOO BAR
           operating_system: ${{ matrix.os.name }}
           architecture: ${{ matrix.os.architecture }}
-          version: '${{ matrix.os.version }}'
+          version: ${{ matrix.os.version }}
           shell: bash
           run: |
             sudo pkgin -y install git
