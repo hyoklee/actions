@@ -36,7 +36,7 @@ Actions speak louder than codes.
 
 | Test    | Status |
 | --------| ------ |
-| Server 2022 | [![win ninja icx](https://github.com/hyoklee/hdf5/actions/workflows/win-ninja-icx.yml/badge.svg)](https://github.com/hyoklee/hdf5/actions/workflows/win-ninja-icx.yml)  [![win ninja icx ifx p sf](https://github.com/hyoklee/hdf5/actions/workflows/win-ninja-icx-f-p-sf.yml/badge.svg)](https://github.com/hyoklee/hdf5/actions/workflows/win-ninja-icx-f-p-sf.yml) |
+| Server 2022 | [![win](https://github.com/hyoklee/actions/actions/workflows/win.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/win.yml) |
 | Server 2019 |[![win19](https://github.com/hyoklee/actions/actions/workflows/win19.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/win19.yml) |
 
 ### WSL
