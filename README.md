@@ -4,6 +4,18 @@ Actions speak louder than codes.
 
 ## OS
 
+### BSD
+
+| Test    | Status |
+| --------| ------ |
+| OpenBSD 7.5 | [![obsd](https://github.com/hyoklee/actions/actions/workflows/obsd.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/obsd.yml) |
+
+### Mac
+
+| Test    | Status |
+| --------| ------ |
+| VisionOS | [![mac14 vos](https://github.com/hyoklee/actions/actions/workflows/mac14-vos.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac14-vos.yml) |
+
 ### Windows
 
 | Test    | Status |

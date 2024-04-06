@@ -2,7 +2,7 @@ name: mac14 vos
 
 on:
   push:
-    branches: [ main- ]
+    branches: [ main ]
 
 jobs:
   build_with_15_OS:
@@ -21,7 +21,6 @@ jobs:
         repository: hyoklee/hdf5
         path: ./hdf5
     - name: Build
-      continue-on-error: true
       run: |
         brew install xcodesorg/made/xcodes
         xcodebuild -downloadAllPlatforms
@@ -48,7 +47,6 @@ jobs:
         repository: hyoklee/hdf5
         path: ./hdf5
     - name: Build
-      continue-on-error: true
       run: |
         mkdir ./hdf5/build
         cd ./hdf5/build
@@ -70,7 +68,6 @@ jobs:
         repository: hyoklee/hdf5
         path: ./hdf5
     - name: Build
-      continue-on-error: true
       run: |
         mkdir ./hdf5/build
         cd ./hdf5/build
