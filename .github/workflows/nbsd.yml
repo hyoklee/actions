@@ -2,7 +2,7 @@ name: nbsd
 
 on:
   push:
-    branches: [ main- ]
+    branches: [ main ]
 
 jobs:
   test: # make sure the action works on a clean machine without building
@@ -13,8 +13,8 @@ jobs:
       matrix:
         os:
           - name: netbsd
-            architecture: x86-64
-            version: '9.3'
+            architecture: [x86-64, arm64]
+            version: ['9.3', '10.0']
             host: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -33,19 +33,19 @@ jobs:
           run: |
             sudo pkgin -y install git
             sudo pkgin -y install cmake
-            sudo pkgin -y install jpeg-9e
+            sudo pkgin -y install curl
             sudo pkgin -y install mozilla-rootcerts
             sudo pkgin -y install mozilla-rootcerts-openssl
             export LD_LIBRARY_PATH=/usr/pkg/lib
-            ls /usr/pkg/lib
-            git clone https://github.com/HDFGroup/hdf4
-            cd hdf4
+            curl -O -L https://github.com/HDFGroup/hdf5/archive/refs/tags/snapshot-1.14.tar.gz
+            gtar zxvf snapshot-1.14.tar.gz
+            cd hdf5-snapshot-1.14
             mkdir build
             cd build
             cmake \
-            -D BUILD_SHARED_LIBS:BOOL=OFF \
-            -D CTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
-            -D SITE:STRING=nbsd ..
-            ctest -T Build -VV --output-on-error -j
-            ctest -T Test -VV --output-on-error -j
-            ctest -T Submit
+            -DSITE:STRING="nbsd-${{ matrix.os.version }}.${{ matrix.os.architecture }}" \
+            -DBUILDNAME:STRING="4/r" \
+            -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
+            -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" \
+            ..
+            ctest -D Experimental -C Release

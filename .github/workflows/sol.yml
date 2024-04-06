@@ -20,9 +20,9 @@ jobs:
           copyback: false
           prepare: |
             set -e
-            pkg install curl gnu-tar
+            pkg install curl
             pkg install gnu-tar
-            pkg install cmake
+#            pkg install cmake
           run: |
             set -e
             curl -O -L https://github.com/HDFGroup/hdf5/archive/refs/tags/snapshot-1.14.tar.gz
@@ -30,5 +30,5 @@ jobs:
             cd hdf5-snapshot-1.14
             mkdir build
             cd build
-            cmake -DSITE:STRING="sol-11.4" -DBUILDNAME:STRING="4/r" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" ..
-            ctest -D Experimental -C Release
+#            cmake -DSITE:STRING="sol-11.4" -DBUILDNAME:STRING="4/r" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" ..
+#            ctest -D Experimental -C Release

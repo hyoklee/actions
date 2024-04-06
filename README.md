@@ -9,6 +9,7 @@ Actions speak louder than codes.
 | Test    | Status |
 | --------| ------ |
 | OpenBSD 7.5 | [![obsd](https://github.com/hyoklee/actions/actions/workflows/obsd.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/obsd.yml) |
+| NetBSD | [![nbsd](https://github.com/hyoklee/actions/actions/workflows/nbsd.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/nbsd.yml) |
 
 ### Mac
 
@@ -45,7 +46,7 @@ Actions speak louder than codes.
 
 | Test | Status |
 | -----| ------ |
-| gcc-7.5.0 | [![nbsd](https://github.com/hyoklee/hdf5/actions/workflows/nbsd.yml/badge.svg)](https://github.com/hyoklee/hdf5/actions/workflows/nbsd.yml) |
+| gcc-7.5.0 | [![nbsd](https://github.com/hyoklee/actions/actions/workflows/nbsd.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/nbsd.yml) |
 
 ## Options
 
