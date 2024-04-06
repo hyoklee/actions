@@ -18,20 +18,22 @@ jobs:
           release: "11.4-gcc"
           usesh: true
           run: |
-            curl -O https://cmake.org/files/v3.18/cmake-3.18.0-Linux-x86_64.sh
+            cd /tmp
+            curl -s -O https://cmake.org/files/v3.18/cmake-3.18.0-Linux-x86_64.sh
+            curl -s -O https://cmake.org/files/v3.18/cmake-3.18.0.tar.gz
             chmod u+x ./cmake-3.18.0-Linux-x86_64.sh
             ./cmake-3.18.0-Linux-x86_64.sh --skip-license
-            curl -O -L https://github.com/HDFGroup/hdf5/archive/refs/tags/snapshot-1.14.tar.gz
+            curl -s -O -L https://github.com/HDFGroup/hdf5/archive/refs/tags/snapshot-1.14.tar.gz
             gtar zxf snapshot-1.14.tar.gz
             pwd
             ls
             ls bin/
             cd hdf5-snapshot-1.14
             ls bin
-            ls ~/bin
+            ls /tmp/bin
             mkdir build
             cd build
-            ls -l ../../bin
-            chmod u+x ../../bin/*
-            ../../bin/cmake -DSITE:STRING="sol-11.4" -DBUILDNAME:STRING="4/r" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" ..
-            ../../bin/ctest -D Experimental -C Release
+            ls -l /tmp/bin
+            chmod u+x /tmp/bin/*
+            /tmp/bin/cmake -DSITE:STRING="sol-11.4" -DBUILDNAME:STRING="4/r" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" ..
+            /tmp/bin/ctest -D Experimental -C Release
