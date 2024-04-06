@@ -14,10 +14,14 @@ Actions speak louder than codes.
 
 | Test    | Status |
 | --------| ------ |
-| VisionOS | [![mac14 vos](https://github.com/hyoklee/actions/actions/workflows/mac14-vos.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac14-vos.yml) |
+| VisionOS |[![mac14 vos](https://github.com/hyoklee/actions/actions/workflows/mac14-vos.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac14-vos.yml) |
 
 ### Solaris
-| Solaris 11.4 | [![sol](https://github.com/hyoklee/actions/actions/workflows/sol.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/sol.yml) |
+
+| Test    | Status |
+| --------| ------ |
+| Solaris 11.4 |[![sol](https://github.com/hyoklee/actions/actions/workflows/sol.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/sol.yml) |
+
 ### Windows
 
 | Test    | Status |
