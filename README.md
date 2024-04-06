@@ -56,8 +56,9 @@ Actions speak louder than codes.
 
 | Test | Status |
 | -----| ------ |
-| gcc-7.5.0 | [![nbsd-9.3](https://github.com/hyoklee/actions/actions/workflows/nbsd-9.3.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/nbsd-9.3.yml) |
-| gcc-10.5.0 | [![nbsd](https://github.com/hyoklee/actions/actions/workflows/nbsd.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/nbsd.yml) |
+| gcc-7.5.0 |[![nbsd-9.3](https://github.com/hyoklee/actions/actions/workflows/nbsd-9.3.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/nbsd-9.3.yml)|
+| gcc-10.2.1 |[![wsl deb](https://github.com/hyoklee/actions/actions/workflows/wsl-deb.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/wsl-deb.yml)|
+| gcc-10.5.0 |[![nbsd](https://github.com/hyoklee/actions/actions/workflows/nbsd.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/nbsd.yml) |
 
 ## Options
 
