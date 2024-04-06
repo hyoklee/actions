@@ -17,6 +17,10 @@ jobs:
         with:
           release: "11.4-gcc"
           usesh: true
+          copyback: false
+          prepare: |
+            set -e
+            pkg install g++
           run: |
             curl -s -O https://cmake.org/files/v3.18/cmake-3.18.0.tar.gz
             gtar zxf cmake-3.18.0.tar.gz
