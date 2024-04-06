@@ -2,6 +2,14 @@
 
 Actions speak louder than codes.
 
+## Arch
+
+| Test | Status |
+| -----| ------ |
+| amd64 | [![amd64](https://github.com/hyoklee/hdf5/actions/workflows/obsd.yml/badge.svg)](https://github.com/hyoklee/hdf5/actions/workflows/obsd.yml) |
+| arm64 | [![arm64](https://github.com/hyoklee/actions/actions/workflows/arm64-nbsd.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/arm64-nbsd.yml) |
+
+
 ## OS
 
 ### BSD
@@ -9,7 +17,8 @@ Actions speak louder than codes.
 | Test    | Status |
 | --------| ------ |
 | OpenBSD 7.5 | [![obsd](https://github.com/hyoklee/actions/actions/workflows/obsd.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/obsd.yml) |
-| NetBSD | [![nbsd](https://github.com/hyoklee/actions/actions/workflows/nbsd.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/nbsd.yml) |
+| NetBSD 10.0 | [![nbsd](https://github.com/hyoklee/actions/actions/workflows/nbsd.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/nbsd.yml) |
+| NetBSD 9.3 | [![nbsd](https://github.com/hyoklee/actions/actions/workflows/nbsd-9.3.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/nbsd-9.3.yml) |
 
 ### Mac
 
@@ -46,7 +55,8 @@ Actions speak louder than codes.
 
 | Test | Status |
 | -----| ------ |
-| gcc-7.5.0 | [![nbsd](https://github.com/hyoklee/actions/actions/workflows/nbsd.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/nbsd.yml) |
+| gcc-7.5.0 | [![nbsd-9.3](https://github.com/hyoklee/actions/actions/workflows/nbsd-9.3.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/nbsd-9.3.yml) |
+| gcc-10.5.0 | [![nbsd](https://github.com/hyoklee/actions/actions/workflows/nbsd.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/nbsd.yml) |
 
 ## Options
 
