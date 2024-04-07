@@ -26,6 +26,6 @@ jobs:
             curl -O -L https://github.com/HDFGroup/hdf5/archive/refs/tags/snapshot-1.14.tar.gz
             gtar zxf snapshot-1.14.tar.gz
             cd hdf5-snapshot-1.14
-            ./configure CC=gcc
+            ./configure CC=gcc CXX=g++
             make
             make check
