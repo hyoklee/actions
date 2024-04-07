@@ -2,7 +2,7 @@ name: mac-11
 
 on:
   push:
-    branches: main
+    branches: main-
 
 jobs:
   build:

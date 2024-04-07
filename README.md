@@ -30,7 +30,8 @@ Actions speak louder than codes.
 
 | Test    | Status |
 | --------| ------ |
-| VisionOS |[![mac14 vos](https://github.com/hyoklee/actions/actions/workflows/mac14-vos.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac14-vos.yml) |
+| macOS 11  |[![mac-11](https://github.com/hyoklee/actions/actions/workflows/mac11.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac11.yml)|
+| visionOS |[![mac14 vos](https://github.com/hyoklee/actions/actions/workflows/mac14-vos.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac14-vos.yml) |
 
 ### Solaris
 
