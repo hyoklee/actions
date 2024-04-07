@@ -23,16 +23,9 @@ jobs:
             pkg install autoconf automake curl libtool gnu-tar developer/gcc/gcc-c++
           run: |
             set -e
-            curl -O -L https://ftpmirror.gnu.org/autoconf/autoconf-2.71.tar.gz
-            gtar zxf autoconf-2.71.tar.gz
-            cd autoconf-2.71
-            ./configure --prefix=/tmp
-            make
-            make install
-            cd ..
             curl -O -L https://github.com/HDFGroup/hdf5/archive/refs/tags/snapshot-1.14.tar.gz
             gtar zxf snapshot-1.14.tar.gz
             cd hdf5-snapshot-1.14
-            ./configure
+            ./configure CC=gcc
             make
             make check
