@@ -26,7 +26,7 @@ jobs:
           curl -O -L https://github.com/HDFGroup/hdf5/archive/refs/tags/snapshot-1.14.tar.gz
           tar zxf snapshot-1.14.tar.gz
           cd hdf5-snapshot-1.14
-          ./configure --prefix=/tmp CC="$(which icx) --enable-production"
+          ./configure --prefix=/tmp CC="$(which icx)" --enable-production
           make -j
           make check -j
           make install
