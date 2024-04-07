@@ -1,4 +1,4 @@
-name: lin auto icx d
+name: lin icx
 
 on:
   push:
@@ -25,8 +25,7 @@ jobs:
           curl -O -L https://github.com/HDFGroup/hdf5/archive/refs/tags/snapshot-1.14.tar.gz
           gtar zxf snapshot-1.14.tar.gz
           cd hdf5-snapshot-1.14
-          ./configure --prefix=/tmp --enable-internal-debug=all CC="$(which icx)"
-          make -j
-          make check -j
-          make install
-          make uninstall
+          mkdir build
+          cd build
+          cmake -DSITE:STRING="ubu-22.04" -DBUILDNAME:STRING="4/icx.r" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" ..
+          ctest -D Experimental -C Release

@@ -1,4 +1,4 @@
-name: lin auto icx d
+name: lin auto icx
 
 on:
   push:
@@ -25,7 +25,7 @@ jobs:
           curl -O -L https://github.com/HDFGroup/hdf5/archive/refs/tags/snapshot-1.14.tar.gz
           gtar zxf snapshot-1.14.tar.gz
           cd hdf5-snapshot-1.14
-          ./configure --prefix=/tmp --enable-internal-debug=all CC="$(which icx)"
+          ./configure --prefix=/tmp CC="$(which icx)"
           make -j
           make check -j
           make install
