@@ -2,7 +2,7 @@ name: mac-13
 
 on:
   push:
-    branches: main
+    branches: main-
 
 jobs:
   build:

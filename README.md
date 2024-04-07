@@ -24,15 +24,16 @@ Actions speak louder than codes.
 
 | Test    | Status |
 | --------| ------ |
-| Ubuntu 22.04 |[![lin](https://github.com/hyoklee/actions/actions/workflows/lin.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/lin.yml) |
+| Ubuntu 22.04 |[![lin](https://github.com/hyoklee/actions/actions/workflows/lin.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/lin.yml)|
+| Ubuntu 20.04 |[![lin20](https://github.com/hyoklee/actions/actions/workflows/lin20.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/lin20.yml)|
 
 ### Mac
 
 | Test    | Status |
 | --------| ------ |
-| macOS 14  |[![mac-14](https://github.com/hyoklee/actions/actions/workflows/mac11.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac14.yml)|
-| macOS 13  |[![mac-13](https://github.com/hyoklee/actions/actions/workflows/mac11.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac13.yml)|
-| macOS 12  |[![mac-12](https://github.com/hyoklee/actions/actions/workflows/mac11.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac12.yml)|
+| macOS 14  |[![mac-14](https://github.com/hyoklee/actions/actions/workflows/mac14.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac14.yml)|
+| macOS 13  |[![mac-13](https://github.com/hyoklee/actions/actions/workflows/mac13.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac13.yml)|
+| macOS 12  |[![mac-12](https://github.com/hyoklee/actions/actions/workflows/mac12.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac12.yml)|
 | macOS 11  |[![mac-11](https://github.com/hyoklee/actions/actions/workflows/mac11.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac11.yml)|
 | visionOS |[![mac14 vos](https://github.com/hyoklee/actions/actions/workflows/mac14-vos.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac14-vos.yml) |
 
@@ -83,10 +84,11 @@ Actions speak louder than codes.
 
 | OS  | Build | Compiler | Status |
 | ----| ----- | ---------| ------ |
-| Linux | CMake | gcc | [![lin d](https://github.com/hyoklee/actions/actions/workflows/lin-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/lin-d.yml)|
-| Linux | Autotools | gcc |  [![lin auto d](https://github.com/hyoklee/actions/actions/workflows/lin-auto-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/lin-auto-d.yml)  |
-| Linux | CMake | icx |  [![lin icx d](https://github.com/hyoklee/actions/actions/workflows/lin-icx-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/lin-icx-d.yml)  |
-| Linux | Autotools | icx |  [![lin auto icx d](https://github.com/hyoklee/actions/actions/workflows/lin-auto-icx-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/lin-auto-icx-d.yml) |
+| Ubuntu 22.04 | CMake | gcc | [![lin d](https://github.com/hyoklee/actions/actions/workflows/lin-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/lin-d.yml)|
+| Ubuntu 20.04 | CMake | gcc | [![lin20 d](https://github.com/hyoklee/actions/actions/workflows/lin-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/lin20-d.yml)|
+| Ubuntu 22.04 | Autotools | gcc |  [![lin auto d](https://github.com/hyoklee/actions/actions/workflows/lin-auto-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/lin-auto-d.yml)  |
+| Ubuntu 22.04 | CMake | icx |  [![lin icx d](https://github.com/hyoklee/actions/actions/workflows/lin-icx-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/lin-icx-d.yml)  |
+| Ubuntu 22.04 | Autotools | icx |  [![lin auto icx d](https://github.com/hyoklee/actions/actions/workflows/lin-auto-icx-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/lin-auto-icx-d.yml) |
 | Mac | CMake | AppleClang | [![mac14 d](https://github.com/hyoklee/actions/actions/workflows/mac14-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac14-d.yml) [![mac13 d](https://github.com/hyoklee/actions/actions/workflows/mac13-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac13-d.yml) [![mac12 d](https://github.com/hyoklee/actions/actions/workflows/mac12-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac12-d.yml)  [![mac11 d](https://github.com/hyoklee/actions/actions/workflows/mac11-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac11-d.yml) |
 | Windows | CMake | MSVC | [![win d](https://github.com/hyoklee/actions/actions/workflows/win-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/win-d.yml)  [![win19 d](https://github.com/hyoklee/actions/actions/workflows/win19-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/win19-d.yml)|
 
