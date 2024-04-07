@@ -20,7 +20,7 @@ jobs:
           copyback: false
           prepare: |
             set -e
-            pkg install autoconf automake curl libtool gnu-tar
+            pkg install autoconf automake curl libtool gnu-tar developer/gcc/gcc-c++
           run: |
             set -e
             curl -O -L https://ftpmirror.gnu.org/autoconf/autoconf-2.71.tar.gz
