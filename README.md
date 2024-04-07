@@ -40,6 +40,7 @@ Actions speak louder than codes.
 | Server 2019 |[![win19](https://github.com/hyoklee/actions/actions/workflows/win19.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/win19.yml) |
 
 ### WSL
+
 | Test    | Status |
 | --------| ------ |
 | Debian |[![wsl deb](https://github.com/hyoklee/actions/actions/workflows/wsl-deb.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/wsl-deb.yml) |
@@ -66,5 +67,5 @@ Actions speak louder than codes.
 
 | Test  | Status |
 | ------| ------ |
-| Debug | [![d](https://github.com/hyoklee/hdf5/actions/workflows/d.yml/badge.svg)](https://github.com/hyoklee/hdf5/actions/workflows/d.yml) [![win19 d](https://github.com/hyoklee/actions/actions/workflows/win19-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/win19-d.yml)|
+| Debug | [![d](https://github.com/hyoklee/hdf5/actions/workflows/d.yml/badge.svg)](https://github.com/hyoklee/hdf5/actions/workflows/d.yml) [![win d](https://github.com/hyoklee/actions/actions/workflows/win-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/win-d.yml) [![win19 d](https://github.com/hyoklee/actions/actions/workflows/win19-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/win19-d.yml)|
 
