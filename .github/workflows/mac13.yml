@@ -1,13 +1,13 @@
-name: mac-11 d
+name: mac-13
 
 on:
   push:
-    branches: main-
+    branches: main
 
 jobs:
   build:
     name: Test snapshot
-    runs-on: macos-11
+    runs-on: macos-13
     steps:
       - name: test
         run: |
@@ -16,5 +16,5 @@ jobs:
           cd hdf5-snapshot-1.14
           mkdir build
           cd build
-          cmake -DSITE:STRING="mac-11" -DBUILDNAME:STRING="4/d" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" ..
-          ctest -D Experimental -C Debug
+          cmake -DSITE:STRING="mac-13" -DBUILDNAME:STRING="4/r" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" ..
+          ctest -D Experimental -C Release

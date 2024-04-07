@@ -1,57 +1,20 @@
-name: mac14
+name: mac-14
 
 on:
-  workflow_dispatch:
   push:
-    branches: [ main- ]
+    branches: main
 
 jobs:
   build:
     name: Test snapshot
     runs-on: macos-14
     steps:
-      - uses: actions/checkout@v4.1.1
-      - name: Install Dependencies
-        run: brew reinstall curl openssl libaec llvm mpich gfortran cmake
-      - name: Build Ninja
+      - name: test
         run: |
-          export PATH=/opt/homebrew/opt/llvm/bin:$PATH
-          export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
-          export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
-          export CC=$(brew --prefix llvm)/bin/clang
-          export FC=/opt/homebrew/bin/gfortran
-          clang --version
-          which gfortran
-          gfortran --version
-          pwd
-          ls /usr/local/bin/
-          git clone https://github.com/hyoklee/hdf5
-          cd hdf5
+          curl -O -L https://github.com/HDFGroup/hdf5/archive/refs/tags/snapshot-1.14.tar.gz
+          tar zxf snapshot-1.14.tar.gz
+          cd hdf5-snapshot-1.14
           mkdir build
           cd build
-          cmake \
-          -DBUILD_SHARED_LIBS=ON \
-          -DCMAKE_BUILD_TYPE=Release \
-          -DCMAKE_TOOLCHAIN_FILE=config/toolchain/clang.cmake \
-          -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
-          -DHDF5_BUILD_CPP_LIB:BOOL=OFF \
-          -DHDF5_BUILD_JAVA=ON \
-          -DHDF5_BUILD_FORTRAN:BOOL=ON \
-          -DHDF5_BUILD_HL_LIB:BOOL=ON \
-          -DHDF5_ENABLE_ALL_WARNINGS=ON \
-          -DHDF5_ENABLE_ANALYZER_TOOLS:BOOL=ON \
-          -DHDF5_ENABLE_PARALLEL:BOOL=ON \
-          -DHDF5_ENABLE_THREADSAFE:BOOL=OFF \
-          -DHDF5_ENABLE_SANITIZERS:BOOL=ON \
-          -DHDF5_ENABLE_SUBFILING_VFD:BOOL=ON \
-          -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF \
-          -DHDF5_TEST_VFD:BOOL=ON \
-          -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF \
-          -DHDF5_TEST_VFD:BOOL=ON \
-          -DMPIEXEC_MAX_NUMPROCS:STRING=16 \
-          -DUSE_SANITIZER:STRING='Address;Memory;MemoryWithOrigins;Undefined;Thread;Leak' \
-          -DSITE:STRING='mac14' \
-          ..
-          ctest -T Build --output-on-error -j
-          ctest -T Test --output-on-error -j
-          ctest -T Submit
+          cmake -DSITE:STRING="mac-14" -DBUILDNAME:STRING="4/r" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" ..
+          ctest -D Experimental -C Release
