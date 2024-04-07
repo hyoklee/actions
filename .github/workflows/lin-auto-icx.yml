@@ -24,7 +24,7 @@ jobs:
         run: |
           source /opt/intel/oneapi/setvars.sh
           curl -O -L https://github.com/HDFGroup/hdf5/archive/refs/tags/snapshot-1.14.tar.gz
-          gtar zxf snapshot-1.14.tar.gz
+          tar zxf snapshot-1.14.tar.gz
           cd hdf5-snapshot-1.14
           ./configure --prefix=/tmp CC="$(which icx)"
           make -j
