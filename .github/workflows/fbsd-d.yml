@@ -1,8 +1,8 @@
-name: fbsd
+name: fbsd d
 
 on:
   push:
-    branches: main-
+    branches: main
 
 jobs:
   test:
@@ -33,8 +33,8 @@ jobs:
             cd build
             cmake \
             -DSITE:STRING=fbsd-14.0 \
-            -DBUILDNAME:STRING="4/r" \
+            -DBUILDNAME:STRING="4/d" \
             -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
             -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" \
             ..
-            ctest -D Experimental -C Release
+            ctest -D Experimental -C Debug

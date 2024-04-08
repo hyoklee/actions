@@ -63,7 +63,7 @@ Actions speak louder than codes.
 
 | Test  | Status |
 | ------| ------ |
-| Autotools | [![auto](https://github.com/hyoklee/hdf5/actions/workflows/auto.yml/badge.svg)](https://github.com/hyoklee/hdf5/actions/workflows/auto.yml)  [![arm64 auto](https://github.com/hyoklee/hdf5/actions/workflows/arm64-auto.yml/badge.svg)](https://github.com/hyoklee/hdf5/actions/workflows/arm64-auto.yml) [![lin auto](https://github.com/hyoklee/actions/actions/workflows/lin-auto.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/lin-auto.yml) [![lin auto icx](https://github.com/hyoklee/actions/actions/workflows/lin-auto-icx.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/lin-auto-icx.yml)   [![riscv64 lin auto](https://github.com/hyoklee/hdf5/actions/workflows/riscv64-lin-auto.yml/badge.svg)](https://github.com/hyoklee/hdf5/actions/workflows/riscv64-lin-auto.yml) [![wsl suse-15.2 auto](https://github.com/hyoklee/actions/actions/workflows/wsl-suse-15.2-auto.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/wsl-suse-15.2-auto.yml) [![sol auto](https://github.com/hyoklee/actions/actions/workflows/sol-auto.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/sol-auto.yml) |
+| Autotools | [![obsd auto](https://github.com/hyoklee/actions/actions/workflows/obsd-auto.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/obsd-auto.yml) [![obsd-7.4 auto](https://github.com/hyoklee/actions/actions/workflows/obsd-7.4-auto.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/obsd-7.4-auto.yml)  [![arm64 auto](https://github.com/hyoklee/hdf5/actions/workflows/arm64-auto.yml/badge.svg)](https://github.com/hyoklee/hdf5/actions/workflows/arm64-auto.yml) [![lin auto](https://github.com/hyoklee/actions/actions/workflows/lin-auto.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/lin-auto.yml) [![lin auto icx](https://github.com/hyoklee/actions/actions/workflows/lin-auto-icx.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/lin-auto-icx.yml)   [![riscv64 lin auto](https://github.com/hyoklee/hdf5/actions/workflows/riscv64-lin-auto.yml/badge.svg)](https://github.com/hyoklee/hdf5/actions/workflows/riscv64-lin-auto.yml) [![wsl suse-15.2 auto](https://github.com/hyoklee/actions/actions/workflows/wsl-suse-15.2-auto.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/wsl-suse-15.2-auto.yml) [![sol auto](https://github.com/hyoklee/actions/actions/workflows/sol-auto.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/sol-auto.yml) |
 
 ## Compilers
 
@@ -71,10 +71,12 @@ Actions speak louder than codes.
 
 | Test | Status |
 | -----| ------ |
-| clang 16.0 | [![obsd](https://github.com/hyoklee/actions/actions/workflows/obsd.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/obsd.yml) |
+| clang-16.0.6 | [![obsd](https://github.com/hyoklee/actions/actions/workflows/obsd.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/obsd.yml) |
 | icx 2024.1 |[![lin icx](https://github.com/hyoklee/actions/actions/workflows/lin-icx.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/lin-icx.yml) |
+| gcc-11.4.0 |[![lin](https://github.com/hyoklee/actions/actions/workflows/lin.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/lin.yml)|
 | gcc-10.5.0 |[![nbsd](https://github.com/hyoklee/actions/actions/workflows/nbsd.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/nbsd.yml) |
 | gcc-10.2.1 |[![wsl deb](https://github.com/hyoklee/actions/actions/workflows/wsl-deb.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/wsl-deb.yml)|
+| gcc-9.4.0 |[![lin20](https://github.com/hyoklee/actions/actions/workflows/lin20.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/lin20.yml)|
 | gcc-7.5.0 |[![nbsd-9.3](https://github.com/hyoklee/actions/actions/workflows/nbsd-9.3.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/nbsd-9.3.yml)|
 | gcc-7.3.0 | [![sol](https://github.com/hyoklee/actions/actions/workflows/sol.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/sol.yml) |
 
@@ -92,6 +94,8 @@ Actions speak louder than codes.
 
 | OS  | Build | Compiler | Status |
 | ----| ----- | ---------| ------ |
+| FreeBSD 14.0 | CMake | gcc | [![fbsd d](https://github.com/hyoklee/actions/actions/workflows/fbsd-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/fbsd-d.yml)|
+| OpenBSD 7.5 | CMake | clang-16.0.6 | [![obsd d](https://github.com/hyoklee/actions/actions/workflows/obsd-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/obsd-d.yml)|
 | Ubuntu 22.04 | CMake | gcc | [![lin d](https://github.com/hyoklee/actions/actions/workflows/lin-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/lin-d.yml)|
 | Ubuntu 20.04 | CMake | gcc | [![lin20 d](https://github.com/hyoklee/actions/actions/workflows/lin-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/lin20-d.yml)|
 | Ubuntu 22.04 | Autotools | gcc |  [![lin auto d](https://github.com/hyoklee/actions/actions/workflows/lin-auto-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/lin-auto-d.yml)  |
