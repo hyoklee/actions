@@ -3,7 +3,7 @@ name: win19 icx ifx
 on:
   push:
     branches:
-      - main
+      - main-
 jobs:
   build:
     runs-on: windows-2019

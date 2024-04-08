@@ -3,7 +3,7 @@ name: win icx ifx d
 on:
   push:
     branches:
-      - main
+      - main-
 jobs:
   build:
     runs-on: windows-latest
