@@ -12,13 +12,12 @@ jobs:
         run:  |
           sudo apt-get update
           sudo apt-get install autoconf automake libtool libtool-bin libaec-dev
-          cd /tmp
-          wget https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
-          sudo apt-key add GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
-          rm GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
-          sudo add-apt-repository -y "deb https://apt.repos.intel.com/oneapi all main"
-          sudo apt update
-          sudo apt install -y intel-oneapi-compiler-dpcpp-cpp
+      - name: oneapi
+        uses: fortran-lang/setup-fortran@v1
+        id: setup-fortran
+        with:
+          compiler: intel
+          version: '2024.1'          
       - name: test
         shell: bash
         run: |
@@ -26,7 +25,7 @@ jobs:
           curl -O -L https://github.com/HDFGroup/hdf5/archive/refs/tags/snapshot-1.14.tar.gz
           tar zxf snapshot-1.14.tar.gz
           cd hdf5-snapshot-1.14
-          ./configure --prefix=/tmp CC="$(which icx)" CC="$(which ifx)"  --enable-build-mode=production --enable-fortran
+          ./configure --prefix=/tmp CC="$(which icx)" FC="$(which ifx)"  --enable-build-mode=production --enable-fortran
           make -j
           make check -j
           make install
