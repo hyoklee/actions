@@ -95,8 +95,8 @@ Actions speak louder than codes.
 
 | OS  | Build | Compiler | Status |
 | ----| ----- | ---------| ------ |
-| FreeBSD 14.0 | CMake | gcc | [![fbsd d](https://github.com/hyoklee/actions/actions/workflows/fbsd-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/fbsd-d.yml)|
-| OpenBSD 7.5 | CMake | clang-16.0.6 | [![obsd d](https://github.com/hyoklee/actions/actions/workflows/obsd-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/obsd-d.yml)|
+| FreeBSD 14.0 | CMake | clang-16.0.6 | [![fbsd d](https://github.com/hyoklee/actions/actions/workflows/fbsd-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/fbsd-d.yml)|
+| OpenBSD 7.5  | CMake | clang-16.0.6 | [![obsd d](https://github.com/hyoklee/actions/actions/workflows/obsd-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/obsd-d.yml)|
 | Ubuntu 22.04 | CMake | gcc | [![lin d](https://github.com/hyoklee/actions/actions/workflows/lin-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/lin-d.yml)|
 | Ubuntu 20.04 | CMake | gcc | [![lin20 d](https://github.com/hyoklee/actions/actions/workflows/lin-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/lin20-d.yml)|
 | Ubuntu 22.04 | Autotools | gcc |  [![lin auto d](https://github.com/hyoklee/actions/actions/workflows/lin-auto-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/lin-auto-d.yml)  |
