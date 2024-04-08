@@ -1,12 +1,12 @@
-name: win icx ifx
+name: win19 icx ifx d
 
 on:
   push:
     branches:
-      - main-
+      - main
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: windows-2019
     steps:
       - name: cmake
         uses: lukka/get-cmake@latest
@@ -26,5 +26,5 @@ jobs:
           cd  hdf5-snapshot-1.14          
           mkdir build
           cd build
-          cmake -G Ninja -DSITE:STRING=win -DBUILDNAME:STRING="4/icx.ifx.r" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" -DHDF5_BUILD_FORTRAN:BOOL=ON  ..
-          ctest -D Experimental -C Release
+          cmake -G Ninja -DSITE:STRING=win19 -DBUILDNAME:STRING="4/icx.ifx.d" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" -DHDF5_BUILD_FORTRAN:BOOL=ON  ..
+          ctest -D Experimental -C Debug
