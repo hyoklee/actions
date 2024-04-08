@@ -16,9 +16,10 @@ Actions speak louder than codes.
 
 | Test    | Status |
 | --------| ------ |
-| OpenBSD 7.5 | [![obsd](https://github.com/hyoklee/actions/actions/workflows/obsd.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/obsd.yml) |
+| FreeBSD 14.0 | [![fbsd](https://github.com/hyoklee/actions/actions/workflows/fbsd.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/fbsd.yml) |
 | NetBSD 10.0 | [![nbsd](https://github.com/hyoklee/actions/actions/workflows/nbsd.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/nbsd.yml) |
 | NetBSD 9.3 | [![nbsd](https://github.com/hyoklee/actions/actions/workflows/nbsd-9.3.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/nbsd-9.3.yml) |
+| OpenBSD 7.5 | [![obsd](https://github.com/hyoklee/actions/actions/workflows/obsd.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/obsd.yml) |
 
 ### Linux
 
@@ -70,6 +71,7 @@ Actions speak louder than codes.
 
 | Test | Status |
 | -----| ------ |
+| clang 16.0 | [![obsd](https://github.com/hyoklee/actions/actions/workflows/obsd.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/obsd.yml) |
 | icx 2024.1 |[![lin icx](https://github.com/hyoklee/actions/actions/workflows/lin-icx.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/lin-icx.yml) |
 | gcc-10.5.0 |[![nbsd](https://github.com/hyoklee/actions/actions/workflows/nbsd.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/nbsd.yml) |
 | gcc-10.2.1 |[![wsl deb](https://github.com/hyoklee/actions/actions/workflows/wsl-deb.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/wsl-deb.yml)|
@@ -78,7 +80,9 @@ Actions speak louder than codes.
 
 ### Fortran
 
-| ifx 2024.1 | [![lin auto icx ifx](https://github.com/hyoklee/actions/actions/workflows/lin-auto-icx-ifx.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/lin-auto-icx-ifx.yml) |
+| Test | Status |
+| -----| ------ |
+| ifx 2024.1 | [![lin auto icx ifx](https://github.com/hyoklee/actions/actions/workflows/lin-auto-icx-f.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/lin-auto-icx-f.yml) |
 
 ## Options
 

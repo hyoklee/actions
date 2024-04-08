@@ -22,9 +22,6 @@ jobs:
           pkg_add curl
           pkg_add cmake
         run: |
-          df -h
-          pwd
-          ls -lah
           curl -O -L https://github.com/HDFGroup/hdf5/archive/refs/tags/snapshot-1.14.tar.gz
           tar zxf snapshot-1.14.tar.gz
           cd hdf5-snapshot-1.14
