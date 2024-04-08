@@ -66,6 +66,8 @@ Actions speak louder than codes.
 
 ## Compilers
 
+### C
+
 | Test | Status |
 | -----| ------ |
 | icx 2024.1 |[![lin icx](https://github.com/hyoklee/actions/actions/workflows/lin-icx.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/lin-icx.yml) |
@@ -74,7 +76,9 @@ Actions speak louder than codes.
 | gcc-7.5.0 |[![nbsd-9.3](https://github.com/hyoklee/actions/actions/workflows/nbsd-9.3.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/nbsd-9.3.yml)|
 | gcc-7.3.0 | [![sol](https://github.com/hyoklee/actions/actions/workflows/sol.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/sol.yml) |
 
+### Fortran
 
+| ifx 2024.1 | [![lin auto icx ifx](https://github.com/hyoklee/actions/actions/workflows/lin-auto-icx-ifx.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/lin-auto-icx-ifx.yml) |
 
 ## Options
 

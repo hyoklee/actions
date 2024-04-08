@@ -16,6 +16,10 @@ jobs:
           compiler: intel
           version: '2024.1'
       - name: test
+        env:
+          FC: ${{ steps.setup-fortran.outputs.fc }}
+          CC: ${{ steps.setup-fortran.outputs.cc }}
+          CXX: ${{ steps.setup-fortran.outputs.cxx }}      
         run: |
           curl -s -O -L  https://github.com/HDFGroup/hdf5/archive/refs/tags/snapshot-1.14.zip
           unzip -q snapshot-1.14.zip
