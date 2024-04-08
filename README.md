@@ -71,7 +71,8 @@ Actions speak louder than codes.
 
 | Test | Status |
 | -----| ------ |
-| clang-16.0.6 | [![obsd](https://github.com/hyoklee/actions/actions/workflows/obsd.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/obsd.yml) |
+| AppleClang-14.0.0 |[![mac-12](https://github.com/hyoklee/actions/actions/workflows/mac12.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac12.yml)|
+| clang-16.0.6 | [![fbsd](https://github.com/hyoklee/actions/actions/workflows/fbsd.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/fbsd.yml) [![obsd](https://github.com/hyoklee/actions/actions/workflows/obsd.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/obsd.yml) |
 | icx 2024.1 |[![lin icx](https://github.com/hyoklee/actions/actions/workflows/lin-icx.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/lin-icx.yml) |
 | gcc-11.4.0 |[![lin](https://github.com/hyoklee/actions/actions/workflows/lin.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/lin.yml)|
 | gcc-10.5.0 |[![nbsd](https://github.com/hyoklee/actions/actions/workflows/nbsd.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/nbsd.yml) |

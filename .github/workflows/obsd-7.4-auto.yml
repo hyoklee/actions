@@ -29,7 +29,6 @@ jobs:
             sudo pkg_add autoconf-2.71
             sudo pkg_add automake-1.16.5
             sudo pkg_add libtool-2.4.2p2
-            sudo pkg install -y autoconf automake libtool
             export AUTOCONF_VERSION=2.71
             export AUTOMAKE_VERSION=1.16
             export HDF5_LIBTOOL=/usr/local/bin/libtoolize
