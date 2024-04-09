@@ -17,5 +17,6 @@ jobs:
           ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa
           cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
           chmod 0600 ~/.ssh/authorized_keys
-          ssh localhost
-          hadoop-3.4.0/bin/hadoop
+          ./hadoop-3.4.0/bin/hadoop
+          ./hadoop-3.4.0/bin/hdfs namenode -format
+          ./hadoop-3.4.0/sbin/start-dfs.sh
