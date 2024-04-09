@@ -9,16 +9,8 @@ jobs:
     runs-on: ubuntu-latest
     name: HDFS
     steps:
-      - uses: actions/setup-python@v2
-        with:
-          python-version: '3.8'
-      - uses: actions/setup-java@v1
-        with:
-          java-version: '11'
-          hdfs-version: '3.3.1'
       - name: install
         run:  |
-          sudo apt-get update
-          sudo apt install -y -q openssh-server openssh-client
+          sudo apt-get -q update
           curl -s -L -O  https://dlcdn.apache.org/hadoop/common/hadoop-3.4.0/hadoop-3.4.0.tar.gz
           tar zxf hadoop-3.4.0.tar.gz
