@@ -15,7 +15,10 @@ jobs:
       - uses: actions/setup-java@v1
         with:
           java-version: '11'
-      - uses: beyondstorage/setup-hdfs@master
-        with:
           hdfs-version: '3.3.1'
-      - run: curl ${{ env.HDFS_NAMENODE_ADDR }}
+      - name: install
+        run:  |
+          sudo apt-get update
+          sudo apt install -y -q openssh-server openssh-client
+          curl -s -L -O  https://dlcdn.apache.org/hadoop/common/hadoop-3.4.0/hadoop-3.4.0.tar.gz
+          tar zxf hadoop-3.4.0.tar.gz
