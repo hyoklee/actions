@@ -13,4 +13,8 @@ jobs:
         run:  |
           sudo apt-get -q update
           curl -s -L -O  https://dlcdn.apache.org/hadoop/common/hadoop-3.4.0/hadoop-3.4.0.tar.gz
-          tar zxf hadoop-3.4.0.tar.gz
+          tar zxvf hadoop-3.4.0.tar.gz
+          ssh-keygen -t rsa
+          cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+          chmod 600 ~/.ssh/authorized_keys
+          hadoop-3.4.0/bin/hadoop
