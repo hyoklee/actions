@@ -18,4 +18,4 @@ jobs:
           cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
           chmod 0600 ~/.ssh/authorized_keys
           ./hadoop-3.4.0/bin/hdfs namenode -format
-          ./hadoop-3.4.0/sbin/start-dfs.sh
+          sudo ./hadoop-3.4.0/sbin/start-dfs.sh
