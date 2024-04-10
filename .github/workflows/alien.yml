@@ -2,7 +2,7 @@ name: alien
 
 on:
   push:
-    branches: main
+    branches: main-
 
 jobs:
   test:
@@ -13,7 +13,7 @@ jobs:
         run:  |
           sudo apt-get -q update
           sudo apt install alien
-      - name: rpm
+      - name: test
         run:  |
           curl -s -L -O https://github.com/HDFGroup/hdf5/releases/download/snapshot-1.14/snapshot-1.14-ubuntu-2204_gcc.rpm.tar.gz
           tar zxvf snapshot-1.14-ubuntu-2204_gcc.rpm.tar.gz

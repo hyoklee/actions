@@ -2,18 +2,18 @@ name: dpkg
 
 on:
   push:
-    branches: main-
+    branches: main
 
 jobs:
   test:
     runs-on: ubuntu-latest
-    name: alien
+    name: dpkg
     steps:
       - name: install
         run:  |
           sudo apt-get -q update
           sudo apt install alien
-      - name: dpkg
+      - name: test
         run:  |
           curl -s -L -O https://github.com/HDFGroup/hdf5/releases/download/snapshot-1.14/snapshot-1.14-ubuntu-2204_gcc.deb.tar.gz
           tar zxvf snapshot-1.14-ubuntu-2204_gcc.deb.tar.gz
