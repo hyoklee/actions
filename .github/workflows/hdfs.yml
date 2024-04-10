@@ -21,4 +21,5 @@ jobs:
           export HDFS_DATANODE_USER=runner
           export HDFS_NAMENODE_USER=runner
           export HDFS_SECONDARYNAMENODE_USER=runner
-          ./hadoop-3.4.0/sbin/start-dfs.sh
+          ./hadoop-3.4.0/sbin/start-all.sh
+          ./hadoop-3.4.0/sbin/stop-all.sh
