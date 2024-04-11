@@ -2,7 +2,7 @@ name: fbsd
 
 on:
   push:
-    branches: main-
+    branches: main
 
 jobs:
   test:
@@ -26,9 +26,9 @@ jobs:
           shell: bash
           run: |
             sudo pkg install -y cmake
-            curl -O -L https://github.com/HDFGroup/hdf5/archive/refs/tags/snapshot-1.14.tar.gz
-            tar zxf snapshot-1.14.tar.gz
-            cd hdf5-snapshot-1.14
+            curl -O -L https://github.com/HDFGroup/hdf5/releases/download/hdf5_1.14.4/hdf5-1.14.4.tar.gz
+            tar zxf hdf5-1.14.4.tar.gz
+            cd hdf5-1.14.4
             mkdir build
             cd build
             cmake \
