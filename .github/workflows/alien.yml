@@ -21,5 +21,5 @@ jobs:
           sudo alien HDF5-1.14.4.2-1.x86_64.rpm
           ls -l
           pwd
-          sudo dpkg -i ./hdf5-1.14.4.2-2_amd64.deb
+          sudo dpkg -i /home/runner/work/actions/actions/hdf5/hdf5-1.14.4.2-2_amd64.deb
           /HDF_Group/HDF5/1.14.4.2/bin/h5ls --help
