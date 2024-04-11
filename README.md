@@ -106,3 +106,10 @@ Actions speak louder than codes.
 | Ubuntu 22.04 | Autotools | icx |  [![lin auto icx d](https://github.com/hyoklee/actions/actions/workflows/lin-auto-icx-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/lin-auto-icx-d.yml) |
 | Mac | CMake | AppleClang | [![mac14 d](https://github.com/hyoklee/actions/actions/workflows/mac14-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac14-d.yml) [![mac13 d](https://github.com/hyoklee/actions/actions/workflows/mac13-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac13-d.yml) [![mac12 d](https://github.com/hyoklee/actions/actions/workflows/mac12-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac12-d.yml)  [![mac11 d](https://github.com/hyoklee/actions/actions/workflows/mac11-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac11-d.yml) |
 | Windows | CMake | MSVC | [![win d](https://github.com/hyoklee/actions/actions/workflows/win-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/win-d.yml)  [![win19 d](https://github.com/hyoklee/actions/actions/workflows/win19-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/win19-d.yml)|
+
+## Installation
+
+| Test | Status |
+| -----| ------ |
+| RPM | [![alien](https://github.com/hyoklee/actions/actions/workflows/alien.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/alien.yml) |
+| DEB | [![dpkg](https://github.com/hyoklee/actions/actions/workflows/dpkg.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/dpkg.yml) |
