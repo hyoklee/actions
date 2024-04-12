@@ -25,6 +25,7 @@ jobs:
           version: '${{ matrix.os.version }}'
           shell: bash
           run: |
+            sudo pkg install -y perl
             sudo pkg install -y cmake
             curl -O -L https://github.com/HDFGroup/hdf5/releases/download/hdf5_1.14.4/hdf5-1.14.4.tar.gz
             tar zxf hdf5-1.14.4.tar.gz
