@@ -2,7 +2,7 @@ name: obsd ompi
 
 on:
   push:
-    branches: [main-]
+    branches: [main]
 
 jobs:
   test:
@@ -14,7 +14,7 @@ jobs:
         os:
           - name: openbsd
             architecture: x86-64
-            version: '7.4'
+            version: '7.5'
             host: ubuntu-latest
     steps:
       - name: get
@@ -24,12 +24,8 @@ jobs:
           path: .
 
       - name: ${{ matrix.os.name }}
-        uses: cross-platform-actions/action@v0.23.0
-        env:
-          FOO: A
-          BAR: B
+        uses: cross-platform-actions/action@v0.24.0
         with:
-          environment_variables: FOO BAR
           operating_system: ${{ matrix.os.name }}
           architecture: ${{ matrix.os.architecture }}
           version: '${{ matrix.os.version }}'
