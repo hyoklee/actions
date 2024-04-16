@@ -107,6 +107,12 @@ Actions speak louder than codes.
 | Mac | CMake | AppleClang | [![mac14 d](https://github.com/hyoklee/actions/actions/workflows/mac14-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac14-d.yml) [![mac13 d](https://github.com/hyoklee/actions/actions/workflows/mac13-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac13-d.yml) [![mac12 d](https://github.com/hyoklee/actions/actions/workflows/mac12-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac12-d.yml)  [![mac11 d](https://github.com/hyoklee/actions/actions/workflows/mac11-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac11-d.yml) |
 | Windows | CMake | MSVC | [![win d](https://github.com/hyoklee/actions/actions/workflows/win-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/win-d.yml)  [![win19 d](https://github.com/hyoklee/actions/actions/workflows/win19-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/win19-d.yml)|
 
+## Parallel
+
+| Test | Status |
+| -----| ------ |
+| Windows|[![win icx f p](https://github.com/hyoklee/actions/actions/workflows/win-icx-f-p.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/win-icx-f-p.yml)|
+
 ## Installation
 
 | Test | Status |
