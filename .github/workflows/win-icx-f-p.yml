@@ -17,7 +17,7 @@ jobs:
           compiler: intel
           version: '2024.1'
       - name: Install Intel MPI
-        uses: hyoklee/setup-mpi
+        uses: hyoklee/setup-mpi@master
         with:
           mpi: intelmpi
       - name: Checkout HDF5
