@@ -11,10 +11,6 @@ jobs:
     steps:
       - name: Install CMake
         uses: lukka/get-cmake@latest
-      - name: Install Intel MPI
-        uses: hyoklee/setup-mpi@master
-        with:
-          mpi: intelmpi
       - name: Install Intel OneAPI
         uses: awvwgk/setup-fortran@main
         with:
@@ -24,13 +20,10 @@ jobs:
         shell: cmd
         run: |
           git clone https://github.com/HDFGroup/hdf5.git
-      - name: Set oneAPI
-        shell: cmd
-        run: |
-          "C:\Program Files (x86)\Intel\oneAPI\2024.1\oneapi-vars.bat"
       - name: Configure & Build
         shell: cmd
         run: |
+          dir "C:/Program Files (x86)/Intel/oneAPI/mpi/latest/"
           cd hdf5
           mkdir build
           cd build
