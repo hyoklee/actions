@@ -16,10 +16,6 @@ jobs:
         with:
           compiler: intel
           version: '2024.1'
-      - name: Install Intel MPI
-        uses: hyoklee/setup-mpi@master
-        with:
-          mpi: intelmpi
       - name: Checkout HDF5
         shell: cmd
         run: |
