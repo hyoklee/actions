@@ -33,6 +33,8 @@ jobs:
       - name: Configure & Build
         shell: cmd
         run: |
+          set LIB="C:\Program Files (x86)\Intel\oneAPI\mpi\latest\lib";%LIB%
+          set LIBPATH="C:\Program Files (x86)\Intel\oneAPI\mpi\latest\lib";%LIBPATH%
           set
           cd hdf5
           mkdir build
