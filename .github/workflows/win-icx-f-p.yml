@@ -14,7 +14,12 @@ jobs:
       - name: Install Intel MPI
         uses: hyoklee/setup-mpi@master
         with:
-          mpi: intelmpi	
+          mpi: intelmpi
+      - name: Install Intel OneAPI
+        uses: awvwgk/setup-fortran@main
+        with:
+          compiler: intel
+          version: '2024.1'
       - name: Checkout HDF5
         shell: cmd
         run: |
