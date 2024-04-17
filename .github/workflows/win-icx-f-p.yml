@@ -11,11 +11,10 @@ jobs:
     steps:
       - name: Install CMake
         uses: lukka/get-cmake@latest
-      - name: Install Intel OneAPI
-        uses: awvwgk/setup-fortran@main
+      - name: Install Intel MPI
+        uses: hyoklee/setup-mpi@master
         with:
-          compiler: intel
-          version: '2024.1'
+          mpi: intelmpi	
       - name: Checkout HDF5
         shell: cmd
         run: |
@@ -24,10 +23,6 @@ jobs:
         shell: cmd
         run: |
           "C:\Program Files (x86)\Intel\oneAPI\2024.1\oneapi-vars.bat"
-      - name: Set MPI
-        shell: cmd
-        run: |
-          "C:\Program Files (x86)\Intel\oneAPI\mpi\latest\env\vars.bat"
       - name: Configure & Build
         shell: cmd
         run: |
