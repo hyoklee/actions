@@ -32,6 +32,7 @@ jobs:
       - name: Configure & Build
         shell: cmd
         run: |
+          "C:/Program Files (x86)/Intel/oneAPI/mpi/latest/bin/vars.bat"
           set
           cd hdf5
           mkdir build
