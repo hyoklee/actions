@@ -111,6 +111,7 @@ Actions speak louder than codes.
 
 | Test | Status |
 | -----| ------ |
+| Linux|[![lin auto icx ifx p](https://github.com/hyoklee/actions/actions/workflows/lin-auto-icx-f-p.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/lin-auto-icx-f-p.yml)|
 | Windows|[![win icx f p](https://github.com/hyoklee/actions/actions/workflows/win-icx-f-p.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/win-icx-f-p.yml)|
 
 ## Installation
