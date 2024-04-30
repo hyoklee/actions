@@ -12,16 +12,16 @@ jobs:
         run:  |
           sudo apt-get update
           sudo apt-get install autoconf automake libtool libtool-bin libaec-dev
+      - name: mpi
+        uses: mpi4py/setup-mpi@master
+        with:
+          mpi: intelmpi
       - name: oneapi
         uses: fortran-lang/setup-fortran@v1
         id: setup-fortran
         with:
           compiler: intel
           version: '2024.1'
-      - name: mpi
-        uses: mpi4py/setup-mpi@master
-        with:
-          mpi: intelmpi
       - name: test
         shell: bash
         run: |
