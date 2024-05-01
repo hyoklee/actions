@@ -25,9 +25,9 @@ jobs:
       - name: test
         shell: bash
         run: |
-          curl -O -L https://www.hdfgroup.org/package/hdf5-1-10-7-tar-gz/
-          tar zxf hdf5-1.10.7.tar.gz
-          cd hdf5-1.10.7
+          curl -O -L https://github.com/HDFGroup/hdf5/archive/refs/tags/hdf5-1_10_7.tar.gz
+          tar zxf hdf5-hdf5-1_10_7.tar.gz
+          cd hdf5-hdf5-1_10_7
           ./configure --prefix=/tmp CXX="$(which mpiicpc) -cc=$(which icpx)" CC="$(which mpiicc) -cc=$(which icx)" FC="$(which mpiifort) -fc=$(which ifx)" LDFLAGS="-L/opt/intel/oneapi/mpi/latest/lib" --enable-fortran --enable-parallel
           make -j
           make check -j
