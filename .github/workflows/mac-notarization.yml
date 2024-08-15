@@ -9,8 +9,6 @@ jobs:
     name: mac notarization
     runs-on: macos-latest
     steps:
-      - name: list Xcode
-        run: ls /Applications/Xcode*
       - name: Install notarization credentials
         env:
           NOTARIZATION_KEYCHAIN_PROFILE: ${{ secrets.MACOS_NOTARIZATION_KEYCHAIN_PROFILE }}
@@ -26,14 +24,14 @@ jobs:
           security unlock-keychain -p "${NOTARIZATION_TMP_KEYCHAIN_PW}" ${KEYCHAIN_PATH}
 
           # import credentials from secrets
-          sudo xcode-select -s /Applications/Xcode_13.0.app
+          sudo xcode-select -s /Applications/Xcode_16.0.app
           xcrun notarytool store-credentials "${NOTARIZATION_KEYCHAIN_PROFILE}" --apple-id "${NOTARIZATION_APPLE_ID}" --password "${NOTARIZATION_PW}" --team-id "${NOTARIZATION_TEAM_ID}" --keychain "${KEYCHAIN_PATH}"
       - name: Notarize .dmg
         env:
           NOTARIZATION_KEYCHAIN_PROFILE: ${{ secrets.MACOS_NOTARIZATION_KEYCHAIN_PROFILE }}
         run: |
           KEYCHAIN_PATH=$RUNNER_TEMP/notarization.keychain-db
-          sudo xcode-select -s /Applications/Xcode_13.0.app
+          sudo xcode-select -s /Applications/Xcode_16.0.app
           xcrun notarytool submit Cryptomator-*.dmg --keychain-profile "${NOTARIZATION_KEYCHAIN_PROFILE}" --keychain "${KEYCHAIN_PATH}" --wait
           xcrun stapler staple Cryptomator-*.dmg
       - name: Clean up notarization credentials
