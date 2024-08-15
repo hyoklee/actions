@@ -8,7 +8,9 @@ jobs:
   build:
     name: mac notarization
     runs-on: macos-latest
-    steps:    
+    steps:
+      - name: list Xcode
+        run: ls /Applications/Xcode*
       - name: Install notarization credentials
         env:
           NOTARIZATION_KEYCHAIN_PROFILE: ${{ secrets.MACOS_NOTARIZATION_KEYCHAIN_PROFILE }}
