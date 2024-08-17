@@ -4,12 +4,14 @@ on:
     branches:
       - main
 jobs:
-  vcpkg:
-    name: vcpkg
+  ndk:
+    name: ndk
     runs-on: ubuntu-latest      
     steps:
       - uses: actions/checkout@v4
       - uses: nttld/setup-ndk@v1
         with:
           ndk-version: r26d
-      - run: ndk-build NDK_PROJECT_PATH=. APP_BUILD_SCRIPT=./Android.mk NDK_APPLICATION_MK=./Application.mk
+      - run: |
+          echo ${{ steps.setup-ndk.outputs.ndk-path }}
+          ndk-build NDK_PROJECT_PATH=. APP_BUILD_SCRIPT=./Android.mk NDK_APPLICATION_MK=./Application.mk
