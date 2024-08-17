@@ -6,14 +6,15 @@ on:
 jobs:
   ndk:
     name: ndk
-    runs-on: ubuntu-latest      
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: nttld/setup-ndk@v1
         with:
           ndk-version: r26d
-      - run: |
+      - name: test
+        env:
+           ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
+        run: |
           echo $ANDROID_NDK_HOME
           ndk-build NDK_PROJECT_PATH=. APP_BUILD_SCRIPT=./Android.mk NDK_APPLICATION_MK=./Application.mk
-        env:
-          ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
