@@ -2,7 +2,7 @@ name: Setup Android NDK
 on:
   push:
     branches:
-      - main-
+      - main
 jobs:
   vcpkg:
     name: vcpkg
@@ -11,5 +11,5 @@ jobs:
       - uses: actions/checkout@v4
       - uses: nttld/setup-ndk@v1
         with:
-          ndk-version: r26c
+          ndk-version: r26d
       - run: ndk-build NDK_PROJECT_PATH=. APP_BUILD_SCRIPT=./Android.mk NDK_APPLICATION_MK=./Application.mk

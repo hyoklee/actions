@@ -3,7 +3,7 @@ name: mac notarization
 on:
   workflow_dispatch:
   push:
-    branches: [ main ]
+    branches: [ main- ]
 jobs:
   build:
     name: mac notarization
