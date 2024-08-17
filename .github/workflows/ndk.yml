@@ -16,5 +16,5 @@ jobs:
         env:
            ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
         run: |
-          echo $ANDROID_NDK_HOME
+          dir /usr/local/lib/android/sdk/ndk/
           ndk-build NDK_PROJECT_PATH=. APP_BUILD_SCRIPT=./Android.mk NDK_APPLICATION_MK=./Application.mk
