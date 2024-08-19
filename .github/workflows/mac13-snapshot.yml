@@ -9,6 +9,20 @@ jobs:
     name: Test snapshot-devel
     runs-on: macos-13
     steps:
+      - name: Install Dependencies (MacOS_latest)
+        run: brew install ninja
+
+      - name: Install Dependencies
+        uses: ssciwr/doxygen-install@v1
+        with:
+          version: "1.9.7"
+
+      - name: Set up JDK 19
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+    
       - name: test
         run: |
           curl -O -L https://github.com/HDFGroup/hdf5/archive/refs/tags/snapshot.tar.gz
@@ -19,4 +33,3 @@ jobs:
           # cd build
           # cmake -DSITE:STRING="mac-13" -DBUILDNAME:STRING="4/r" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" ..
           # ctest -D Experimental -C Release
-
