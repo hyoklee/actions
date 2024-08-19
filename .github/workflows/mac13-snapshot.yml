@@ -1,19 +1,19 @@
-name: mac-13
+name: mac-13 snapshot devel
 
 on:
   push:
-    branches: main-
+    branches: main
 
 jobs:
   build:
-    name: Test snapshot
+    name: Test snapshot-devel
     runs-on: macos-13
     steps:
       - name: test
         run: |
-          curl -O -L https://github.com/HDFGroup/hdf5/archive/refs/tags/snapshot-1.14.tar.gz
-          tar zxf snapshot-1.14.tar.gz
-          cd hdf5-snapshot-1.14
+          curl -O -L https://github.com/HDFGroup/hdf5/archive/refs/tags/snapshot.tar.gz
+          tar zxf snapshot.tar.gz
+          cd hdf5-snapshot
           cmake --workflow --preset=ci-StdShar-MACOS-Clang --fresh	  
           # mkdir build
           # cd build
