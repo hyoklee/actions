@@ -22,7 +22,14 @@ jobs:
         with:
           java-version: '21'
           distribution: 'temurin'
-    
+
+      - name: Setup GNU Fortran
+        uses: fortran-lang/setup-fortran@v1
+        id: setup-fortran
+        with:
+          compiler: gcc
+          version: 12
+
       - name: test
         run: |
           git clone https://github.com/HDFGroup/hdf5
