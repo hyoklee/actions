@@ -3,7 +3,7 @@ name: win icx ifx p
 on:
   push:
     branches:
-      - main-
+      - main
 
 jobs:
   build:
@@ -15,7 +15,7 @@ jobs:
         uses: awvwgk/setup-fortran@main
         with:
           compiler: intel
-          version: '2024.1'
+          version: '2024.2'
       - name: Install Intel MPI
         uses: mpi4py/setup-mpi@master
         with:
@@ -27,6 +27,7 @@ jobs:
       - name: Check MPI
         shell: cmd
         run: |
+          dir "C:/Program Files (x86)/Intel/oneAPI/mpi"
           dir "C:/Program Files (x86)/Intel/oneAPI/mpi/latest/include"
           dir "C:/Program Files (x86)/Intel/oneAPI/mpi/latest/bin/"
           "C:/Program Files (x86)/Intel/oneAPI/mpi/latest/env/vars.bat"
