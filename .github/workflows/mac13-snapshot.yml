@@ -51,4 +51,4 @@ jobs:
           apple-id: ${{ secrets.MACOS_NOTARIZATION_APPLE_ID }}
           password: ${{ secrets.MACOS_NOTARIZATION_PW }}
           team-id: ${{ secrets.MACOS_NOTARIZATION_TEAM_ID }}
-          xcode-path: '/Applications/Xcode_13.2.1.app'
+          xcode-path: '/Applications/Xcode_15.2.app'
