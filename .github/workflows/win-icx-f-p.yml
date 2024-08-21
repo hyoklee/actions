@@ -35,7 +35,7 @@ jobs:
         run: |
           git clone --depth=1 https://github.com/oneapi-src/oneapi-ci.git oneapi-ci
           cd oneapi-ci
-          scripts/install_windows.bat ${{ env.WINDOWS_HPCKIT_URL }} ${{ env.WINDOWS_CPP_COMPONEN }}
+          scripts/install_windows.bat ${{ env.WINDOWS_HPCKIT_URL }} ${{ env.WINDOWS_CPP_COMPONENTS }}
       - name: Install Intel MPI
         uses: mpi4py/setup-mpi@master
         with:
