@@ -11,11 +11,21 @@ jobs:
     steps:
       - name: Install CMake
         uses: lukka/get-cmake@latest
-      - name: Install Intel OneAPI
-        uses: fortran-lang/setup-fortran@main
+      - name: cache intel install
+        id: cache-install
+        uses: actions/cache@v2
         with:
-          compiler: intel
-          version: '2024.2'
+          path: |
+              C:\Program Files (x86)\Intel\oneAPI\setvars-vcvarsall.bat
+              C:\Program Files (x86)\Intel\oneAPI\compiler
+          key: install-${{ env.CACHE_NUMBER }}-${{ env.WINDOWS_HPCKIT_URL }}-${{ env.WINDOWS_CPP_COMPONENTS }}-compiler-${{ hashFiles('**/scripts/cache_exclude_windows.sh') }}
+
+      - name: install intel
+        if: steps.cache-install.outputs.cache-hit != 'true'
+        run: |
+          git clone --depth=1 https://github.com/oneapi-src/oneapi-ci.git oneapi-ci
+          cd oneapi-ci
+          scripts/install_windows.bat ${{ env.WINDOWS_HPCKIT_URL }} ${{ env.WINDOWS_CPP_COMPONENT	
       - name: Install Intel MPI
         uses: mpi4py/setup-mpi@master
         with:
@@ -34,11 +44,11 @@ jobs:
       - name: Configure & Build
         shell: cmd
         run: |
-          set LIB=C:\Program Files (x86)\Intel\oneAPI\mpi\2021.12\lib;%LIB%
+          set LIB=C:\Program Files (x86)\Intel\oneAPI\mpi\2021.13\lib;%LIB%
           set LIBPATH="C:\Program Files (x86)\Intel\oneAPI\mpi\latest\lib";%LIBPATH%
           set
           cd hdf5
           mkdir build
           cd build
-          cmake -G Ninja -DCMAKE_C_COMPILER="C:/Program Files (x86)/Intel/oneAPI/compiler/latest/bin/icx.exe" -DCMAKE_CXX_COMPILER="C:/Program Files (x86)/Intel/oneAPI/compiler/latest/bin/icpx.exe" -DBUILD_SHARED_LIBS:BOOL=OFF  -DHDF5_BUILD_FORTRAN:BOOL=ON  -DHDF5_ENABLE_PARALLEL:BOOL=ON  -DHDF5_ENABLE_Z_LIB_SUPPORT:BOOL=OFF -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF -DHDF5_ENABLE_SUBFILING_VFD:BOOL=OFF -DMPIEXEC_EXECUTABLE:FILEPATH="C:\Program Files (x86)\Intel\oneAPI\mpi\2021.12\bin\mpiexec.exe" -DMPI_C_HEADER_DIR:PATH="C:\Program Files (x86)\Intel\oneAPI\mpi\2021.12\include" -DCTEST_DROP_SITE_INIT=my.cdash.org -DSITE=win -DBUILDNAME="ninja/icx/+f/+p" ..
+          cmake -G Ninja -DCMAKE_C_COMPILER="C:/Program Files (x86)/Intel/oneAPI/compiler/latest/bin/icx.exe" -DCMAKE_CXX_COMPILER="C:/Program Files (x86)/Intel/oneAPI/compiler/latest/bin/icpx.exe" -DBUILD_SHARED_LIBS:BOOL=OFF  -DHDF5_BUILD_FORTRAN:BOOL=ON  -DHDF5_ENABLE_PARALLEL:BOOL=ON  -DHDF5_ENABLE_Z_LIB_SUPPORT:BOOL=OFF -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF -DHDF5_ENABLE_SUBFILING_VFD:BOOL=OFF -DMPIEXEC_EXECUTABLE:FILEPATH="C:\Program Files (x86)\Intel\oneAPI\mpi\2021.13\bin\mpiexec.exe" -DMPI_C_HEADER_DIR:PATH="C:\Program Files (x86)\Intel\oneAPI\mpi\2021.13\include" -DCTEST_DROP_SITE_INIT=my.cdash.org -DSITE=win -DBUILDNAME="ninja/icx/+f/+p" ..
           ctest -D Experimental
