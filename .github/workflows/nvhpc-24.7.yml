@@ -3,7 +3,7 @@ name: nvhpc 24.7
 on:
   push:
     branches:
-      - main-
+      - main
 
 jobs:
   build:
@@ -28,7 +28,6 @@ jobs:
           export LD_LIBRARY_PATH=/opt/nvidia/hpc_sdk/Linux_x86_64/24.7/cuda/12.3/lib64:/opt/nvidia/hpc_sdk/Linux_x86_64/24.7/compilers/lib
           export NVHPCSDK=/opt/nvidia/hpc_sdk
           export PATH=/opt/nvidia/hpc_sdk/Linux_x86_64/24.7/comm_libs/openmpi4/bin:/opt/nvidia/hpc_sdk/Linux_x86_64/24.7/compilers/bin:$PATH
-          export CFLAGS="-acc=verystrict"
           git clone https://github.com/HDFGroup/hdf5.git
           cd hdf5
           mkdir build
@@ -36,7 +35,7 @@ jobs:
           cmake \
             -C ../config/cmake/cacheinit.cmake \
             -G Ninja \
-            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_BUILD_TYPE=Debug \
             -DHDF5_BUILD_CPP_LIB:BOOL=OFF \
             -DHDF5_BUILD_FORTRAN:BOOL=OFF \
             -DHDF5_BUILD_JAVA:BOOL=OFF \

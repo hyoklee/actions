@@ -54,8 +54,8 @@ jobs:
       - name: Configure & Build
         shell: cmd
         run: |
-          set LIB=C:\Program Files (x86)\Intel\oneAPI\mpi\2021.13\lib;C:\Program Files (x86)\Intel\oneAPI\compiler\2024.2\lib;%LIB%
-          set LIBPATH=C:\Program Files (x86)\Intel\oneAPI\mpi\latest\lib;%LIBPATH%
+          set LIB=C:\Program Files (x86)\Intel\oneAPI\mpi\2021.13\lib;%LIB%
+          set LIBPATH=C:\Program Files (x86)\Intel\oneAPI\mpi\latest\lib;C:\Program Files (x86)\Intel\oneAPI\compiler\2024.2\lib;%LIBPATH%
           set
           cd hdf5
           mkdir build
