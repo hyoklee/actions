@@ -53,12 +53,9 @@ jobs:
           "C:/Program Files (x86)/Intel/oneAPI/mpi/latest/env/vars.bat"
       - name: Configure & Build
         shell: cmd
-        env:
-          vc_arch: x64
         run: |
-          set LIB=C:\Program Files (x86)\Intel\oneAPI\mpi\2021.13\lib;C:\Program Files (x86)\Intel\oneAPI\compiler\2024.2\lib;%LIB%
-          set LIBPATH=C:\Program Files (x86)\Intel\oneAPI\mpi\latest\lib;C:\Program Files (x86)\Intel\oneAPI\compiler\2024.2\lib;%LIBPATH%
-          call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" %vc_arch%
+          set LIB=C:\Program Files (x86)\Intel\oneAPI\mpi\2021.13\lib;%LIB%
+          set LIBPATH=C:\Program Files (x86)\Intel\oneAPI\mpi\latest\lib;%LIBPATH%
           set
           cd hdf5
           mkdir build
