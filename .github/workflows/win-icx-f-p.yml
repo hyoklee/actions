@@ -11,16 +11,7 @@ jobs:
     steps:
       - name: Install CMake
         uses: lukka/get-cmake@latest
-      - name: cache intel install
-        id: cache-install
-        uses: actions/cache@v2
-        with:
-          path: |
-              C:\Program Files (x86)\Intel\oneAPI\setvars-vcvarsall.bat
-              C:\Program Files (x86)\Intel\oneAPI\compiler
-          key: install-${{ env.CACHE_NUMBER }}-${{ env.WINDOWS_HPCKIT_URL }}-${{ env.WINDOWS_CPP_COMPONENTS }}-compiler-${{ hashFiles('**/scripts/cache_exclude_windows.sh') }}
       - name: install intel
-        if: steps.cache-install.outputs.cache-hit != 'true'
         run: |
           git clone --depth=1 https://github.com/oneapi-src/oneapi-ci.git oneapi-ci
           cd oneapi-ci
