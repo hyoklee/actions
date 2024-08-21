@@ -56,8 +56,8 @@ jobs:
         env:
           vc_arch: x64
         run: |
-          set LIB="C:\Program Files (x86)\Intel\oneAPI\mpi\2021.13\lib";%LIB%
-          set LIBPATH="C:\Program Files (x86)\Intel\oneAPI\mpi\latest\lib";%LIBPATH%
+          set LIB=C:\Program Files (x86)\Intel\oneAPI\mpi\2021.13\lib;%LIB%
+          set LIBPATH=C:\Program Files (x86)\Intel\oneAPI\mpi\latest\lib;%LIBPATH%
           call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" %vc_arch%
           set
           cd hdf5
