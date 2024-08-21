@@ -19,13 +19,12 @@ jobs:
               C:\Program Files (x86)\Intel\oneAPI\setvars-vcvarsall.bat
               C:\Program Files (x86)\Intel\oneAPI\compiler
           key: install-${{ env.CACHE_NUMBER }}-${{ env.WINDOWS_HPCKIT_URL }}-${{ env.WINDOWS_CPP_COMPONENTS }}-compiler-${{ hashFiles('**/scripts/cache_exclude_windows.sh') }}
-
       - name: install intel
         if: steps.cache-install.outputs.cache-hit != 'true'
         run: |
           git clone --depth=1 https://github.com/oneapi-src/oneapi-ci.git oneapi-ci
           cd oneapi-ci
-          scripts/install_windows.bat ${{ env.WINDOWS_HPCKIT_URL }} ${{ env.WINDOWS_CPP_COMPONENT	
+          scripts/install_windows.bat ${{ env.WINDOWS_HPCKIT_URL }} ${{ env.WINDOWS_CPP_COMPONEN
       - name: Install Intel MPI
         uses: mpi4py/setup-mpi@master
         with:
