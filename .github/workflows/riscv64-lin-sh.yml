@@ -1,0 +1,32 @@
+name: riscv64 lin -sh st
+
+on:
+  push:
+    branches:
+      - main-
+
+jobs:
+  riscv64_job:
+    # The host should always be Linux
+    runs-on: ubuntu-latest
+    name: Build on ubuntu-latest riscv64
+    steps:
+      - uses: actions/checkout@v4.1.1
+      - uses: uraimo/run-on-arch-action@v2
+        name: Run commands
+        id: runcmd
+        with:
+          arch: riscv64
+          distro: ubuntu_latest
+          install: |
+            apt-get update -q -y
+            apt-get install -q -y git
+            apt-get install -q -y cmake
+          run: |
+            git clone https://github.com/HDFGroup/hdf5
+            cd hdf5
+            mkdir build
+            cd build
+            cmake -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF -DBUILD_SHARED_LIBS:BOOL=OFF -DBUILD_STATIC_LIBS:BOOL=ON -DBUILD_STATIC_TOOLS:BOOL=ON ..
+            make
+            make test
