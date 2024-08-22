@@ -3,7 +3,7 @@ name: riscv64 lin -sh st
 on:
   push:
     branches:
-      - main
+      - main-
 
 jobs:
   riscv64_job:
