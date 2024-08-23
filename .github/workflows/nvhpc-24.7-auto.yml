@@ -28,9 +28,9 @@ jobs:
           export LD_LIBRARY_PATH=/opt/nvidia/hpc_sdk/Linux_x86_64/24.7/cuda/12.3/lib64:/opt/nvidia/hpc_sdk/Linux_x86_64/24.7/compilers/lib
           export NVHPCSDK=/opt/nvidia/hpc_sdk
           export PATH=/opt/nvidia/hpc_sdk/Linux_x86_64/24.7/comm_libs/openmpi4/bin:/opt/nvidia/hpc_sdk/Linux_x86_64/24.7/compilers/bin:$PATH
-          curl -O -L https://github.com/HDFGroup/hdf5/archive/refs/tags/snapshot-1.14.tar.gz
-          tar zxf snapshot-1.14.tar.gz
-          cd hdf5-snapshot-1.14
+          curl -O -L https://github.com/HDFGroup/hdf5/releases/download/hdf5_1.14.4.3/hdf5.tar.gz
+          tar zxf hdf5.tar.gz
+          cd hdf5-1.14.4-3
           CC=nvc CXX=nvc++ FC=nvfortran F90=nvfortran ./configure \
           --prefix=/opt/hdf5 --enable-fortran --enable-shared \
           CFLAGS="-O3 -fPIC" FFLAGS="-O3 -fPIC" CXXFLAGS="-O3 -fPIC" FCFLAGS="-O3 -fPIC" --host=x86_64-linux-gnu

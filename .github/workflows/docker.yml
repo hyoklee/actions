@@ -2,7 +2,7 @@ name: docker
 on:
   push:
     branches:
-      - main
+      - main-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -22,6 +22,6 @@ jobs:
           context: ./
           file: ./Dockerfile_nvhpc
           builder: ${{ steps.buildx.outputs.name }}
-          platforms: linux/arm64,linux/amd64
+          platforms: linux/amd64
           push: true
           tags: hdfeos/nvhpc:latest
