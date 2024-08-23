@@ -29,7 +29,7 @@ jobs:
           export NVHPCSDK=/opt/nvidia/hpc_sdk
           export PATH=/opt/nvidia/hpc_sdk/Linux_x86_64/24.7/comm_libs/openmpi4/bin:/opt/nvidia/hpc_sdk/Linux_x86_64/24.7/compilers/bin:$PATH
           git clone https://github.com/HDFGroup/hdf5
-          cd hdf
+          cd hdf5
           ./autogen.sh
           CC=nvc CXX=nvc++ FC=nvfortran F90=nvfortran ./configure \
           --prefix=/opt/hdf5 --enable-fortran --enable-shared \
