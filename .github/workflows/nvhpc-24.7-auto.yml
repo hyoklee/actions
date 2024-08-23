@@ -35,4 +35,5 @@ jobs:
           --prefix=/opt/hdf5 --enable-fortran --enable-shared \
           CFLAGS="-O3 -fPIC" FFLAGS="-O3 -fPIC" CXXFLAGS="-O3 -fPIC" FCFLAGS="-O3 -fPIC" --host=x86_64-linux-gnu
           make -j
+          make check
           make install
