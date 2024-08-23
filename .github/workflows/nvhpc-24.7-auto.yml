@@ -1,0 +1,38 @@
+name: nvhpc 24.7 auto
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Install System dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y build-essential wget unzip vim curl
+      - name: Install NVHPC
+        run: |
+          curl https://developer.download.nvidia.com/hpc-sdk/ubuntu/DEB-GPG-KEY-NVIDIA-HPC-SDK | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-hpcsdk-archive-keyring.gpg
+          echo 'deb [signed-by=/usr/share/keyrings/nvidia-hpcsdk-archive-keyring.gpg] https://developer.download.nvidia.com/hpc-sdk/ubuntu/amd64 /' | sudo tee /etc/apt/sources.list.d/nvhpc.list
+          sudo apt-get update -y
+          sudo apt-get install -y nvhpc-24-7
+      - name: Test HDF5
+        env:
+          NPROCS: 2
+        run: |
+          export CC=/opt/nvidia/hpc_sdk/Linux_x86_64/24.7/comm_libs/openmpi4/bin/mpicc
+          export LD_LIBRARY_PATH=/opt/nvidia/hpc_sdk/Linux_x86_64/24.7/cuda/12.3/lib64:/opt/nvidia/hpc_sdk/Linux_x86_64/24.7/compilers/lib
+          export NVHPCSDK=/opt/nvidia/hpc_sdk
+          export PATH=/opt/nvidia/hpc_sdk/Linux_x86_64/24.7/comm_libs/openmpi4/bin:/opt/nvidia/hpc_sdk/Linux_x86_64/24.7/compilers/bin:$PATH
+          curl -O -L https://github.com/HDFGroup/hdf5/archive/refs/tags/snapshot-1.14.tar.gz
+          tar zxf snapshot-1.14.tar.gz
+          cd hdf5-snapshot-1.14
+          CC=nvc CXX=nvc++ FC=nvfortran F90=nvfortran ./configure \
+          --prefix=/opt/hdf5 --enable-fortran --enable-shared \
+          CFLAGS="-O3 -fPIC" FFLAGS="-O3 -fPIC" CXXFLAGS="-O3 -fPIC" FCFLAGS="-O3 -fPIC" --host=x86_64-linux-gnu
+          make -j
+          make install
