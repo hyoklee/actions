@@ -13,7 +13,7 @@ jobs:
           EDL: ${{ secrets.EARTHDATA_LOGIN }}
           EDP: ${{ secrets.EARTHDATA_PASSWORD }}
         run: |
-          curl --user "${{ env.EDL }}:${{ env.EDP }}" -O  -c ~/urs_cookies -L -n  "https://git.earthdata.nasa.gov/projects/DAS/repos/hdfeos5/raw/hdf-eos5-2.0-src.tar.gz?at=refs%2Fheads%2FHDFEOS5_2.0"
+          curl --user ${{ env.EDL }}:${{ env.EDP }} -O  -c ~/urs_cookies -L -n  "https://git.earthdata.nasa.gov/projects/DAS/repos/hdfeos5/raw/hdf-eos5-2.0-src.tar.gz?at=refs%2Fheads%2FHDFEOS5_2.0"
           ls -l
           head  hdf*
 
