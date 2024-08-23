@@ -43,7 +43,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          repo: derobins/hdf5
+          repository: derobins/hdf5
           ref: restore_rand_r
       - name: Check MPI
         shell: cmd
