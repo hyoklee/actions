@@ -9,12 +9,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download HDF-EOS5
-        env:
-          EDL: ${{ secrets.EARTHDATA_LOGIN }}
-          EDP: ${{ secrets.EARTHDATA_PASSWORD }}
         run: |
-          curl --version
-          curl --user ${{ secrets.EARTHDATA_LOGIN }} -o hdf-eos5-2.0-src.tar.gz  -c ~/urs_cookies -L -n  "https://git.earthdata.nasa.gov/projects/DAS/repos/hdfeos5/raw/hdf-eos5-2.0-src.tar.gz?at=refs%2Fheads%2FHDFEOS5_2.0"
-          ls -l
+          curl --user ${{ secrets.EARTHDATA_LOGIN }} -o hdf-eos5-3.0-src.tar.gz  -L   "https://git.earthdata.nasa.gov/projects/DAS/repos/hdfeos/raw/hdf-eos2-3.0-src.tar.gz?at=3128a738021501c821549955f6c78348e5f33850"
+          ls
           head  hdf*
 
