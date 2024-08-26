@@ -13,7 +13,7 @@ jobs:
         env:
           EDL: ${{ secrets.EARTHDATA_LOGIN }}
         run: |
-        export EDL2=${{ secrets.EARTHDATA_LOGIN }}
+          export EDL2=${{ secrets.EARTHDATA_LOGIN }}
           curl --user $EDL -o hdf-eos5-3.0-src.tar.gz  -L   "https://git.earthdata.nasa.gov/projects/DAS/repos/hdfeos/raw/hdf-eos2-3.0-src.tar.gz?at=3128a738021501c821549955f6c78348e5f33850"
           curl --user $EDL2 -o hdf-eos5-3.0-src.tar.gz  -L   "https://git.earthdata.nasa.gov/projects/DAS/repos/hdfeos/raw/hdf-eos2-3.0-src.tar.gz?at=3128a738021501c821549955f6c78348e5f33850"
           curl --user "${{ secrets.EARTHDATA_LOGIN }}" -o hdf-eos5-3.0-src.tar.gz  -L   "https://git.earthdata.nasa.gov/projects/DAS/repos/hdfeos/raw/hdf-eos2-3.0-src.tar.gz?at=3128a738021501c821549955f6c78348e5f33850"
