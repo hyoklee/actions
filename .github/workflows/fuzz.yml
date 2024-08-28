@@ -24,7 +24,6 @@ jobs:
           dry-run: false
           keep-unaffected-fuzz-targets: true
       - name: Run Fuzzers
-        id: build
         uses: google/oss-fuzz/infra/cifuzz/actions/run_fuzzers@master
         with:
           oss-fuzz-project-name: 'hdf5'
