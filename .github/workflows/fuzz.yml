@@ -7,8 +7,15 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          repository: hyoklee/oss-fuzz
+
       - name: Run Fuzzers
         uses: google/oss-fuzz/infra/cifuzz/actions/run_fuzzers@master
+        env:
+          PROJECT_SRC_PATH: oss-fuzz/projects/hdf5
         with:
           oss-fuzz-project-name: 'hdf5'
           language: 'c++'
