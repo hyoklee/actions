@@ -12,14 +12,15 @@ jobs:
         uses: google/oss-fuzz/infra/cifuzz/actions/build_fuzzers@master
         with:
           oss-fuzz-project-name: 'hdf5'
-          language: c++
+          language: 'c++'
       - name: Run Fuzzers
         uses: google/oss-fuzz/infra/cifuzz/actions/run_fuzzers@master
         with:
           oss-fuzz-project-name: 'hdf5'
-          language: c++
+          language: 'c++'
           fuzz-seconds: 600
           output-sarif: true
+          sanitizer: 'leak'
       - name: Upload Crash
         uses: actions/upload-artifact@v3
         if: failure() && steps.build.outcome == 'success'
