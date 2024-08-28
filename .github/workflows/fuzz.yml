@@ -22,6 +22,8 @@ jobs:
           oss-fuzz-project-name: 'hdf5'
           language: 'c++'
           sanitizer: 'memory'
+          dry-run: false
+
       - name: Run Fuzzers
         uses: google/oss-fuzz/infra/cifuzz/actions/run_fuzzers@master
         with:
@@ -30,3 +32,4 @@ jobs:
           fuzz-seconds: 600
           output-sarif: true
           sanitizer: 'memory'
+          dry-run: false
