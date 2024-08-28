@@ -18,11 +18,13 @@ jobs:
       - name: Build Fuzzers
         id: build
         uses: google/oss-fuzz/infra/cifuzz/actions/build_fuzzers@master
+        env:
+          PROJECT_SRC_PATH: /home/runner/work/actions/actions/projects
         with:
           oss-fuzz-project-name: 'hdf5'
-          project-src-path: '/home/runner/work/actions/actions/projects/'
           language: 'c++'
           sanitizer: 'memory'
+          project-src-path: '/home/runner/work/actions/actions/projects'
       - name: Run Fuzzers
         uses: google/oss-fuzz/infra/cifuzz/actions/run_fuzzers@master
         env:
