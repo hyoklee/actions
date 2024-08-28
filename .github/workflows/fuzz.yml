@@ -11,11 +11,15 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: hyoklee/oss-fuzz
+      - name: ls
+        run: |
+          ls
+          pwd
       - name: Build Fuzzers
         id: build
         uses: google/oss-fuzz/infra/cifuzz/actions/build_fuzzers@master
         env:
-          PROJECT_SRC_PATH: oss-fuzz/projects/hdf5
+          PROJECT_SRC_PATH: ./oss-fuzz/projects/hdf5
         with:
           oss-fuzz-project-name: 'hdf5'
           language: 'c++'
