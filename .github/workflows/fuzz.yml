@@ -7,9 +7,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
   steps:
-  - name: Build Fuzzers
-    id: build
-    uses: google/oss-fuzz/infra/cifuzz/actions/build_fuzzers@master
-    with:
-      oss-fuzz-project-name: 'example'
-      language: c++
+    - name: Build Fuzzers
+      id: build
+      uses: google/oss-fuzz/infra/cifuzz/actions/build_fuzzers@master
+      with:
+        oss-fuzz-project-name: 'example'
+        language: c++
