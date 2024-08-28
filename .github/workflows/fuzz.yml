@@ -14,4 +14,4 @@ jobs:
           language: 'c++'
           fuzz-seconds: 600
           output-sarif: true
-          sanitizer: 'leak'
+          sanitizer: 'memory'
