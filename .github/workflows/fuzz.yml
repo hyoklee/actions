@@ -11,8 +11,8 @@ jobs:
         id: build
         uses: google/oss-fuzz/infra/cifuzz/actions/build_fuzzers@master
         with:
-          oss-fuzz-project-name: hdf5'
-          language: c++    
+          oss-fuzz-project-name: 'hdf5'
+          language: c++
       - name: Run Fuzzers
         id: build
         uses: google/oss-fuzz/infra/cifuzz/actions/run_fuzzers@master
