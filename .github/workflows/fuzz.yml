@@ -10,7 +10,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          repository: hyoklee/oss-fuzz
+          repository: hyoklee/hdf5
       - name: ls
         run: |
           ls
@@ -18,17 +18,12 @@ jobs:
       - name: Build Fuzzers
         id: build
         uses: google/oss-fuzz/infra/cifuzz/actions/build_fuzzers@master
-        env:
-          PROJECT_SRC_PATH: /home/runner/work/actions/actions/projects
         with:
           oss-fuzz-project-name: 'hdf5'
           language: 'c++'
           sanitizer: 'memory'
-          project-src-path: '/home/runner/work/actions/actions/projects'
       - name: Run Fuzzers
         uses: google/oss-fuzz/infra/cifuzz/actions/run_fuzzers@master
-        env:
-          PROJECT_SRC_PATH: oss-fuzz/projects/hdf5
         with:
           oss-fuzz-project-name: 'hdf5'
           language: 'c++'
