@@ -3,7 +3,7 @@ name: win icx d p qxk
 on:
   push:
     branches:
-      - main-
+      - main
 
 env:
   WINDOWS_BASEKIT_URL: https://registrationcenter-download.intel.com/akdlm/IRC_NAS/e83a8e64-04fc-45df-85c6-c2208d03bdb5/w_BaseKit_p_2024.2.0.635_offline.exe
@@ -44,7 +44,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: qkoziol/hdf5
-          ref: fix_semaphore_test_2
+          ref: fix_semaphore_test_3
       - name: Check MPI
         shell: cmd
         run: |
