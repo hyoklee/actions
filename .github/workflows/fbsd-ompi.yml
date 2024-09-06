@@ -32,7 +32,6 @@ jobs:
             sudo pkg install -y cmake
             sudo pkg install -y openmpi
             ls /usr/local/bin/
-            ls -l /usr/local/bin/mpicc
             mkdir build
             cd build
             cmake \
