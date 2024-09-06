@@ -17,6 +17,9 @@ jobs:
             version: '14.0'
             host: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: HDFGroup/hdf5    
       - name: ${{ matrix.os.name }}
         uses: cross-platform-actions/action@v0.23.0
         with:
@@ -28,8 +31,6 @@ jobs:
             sudo pkg install -y perl5
             sudo pkg install -y cmake
             sudo pkg install -y openmpi
-            git clone https://github.com/HDFGroup/hdf5
-            cd hdf5
             mkdir build
             cd build
             cmake \
@@ -37,5 +38,6 @@ jobs:
             -DBUILDNAME:STRING="r/ompi" \
             -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
             -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" \
+            -DHDF5_ENABLE_PARALLEL:BOOL=ON \
             ..
             ctest -D Experimental -C Release
