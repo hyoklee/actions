@@ -31,7 +31,8 @@ jobs:
             sudo pkg install -y autoconf automake libtool openmpi
             sudo hostname localhost
             ./autogen.sh
-            /usr/local/mpi/openmpi/bin/mpicc --version            
+            /usr/local/mpi/openmpi/bin/mpicc --version
+            export PATH=/usr/local/mpi/openmpi/bin:$PATH
             export LD_LIBRARY_PATH=/usr/local/mpi/openmpi/lib:$LD_LIBRARY_PATH
             ./configure --prefix=/tmp --enable-build-mode=production --enable-parallel --enable-shared CC=/usr/local/mpi/openmpi/bin/mpicc LDFLAGS="-L/usr/local/mpi/openmpi/lib"
             make
