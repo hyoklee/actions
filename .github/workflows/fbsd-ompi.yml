@@ -31,7 +31,6 @@ jobs:
             sudo pkg install -y perl5
             sudo pkg install -y cmake
             sudo pkg install -y openmpi
-            which mpicc
             ls /usr/local/bin/
             ls -l /usr/local/bin/mpicc
             mkdir build

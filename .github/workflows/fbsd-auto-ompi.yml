@@ -29,6 +29,7 @@ jobs:
           shell: bash
           run: |
             sudo pkg install -y autoconf automake libtool openmpi
+            ls -l /usr/local/bin/
             ./autogen.sh
             ./configure --prefix=/tmp --enable-build-mode=production --enable-parallel --enable-shared CC=/usr/local/bin/mpicc
             which mpicc
