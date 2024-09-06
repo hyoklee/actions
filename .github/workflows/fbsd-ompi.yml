@@ -31,12 +31,12 @@ jobs:
             sudo pkg install -y perl5
             sudo pkg install -y cmake
             sudo pkg install -y openmpi
-            sudo hostname fbsd
+            sudo hostname localhost
             hostname
             mkdir build
             cd build
             cmake \
-            -DSITE:STRING=fbsd-14.0 \
+            -DSITE:STRING=fbsd-14.1 \
             -DCMAKE_C_COMPILER=/usr/local/mpi/openmpi/bin/mpicc \
             -DBUILDNAME:STRING="r/ompi" \
             -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \

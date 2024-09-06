@@ -2,7 +2,7 @@ name: fbsd auto ompi
 
 on:
   push:
-    branches: main-
+    branches: main
 
 jobs:
   test:
@@ -29,6 +29,7 @@ jobs:
           shell: bash
           run: |
             sudo pkg install -y autoconf automake libtool openmpi
+            sudo hostname localhost
             ./autogen.sh
             /usr/local/mpi/openmpi/bin/mpicc --version            
             export LD_LIBRARY_PATH=/usr/local/mpi/openmpi/lib:$LD_LIBRARY_PATH
