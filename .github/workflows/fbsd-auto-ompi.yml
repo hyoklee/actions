@@ -29,10 +29,8 @@ jobs:
           shell: bash
           run: |
             sudo pkg install -y autoconf automake libtool openmpi
-            ls -l /usr/local/bin/
-            find /usr -name 'mpicc'
             ./autogen.sh
-            ./configure --prefix=/tmp --enable-build-mode=production --enable-parallel --enable-shared CC=/usr/local/bin/mpicc
+            ./configure --prefix=/tmp --enable-build-mode=production --enable-parallel --enable-shared CC=/usr/local/mpi/openmpi/bin/mpicc
             which mpicc
             make
             make check
