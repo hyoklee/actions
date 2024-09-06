@@ -31,6 +31,7 @@ jobs:
             sudo pkg install -y autoconf automake libtool openmpi
             ./autogen.sh
             ./configure --prefix=/tmp --enable-build-mode=production --enable-parallel
+            which mpicc
             make
             make check
             make install
