@@ -30,6 +30,7 @@ jobs:
           run: |
             sudo pkg install -y autoconf automake libtool openmpi
             sudo hostname localhost
+            export NPROCS=2
             ./autogen.sh
             /usr/local/mpi/openmpi/bin/mpicc --version
             export PATH=/usr/local/mpi/openmpi/bin:$PATH
