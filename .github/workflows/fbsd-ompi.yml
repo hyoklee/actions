@@ -2,7 +2,7 @@ name: fbsd ompi
 
 on:
   push:
-    branches: main
+    branches: main-
 
 jobs:
   test:
