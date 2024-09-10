@@ -22,8 +22,6 @@ jobs:
     - name: Build
       continue-on-error: true
       run: |
-        xcodebuild -downloadAllPlatforms
         xcodes runtimes
-        xcodes runtimes install visionOS
         export CC="$(xcrun -find -sdk xros cc)"        
         echo $CC
