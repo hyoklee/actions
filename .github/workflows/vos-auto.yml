@@ -27,7 +27,7 @@ jobs:
         xcodes runtimes
         export SDK="xros"
         export ARCH_FLAGS="-arch armv7"
-        export HOST_FLAGS="${ARCH_FLAGS} -miphoneos-version-min=8.0 -isysroot $(xcrun -sdk ${SDK} --show-sdk-path)"
+        export HOST_FLAGS="${ARCH_FLAGS} -mvisionos-version-min=1.0 -isysroot $(xcrun -sdk ${SDK} --show-sdk-path)"
         export CHOST="arm-apple-darwin"
         export PREFIX="${HOME}/DEVICE_ARM"
         export CC="$(xcrun -find -sdk ${SDK} cc)"
