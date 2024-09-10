@@ -34,7 +34,7 @@ jobs:
         export CPP="$(xcrun -find -sdk ${SDK} cpp)"
         export CFLAGS="${HOST_FLAGS} ${OPT_FLAGS}"
         export CXXFLAGS="${HOST_FLAGS} ${OPT_FLAGS}"
-        export LDFLAGS="${HOST_FLAGS}"
+        export LDFLAGS="${HOST_FLAGS} -lSystem"
         echo $HOST_FLAGS
         echo $OPT_FLAGS
         ./autogen.sh
