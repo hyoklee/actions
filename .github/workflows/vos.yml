@@ -1,13 +1,13 @@
-name: mac14 vos
+name: mac vos
 
 on:
   push:
-    branches: [ main- ]
+    branches: [ main ]
 
 jobs:
   build_with_15_OS:
     name: "Xcode version 15.0.0, Target visionOS [arm64] Target SDK 1.0"
-    runs-on: macos-14
+    runs-on: macos-latest
     env:
       PLATFORM: VISIONOS
       DEPLOYMENT_TARGET: 1.0
@@ -37,7 +37,7 @@ jobs:
         -DCMAKE_OSX_ARCHITECTURES=arm64 ..
   build_with_15_SIMULATOR64:
     name: "Xcode version 15.0.0, Target visionOS Simulator [x86_64] Target SDK 1.0"
-    runs-on: macos-14
+    runs-on: macos-latest
     env:
       PLATFORM: SIMULATOR64_VISIONOS
       DEPLOYMENT_TARGET: 1.0
@@ -62,7 +62,7 @@ jobs:
         -DCMAKE_SYSTEM_NAME=visionOS ..
   build_with_15_SIMULATOR_VISIONOS:
     name: "Xcode version 15.0.0, Target visionOS Simulator [arm64] Target SDK 1.0"
-    runs-on: macos-14
+    runs-on: macos-latest
     env:
       PLATFORM: SIMULATOR_VISIONOS
       DEPLOYMENT_TARGET: 1.0
