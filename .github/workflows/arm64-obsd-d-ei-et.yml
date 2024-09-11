@@ -1,18 +1,17 @@
-name: arm64 obsd jxh d ea et
+name: arm64 obsd d ei et
 
 on:
   push:
-    branches: main-
+    branches: main
 
 jobs:
   test:
     runs-on: ubuntu-latest
-    name: obsd jxh
+    name: arm64 obsd d ei et
     steps:
       - uses: actions/checkout@v4
         with:
-          repository: jhendersonHDF/hdf5
-          ref: feature/complex_number_support
+          repository: HDFGroup/hdf5
       - name: test
         uses: cross-platform-actions/action@v0.25.0
         env:
@@ -28,5 +27,5 @@ jobs:
             sudo pkg_add cmake
             mkdir build
             cd build
-            cmake -DSITE:STRING="obsd" -DBUILDNAME:STRING="4630/d+ei+et" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" -DHDF5_ENABLE_INSTRUMENT:BOOL=ON -DHDF5_ENABLE_TRACE:BOOL=ON ..
+            cmake -DSITE:STRING="obsd.arm64" -DBUILDNAME:STRING="d/ei+et" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" -DHDF5_ENABLE_INSTRUMENT:BOOL=ON -DHDF5_ENABLE_TRACE:BOOL=ON ..
             ctest -D Experimental -C Debug
