@@ -14,7 +14,7 @@ jobs:
           repository: jhendersonHDF/hdf5
           ref: feature/complex_number_support
       - name: test
-        uses: cross-platform-actions/action@v0.27.0
+        uses: cross-platform-actions/action@v0.25.0
         env:
           FOO: A
           BAR: B
