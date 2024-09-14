@@ -19,4 +19,4 @@ jobs:
       run: |
         . ./spack/share/spack/setup-env.sh
         spack compiler list
-        spack install --cdash-upload-url https://my.cdash.org/index.php?project=HERMES -cdash-build ubuntu-latest --cdash-site ubu hermes@master
+        spack install --cdash-upload-url https://my.cdash.org/index.php?project=HERMES --cdash-build ubuntu-latest --cdash-site ubu hermes@master
