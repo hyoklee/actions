@@ -10,13 +10,30 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout spack
+    - name: checkout spack
       uses: actions/checkout@v3
       with:
         repository: spack/spack
         path: ./spack
-    - name: Run spack install hermes
+    - name: set up spack
       run: |
         . ./spack/share/spack/setup-env.sh
         spack compiler list
+    - name: checkout hermes_shm
+      uses: actions/checkout@v3
+      with:
+        repository: lukemartinlogan/hermes_shm
+        path: ./hermes_shm
+    - name: install hermes_shm
+      run: |
+        cd hermes_shm
+        spack repo add scripts/hermes_shm
+        spack install hermes_shm
+        spack load --only dependencies hermes_shm
+        mkdir build
+        cd build
+        cmake ../
+        make -j8        
+        sudo make install
+    - name: install hermes
         spack install --cdash-upload-url https://my.cdash.org/index.php?project=HERMES --cdash-build ubuntu-latest --cdash-site ubu hermes@master
