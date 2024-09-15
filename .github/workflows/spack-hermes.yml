@@ -15,17 +15,14 @@ jobs:
       with:
         repository: spack/spack
         path: ./spack
-    - name: set up spack
-      run: |
-        . ./spack/share/spack/setup-env.sh
-        spack compiler list
     - name: checkout hermes_shm
       uses: actions/checkout@v3
       with:
         repository: lukemartinlogan/hermes_shm
         path: ./hermes_shm
-    - name: install hermes_shm
+    - name: install hermes
       run: |
+        . ./spack/share/spack/setup-env.sh      
         cd hermes_shm
         spack repo add scripts/hermes_shm
         spack install hermes_shm
@@ -35,6 +32,4 @@ jobs:
         cmake ../
         make -j8        
         sudo make install
-    - name: install hermes
-      run: |    
         spack install --cdash-upload-url https://my.cdash.org/index.php?project=HERMES --cdash-build ubuntu-latest --cdash-site ubu hermes@master
