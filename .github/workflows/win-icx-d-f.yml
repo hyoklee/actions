@@ -10,11 +10,12 @@ env:
   WINDOWS_HPCKIT_URL: https://registrationcenter-download.intel.com/akdlm/IRC_NAS/0d500705-397e-41b3-8b2b-2a3da1753fc2/w_HPCKit_p_2024.2.0.633_offline.exe
   WINDOWS_CPP_COMPONENTS: intel.oneapi.win.cpp-dpcpp-common
   WINDOWS_DPCPP_COMPONENTS: intel.oneapi.win.cpp-dpcpp-common
+  WINDOWS_FORTRAN_COMPONENTS: intel.oneapi.win.ifort-compiler
   CACHE_NUMBER: 6
   SAMPLES_TAG: 2024.2.0
   AI_SAMPLES_TAG: 2024.1.0
-  COMPILER_VERSION: 2024.2.0
-  TBB_VERSION: 2021.13.0
+  COMPILER_VERSION: 2024.2.1
+  TBB_VERSION: 2021.13.1
   VS_VER: vs2022
 
 jobs:
