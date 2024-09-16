@@ -25,8 +25,8 @@ jobs:
         . ./spack/share/spack/setup-env.sh      
         cd hermes_shm
         spack repo add scripts/hermes_shm
-        spack install hermes_shm
-        spack load --only dependencies hermes_shm
+        spack install hermes_shm@master
+        spack load --only dependencies hermes_shm@master
         mkdir build
         cd build
         cmake ../
