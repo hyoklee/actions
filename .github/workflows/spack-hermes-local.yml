@@ -1,0 +1,26 @@
+name: spack hermes local
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout spack
+      uses: actions/checkout@v3
+      with:
+        repository: spack/spack
+        path: ./spack
+    - name: checkout hermes
+      uses: actions/checkout@v3
+      with:
+        repository: HDFGroup/hermes
+    - name: install hermes
+      run: |
+        . ./spack/share/spack/setup-env.sh      
+        spack repo add ci/hermes/packages
+        spack install --cdash-upload-url https://my.cdash.org/index.php?project=HERMES --cdash-build ubuntu-latest --cdash-site ubu hermes@master

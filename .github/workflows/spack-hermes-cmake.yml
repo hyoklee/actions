@@ -1,4 +1,4 @@
-name: spack hermes gcc10
+name: spack hermes cmake
 
 on:
   workflow_dispatch:
@@ -26,5 +26,10 @@ jobs:
         cd hermes_shm
         spack repo add scripts/hermes_shm
         spack install hermes_shm@master
-        spack load hermes_shm@master
-        spack install --cdash-upload-url https://my.cdash.org/index.php?project=HERMES --cdash-build ubuntu-latest --cdash-site ubu hermes@master%gcc@10.2.1
+        spack load --only-dependencies hermes_shm@master
+        mkdir build
+        cd build
+        cmake ..
+        make -j
+        sudo make install
+        spack install --cdash-upload-url https://my.cdash.org/index.php?project=HERMES --cdash-build ubuntu-latest --cdash-site ubu hermes@master
