@@ -25,6 +25,6 @@ jobs:
         . ./spack/share/spack/setup-env.sh      
         cd hermes_shm
         spack repo add scripts/hermes_shm
-        spack install hermes_shm@master%gcc@10.2.0
-        spack load hermes_shm@master%gcc@10.2.0
-        spack install --cdash-upload-url https://my.cdash.org/index.php?project=HERMES --cdash-build ubuntu-latest --cdash-site ubu hermes@master%gcc@10.2.0
+        spack install hermes_shm@master%gcc@10.2.1
+        spack load hermes_shm@master%gcc@10.2.1
+        spack install --cdash-upload-url https://my.cdash.org/index.php?project=HERMES --cdash-build ubuntu-latest --cdash-site ubu hermes@master%gcc@10.2.1
