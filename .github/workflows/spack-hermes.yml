@@ -26,10 +26,5 @@ jobs:
         cd hermes_shm
         spack repo add scripts/hermes_shm
         spack install hermes_shm@master
-        spack load --only dependencies hermes_shm@master
-        mkdir build
-        cd build
-        cmake ../
-        make -j8        
-        sudo make install
+        spack load hermes_shm@master
         spack install --cdash-upload-url https://my.cdash.org/index.php?project=HERMES --cdash-build ubuntu-latest --cdash-site ubu hermes@master
