@@ -3,7 +3,7 @@ name: spack hermes local
 on:
   workflow_dispatch:
   push:
-    branches: [ main- ]
+    branches: [ main ]
 
 
 jobs:
@@ -24,4 +24,5 @@ jobs:
       run: |
         . ./spack/share/spack/setup-env.sh
         spack repo add hermes/ci/hermes
-        spack install --cdash-upload-url https://my.cdash.org/submit.php?project=HERMES --cdash-build ubuntu-latest --cdash-site ubu hermes@master
+        spack install --keep-stage hermes@master
+        spack install --test=root --cdash-upload-url https://my.cdash.org/submit.php?project=HERMES --cdash-build master --cdash-site ubu hermes@master        
