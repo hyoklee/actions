@@ -1,9 +1,9 @@
-name: spack hermes local
+name: spack hermes vfd mpiio
 
 on:
   workflow_dispatch:
   push:
-    branches: [ main- ]
+    branches: [ main ]
 
 
 jobs:
@@ -24,4 +24,4 @@ jobs:
       run: |
         . ./spack/share/spack/setup-env.sh
         spack repo add hermes/ci/hermes
-        spack install --cdash-upload-url https://my.cdash.org/submit.php?project=HERMES --cdash-build ubuntu-latest --cdash-site ubu hermes@master
+        spack install --cdash-upload-url https://my.cdash.org/submit.php?project=HERMES --cdash-build "vfd+mpiio" --cdash-site ubu hermes+vfd+mpiio@master
