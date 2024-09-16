@@ -3,7 +3,7 @@ name: spack hermes local
 on:
   workflow_dispatch:
   push:
-    branches: [ main ]
+    branches: [ main- ]
 
 
 jobs:

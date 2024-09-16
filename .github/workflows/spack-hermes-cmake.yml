@@ -3,7 +3,7 @@ name: spack hermes cmake
 on:
   workflow_dispatch:
   push:
-    branches: [ main- ]
+    branches: [ main ]
 
 
 jobs:
@@ -26,7 +26,7 @@ jobs:
         cd hermes_shm
         spack repo add scripts/hermes_shm
         spack install hermes_shm@master
-        spack load --only-dependencies hermes_shm@master
+        spack load --only=dependencies hermes_shm@master
         mkdir build
         cd build
         cmake ..
