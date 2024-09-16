@@ -3,7 +3,7 @@ name: spack hermes gcc10
 on:
   workflow_dispatch:
   push:
-    branches: [ main ]
+    branches: [ main- ]
 
 
 jobs:

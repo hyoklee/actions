@@ -3,7 +3,7 @@ name: win icx d f -sh
 on:
   push:
     branches:
-      - main
+      - main-
 
 env:
   WINDOWS_BASEKIT_URL: https://registrationcenter-download.intel.com/akdlm/IRC_NAS/e83a8e64-04fc-45df-85c6-c2208d03bdb5/w_BaseKit_p_2024.2.0.635_offline.exe
