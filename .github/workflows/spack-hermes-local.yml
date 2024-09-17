@@ -24,5 +24,22 @@ jobs:
       run: |
         . ./spack/share/spack/setup-env.sh
         spack repo add hermes/ci/hermes
-        spack install --keep-stage hermes@master
-        spack install --test=root --cdash-upload-url https://my.cdash.org/submit.php?project=HERMES --cdash-build master --cdash-site ubu hermes@master        
+        spack install hermes@master
+        spack load hermes@master
+        mkdir build
+        cd build
+        cmake \
+         -DCMAKE_BUILD_TYPE=Debug \
+         -DCMAKE_INSTALL_PREFIX=/usr/local \
+         -DHERMES_ENABLE_MPIIO_ADAPTER=ON \
+         -DHERMES_MPICH=ON \
+         -DHERMES_ENABLE_STDIO_ADAPTER=ON \
+         -DHERMES_ENABLE_POSIX_ADAPTER=ON \
+         -DHERMES_ENABLE_COVERAGE=ON \
+         -DCTEST_PROJECT_NAME="HERMES" \
+         -DCTEST_DROP_SITE_INIT=my.cdash.org \
+         -DSITE=ubu \
+         -DBUILDNAME="d" \
+         ..
+        ctest -T Experimental
+        # spack install --test=root --cdash-upload-url https://my.cdash.org/submit.php?project=HERMES --cdash-build master --cdash-site ubu hermes@master        

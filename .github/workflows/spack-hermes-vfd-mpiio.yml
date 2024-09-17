@@ -22,6 +22,7 @@ jobs:
         path: ./hermes
     - name: install hermes
       run: |
+        export SPACK_CDASH_SKIP_DEPENDENCIES=True
         . ./spack/share/spack/setup-env.sh
         spack repo add hermes/ci/hermes
         spack install --cdash-upload-url https://my.cdash.org/submit.php?project=HERMES --cdash-build "vfd+mpiio" --cdash-site ubu hermes+vfd+mpiio@master
