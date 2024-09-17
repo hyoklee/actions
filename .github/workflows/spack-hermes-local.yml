@@ -42,5 +42,5 @@ jobs:
          -DSITE=ubu \
          -DBUILDNAME="d" \
          ..
-        ctest -T Experimental
+        ctest -D Experimental
         # spack install --test=root --cdash-upload-url https://my.cdash.org/submit.php?project=HERMES --cdash-build master --cdash-site ubu hermes@master        
