@@ -26,6 +26,7 @@ jobs:
         spack repo add hermes/ci/hermes
         spack install hermes@master
         spack load hermes@master
+        cd hermes
         mkdir build
         cd build
         cmake \
