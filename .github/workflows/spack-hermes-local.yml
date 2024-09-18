@@ -18,7 +18,7 @@ jobs:
     - name: checkout hermes
       uses: actions/checkout@v3
       with:
-        repository: hyoklee/hermes
+        repository: HDFGroup/hermes
         path: ./hermes
     - name: install hermes
       run: |
