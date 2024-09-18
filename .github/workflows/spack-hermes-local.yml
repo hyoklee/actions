@@ -38,7 +38,7 @@ jobs:
          -DHERMES_ENABLE_POSIX_ADAPTER=ON \
          -DHERMES_ENABLE_COVERAGE=ON \
          -DCTEST_PROJECT_NAME="HERMES" \
-         -DCTEST_DROP_SITE_INIT=my.cdash.org \
+         -DCTEST_DROP_SITE=my.cdash.org \
          -DSITE=ubu \
          -DBUILDNAME="d" \
          ..
