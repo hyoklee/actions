@@ -18,10 +18,8 @@ jobs:
       run: |
         cd jarvis-cd && \
         pip install -e . -r requirements.txt
+        set
         which jarvis
-        set
-        export PATH="/home/runner/.local/bin:$PATH"
-        set
         javris
     - name: test jarvis
       run: |
