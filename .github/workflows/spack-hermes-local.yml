@@ -3,7 +3,7 @@ name: spack hermes mpich
 on:
   workflow_dispatch:
   push:
-    branches: [ main- ]
+    branches: [ main ]
 
 
 jobs:
@@ -20,8 +20,17 @@ jobs:
       with:
         repository: HDFGroup/hermes
         path: ./hermes
+    - name: checkout jarvis
+      uses: actions/checkout@v4
+      with:
+        repository: grc-iit/jarvis-cd
+        path: ./jarvis-cd	
     - name: install hermes
       run: |
+        cd jarvis-cd
+        pip install -e . -r requirements.txt
+        which jarvis
+        cd ..      
         . ./spack/share/spack/setup-env.sh
         spack repo add hermes/ci/hermes
         spack install hermes@master+vfd+mpiio^mpich

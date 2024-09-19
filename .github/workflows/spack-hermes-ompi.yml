@@ -3,7 +3,7 @@ name: spack hermes ompi
 on:
   workflow_dispatch:
   push:
-    branches: [ main ]
+    branches: [ main- ]
 
 
 jobs:
