@@ -1,0 +1,24 @@
+name: jarvis
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: get jarvis
+      uses: actions/checkout@v4
+      with:
+        repository: grc-iit/jarvis-cd
+        path: ./jarvis-cd
+    - name: install jarvis
+      run: |
+        cd jarvis-cd && \
+        pip install -e . -r requirements.txt
+    - name: test jarvis
+      run: |
+        which jarvis
+        javris
