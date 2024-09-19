@@ -19,8 +19,8 @@ jobs:
         cd jarvis-cd && \
         pip install -e . -r requirements.txt
         which jarvis
-        rehash
-        javris	
+        export PATH=/home/runner/.local/bin:$PATH
+        javris
     - name: test jarvis
       run: |
         which jarvis
