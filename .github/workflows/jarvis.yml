@@ -20,5 +20,5 @@ jobs:
         pip install -e . -r requirements.txt
         which jarvis
         # javris # Doesn't work
-        alias jarvis '/home/runner/.local/bin/jarvis'
-        jarvis
+        # /home/runner/.local/bin/jarvis # Work
+        python -m jarvis
