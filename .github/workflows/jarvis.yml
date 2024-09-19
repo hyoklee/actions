@@ -20,7 +20,7 @@ jobs:
         pip install -e . -r requirements.txt
         which jarvis
         export PATH=/home/runner/.local/bin:$PATH
-	/home/runner/.local/bin/jarvis
+        /home/runner/.local/bin/jarvis
         javris
     - name: test jarvis
       run: |
