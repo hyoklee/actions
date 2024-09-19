@@ -18,6 +18,8 @@ jobs:
       run: |
         cd jarvis-cd && \
         pip install -e . -r requirements.txt
+        which jarvis
+        javris	
     - name: test jarvis
       run: |
         which jarvis
