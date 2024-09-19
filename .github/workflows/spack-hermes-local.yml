@@ -1,9 +1,9 @@
-name: spack hermes local
+name: spack hermes mpich
 
 on:
   workflow_dispatch:
   push:
-    branches: [ main- ]
+    branches: [ main ]
 
 
 jobs:
@@ -24,8 +24,8 @@ jobs:
       run: |
         . ./spack/share/spack/setup-env.sh
         spack repo add hermes/ci/hermes
-        spack install hermes@master+vfd+mpiio^mpich@3.3.2
-        spack load hermes@master+vfd+mpiio^mpich@3.3.2
+        spack install hermes@master+vfd+mpiio^mpich
+        spack load hermes@master+vfd+mpiio^mpich
         cd hermes
         mkdir build
         cd build
