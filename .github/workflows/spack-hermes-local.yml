@@ -24,8 +24,8 @@ jobs:
       run: |
         . ./spack/share/spack/setup-env.sh
         spack repo add hermes/ci/hermes
-        spack install hermes+vfd+mpiio@master
-        spack load hermes+vfd+mpiio@master
+        spack install hermes+vfd+mpiio^mpich@3.3.2@master
+        spack load hermes+vfd+mpiio^mpich@3.3.2@master
         cd hermes
         mkdir build
         cd build
