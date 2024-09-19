@@ -19,6 +19,7 @@ jobs:
         cd jarvis-cd && \
         pip install -e . -r requirements.txt
         which jarvis
+        rehash
         javris	
     - name: test jarvis
       run: |
