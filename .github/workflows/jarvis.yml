@@ -9,6 +9,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/setup-python@v5
     - name: get jarvis
       uses: actions/checkout@v4
       with:
