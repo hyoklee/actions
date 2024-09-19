@@ -1,9 +1,9 @@
-name: spack hermes local
+name: spack hermes ompi
 
 on:
   workflow_dispatch:
   push:
-    branches: [ main- ]
+    branches: [ main ]
 
 
 jobs:
@@ -24,8 +24,8 @@ jobs:
       run: |
         . ./spack/share/spack/setup-env.sh
         spack repo add hermes/ci/hermes
-        spack install hermes@master+vfd+mpiio^mpich@3.3.2
-        spack load hermes@master+vfd+mpiio^mpich@3.3.2
+        spack install hermes@master+vfd+mpiio
+        spack load hermes@master+vfd+mpiio
         cd hermes
         mkdir build
         cd build
@@ -33,14 +33,14 @@ jobs:
          -DCMAKE_BUILD_TYPE=Debug \
          -DCMAKE_INSTALL_PREFIX=/usr/local \
          -DHERMES_ENABLE_MPIIO_ADAPTER=ON \
-         -DHERMES_MPICH=ON \
+         -DHERMES_OPENMPI=ON \
          -DHERMES_ENABLE_STDIO_ADAPTER=ON \
          -DHERMES_ENABLE_POSIX_ADAPTER=ON \
          -DHERMES_ENABLE_COVERAGE=ON \
          -DCTEST_PROJECT_NAME="HERMES" \
          -DCTEST_DROP_SITE=my.cdash.org \
          -DSITE=ubu \
-         -DBUILDNAME="d" \
+         -DBUILDNAME="d/ompi" \
          ..
         ctest -D Experimental
-        # spack install --test=root --cdash-upload-url https://my.cdash.org/submit.php?project=HERMES --cdash-build master --cdash-site ubu hermes@master        
+
