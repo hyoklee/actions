@@ -23,9 +23,9 @@ jobs:
             pkg install autoconf automake curl libtool gnu-tar developer/gcc/gcc-c++
           run: |
             set -e
-            curl -O -L https://github.com/HDFGroup/hdf5/archive/refs/tags/snapshot-1.14.tar.gz
-            gtar zxf snapshot-1.14.tar.gz
-            cd hdf5-snapshot-1.14
+            curl -O -L https://support.hdfgroup.org/releases/hdf5/v1_14/v1_14_5/downloads/snapshot-1.14.5.tar.gz 
+            gtar zxf snapshot-1.14.5.tar.gz
+            cd hdf5-snapshot-1.14.5-2
             ./configure CC=gcc CXX=g++
             make
             make check
