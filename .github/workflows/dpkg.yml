@@ -2,7 +2,7 @@ name: dpkg
 
 on:
   push:
-    branches: main-
+    branches: main
 
 jobs:
   test:
@@ -15,8 +15,6 @@ jobs:
           sudo apt install alien
       - name: test
         run:  |
-          curl -s -L -O https://github.com/HDFGroup/hdf5/releases/download/snapshot-1.14/snapshot-1.14-ubuntu-2204_gcc.deb.tar.gz
-          tar zxvf snapshot-1.14-ubuntu-2204_gcc.deb.tar.gz
-          cd hdf5
-          sudo dpkg -i HDF5-1.14.4.2-Linux.deb
-          /HDF_Group/HDF5/1.14.4.2/bin/h5ls --help
+          curl -s -L -O https://support.hdfgroup.org/releases/hdf5/v1_14/v1_14_5/downloads/snapshot-1.14.5-ubuntu-2204_gcc.deb
+          sudo dpkg -i snapshot-1.14.5-ubuntu-2204_gcc.deb
+          /HDF_Group/HDF5/1.14.5.2/bin/h5ls --help
