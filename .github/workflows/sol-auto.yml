@@ -2,7 +2,7 @@ name: sol auto gcc
 
 on:
   push:
-    branches: main-
+    branches: main
 
 defaults:
   run:

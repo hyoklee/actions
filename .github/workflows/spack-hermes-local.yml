@@ -3,7 +3,7 @@ name: spack hermes mpich
 on:
   workflow_dispatch:
   push:
-    branches: [ main ]
+    branches: [ main- ]
 
 
 jobs:
