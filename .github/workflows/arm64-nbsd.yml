@@ -39,7 +39,7 @@ jobs:
             export LD_LIBRARY_PATH=/usr/pkg/lib
             curl -O -L https://support.hdfgroup.org/releases/hdf5/v1_14/v1_14_5/downloads/snapshot-1.14.5.tar.gz
             tar zxvf snapshot-1.14.5.tar.gz
-            cd hdf5-snapshot-1.14.5-2
+            cd hdf5-1.14.5-2
             mkdir build
             cd build
             cmake \
