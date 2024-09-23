@@ -2,7 +2,7 @@ name: mac-13
 
 on:
   push:
-    branches: main
+    branches: main-
 
 jobs:
   build:
@@ -14,7 +14,7 @@ jobs:
           brew install ninja
           curl -O -L https://support.hdfgroup.org/releases/hdf5/v1_14/v1_14_5/downloads/snapshot-1.14.5.tar.gz
           tar zxf snapshot-1.14.5.tar.gz
-          cd hdf5-1.14.5-2          
+          cd hdf5-1.14.5-2
           # cmake --workflow --preset=ci-StdShar-macos-Clang --fresh
           mkdir build
           cd build
