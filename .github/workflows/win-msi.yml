@@ -11,10 +11,10 @@ jobs:
     steps:
       - name: Get MSI
         run: |
-          curl -s -O -L https://support.hdfgroup.org/releases/hdf5/v1_14/v1_14_5/downloads/snapshot-1.14.5-win-vs2022_intel.msi
+          curl -s -O -L https://support.hdfgroup.org/releases/hdf5/v1_14/v1_14_5/downloads/snapshot-1.14.5-win-vs2022_cl.msi
       - name: Install MSI
         run: |
-          $file = "snapshot-1.14.5-win-vs2022_intel.msi"
+          $file = "snapshot-1.14.5-win-vs2022_cl.msi"
           $log = "install.log"
           $procMain = Start-Process "msiexec" "/i `"$file`" /qn /l*! `"$log`"" -NoNewWindow -PassThru
           $procLog = Start-Process "powershell" "Get-Content -Path `"$log`" -Wait" -NoNewWindow -PassThru 
