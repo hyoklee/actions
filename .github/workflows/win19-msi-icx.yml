@@ -2,7 +2,7 @@ name: win19 msi icx
 
 on:
   push:
-    branches: main-
+    branches: main
 
 env:
   WINDOWS_BASEKIT_URL: https://registrationcenter-download.intel.com/akdlm/IRC_NAS/e83a8e64-04fc-45df-85c6-c2208d03bdb5/w_BaseKit_p_2024.2.0.635_offline.exe
@@ -26,6 +26,9 @@ jobs:
           git clone --depth=1 https://github.com/oneapi-src/oneapi-ci.git oneapi-ci
           cd oneapi-ci
           scripts/install_windows.bat ${{ env.WINDOWS_HPCKIT_URL }} ${{ env.WINDOWS_CPP_COMPONENTS }}:${{ env.WINDOWS_FORTRAN_COMPONENTS }}
+      - name: Get MSI
+        run: |
+          curl -s -O -L https://support.hdfgroup.org/releases/hdf5/v1_14/v1_14_5/downloads/snapshot-1.14.5-win-vs2022_cl.msi
       - name: Install MSI
         run: |
           $file = "snapshot-1.14.5-win-vs2022_intel.msi"
