@@ -2,7 +2,7 @@ name: fbsd d
 
 on:
   push:
-    branches: main-
+    branches: main
 
 jobs:
   test:
@@ -18,7 +18,7 @@ jobs:
             host: ubuntu-latest
     steps:
       - name: ${{ matrix.os.name }}
-        uses: cross-platform-actions/action@v0.23.0
+        uses: cross-platform-actions/action@v0.25.0
         with:
           operating_system: ${{ matrix.os.name }}
           architecture: ${{ matrix.os.architecture }}
@@ -27,14 +27,14 @@ jobs:
           run: |
             sudo pkg install -y perl5
             sudo pkg install -y cmake
-            curl -O -L https://github.com/HDFGroup/hdf5/releases/download/hdf5_1.14.4/hdf5-1.14.4.tar.gz
-            tar zxf hdf5-1.14.4.tar.gz
-            cd hdf5-1.14.4
+            curl -O -L https://support.hdfgroup.org/releases/hdf5/v1_14/v1_14_5/downloads/snapshot-1.14.5.tar.gz
+            tar zxvf snapshot-1.14.5.tar.gz
+            cd hdf5-1.14.5-2
             mkdir build
             cd build
             cmake \
-            -DSITE:STRING=fbsd-14.0 \
-            -DBUILDNAME:STRING="4/d" \
+            -DSITE:STRING=fbsd14 \
+            -DBUILDNAME:STRING="5/d" \
             -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
             -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" \
             ..

@@ -3,7 +3,7 @@ name: lin auto icx ifx p
 on:
   push:
     branches:
-      - main-
+      - main
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -25,9 +25,9 @@ jobs:
       - name: test
         shell: bash
         run: |
-          curl -O -L https://github.com/HDFGroup/hdf5/releases/download/hdf5_1.14.4.2/hdf5-1.14.4-2.tar.gz
-          tar zxf hdf5-1.14.4-2.tar.gz
-          cd hdf5-1.14.4-2
+          curl -O -L https://support.hdfgroup.org/releases/hdf5/v1_14/v1_14_5/downloads/snapshot-1.14.5.tar.gz
+          tar zxvf snapshot-1.14.5.tar.gz
+          cd hdf5-1.14.5-2	
           ./configure --prefix=/tmp CXX="$(which mpiicpc) -cc=$(which icpx)" CC="$(which mpiicc) -cc=$(which icx)" FC="$(which mpiifort) -fc=$(which ifx)" LDFLAGS="-L/opt/intel/oneapi/mpi/latest/lib" --enable-fortran --enable-parallel
           make -j
           make check -j

@@ -18,6 +18,6 @@ jobs:
           # cmake --workflow --preset=ci-StdShar-macos-Clang --fresh
           mkdir build
           cd build
-          cmake -DSITE:STRING="mac-13" -DBUILDNAME:STRING="5/r" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" ..
+          cmake -DSITE:STRING="mac13" -DBUILDNAME:STRING="5/r" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" ..
           ctest -D Experimental -C Release
 

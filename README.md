@@ -32,10 +32,10 @@ Actions speak louder than codes.
 
 | Test    | Status |
 | --------| ------ |
-| macOS 14  |[![mac-14](https://github.com/hyoklee/actions/actions/workflows/mac14.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac14.yml)|
-| macOS 13  |[![mac-13](https://github.com/hyoklee/actions/actions/workflows/mac13.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac13.yml)|
-| macOS 12  |[![mac-12](https://github.com/hyoklee/actions/actions/workflows/mac12.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac12.yml)|
-| macOS 11  |[![mac-11](https://github.com/hyoklee/actions/actions/workflows/mac11.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac11.yml)|
+| macOS 14  |[![mac14](https://github.com/hyoklee/actions/actions/workflows/mac14.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac14.yml)|
+| macOS 13  |[![mac13](https://github.com/hyoklee/actions/actions/workflows/mac13.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac13.yml)|
+| macOS 12  |[![mac12](https://github.com/hyoklee/actions/actions/workflows/mac12.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac12.yml)|
+| macOS 11  |[![mac11](https://github.com/hyoklee/actions/actions/workflows/mac11.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac11.yml)|
 | visionOS |[![mac14 vos](https://github.com/hyoklee/actions/actions/workflows/mac14-vos.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac14-vos.yml) |
 
 ### Solaris
@@ -71,9 +71,9 @@ Actions speak louder than codes.
 
 | Test | Status |
 | -----| ------ |
-| AppleClang-15.0.0 |[![mac-13](https://github.com/hyoklee/actions/actions/workflows/mac13.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac13.yml) [![mac-14](https://github.com/hyoklee/actions/actions/workflows/mac14.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac14.yml)|
-| AppleClang-14.0.0 |[![mac-12](https://github.com/hyoklee/actions/actions/workflows/mac12.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac12.yml)|
-| AppleClang-12.0.5 |[![mac-11](https://github.com/hyoklee/actions/actions/workflows/mac11.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac11.yml)|
+| AppleClang-15.0.0 |[![mac13](https://github.com/hyoklee/actions/actions/workflows/mac13.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac13.yml) [![mac-14](https://github.com/hyoklee/actions/actions/workflows/mac14.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac14.yml)|
+| AppleClang-14.0.0 |[![mac12](https://github.com/hyoklee/actions/actions/workflows/mac12.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac12.yml)|
+| AppleClang-12.0.5 |[![mac11](https://github.com/hyoklee/actions/actions/workflows/mac11.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac11.yml)|
 | clang-16.0.6 | [![fbsd](https://github.com/hyoklee/actions/actions/workflows/fbsd.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/fbsd.yml) [![obsd](https://github.com/hyoklee/actions/actions/workflows/obsd.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/obsd.yml) |
 | icx 2024.1 |[![lin icx](https://github.com/hyoklee/actions/actions/workflows/lin-icx.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/lin-icx.yml) |
 | gcc-11.4.0 |[![lin](https://github.com/hyoklee/actions/actions/workflows/lin.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/lin.yml)|

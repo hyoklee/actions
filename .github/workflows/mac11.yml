@@ -2,7 +2,7 @@ name: mac-11
 
 on:
   push:
-    branches: main-
+    branches: main
 
 jobs:
   build:
@@ -11,10 +11,10 @@ jobs:
     steps:
       - name: test
         run: |
-          curl -O -L https://github.com/HDFGroup/hdf5/archive/refs/tags/snapshot-1.14.tar.gz
-          tar zxf snapshot-1.14.tar.gz
-          cd hdf5-snapshot-1.14
+          curl -O -L https://support.hdfgroup.org/releases/hdf5/v1_14/v1_14_5/downloads/snapshot-1.14.5.tar.gz
+          tar zxvf snapshot-1.14.5.tar.gz
+          cd hdf5-1.14.5-2	    
           mkdir build
           cd build
-          cmake -DSITE:STRING="mac-11" -DBUILDNAME:STRING="4/r" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" ..
+          cmake -DSITE:STRING="mac11" -DBUILDNAME:STRING="5/r" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" ..
           ctest -D Experimental -C Release

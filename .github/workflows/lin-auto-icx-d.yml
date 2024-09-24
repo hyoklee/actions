@@ -3,7 +3,7 @@ name: lin auto icx d
 on:
   push:
     branches:
-      - main-
+      - main
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -23,9 +23,9 @@ jobs:
         shell: bash
         run: |
           source /opt/intel/oneapi/setvars.sh
-          curl -O -L https://github.com/HDFGroup/hdf5/archive/refs/tags/snapshot-1.14.tar.gz
-          tar zxf snapshot-1.14.tar.gz
-          cd hdf5-snapshot-1.14
+          curl -O -L https://support.hdfgroup.org/releases/hdf5/v1_14/v1_14_5/downloads/snapshot-1.14.5.tar.gz
+          tar zxvf snapshot-1.14.5.tar.gz
+          cd hdf5-1.14.5-2
           ./configure --prefix=/tmp --enable-internal-debug=all CC="$(which icx)"
           make -j
           make check -j
