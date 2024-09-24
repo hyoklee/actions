@@ -19,6 +19,6 @@ jobs:
       - name: Install MSI
         run: msiexec /i snapshot-1.14.5-win-vs2022_intel.msi /qb
       - name: Test h5ls
-        run: "c:\Program Files\HDF_Group\HDF5\1.14.5\bin\h5ls.exe"
+        run: Start-Process -FilePath 'C:\Program Files\HDF_Group\HDF5\1.14.5\bin\h5ls.exe'
       - name: Uninstall MSI
         run: msiexec /x snapshot-1.14.5-win-vs2022_intel.msi /qb
