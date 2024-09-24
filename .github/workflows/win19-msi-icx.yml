@@ -28,7 +28,7 @@ jobs:
           scripts/install_windows.bat ${{ env.WINDOWS_HPCKIT_URL }} ${{ env.WINDOWS_CPP_COMPONENTS }}:${{ env.WINDOWS_FORTRAN_COMPONENTS }}
       - name: Get MSI
         run: |
-          curl -s -O -L https://support.hdfgroup.org/releases/hdf5/v1_14/v1_14_5/downloads/snapshot-1.14.5-win-vs2022_cl.msi
+          curl -s -O -L https://support.hdfgroup.org/releases/hdf5/v1_14/v1_14_5/downloads/snapshot-1.14.5-win-vs2022_intel.msi
       - name: Install MSI
         run: |
           $file = "snapshot-1.14.5-win-vs2022_intel.msi"
