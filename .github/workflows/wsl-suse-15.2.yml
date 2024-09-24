@@ -33,7 +33,6 @@ jobs:
           mkdir build
           cd build
           pwd
-          which cmake
-#           /mnt/d/a/actions/actions/bin/cmake -DSITE:STRING="sus-15.2/wsl" -DBUILDNAME:STRING="cmake-3.18" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" ..
+          /mnt/d/a/actions/actions/bin/cmake -DSITE:STRING="sus-15.2/wsl" -DBUILDNAME:STRING="cmake-3.18" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" ..
 #          /mnt/d/a/actions/actions/bin/ctest -T Build
 #          /mnt/d/a/actions/actions/bin/ctest -T Test

@@ -60,7 +60,8 @@ jobs:
           set LIB=C:\Program Files (x86)\Intel\oneAPI\mpi\2021.13\lib;C:\Program Files (x86)\Intel\oneAPI\compiler\2024.2\lib;%LIB%
           set LIBPATH=C:\Program Files (x86)\Intel\oneAPI\mpi\latest\lib;C:\Program Files (x86)\Intel\oneAPI\compiler\2024.2\lib;%LIBPATH%
           call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" %vc_arch%
-          set
+          set SETVARS="%ProgramFiles(x86)%\Intel\oneAPI\setvars.bat"
+          call %SETVARS%	  
           cd hdf5-1.14.5-2
           mkdir build
           cd build

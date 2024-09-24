@@ -4,7 +4,7 @@ name: wsl kali
 on:
   push:
     branches:
-      - main
+      - main-
 
 
 jobs:
