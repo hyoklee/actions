@@ -31,12 +31,11 @@ jobs:
         run: |
           set LIB=C:\Program Files (x86)\Intel\oneAPI\mpi\2021.13\lib;C:\Program Files (x86)\Intel\oneAPI\compiler\2024.2\lib;%LIB%
           set LIBPATH=C:\Program Files (x86)\Intel\oneAPI\mpi\latest\lib;C:\Program Files (x86)\Intel\oneAPI\compiler\2024.2\lib;%LIBPATH%
-          call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" %vc_arch%
           set SETVARS="%ProgramFiles(x86)%\Intel\oneAPI\setvars.bat"
-          call %SETVARS%    
-      - name: Get MSI
-        run: |
+          call %SETVARS%
           curl -s -O -L https://support.hdfgroup.org/releases/hdf5/v1_14/v1_14_5/downloads/snapshot-1.14.5-win-vs2022_intel.msi
+          misexec /i snapshot-1.14.5-win-vs2022_intel.msi
+          "C:\Program Files\HDF_Group\HDF5\1.14.5\bin\h5ls"
       - name: Install MSI
         run: |
           $file = "snapshot-1.14.5-win-vs2022_intel.msi"
