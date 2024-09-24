@@ -2,7 +2,7 @@ name: win msi icx
 
 on:
   push:
-    branches: main
+    branches: main-
 
 jobs:
   test-msi:

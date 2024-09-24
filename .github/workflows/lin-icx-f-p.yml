@@ -1,4 +1,4 @@
-name: lin auto icx2 ifx p
+name: lin icx f p
 
 on:
   push:
@@ -18,7 +18,7 @@ jobs:
           rm GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
           sudo add-apt-repository -y "deb https://apt.repos.intel.com/oneapi all main"
           sudo apt update
-          sudo apt install -y intel-oneapi-compiler-dpcpp-cpp    
+          sudo apt install -y intel-oneapi-compiler-dpcpp-cpp
       - name: mpi
         uses: mpi4py/setup-mpi@master
         with:
@@ -26,12 +26,17 @@ jobs:
       - name: test
         shell: bash
         run: |
+          source /opt/intel/oneapi/setvars.sh
           curl -O -L https://support.hdfgroup.org/releases/hdf5/v1_14/v1_14_5/downloads/snapshot-1.14.5.tar.gz
           tar zxvf snapshot-1.14.5.tar.gz
           cd hdf5-1.14.5-2
-          source /opt/intel/oneapi/setvars.sh
-          ./configure --prefix=/tmp CXX="$(which mpiicpc) -cc=$(which icpx)" CC="$(which mpiicc) -cc=$(which icx)" FC="$(which mpiifort) -fc=$(which ifx)" LDFLAGS="-L/opt/intel/oneapi/mpi/latest/lib" --enable-fortran --enable-parallel
-          make -j
-          make check -j
-          make install
-          make uninstall
+          mkdir build
+          cd build
+          cmake -DSITE:STRING="ubu" -DBUILDNAME:STRING="5/icx/f/p" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" \
+          -DHDF5_BUILD_FORTRAN=ON \
+          -DHDF5_ENABLE_PARALLEL=ON \
+          -DHDF5_BUILD_HL_LIB=ON \
+          -DMKL_ROOT="/opt/intel/oneapi/mkl/latest" \
+          -DTBB_ROOT="/opt/intel/oneapi/tbb/latest" \
+           ..
+          ctest -D Experimental -C Release
