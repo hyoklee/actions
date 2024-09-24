@@ -118,5 +118,7 @@ Actions speak louder than codes.
 | -----| ------ |
 | RPM | [![alien](https://github.com/hyoklee/actions/actions/workflows/alien.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/alien.yml) |
 | DEB | [![dpkg](https://github.com/hyoklee/actions/actions/workflows/dpkg.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/dpkg.yml) |
-| MSI | [![win msi](https://github.com/hyoklee/actions/actions/workflows/win-msi.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/win-msi.yml) |
-| MSI oneAPI | [![win msi icx](https://github.com/hyoklee/actions/actions/workflows/win-msi-icx.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/win-msi-icx.yml) |
+| win22 MSI | [![win msi](https://github.com/hyoklee/actions/actions/workflows/win-msi.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/win-msi.yml) |
+| win22 MSI oneAPI | [![win msi icx](https://github.com/hyoklee/actions/actions/workflows/win-msi-icx.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/win-msi-icx.yml) |
+| win19 MSI | [![win19 msi](https://github.com/hyoklee/actions/actions/workflows/win19-msi.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/win19-msi.yml) |
+| win19 MSI oneAPI | [![win19 msi icx](https://github.com/hyoklee/actions/actions/workflows/win19-msi-icx.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/win19-msi-icx.yml) |

@@ -3,7 +3,7 @@ name: wsl suse-15.2 auto
 on:
   push:
     branches:
-      - main
+      - main-
 
 jobs:
   build:
