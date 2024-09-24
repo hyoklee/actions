@@ -1,0 +1,24 @@
+name: win msi
+
+on:
+  push:
+    branches: main
+
+jobs:
+  test-msi:
+    runs-on: windows-latest
+
+    steps:
+#      - uses: actions/setup-windows@v2
+      - name: Install WiX Toolset
+        run: |
+          choco install wixtoolset -y
+      - name: get MSI
+        run: |
+           curl -s -O -L https://support.hdfgroup.org/releases/hdf5/v1_14/v1_14_5/downloads/snapshot-1.14.5-win-vs2022_intel.msi
+      - name: Install MSI
+        run: msiexec /i snapshot-1.14.5-win-vs2022_intel.msi /qb
+      - name: Uninstall MSI
+        run: msiexec /x snapshot-1.14.5-win-vs2022_intel.msi /qb
+      - name: Validate MSI
+        run: msival2 snapshot-1.14.5-win-vs2022_intel.msi

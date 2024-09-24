@@ -2,7 +2,7 @@ name: obsd-7.4 auto
 
 on:
   push:
-    branches: main
+    branches: main-
 
 jobs:
   test:
