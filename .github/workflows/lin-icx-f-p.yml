@@ -19,6 +19,8 @@ jobs:
           sudo add-apt-repository -y "deb https://apt.repos.intel.com/oneapi all main"
           sudo apt update
           sudo apt install -y intel-oneapi-compiler-dpcpp-cpp
+          sudo apt install -y  intel-oneapi-compiler-fortran
+          sudo apt install -y intel-oneapi-mkl
       - name: mpi
         uses: mpi4py/setup-mpi@master
         with:
