@@ -2,7 +2,7 @@ name: win msi
 
 on:
   push:
-    branches: main-
+    branches: main
 
 jobs:
   test-msi:
@@ -23,5 +23,6 @@ jobs:
           $procLog = Start-Process "powershell" "Get-Content -Path `"$log`" -Wait" -NoNewWindow -PassThru 
           $procMain.WaitForExit()
           $procLog.Kill()
+          dir 'C:\Program Files\'
       - name: Test h5ls
         run: Start-Process -FilePath 'C:\Program Files\HDF_Group\HDF5\1.14.5\bin\h5ls.exe'

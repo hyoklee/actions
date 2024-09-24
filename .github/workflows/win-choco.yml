@@ -2,7 +2,7 @@ name: win choco
 
 on:
   push:
-    branches: main
+    branches: main-
 
 jobs:
   test-msi:
