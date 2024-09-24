@@ -9,15 +9,16 @@ jobs:
     runs-on: windows-latest
 
     steps:
-#      - uses: actions/setup-windows@v2
       - name: Install WiX Toolset
         run: |
           choco install wixtoolset -y
-      - name: get MSI
+      - name: Get MSI
         run: |
-           curl -s -O -L https://support.hdfgroup.org/releases/hdf5/v1_14/v1_14_5/downloads/snapshot-1.14.5-win-vs2022_intel.msi
+          curl -s -O -L https://support.hdfgroup.org/releases/hdf5/v1_14/v1_14_5/downloads/snapshot-1.14.5-win-vs2022_intel.msi
       - name: Install MSI
-        run: msiexec /i snapshot-1.14.5-win-vs2022_intel.msi /qb
+        run: |
+          msiexec /i snapshot-1.14.5-win-vs2022_intel.msi /l*v test.log /qb
+          type test.log
       - name: Test h5ls
         run: Start-Process -FilePath 'C:\Program Files\HDF_Group\HDF5\1.14.5\bin\h5ls.exe'
       - name: Uninstall MSI
