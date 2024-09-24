@@ -45,7 +45,7 @@ jobs:
           set LIBPATH=C:\Program Files (x86)\Intel\oneAPI\mpi\latest\lib;C:\Program Files (x86)\Intel\oneAPI\compiler\2024.2\lib;%LIBPATH%
           set SETVARS="%ProgramFiles(x86)%\Intel\oneAPI\setvars.bat"
           call %SETVARS%
-          "C:\Program Files\HDF_Group\HDF5\1.14.5\bin\h5ls"
+          "C:\Program Files\HDF_Group\HDF5\1.14.5\bin\h5ls -h"
       - name: Test h5ls
         run: |
           gci env:* | sort-object name
