@@ -15,7 +15,9 @@ jobs:
         run: curl -L https://support.hdfgroup.org/releases/hdf5/v1_14/v1_14_5/downloads/snapshot-1.14.5-macos14_clang.dmg -o app.dmg
 
       - name: Attach DMG file
-        run: hdiutil attach app.dmg -mountpoint /Volumes/app
+        run: |
+          hdiutil convert -quiet app.dmg -format UDTO -o bar
+          hdiutil attach -quiet -nobrowse -noverify -noautoopen -mountpoint /Volumes/app bar.cdr      
 
       - name: Test application
         run: /Volumes/app/HDF_Group/HDF5/1.14.5.2/bin/h5ls -h
