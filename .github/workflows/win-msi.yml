@@ -17,9 +17,11 @@ jobs:
           curl -s -O -L https://support.hdfgroup.org/releases/hdf5/v1_14/v1_14_5/downloads/snapshot-1.14.5-win-vs2022_intel.msi
       - name: Install MSI
         run: |
-          msiexec /i snapshot-1.14.5-win-vs2022_intel.msi /l*v 'D:\a\actions\actions\test.log' /qb
-          type test.log
+          $file = "snapshot-1.14.5-win-vs2022_intel.msi"
+          $log = "install.log"
+          $procMain = Start-Process "msiexec" "/i `"$file`" /qn /l*! `"$log`"" -NoNewWindow -PassThru
+          $procLog = Start-Process "powershell" "Get-Content -Path `"$log`" -Wait" -NoNewWindow -PassThru 
+          $procMain.WaitForExit()
+          $procLog.Kill()
       - name: Test h5ls
         run: Start-Process -FilePath 'C:\Program Files\HDF_Group\HDF5\1.14.5\bin\h5ls.exe'
-      - name: Uninstall MSI
-        run: msiexec /x snapshot-1.14.5-win-vs2022_intel.msi /qb
