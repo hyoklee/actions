@@ -2,7 +2,7 @@ name: win msi
 
 on:
   push:
-    branches: main-
+    branches: main
 
 jobs:
   test-msi:
