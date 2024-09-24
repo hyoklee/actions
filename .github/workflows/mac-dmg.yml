@@ -6,7 +6,7 @@ on:
 
 jobs:
   install-and-run:
-    runs-on: macOS-latest
+    runs-on: macos-12
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -20,7 +20,7 @@ jobs:
           hdiutil attach -quiet -nobrowse -noverify -noautoopen -mountpoint /Volumes/app bar.cdr          
 
       - name: Test application
-        run: /Volumes/app/HDF_Group/HDF5/1.14.5.2/bin/h5ls
+        run: /Volumes/app/HDF_Group/HDF5/1.14.5.2/bin/h5ls -h
 
       - name: Detach DMG file
         run: hdiutil detach /Volumes/app
