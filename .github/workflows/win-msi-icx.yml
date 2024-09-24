@@ -2,7 +2,7 @@ name: win msi icx
 
 on:
   push:
-    branches: main-
+    branches: main
 
 env:
   WINDOWS_BASEKIT_URL: https://registrationcenter-download.intel.com/akdlm/IRC_NAS/e83a8e64-04fc-45df-85c6-c2208d03bdb5/w_BaseKit_p_2024.2.0.635_offline.exe
@@ -26,14 +26,6 @@ jobs:
           git clone --depth=1 https://github.com/oneapi-src/oneapi-ci.git oneapi-ci
           cd oneapi-ci
           scripts/install_windows.bat ${{ env.WINDOWS_HPCKIT_URL }} ${{ env.WINDOWS_CPP_COMPONENTS }}:${{ env.WINDOWS_FORTRAN_COMPONENTS }}
-      - name: Configure oneAPI
-        shell: cmd
-        run: |
-          set LIB=C:\Program Files (x86)\Intel\oneAPI\mpi\2021.13\lib;C:\Program Files (x86)\Intel\oneAPI\compiler\2024.2\lib;%LIB%
-          set LIBPATH=C:\Program Files (x86)\Intel\oneAPI\mpi\latest\lib;C:\Program Files (x86)\Intel\oneAPI\compiler\2024.2\lib;%LIBPATH%
-          call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" %vc_arch%
-          set SETVARS="%ProgramFiles(x86)%\Intel\oneAPI\setvars.bat"
-          call %SETVARS%
 
       - name: Get MSI
         run: |
@@ -48,9 +40,13 @@ jobs:
           $procMain.WaitForExit()
           $procLog.Kill()
           dir 'C:\Program Files\'
+          
       - name: Test h5ls
+        shell: cmd
         run: |
-          gci env:* | sort-object name
-          cd 'C:\Program Files\HDF_Group\HDF5\1.14.5\bin\'
-          dir
-          & cmd /c ".\h5ls.exe -h"
+          set LIB=C:\Program Files (x86)\Intel\oneAPI\mpi\2021.13\lib;C:\Program Files (x86)\Intel\oneAPI\compiler\2024.2\lib;%LIB%
+          set LIBPATH=C:\Program Files (x86)\Intel\oneAPI\mpi\latest\lib;C:\Program Files (x86)\Intel\oneAPI\compiler\2024.2\lib;%LIBPATH%
+          call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" %vc_arch%
+          set SETVARS="%ProgramFiles(x86)%\Intel\oneAPI\setvars.bat"
+          call %SETVARS%
+          "C:\Program Files\HDF_Group\HDF5\1.14.5\bin\h5ls" -h

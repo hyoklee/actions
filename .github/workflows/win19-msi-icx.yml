@@ -46,9 +46,3 @@ jobs:
           set SETVARS="%ProgramFiles(x86)%\Intel\oneAPI\setvars.bat"
           call %SETVARS%
           "C:\Program Files\HDF_Group\HDF5\1.14.5\bin\h5ls" -h
-      - name: Test h5ls
-        run: |
-          gci env:* | sort-object name
-          cd 'C:\Program Files\HDF_Group\HDF5\1.14.5\bin\'
-          dir
-          & cmd /c ".\h5ls.exe -h"
