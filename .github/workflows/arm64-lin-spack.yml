@@ -34,8 +34,8 @@ jobs:
             . ./share/spack/setup-env.sh
             spack compiler find
             spack external find
-            spack spec hdf5
-            spack install hdf5
+            spack spec hdf5~mpi
+            spack install hdf5~mpi
 
       - name: Get the output
         # Echo the `uname` output parameter from the `runcmd` step
