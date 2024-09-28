@@ -28,6 +28,8 @@ jobs:
             echo ::set-output name=uname::$(uname -a)
             git clone https://github.com/spack/spack
             cd spack
+            export SPACK_ROOT=`pwd`
+            echo $SPACK_ROOT
             . ./share/spack/setup-env.sh
             spack compiler find
             spack external find
