@@ -25,6 +25,7 @@ jobs:
             apt-get install -q -y git
             apt-get install -q -y cmake
             apt-get install -q -y python3
+            apt-get install -q -y xz-utils
           run: |
             echo ::set-output name=uname::$(uname -a)
             git clone https://github.com/spack/spack
