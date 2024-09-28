@@ -24,6 +24,7 @@ jobs:
             apt-get update -q -y
             apt-get install -q -y git
             apt-get install -q -y cmake
+            apt-get install -q -y python
           run: |
             echo ::set-output name=uname::$(uname -a)
             git clone https://github.com/spack/spack
