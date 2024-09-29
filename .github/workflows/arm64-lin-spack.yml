@@ -27,6 +27,7 @@ jobs:
             apt-get install -q -y python3
             apt-get install -q -y xz-utils
             apt-get install -q -y g++
+            apt-get install -q -y bzip2
           run: |
             echo ::set-output name=uname::$(uname -a)
             git clone https://github.com/spack/spack
@@ -36,8 +37,8 @@ jobs:
             . ./share/spack/setup-env.sh
             spack compiler find
             spack external find
-            spack spec hdf5
-            spack install -v hdf5
+            spack spec hdf5~mpi
+            spack install -v hdf5~mpi
 
       - name: Get the output
         # Echo the `uname` output parameter from the `runcmd` step
