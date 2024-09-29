@@ -1,4 +1,4 @@
-name: arm64 lin spack zlib-ng
+name: arm64 lin spack hdf5
 
 on:
   push:
@@ -36,8 +36,8 @@ jobs:
             . ./share/spack/setup-env.sh
             spack compiler find
             spack external find
-            spack spec zlib-ng
-            spack install -v zlib-ng
+            spack spec hdf5
+            spack install -v hdf5
 
       - name: Get the output
         # Echo the `uname` output parameter from the `runcmd` step
