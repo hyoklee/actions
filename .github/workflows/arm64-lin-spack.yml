@@ -2,7 +2,7 @@ name: arm64 lin spack hdf5
 
 on:
   push:
-    branches: main
+    branches: main-
 
 jobs:
   aarch64_job:
