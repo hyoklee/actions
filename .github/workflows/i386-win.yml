@@ -1,9 +1,9 @@
-name: arm64 win
+name: i386 win
 
 on:
   push:
     branches:
-      - main-
+      - main
 jobs:
   build:
     runs-on: windows-latest
@@ -17,5 +17,5 @@ jobs:
           cd  hdf5-1.14.5
           mkdir build
           cd build
-          cmake -A ARM64 -DSITE:STRING=win.arm64 -DBUILDNAME:STRING="5/r" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" ..
+          cmake -A Win32 -DSITE:STRING=win.i386 -DBUILDNAME:STRING="5/r" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" ..
           ctest -D Experimental -C Release
