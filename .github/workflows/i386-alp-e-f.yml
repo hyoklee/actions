@@ -20,11 +20,11 @@ jobs:
             build-base
             libgit2-dev
             cmake
-            gcc-14
-            gfortran-14
+            gcc
+            gfortran
       - name: run script
         run: |
-          cat /etc/os-release
+          uname -a
           curl -O -L https://support.hdfgroup.org/releases/hdf5/v1_14/v1_14_5/downloads/hdf5-1.14.5.tar.gz
           tar zxvf hdf5-1.14.5.tar.gz
           cd hdf5-1.14.5
@@ -37,4 +37,4 @@ jobs:
             -DHDF5_BUILD_FORTRAN=ON \
              ..
           ctest -D Experimental -C Release
-        shell: bash
+        shell: alpine.sh --root {0}
