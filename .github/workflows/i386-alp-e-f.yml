@@ -20,6 +20,8 @@ jobs:
             build-base
             libgit2-dev
             cmake
+            gcc-14
+            gfortran-14
       - name: run script
         run: |
           cat /etc/os-release
