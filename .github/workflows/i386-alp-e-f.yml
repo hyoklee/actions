@@ -20,6 +20,7 @@ jobs:
             build-base
             libgit2-dev
             cmake
+            curl
             gcc
             gfortran
       - name: run script
