@@ -1,0 +1,16 @@
+runs-on: ubuntu-latest
+steps:
+  - uses: actions/checkout@v4
+
+  - name: setup alpine
+    uses: jirutka/setup-alpine@v1
+    with:
+      arch: x86
+      packages: >
+        build-base
+        libgit2-dev
+        cmake
+  - name: run script
+    run: |
+      cat /etc/os-release
+    shell: bash
