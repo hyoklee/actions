@@ -25,6 +25,7 @@ jobs:
           version: '${{ matrix.os.version }}'
           shell: bash
           run: |
+            ls /usr/ports
             sudo pkg update
             sudo pkg install -y cmake
             sudo pkg install -y libszip
