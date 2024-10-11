@@ -25,15 +25,19 @@ jobs:
           version: '${{ matrix.os.version }}'
           shell: bash
           run: |
-            ls /usr/ports
             sudo pkg update
             sudo pkg install -y cmake
+            sudo pkg install -y git
             sudo pkg install -y libszip
             sudo pkg install -y openjdk21
             sudo pkg install -y perl5
             export JAVA_HOME=/usr/local/openjdk21
             sudo mount -t fdescfs fdesc /dev/fd
             sudo mount -t procfs proc /proc
+            git clone https://github.com/freebsd/freebsd-ports
+            sudo mv freebsd-ports /usr/ports
+            cd /usr/ports/archivers/libszip
+            sudo make install
             curl -O -L https://github.com/HDFGroup/hdf5/releases/latest/download/hdf5.tar.gz
             tar zxvf hdf5.tar.gz
             cd hdf5-1.14.5
