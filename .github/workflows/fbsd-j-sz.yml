@@ -1,0 +1,47 @@
+name: fbsd j sz
+
+on:
+  push:
+    branches: main
+
+jobs:
+  test:
+    name: ${{ matrix.os.name }} ${{ matrix.os.architecture }} ${{ matrix.os.version }} on ${{ matrix.os.host }}
+    runs-on: ${{ matrix.os.host }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - name: freebsd
+            architecture: x86-64
+            version: '14.1'
+            host: ubuntu-latest
+    steps:
+      - name: ${{ matrix.os.name }}
+        uses: cross-platform-actions/action@v0.25.0
+        with:
+          operating_system: ${{ matrix.os.name }}
+          architecture: ${{ matrix.os.architecture }}
+          version: '${{ matrix.os.version }}'
+          shell: bash
+          run: |
+            sudo pkg install -y cmake
+            sudo pkg install -y libszip
+            sudo pkg install -y openjdk21
+            sudo pkg install -y perl5
+            export JAVA_HOME=/usr/local/openjdk21
+            sudo mount -t fdescfs fdesc /dev/fd
+            sudo mount -t procfs proc /proc
+            curl -O -L https://github.com/HDFGroup/hdf5/releases/latest/download/hdf5.tar.gz
+            tar zxvf hdf5.tar.gz
+            cd hdf5-1.14.5
+            mkdir build
+            cd build
+            cmake \
+            -DBUILDNAME:STRING="j/sz" \
+            -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
+            -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" \
+            -DHDF5_BUILD_JAVA:BOOL=ON \
+            -DSITE:STRING=fbsd \
+            ..
+            ctest -D Experimental -C Release
