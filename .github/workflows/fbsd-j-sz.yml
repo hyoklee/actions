@@ -25,6 +25,7 @@ jobs:
           version: '${{ matrix.os.version }}'
           shell: bash
           run: |
+            sudo pkg update
             sudo pkg install -y cmake
             sudo pkg install -y libszip
             sudo pkg install -y openjdk21
