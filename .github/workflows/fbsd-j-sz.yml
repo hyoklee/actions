@@ -43,10 +43,11 @@ jobs:
             mkdir build
             cd build
             cmake \
-            -DBUILDNAME:STRING="j/sz" \
+            -DBUILDNAME:STRING="j/sz-en" \
             -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
             -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" \
             -DHDF5_BUILD_JAVA:BOOL=ON \
+            -DHDF5_ENABLE_SZIP_ENCODING=OFF \
             -DSITE:STRING=fbsd \
             ..
             ctest -D Experimental -C Release

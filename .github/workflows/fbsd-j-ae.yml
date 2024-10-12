@@ -28,7 +28,7 @@ jobs:
             sudo pkg install -y cmake
             sudo pkg install -y libaec
             ls /usr/local/include/
-            ls /usr/include
+            ls /usr/local/cmake/
             sudo pkg install -y openjdk21
             sudo pkg install -y perl5
             export JAVA_HOME=/usr/local/openjdk21
@@ -46,5 +46,6 @@ jobs:
             -DHDF5_BUILD_JAVA:BOOL=ON \
             -DLIBAEC_USE_LOCALCONTENT:BOOL=ON \
             -DSITE:STRING=fbsd \
+            -DSZIP_DIR=/usr/local \
             ..
             ctest -D Experimental -C Release
