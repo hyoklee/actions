@@ -2,7 +2,7 @@ name: fbsd j sz
 
 on:
   push:
-    branches: main-
+    branches: main
 
 jobs:
   test:
@@ -42,6 +42,7 @@ jobs:
             cd hdf5-1.14.5
             mkdir build
             cd build
+            export CFLAGS="--allow-shlib-undefined"
             cmake \
             -DBUILDNAME:STRING="r-sh+st/j/sz-en" \
             -DBUILD_SHARED_LIBS:BOOL=OFF \
