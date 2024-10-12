@@ -2,7 +2,7 @@ name: fbsd j sz
 
 on:
   push:
-    branches: main-
+    branches: main
 
 jobs:
   test:
@@ -45,7 +45,7 @@ jobs:
             export LDFLAGS="-L/usr/local/lib -lszip"
             env
             cmake \
-            -DBUILDNAME:STRING="r/j/sz-en" \
+            -DBUILDNAME:STRING="r/j/sz" \
             -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
             -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" \
             -DHDF5_BUILD_JAVA:BOOL=ON \
