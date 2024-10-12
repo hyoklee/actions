@@ -39,12 +39,14 @@ jobs:
             cd hdf5-1.14.5
             mkdir build
             cd build
+            export SZIP_DIR=/usr/local
             cmake \
             -DBUILDNAME:STRING="j/ae" \
             -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
             -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" \
             -DHDF5_BUILD_JAVA:BOOL=ON \
             -DLIBAEC_USE_LOCALCONTENT:BOOL=ON \
+            -DUSE_LIBAEC_STATIC:BOOL=ON \
             -DSITE:STRING=fbsd \
             -DSZIP_DIR=/usr/local \
             ..
