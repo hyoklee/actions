@@ -41,7 +41,7 @@ jobs:
             mkdir build
             cd build
             export SZIP_DIR=/usr/local
-            export LDFLAGS="-L/usr/local/lib -lszip"
+            export LDFLAGS="-L/usr/local/lib -lsz"
             sudo ln -s /usr/local/cmake/libaec-config-version.cmake /usr/local/cmake/szip-config-version.cmake
             sudo ln -s /usr/local/cmake/libaec-config.cmake /usr/local/cmake/szip-config.cmake 
             cmake \
