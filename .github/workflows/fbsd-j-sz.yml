@@ -42,16 +42,13 @@ jobs:
             cd hdf5-1.14.5
             mkdir build
             cd build
-            export CFLAGS="--allow-shlib-undefined"
+            export LDFLAGS="-L/usr/local/lib -lszip"
+            env
             cmake \
-            -DBUILDNAME:STRING="r-sh+st/j/sz-en" \
-            -DBUILD_SHARED_LIBS:BOOL=OFF \
-            -DBUILD_STATIC_LIBS:BOOL=ON \
-            -DHDF5_BUILD_STATIC_TOOLS:BOOL=ON \
+            -DBUILDNAME:STRING="r/j/sz-en" \
             -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
             -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" \
             -DHDF5_BUILD_JAVA:BOOL=ON \
-            -DHDF5_ENABLE_SZIP_ENCODING=OFF \
             -DSITE:STRING=fbsd \
             ..
             ctest -D Experimental -C Release

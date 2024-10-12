@@ -41,6 +41,8 @@ jobs:
             mkdir build
             cd build
             export SZIP_DIR=/usr/local
+            sudo ln -s /usr/local/cmake/libaec-config-version.cmake /usr/local/cmake/szip-config-version.cmake
+            sudo ln -s /usr/local/cmake/libaec-config.cmake /usr/local/cmake/szip-config-version.cmake 
             cmake \
             -DBUILDNAME:STRING="j/ae" \
             -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
