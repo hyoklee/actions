@@ -1,8 +1,8 @@
-name: fbsd j sz
+name: fbsd j ae pn
 
 on:
   push:
-    branches: main-
+    branches: main
 
 jobs:
   test:
@@ -25,30 +25,32 @@ jobs:
           version: '${{ matrix.os.version }}'
           shell: bash
           run: |
-            sudo pkg update
             sudo pkg install -y cmake
-            sudo pkg install -y git
+            sudo pkg install -y libaec
+            ls /usr/local/include/
+            ls /usr/local/cmake/
             sudo pkg install -y openjdk21
             sudo pkg install -y perl5
             export JAVA_HOME=/usr/local/openjdk21
+            export CMAKE_PREFIX_PATH="/usr/local/cmake:$CMAKE_PREFIX_PATH"
             sudo mount -t fdescfs fdesc /dev/fd
             sudo mount -t procfs proc /proc
-            git clone https://github.com/freebsd/freebsd-ports
-            sudo mv freebsd-ports /usr/ports
-            cd /usr/ports/archivers/libszip
-            sudo make install
             curl -O -L https://github.com/HDFGroup/hdf5/releases/latest/download/hdf5.tar.gz
             tar zxvf hdf5.tar.gz
             cd hdf5-1.14.5
             mkdir build
             cd build
-            export LDFLAGS="-L/usr/local/lib -lszip"
-            env
+            export SZIP_DIR=/usr/local
+            export LDFLAGS="-L/usr/local/lib -lsz"
             cmake \
-            -DBUILDNAME:STRING="r/j/sz" \
+            -DBUILDNAME:STRING="j/ae" \
             -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
             -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" \
             -DHDF5_BUILD_JAVA:BOOL=ON \
+            -DLIBAEC_USE_LOCALCONTENT:BOOL=ON \
+            -DLIBAEC_PACKAGE_NAME:STRING=libaec \
+            -DUSE_LIBAEC_STATIC:BOOL=ON \
             -DSITE:STRING=fbsd \
+            -DSZIP_DIR=/usr/local \
             ..
             ctest -D Experimental -C Release
