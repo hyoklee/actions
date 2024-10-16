@@ -2,7 +2,7 @@ name: fbsd j ae pn
 
 on:
   push:
-    branches: main
+    branches: main-
 
 jobs:
   test:
