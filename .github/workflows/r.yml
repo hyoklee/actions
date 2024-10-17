@@ -1,4 +1,4 @@
-name: r
+name: r 4942
 
 on:
   push:
@@ -20,8 +20,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          repository: byrnHDF/hdf5
-          ref: feature/develop-2.0-rem-at
+          repository: qkoziol/hdf5
+          ref: refactor_h5cx_stack
 
       - name: ${{ matrix.os.name }}
         uses: cross-platform-actions/action@master
@@ -40,7 +40,7 @@ jobs:
             mkdir build
             cd build
             cmake \
-            -DBUILDNAME:STRING="pr4961/r" \
+            -DBUILDNAME:STRING="pr4942/r" \
             -DCMAKE_BUILD_TYPE=Release \
             -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \
             -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
