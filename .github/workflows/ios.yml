@@ -23,7 +23,7 @@ jobs:
         cd ./hdf5/build
         cmake \
         -GXcode \
-        -DSITE:STRING=ios \        
+        -DSITE:STRING=ios \
         -DBUILDNAME:STRING="xcode/-sh+st/-bt" \
         -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \
          -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
