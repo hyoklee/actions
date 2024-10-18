@@ -23,7 +23,7 @@ jobs:
         cd ./hdf5/build
         cmake \
         -GXcode \
-        -DBUNDLE_IDENTIFIER=org.hdfgroup.hdf5 \
+        -DPRODUCT_BUNDLE_IDENTIFIER=org.hdfgroup.hdf5 \
         -DSITE:STRING=ios \
         -DBUILDNAME:STRING="xcode/-sh+st" \
         -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \
