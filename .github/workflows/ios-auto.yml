@@ -19,8 +19,7 @@ jobs:
         path: ./hdf5
     - name: Test HDF5
       run: |
-        mkdir ./hdf5/build
-        cd ./hdf5/build
+        cd ./hdf5
         export SDK="iphoneos"
         export ARCH_FLAGS="-arch armv7"
         export HOST_FLAGS="${ARCH_FLAGS} -miphoneos-version-min=8.0 -isysroot $(xcrun -sdk ${SDK} --show-sdk-path)"
