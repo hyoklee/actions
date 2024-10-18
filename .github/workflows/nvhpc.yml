@@ -3,7 +3,7 @@ name: nvhpc 24.9
 on:
   push:
     branches:
-      - main-
+      - main
 
 jobs:
   build:
@@ -36,8 +36,6 @@ jobs:
           mkdir build
           cd build
           cmake \
-            -C ../config/cmake/cacheinit.cmake \
-            -G Ninja \
             -DCMAKE_BUILD_TYPE=Debug \
             -DHDF5_BUILD_CPP_LIB:BOOL=OFF \
             -DHDF5_BUILD_FORTRAN:BOOL=OFF \
