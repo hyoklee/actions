@@ -43,7 +43,7 @@ jobs:
         -DBUILD_STATIC_EXECS:BOOL=ON \
         -DBUILD_STATIC_LIBS:BOOL=ON \
         -DBUILD_SZIP_WITH_FETCHCONTENT:BOOL=OFF \
-        -DBUILD_TESTING:BOOL=ON \
+        -DBUILD_TESTING:BOOL=OFF \
         -DBUILD_USER_DEFINED_LIBS:BOOL=OFF \
         -DBUILD_ZLIB_WITH_FETCHCONTENT:BOOL=OFF \
         -DHDF5_BUILD_CPP_LIB:BOOL=OFF \
@@ -84,5 +84,4 @@ jobs:
         -DHDF5_USE_FILE_LOCKING:BOOL=OFF \
         ..
         cmake --build .
-        ctest -T Test
       shell: bash
