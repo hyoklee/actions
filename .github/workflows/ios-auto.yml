@@ -1,0 +1,37 @@
+name: mac ios
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    name: macos ios
+    runs-on: macos-latest
+    steps:
+    - name: Install Dependencies (macOS)
+      run: brew install ninja openmpi
+    - name: Get Sources
+      uses: actions/checkout@v4
+      with:
+        repository: HDFGroup/hdf5
+        path: ./hdf5
+    - name: Test HDF5
+      run: |
+        mkdir ./hdf5/build
+        cd ./hdf5/build
+        export SDK="iphoneos"
+        export ARCH_FLAGS="-arch armv7"
+        export HOST_FLAGS="${ARCH_FLAGS} -miphoneos-version-min=8.0 -isysroot $(xcrun -sdk ${SDK} --show-sdk-path)"
+        export CHOST="arm-apple-darwin"
+        export OPT_FLAGS="-Os -g3"
+        export CC="$(xcrun -find -sdk ${SDK} cc)"
+        export CXX="$(xcrun -find -sdk ${SDK} cxx)"
+        export CPP="$(xcrun -find -sdk ${SDK} cpp)"
+        export CFLAGS="${HOST_FLAGS} ${OPT_FLAGS}"
+        export CXXFLAGS="${HOST_FLAGS} ${OPT_FLAGS}"
+        ./autogen.sh
+        ./configure --host=arm-apple-darwin --enable-static --disable-shared --enable-tests=no
+        make
+      shell: bash
