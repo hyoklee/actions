@@ -22,7 +22,7 @@ jobs:
         mkdir ./hdf5/build
         cd ./hdf5/build
         export SDK="iphoneos"
-        export ARCH_FLAGS="-arch armv7"
+        export ARCH_FLAGS="-arch arm64"
         # export HOST_FLAGS="${ARCH_FLAGS} -miphoneos-version-min=8.0 -isysroot $(xcrun -sdk ${SDK} --show-sdk-path)"
         export HOST_FLAGS="${ARCH_FLAGS} -isysroot $(xcrun -sdk ${SDK} --show-sdk-path)"
         export CHOST="arm-apple-darwin"        
@@ -34,6 +34,7 @@ jobs:
         cmake \
         -GXcode \
         -DCMAKE_SYSTEM_NAME=iOS \
+        -DCMAKE_OSX_ARCHITECTURES=arm64 \
         -DCMAKE_INSTALL_PREFIX=`pwd`/_install \
         -DCMAKE_XCODE_ATTRIBUTE_ONLY_ACTIVE_ARCH=NO \
         -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_REQUIRE=NO \
