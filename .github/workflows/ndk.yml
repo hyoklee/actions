@@ -2,19 +2,26 @@ name: Setup Android NDK
 on:
   push:
     branches:
-      - main-
+      - main
 jobs:
   ndk:
     name: ndk
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: nttld/setup-ndk@v1
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
-          ndk-version: r26d
+          repository: HDFGroup/hdf5
+
       - name: test
-        env:
-           ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
         run: |
           dir /usr/local/lib/android/sdk/ndk/
-          ndk-build NDK_PROJECT_PATH=. APP_BUILD_SCRIPT=./Android.mk NDK_APPLICATION_MK=./Application.mk
+          mkdir build
+          cmake \
+          -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK/build/cmake/android.toolchain.cmake \
+          -DANDROID_ABI=arm64-v8a \
+          -DBUILDNAME:STRING=ndk27.0 \
+          -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
+          -DSITE:STRING=arm64-v8a \
+          ..          
+          ctest -T Build
