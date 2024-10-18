@@ -23,7 +23,7 @@ jobs:
         cd ./hdf5/build
         export SDK="iphoneos"
         export ARCH_FLAGS="-arch arm64"
-        # export HOST_FLAGS="${ARCH_FLAGS} -miphoneos-version-min=8.0 -isysroot $(xcrun -sdk ${SDK} --show-sdk-path)"
+        export HOST_FLAGS="${ARCH_FLAGS} -miphoneos-version-min=8.0 -isysroot $(xcrun -sdk ${SDK} --show-sdk-path)"
         export HOST_FLAGS="${ARCH_FLAGS} -isysroot $(xcrun -sdk ${SDK} --show-sdk-path)"
         export CHOST="arm-apple-darwin"        
         export OPT_FLAGS="-Os -g3"
@@ -84,5 +84,5 @@ jobs:
         -DHDF5_USE_FILE_LOCKING:BOOL=OFF \
         ..
         cmake --build .
-        ctest --build . -V
+        ctest -T Test
       shell: bash
