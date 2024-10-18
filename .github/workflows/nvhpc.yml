@@ -23,12 +23,14 @@ jobs:
       - name: Test HDF5
         env:
           NPROCS: 2
+          CFLAGS: -fPIC -lnvf -lnvomp -ldl -lnvhpcatm -latomic -lpthread -lnvcpumath -lnsnvc -lnvc -lrt -lm
+          FCFLAGS: -fPIC -lnvf -lnvomp -ldl -lnvhpcatm -latomic -lpthread -lnvcpumath -lnsnvc -lnvc -lrt -lm
         run: |
-          ls  /opt/nvidia/hpc_sdk/Linux_x86_64/24.9/cuda
           export CC=/opt/nvidia/hpc_sdk/Linux_x86_64/24.9/comm_libs/openmpi4/bin/mpicc
           export LD_LIBRARY_PATH=/opt/nvidia/hpc_sdk/Linux_x86_64/24.9/cuda/12.6/lib64:/opt/nvidia/hpc_sdk/Linux_x86_64/24.9/compilers/lib
           export NVHPCSDK=/opt/nvidia/hpc_sdk
           export PATH=/opt/nvidia/hpc_sdk/Linux_x86_64/24.9/comm_libs/openmpi4/bin:/opt/nvidia/hpc_sdk/Linux_x86_64/24.9/compilers/bin:$PATH
+          env
           git clone https://github.com/HDFGroup/hdf5.git
           cd hdf5
           mkdir build
