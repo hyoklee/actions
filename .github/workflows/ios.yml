@@ -27,7 +27,6 @@ jobs:
         export CHOST="arm-apple-darwin"        
         export OPT_FLAGS="-Os -g3"
         export CC="$(xcrun -find -sdk ${SDK} cc)"
-        export CXX="$(xcrun -find -sdk ${SDK} cxx)"
         export CPP="$(xcrun -find -sdk ${SDK} cpp)"
         export CFLAGS="${HOST_FLAGS} ${OPT_FLAGS}"
         export CXXFLAGS="${HOST_FLAGS} ${OPT_FLAGS}"        
