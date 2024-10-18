@@ -23,7 +23,8 @@ jobs:
         cd ./hdf5/build
         export SDK="iphoneos"
         export ARCH_FLAGS="-arch armv7"
-        export HOST_FLAGS="${ARCH_FLAGS} -miphoneos-version-min=8.0 -isysroot $(xcrun -sdk ${SDK} --show-sdk-path)"
+        # export HOST_FLAGS="${ARCH_FLAGS} -miphoneos-version-min=8.0 -isysroot $(xcrun -sdk ${SDK} --show-sdk-path)"
+        export HOST_FLAGS="${ARCH_FLAGS} -isysroot $(xcrun -sdk ${SDK} --show-sdk-path)"
         export CHOST="arm-apple-darwin"        
         export OPT_FLAGS="-Os -g3"
         export CC="$(xcrun -find -sdk ${SDK} cc)"

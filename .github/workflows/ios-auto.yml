@@ -11,7 +11,7 @@ jobs:
     runs-on: macos-latest
     steps:
     - name: Install Dependencies (macOS)
-      run: brew install ninja openmpi
+      run: brew install autoconf automake libtool
     - name: Get Sources
       uses: actions/checkout@v4
       with:
