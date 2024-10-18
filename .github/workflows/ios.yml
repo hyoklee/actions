@@ -34,7 +34,6 @@ jobs:
         cmake \
         -GXcode \
         -DCMAKE_SYSTEM_NAME=iOS \
-        -DCMAKE_OSX_ARCHITECTURES=arm64 \
         -DCMAKE_INSTALL_PREFIX=`pwd`/_install \
         -DCMAKE_XCODE_ATTRIBUTE_ONLY_ACTIVE_ARCH=NO \
         -DCMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_REQUIRE=NO \
