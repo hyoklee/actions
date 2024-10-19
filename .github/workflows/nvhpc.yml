@@ -23,7 +23,7 @@ jobs:
       - name: Test HDF5
         env:
           NPROCS: 2
-          CFLAGS: -fPIC -lnvf -lnvomp -ldl -lnvhpcatm -latomic -lpthread -lnvcpumath -lnsnvc -lnvc -lrt -lm
+          CFLAGS: -fPIC -lnvf -lnvomp -ldl -lnvhpcatm -latomic -lpthread -lnvcpumath -lnsnvc -lnvc -lrt -lm -Mbounds  -gopt   -O1
           FCFLAGS: -fPIC -lnvf -lnvomp -ldl -lnvhpcatm -latomic -lpthread -lnvcpumath -lnsnvc -lnvc -lrt -lm
         run: |
           export CC=/opt/nvidia/hpc_sdk/Linux_x86_64/24.9/comm_libs/openmpi4/bin/mpicc
