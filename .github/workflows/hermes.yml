@@ -39,7 +39,6 @@ jobs:
         run: |
           pip install clingo
           . ./spack/share/spack/setup-env.sh
-          spack repo add ci/hermes
           spack compiler find
           spack external find autoconf
           spack external find automake
