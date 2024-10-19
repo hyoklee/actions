@@ -1,0 +1,66 @@
+name: spack ci
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+      - name: spack
+        uses: actions/checkout@v4
+        with:
+          repository: spack/spack
+          path: ./spack
+      - name: install
+        run: |
+          sudo apt update
+          sudo apt-get install -y autoconf
+          sudo apt-get install -y automake
+          sudo apt-get install -y diffutils
+          sudo apt-get install -y libdb-dev
+          sudo apt-get install -y libedit-dev
+          sudo apt-get install -y libncurses6
+          sudo apt-get install -y libsigsegv-dev
+          sudo apt-get install -y libxml2-dev
+          sudo apt-get install -y libsdl2-dev
+          sudo apt-get install -y libtool
+          sudo apt-get install -y libtool-bin
+          sudo apt-get install -y libyaml-cpp-dev
+          sudo apt-get install -y lcov
+          sudo apt-get install -y mpich
+          sudo apt-get install -y openssl
+          sudo apt-get install -y xz-utils
+          sudo apt-get install -y zlib1g-dev
+      - name: install
+        run: |
+          pip install clingo
+          . ./spack/share/spack/setup-env.sh
+          spack repo add ci/hermes
+          spack compiler find
+          spack external find autoconf
+          spack external find automake
+          spack external find berkeley-db
+          spack external find boost
+          spack external find cmake
+          spack external find diffutils
+          spack external find libedit
+          spack external find libtool
+          spack external find libiconv
+          spack external find libfabric
+          spack external find libsigsegv
+          spack external find libxml2
+          spack external find m4
+          spack external find mpich
+          spack external find ncurses
+          spack external find openssl
+          spack external find perl
+          spack external find pkgconf
+          spack external find zlib
+          spack external find xz
+          spack external find yaml-cpp
+          spack external find python
+          spack install hermes^mercury~ofi
