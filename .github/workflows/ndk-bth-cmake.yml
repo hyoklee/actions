@@ -2,7 +2,7 @@ name: NDK cmake bthread hdf5
 on:
   push:
     branches:
-      - main
+      - main-
 jobs:
   ndk:
     name: ndk
