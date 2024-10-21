@@ -21,3 +21,12 @@ jobs:
           run: |
             gcc --version
             g++ --version
+            curl -s -O -L https://github.com/HDFGroup/hdf5/releases/latest/download/hdf5.tar.gz
+            gtar zxf snapshot-1.14.5.tar.gz
+            cd hdf5-1.14.5
+            mkdir build
+            cd build
+            ls -l /tmp/bin
+            /tmp/bin/cmake -DSITE:STRING="sol-11.4" -DBUILDNAME:STRING="5/r" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" ..
+            /tmp/bin/ctest -D Experimental -C Release
+
