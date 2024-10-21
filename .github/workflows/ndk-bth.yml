@@ -31,7 +31,7 @@ jobs:
          export LDFLAGS="-pie"
          env
          autoreconf -i
-         ./configure --host=${target_host} --disable-shared
+         ./configure --host=${target_host} --disable-shared --prefix= /usr/local/lib/android/sdk/ndk/27.1.12297006/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/
          cat config.log
          make
          sudo make install
@@ -40,7 +40,6 @@ jobs:
           dir /usr/local/lib/android/sdk/ndk/
           mkdir build
           cd build
-          export CFLAGS="-I/usr/local/include"
           cmake \
           -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK/build/cmake/android.toolchain.cmake \
           -DANDROID:BOOL=TRUE \
