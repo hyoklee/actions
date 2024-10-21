@@ -18,9 +18,6 @@ jobs:
           release: "11.4-gcc"
           usesh: true
           copyback: false
-          prepare: |
-            set -e
-            pkg install developer/gcc/gcc-c++
           run: |
             gcc --version
             g++ --version
