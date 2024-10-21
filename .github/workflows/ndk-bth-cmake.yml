@@ -1,4 +1,4 @@
-name: Setup Android NDK bthread
+name: NDK cmake bthread hdf5
 on:
   push:
     branches:
@@ -33,7 +33,7 @@ jobs:
          mkdir build
          cd build
          cmake ..
-         make install
+         sudo make install
       - name: hdf5
         run: |
           dir /usr/local/lib/android/sdk/ndk/
