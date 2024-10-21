@@ -28,10 +28,10 @@ jobs:
          export STRIP=${target_host}-strip
          export CFLAGS="-fPIE -fPIC"
          export LDFLAGS="-pie"
-         ./configure --host=${target_host}
-         make
-         sudo make install
-         cd ..
+         mkdir build
+         cd build
+         cmake ..
+         make install
       - name: hdf5
         run: |
           dir /usr/local/lib/android/sdk/ndk/
