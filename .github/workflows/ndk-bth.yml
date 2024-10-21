@@ -22,8 +22,8 @@ jobs:
          export target_host=aarch64-linux-android
          export AR=${target_host}-ar
          export AS=${target_host}-as
-         export CC=${target_host}21-clang
-         export CXX=${target_host}21-clang++
+         export CC=${target_host}35-clang
+         export CXX=${target_host}35-clang++
          export LD=${target_host}-ld
          export STRIP=${target_host}-strip
          export CFLAGS="-fPIE -fPIC"
