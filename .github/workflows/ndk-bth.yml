@@ -18,7 +18,7 @@ jobs:
          ls $ANDROID_NDK/toolchains/llvm/prebuilt/linux-x86_64/bin/
          git clone https://github.com/SomeDevHere/libbthread
          cd libbthread
-         export PATH=$PATH:$ANDROID_NDK/toolchains/llvm/prebuilt/linux-x86_64/bi
+         export PATH=$PATH:$ANDROID_NDK/toolchains/llvm/prebuilt/linux-x86_64/bin
          export target_host=aarch64-linux-android
          export AR=${target_host}-ar
          export AS=${target_host}-as
@@ -28,6 +28,7 @@ jobs:
          export STRIP=${target_host}-strip
          export CFLAGS="-fPIE -fPIC"
          export LDFLAGS="-pie"
+         env
          mkdir build
          cd build
          cmake ..
