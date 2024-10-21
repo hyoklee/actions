@@ -30,11 +30,10 @@ jobs:
          export CFLAGS="-fPIE -fPIC"
          export LDFLAGS="-pie"
          env
-         autoreconf -i
-         ./configure --host=${target_host} --disable-shared --prefix=/usr/local/lib/android/sdk/ndk/27.1.12297006/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/
-         cat config.log
-         make
-         sudo make install
+         mkdir build
+         cd build
+         cmake ..
+         make install
       - name: hdf5
         run: |
           dir /usr/local/lib/android/sdk/ndk/
