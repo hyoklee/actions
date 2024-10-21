@@ -36,6 +36,8 @@ jobs:
          sudo make install
       - name: hdf5
         run: |
+          export CFLAGS="-I/usr/local/include"
+          export LFLAGS="-L/usr/local/lib -lbthread"
           dir /usr/local/lib/android/sdk/ndk/
           mkdir build
           cd build
