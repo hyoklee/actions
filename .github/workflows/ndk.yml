@@ -25,4 +25,4 @@ jobs:
           -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
           -DSITE:STRING=arm64-v8a \
           ..
-          ctest -T -VV Build
+          ctest -VV -T Build
