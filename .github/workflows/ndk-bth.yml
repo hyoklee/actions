@@ -12,6 +12,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: sheldonrobinson/hdf5
+          ref: develop
       - name: bthread
         run: |
          ls $ANDROID_NDK/toolchains/llvm/prebuilt/linux-x86_64/bin/
