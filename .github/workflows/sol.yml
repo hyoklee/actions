@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: test
-        uses: vmactions/solaris-vm@5bfba0898fcc862923c54cba27d895f64e484dfc
+        uses: vmactions/solaris-vm@v1
         with:
           release: "11.4-gcc"
           usesh: true
