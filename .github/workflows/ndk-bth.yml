@@ -1,8 +1,8 @@
-name: Setup Android NDK
+name: Setup Android NDK bthread
 on:
   push:
     branches:
-      - main-
+      - main
 jobs:
   ndk:
     name: ndk
@@ -12,7 +12,22 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: sheldonrobinson/hdf5
-
+      - name: install bthread
+        run: |
+         ls $ANDROID_NDK/
+         autoreconf -i
+         export PATH="$PATH:$ANDROID_NDK/toolchains/llvm/prebuilt/linux-x86_64/bi$ target_host=aarch64-linux-android
+         export AR=${target_host}-ar
+         export AS=${target_host}-as
+         export CC=${target_host}21-clang
+         export CXX=${target_host}21-clang++
+         export LD=${target_host}-ld
+         export STRIP=${target_host}-strip
+         export CFLAGS="-fPIE -fPIC"
+         export LDFLAGS="-pie"
+         ./configure --host=${target_host}
+         make
+         sudo make install
       - name: test
         run: |
           dir /usr/local/lib/android/sdk/ndk/
