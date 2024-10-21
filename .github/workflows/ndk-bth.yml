@@ -31,7 +31,7 @@ jobs:
          export LDFLAGS="-pie"
          env
          autoreconf -i
-         ./configure --host=${target_host}
+         ./configure --host=${target_host} --disable-shared
          make
          sudo make install
       - name: hdf5
