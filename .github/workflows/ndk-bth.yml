@@ -30,10 +30,9 @@ jobs:
          export CFLAGS="-fPIE -fPIC"
          export LDFLAGS="-pie"
          env
-         mkdir build
-         cd build
-         cmake ..
-         make install
+         autoreconf -i
+         ./configure --host=${target_host}
+         make
       - name: hdf5
         run: |
           dir /usr/local/lib/android/sdk/ndk/
