@@ -33,6 +33,7 @@ jobs:
          autoreconf -i
          ./configure --host=${target_host}
          make
+         sudo make install
       - name: hdf5
         run: |
           dir /usr/local/lib/android/sdk/ndk/
