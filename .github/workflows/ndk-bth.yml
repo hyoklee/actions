@@ -2,7 +2,7 @@ name: Setup Android NDK bthread
 on:
   push:
     branches:
-      - main
+      - main-
 jobs:
   ndk:
     name: ndk
