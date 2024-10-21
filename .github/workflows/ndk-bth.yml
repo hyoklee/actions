@@ -21,8 +21,8 @@ jobs:
          cd libbthread
          export PATH=$PATH:$ANDROID_NDK/toolchains/llvm/prebuilt/linux-x86_64/bin
          export target_host=aarch64-linux-android
-         export AR=${target_host}-ar
-         export AS=${target_host}-as
+         export AR=llvm-ar
+         export AS=llvm-as
          export CC=${target_host}35-clang
          export CXX=${target_host}35-clang++
          export LD=${target_host}-ld
