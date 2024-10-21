@@ -8,13 +8,15 @@ jobs:
     name: ndk
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: checkout
         uses: actions/checkout@v4
         with:
           repository: sheldonrobinson/hdf5
-      - name: install bthread
+      - name: bthread
         run: |
          ls $ANDROID_NDK/
+         git clone https://github.com/SomeDevHere/libbthread
+         cd libbthread
          autoreconf -i
          export PATH="$PATH:$ANDROID_NDK/toolchains/llvm/prebuilt/linux-x86_64/bi$ target_host=aarch64-linux-android
          export AR=${target_host}-ar
@@ -28,7 +30,8 @@ jobs:
          ./configure --host=${target_host}
          make
          sudo make install
-      - name: test
+         cd ..
+      - name: hdf5
         run: |
           dir /usr/local/lib/android/sdk/ndk/
           mkdir build
