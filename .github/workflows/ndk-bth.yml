@@ -15,6 +15,7 @@ jobs:
           ref: develop
       - name: bthread
         run: |
+         sudo apt-get install libpthread-stubs0-dev
          ls $ANDROID_NDK/toolchains/llvm/prebuilt/linux-x86_64/bin/
          git clone https://github.com/SomeDevHere/libbthread
          cd libbthread
