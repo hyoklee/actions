@@ -32,7 +32,7 @@ jobs:
          env
          mkdir build
          cd build
-         cmake ..
+         cmake -DCMAKE_INSTALL_PREFIX=/usr/local/lib/android/sdk/ndk/27.1.12297006/toolchains/llvm/prebuilt/linux-x86_64/sysroot/usr/ ..
          sudo make install
       - name: hdf5
         run: |
