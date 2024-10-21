@@ -1,0 +1,14 @@
+name: win vcpkg ndk
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: test
+        run: |
+          vcpkg install hdf5:arm64-android
