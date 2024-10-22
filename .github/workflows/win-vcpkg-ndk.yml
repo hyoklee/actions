@@ -3,7 +3,7 @@ name: win vcpkg ndk
 on:
   push:
     branches:
-      - main
+      - main-
 
 jobs:
   build:

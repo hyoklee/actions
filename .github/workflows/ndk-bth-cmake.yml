@@ -2,7 +2,7 @@ name: NDK cmake bthread hdf5
 on:
   push:
     branches:
-      - main-
+      - main
 jobs:
   ndk:
     name: ndk
@@ -46,5 +46,7 @@ jobs:
           -DBUILDNAME:STRING=pr4986/ndk27.0 \
           -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
           -DSITE:STRING=arm64-v8a \
+          -DHDF5_ENABLE_THREADSAFE=ON \
+          -DALLOW_UNSUPPORTED=ON \
           ..
           ctest -VV -T Build
