@@ -3,7 +3,7 @@ name: i386 alp
 on:
   push:
     branches:
-      - main-
+      - main
 
 jobs:
   build:
@@ -18,6 +18,8 @@ jobs:
           packages: >
             build-base
             libgit2-dev
+            libaec-dev
+            zlib1g-dev
             cmake
       - name: run script
         run: |
