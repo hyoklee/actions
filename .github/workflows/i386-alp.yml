@@ -19,7 +19,7 @@ jobs:
             build-base
             libgit2-dev
             libaec-dev
-            zlib1g-dev
+            zlib-dev
             cmake
       - name: run script
         run: |
