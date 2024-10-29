@@ -33,6 +33,5 @@ jobs:
           mkdir build
           cd build
           cmake -DSITE:STRING=alp.i386 -DBUILDNAME:STRING="pr5010/r-st/+sz" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=ON -DBUILD_STATIC_LIBS:BOOL=OFF ..
-          ctest -T Build
-          # ctest -D Experimental -C Release
+          ctest -D Experimental -C Release
         shell: alpine.sh --root {0}
