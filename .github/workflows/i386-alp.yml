@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          repository: m-cho/hdf5
+          repository: cho-m/hdf5
           ref: fix-libaec-detection
 
       - name: setup alpine
