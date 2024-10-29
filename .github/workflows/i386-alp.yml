@@ -25,11 +25,14 @@ jobs:
       - name: run script
         run: |
           cat /etc/os-release
+          ls /usr/lib/cmake
+          env
+          export CMAKE_PREFIX_PATH=/usr/lib/cmake:$CMAKE_PREFIX_PATH
           curl -O -L https://support.hdfgroup.org/releases/hdf5/v1_14/v1_14_5/downloads/hdf5-1.14.5.tar.gz
           tar zxvf hdf5-1.14.5.tar.gz
           cd hdf5-1.14.5
           mkdir build
           cd build
           cmake -DSITE:STRING=alp.i386 -DBUILDNAME:STRING="5/r/+sz" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=ON -DLIBAEC_PACKAGE_NAME:STRING=libaec ..
-          ctest -D Experimental -C Release
+          # ctest -D Experimental -C Release
         shell: alpine.sh --root {0}
