@@ -26,6 +26,7 @@ jobs:
         run: |
           cat /etc/os-release
           export CMAKE_PREFIX_PATH=/usr/lib/cmake:$CMAKE_PREFIX_PATH
+          export LDFLAGS="-L/usr/lib -lsz"
           ln -s /usr/lib/cmake/libaec-config-version.cmake /usr/lib/cmake/szip-config-version.cmake
           ln -s /usr/lib/cmake/libaec-config.cmake /usr/lib/cmake/szip-config.cmake
           curl -O -L https://support.hdfgroup.org/releases/hdf5/v1_14/v1_14_5/downloads/hdf5-1.14.5.tar.gz
