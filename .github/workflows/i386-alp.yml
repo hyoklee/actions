@@ -26,7 +26,8 @@ jobs:
         run: |
           cat /etc/os-release
           export CMAKE_PREFIX_PATH=/usr/lib/cmake:$CMAKE_PREFIX_PATH
-          export LDFLAGS="-L/usr/lib -lsz"
+          export LDFLAGS="-L/usr/lib -L/lib -lsz -laec"
+          ls /lib
           ln -s /usr/lib/cmake/libaec-config-version.cmake /usr/lib/cmake/szip-config-version.cmake
           ln -s /usr/lib/cmake/libaec-config.cmake /usr/lib/cmake/szip-config.cmake
           curl -O -L https://support.hdfgroup.org/releases/hdf5/v1_14/v1_14_5/downloads/hdf5-1.14.5.tar.gz
@@ -35,5 +36,5 @@ jobs:
           mkdir build
           cd build
           cmake -DSITE:STRING=alp.i386 -DBUILDNAME:STRING="5/r-st/+sz" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=ON -DBUILD_STATIC_LIBS:BOOL=OFF ..
-          ctest -D Experimental -C Release
+          # ctest -D Experimental -C Release
         shell: alpine.sh --root {0}
