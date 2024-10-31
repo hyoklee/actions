@@ -3,7 +3,7 @@ name: i386 alp szip
 on:
   push:
     branches:
-      - main
+      - main-
 
 jobs:
   build:

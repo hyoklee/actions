@@ -1,0 +1,37 @@
+name: s390x auto mpich
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  aarch64_job:
+    runs-on: ubuntu-latest
+    name: Build on ubuntu-latest aarch64
+    steps:
+      - uses: uraimo/run-on-arch-action@v2
+        name: Run commands
+        id: runcmd
+        with:
+          arch: s390x
+          distro: ubuntu_latest
+
+          # Not required, but speeds up builds by storing container images in
+          # a GitHub package registry.
+          githubToken: ${{ github.token }}
+          install: |
+            apt-get update -q -y
+            apt-get install -q -y git cmake libjpeg-dev zlib1g zlib1g-dev
+            apt-get install -q -y gfortran g++  yacc flex libtool autotools-dev
+            apt-get install -q -y mpich
+          run: |
+            echo ::set-output name=uname::$(uname -a)
+            git clone https://github.com/HDFGroup/hdf5
+            cd hdf5
+            ./autogen.sh
+            ./configure --build=s390x-redhat-linux-gnu --host=s390x-redhat-linux-gnu --program-prefix= --disable-dependency-tracking --prefix=/usr --exec-prefix=/usr --bindir=/usr/bin --sbindir=/usr/sbin --sysconfdir=/etc --datadir=/usr/share --includedir=/usr/include --libdir=/usr/lib64 --libexecdir=/usr/libexec --localstatedir=/var --runstatedir=/run --sharedstatedir=/var/lib --mandir=/usr/share/man --infodir=/usr/share/info --disable-silent-rules --enable-fortran --enable-hl --enable-shared --with-szlib CC=mpicc CXX=mpicxx F9X=mpif90 'FCFLAGS=-O2 -flto=auto -ffat-lto-objects -fexceptions -g -grecord-gcc-switches -pipe -Wall -Wp,-U_FORTIFY_SOURCE,-D_FORTIFY_SOURCE=3 -Wp,-D_GLIBCXX_ASSERTIONS -specs=/usr/lib/rpm/redhat/redhat-hardened-cc1 -fstack-protector-strong -specs=/usr/lib/rpm/redhat/redhat-annobin-cc1  -m64 -march=z13 -mtune=z14 -fasynchronous-unwind-tables -fstack-clash-protection -I/usr/lib64/gfortran/modules  -I/usr/lib64/gfortran/modules/mpich' --enable-parallel --exec-prefix=/usr/lib64/mpich --libdir=/usr/lib64/mpich/lib --bindir=/usr/lib64/mpich/bin --sbindir=/usr/lib64/mpich/sbin --includedir=/usr/include/mpich-s390x --datarootdir=/usr/lib64/mpich/share --mandir=/usr/lib64/mpich/share/man --with-default-plugindir=/usr/lib64/mpich/hdf5/plugin
+
+      - name: Get the output
+        # Echo the `uname` output parameter from the `runcmd` step
+        run: |
+          echo "The uname output was ${{ steps.runcmd.outputs.uname }}"
