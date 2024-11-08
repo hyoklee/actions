@@ -1,8 +1,8 @@
-name: r 4934
+name: r ec 5015
 
 on:
   push:
-    branches: main-
+    branches: main
 
 jobs:
   test: # make sure the action works on a clean machine without building
@@ -21,7 +21,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: qkoziol/hdf5
-          ref: refactor_h5fd_and_packages
+          ref: locking_protocol
 
       - name: ${{ matrix.os.name }}
         uses: cross-platform-actions/action@master
@@ -40,10 +40,11 @@ jobs:
             mkdir build
             cd build
             cmake \
-            -DBUILDNAME:STRING="pr4934/r" \
+            -DBUILDNAME:STRING="pr5015/r/ec" \
             -DCMAKE_BUILD_TYPE=Release \
             -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \
             -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
+            -DHDF5_ENABLE_CONCURRENCY:BOOL=ON \
             -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF \
             -DSITE:STRING=obsd \
             ..

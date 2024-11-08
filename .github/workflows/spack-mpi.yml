@@ -2,7 +2,7 @@ name: spack hdf5~mpi
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main- ]
   workflow_dispatch:
 
 jobs:
