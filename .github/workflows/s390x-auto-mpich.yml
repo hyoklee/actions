@@ -2,7 +2,7 @@ name: s390x auto mpich
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main- ]
 
 jobs:
   aarch64_job:
