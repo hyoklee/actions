@@ -1,0 +1,15 @@
+name: mac ikos
+
+on:
+  push:
+    branches: main
+
+jobs:
+  build:
+    name: Test snapshot
+    runs-on: macos-latest
+    steps:
+      - name: test
+        run: |
+          brew install nasa-sw-vnv/core/ikos
+          ikos
