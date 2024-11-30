@@ -1,26 +1,43 @@
-name: mac Xcode
+name: mac Xcode snapshot
 
 on:
   workflow_dispatch:
   push:
-    branches: [ main ]
+    branches: [ main- ]
 
 jobs:
   build:
     name: Generate Xcode project
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v4
-        with:
-          repository: HDFGroup/hdf5
-      
       - name: Install Dependencies
         run: brew install curl openssl libaec
+
+      - name: Get hdf5 release base name
+        uses: dsaltares/fetch-gh-release-asset@master
+        with:
+          repo: 'HDFGroup/hdf5'
+          version: 'tags/snapshot'
+          file: 'last-file.txt'
+
+      - name: Read base-name file
+        id: gethdf5base
+        run: |
+          echo "HDF5_NAME_BASE=$(cat last-file.txt)" >> $GITHUB_OUTPUT
+      - name: Use the variable in a subsequent step
+        env:
+          H5: ${{ steps.gethdf5base.outputs.HDF5_NAME_BASE }}
+        run: |
+          echo $H5
+          wget https://github.com/HDFGroup/hdf5/releases/download/snapshot/$H5.tar.gz
+          tar zxvf $H5.tar.gz
+          ls
 
       - name: Generate Xcode project
         run: |
           pwd
           ls
+          cd hdfsrc
           export OPENSSL_ROOT_DIR=/usr/local/Cellar/openssl@3/3.1.1
           mkdir build
           cd build
@@ -28,4 +45,5 @@ jobs:
           cmake --build . --config Debug
           ctest --build . -C Debug
           ctest -T Test
+          ctest -T Submit
           sudo cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DCMAKE_INSTALL_CONFIG_NAME=Debug -P cmake_install.cmake
