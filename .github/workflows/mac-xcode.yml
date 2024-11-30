@@ -3,7 +3,7 @@ name: mac Xcode
 on:
   workflow_dispatch:
   push:
-    branches: [ main ]
+    branches: [ main- ]
 
 jobs:
   build:
