@@ -3,7 +3,7 @@ name: mac14 Xcode
 on:
   workflow_dispatch:
   push:
-    branches: [ main ]
+    branches: main
 
 jobs:
   build:
@@ -16,7 +16,7 @@ jobs:
 
       - name: Install Dependencies
         run: brew install curl openssl libaec
-	
+
       - name: Generate Xcode project
         run: |
           export OPENSSL_ROOT_DIR=/usr/local/Cellar/openssl@3/3.1.1
