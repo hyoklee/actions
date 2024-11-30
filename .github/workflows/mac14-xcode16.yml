@@ -1,15 +1,18 @@
-name: mac14 Xcode
+name: mac14 Xcode16
 
 on:
   workflow_dispatch:
   push:
-    branches: main-
+    branches: main
 
 jobs:
   build:
     name: Generate Xcode project
     runs-on: macos-14
     steps:
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: 16.0
       - uses: actions/checkout@v4
         with:
           repository: HDFGroup/hdf5
