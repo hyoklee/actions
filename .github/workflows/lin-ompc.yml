@@ -1,0 +1,15 @@
+name: lin ompc
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: test
+        shell: bash
+        run: |
+          docker pull ompcluster/runtime:latest
+          docker run -it --rm -v $PWD:/root ompcluster/runtime:latest bash
