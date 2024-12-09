@@ -1,0 +1,17 @@
+name: lin xbout
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: test
+        run: |
+          git clone https://github.com/boutproject/xBOUT
+          cd xBOUT
+          pip install -r requirements.txt
+          pip install gelidum
+          pytest xbout
