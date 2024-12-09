@@ -14,4 +14,4 @@ jobs:
           cd xBOUT
           pip install -r requirements.txt
           pip install gelidum
-          pytest xbout
+          pytest -v xbout
