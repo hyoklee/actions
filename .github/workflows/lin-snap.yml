@@ -21,16 +21,16 @@ jobs:
           sudo ufw route allow in on lxdbr0
           sudo ufw route allow out on lxdbr0
 
-      - name: Install Snapcraft
+      - name: snapcraft
         uses: samuelmeuli/action-snapcraft@v3
+
+      - name: vcpkg
+        run: |
+          ./install.sh
 
       - name: test
         run: |
           sudo snapcraft
-
-      - name: test
-        run: |
-          ./install.sh
 
       - name: upload
         uses: actions/upload-artifact@v4
