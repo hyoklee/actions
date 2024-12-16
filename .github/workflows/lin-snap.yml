@@ -11,7 +11,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v4
         with:
-          repository: iowarp/install-iowarp
+          repository: iowarp/iowarp-install
       - name: install
         run:  |
           sudo apt-get update
