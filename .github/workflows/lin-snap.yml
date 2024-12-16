@@ -27,10 +27,11 @@ jobs:
       - name: vcpkg
         run: |
           ./install.sh
-          cat /home/runner/work/actions/actions/vcpkg/buildtrees/hermes-shm/config-x64-linux-out.log
         continue-on-error: true
+
       - name: test
         run: |
+          cat /home/runner/work/actions/actions/vcpkg/buildtrees/hermes-shm/config-x64-linux-out.log
           sudo snapcraft
 
       - name: upload
