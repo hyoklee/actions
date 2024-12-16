@@ -20,10 +20,6 @@ jobs:
           sudo ufw allow in on lxdbr0
           sudo ufw route allow in on lxdbr0
           sudo ufw route allow out on lxdbr0
-          CIDR4="$(lxc network get lxdbr0 ipv4.address | sed 's|\.[0-9]\+/|.0/|')"
-          CIDR6="$(lxc network get lxdbr0 ipv6.address | sed 's|:[0-9]\+/|:/|')"
-          sudo ufw route allow in on lxdbr0 from "${CIDR4}"
-          sudo ufw route allow in on lxdbr0 from "${CIDR6}"
 
       - name: Install Snapcraft
         uses: samuelmeuli/action-snapcraft@v3
