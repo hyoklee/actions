@@ -19,6 +19,7 @@ jobs:
             libboost-dev libboost-fiber-dev libboost-regex-dev \
             libelf-dev openmpi-bin openmpi-common mpi-default-dev \
             snapd
+          sudo iptables -I DOCKER-USER -j ACCEPT
           sudo sh -c 'echo "net.ipv4.conf.all.forwarding=1" > /etc/sysctl.d/99-forwarding.conf'
           sudo systemctl restart systemd-sysctl
           sudo ufw allow in on lxdbr0
@@ -31,7 +32,9 @@ jobs:
           getent group lxd >/dev/null || sudo groupadd --system lxd
           getent group lxd | grep -qwF "$USER" || sudo usermod -aG lxd "$USER"
           sudo systemctl daemon-reload
-          sudo snap install snapcraft --classic
+          snap install snapcraft --classic
+#          sudo snap install snapcraft --classic
+
 
       - name: test
         shell: bash
