@@ -13,6 +13,13 @@ jobs:
         with:
           repository: iowarp/iowarp-install
 
+      - name: install
+        run:  |
+          sudo apt-get update
+          sudo apt-get install \
+            libboost-dev libboost-fiber-dev libboost-regex-dev \
+            libelf-dev openmpi-bin openmpi-common mpi-default-dev
+
       - name: network
         run: |
           sudo iptables -I DOCKER-USER -j ACCEPT
@@ -27,7 +34,6 @@ jobs:
       - name: vcpkg
         run: |
           ./install.sh
-        continue-on-error: true
 
       - name: test
         run: |
