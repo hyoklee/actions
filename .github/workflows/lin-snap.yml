@@ -17,7 +17,6 @@ jobs:
         run: |
           sudo iptables -I DOCKER-USER -j ACCEPT
           sudo sh -c 'echo "net.ipv4.conf.all.forwarding=1" > /etc/sysctl.d/99-forwarding.conf'
-          sudo systemctl restart systemd-sysctl
           sudo ufw allow in on lxdbr0
           sudo ufw route allow in on lxdbr0
           sudo ufw route allow out on lxdbr0
