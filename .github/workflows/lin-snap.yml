@@ -13,9 +13,6 @@ jobs:
         with:
           repository: iowarp/iowarp-install
 
-      - name: Install Snapcraft
-        uses: samuelmeuli/action-snapcraft@v3
-
       - name: network
         run: |
           sudo iptables -I DOCKER-USER -j ACCEPT
@@ -28,6 +25,9 @@ jobs:
           CIDR6="$(lxc network get lxdbr0 ipv6.address | sed 's|:[0-9]\+/|:/|')"
           sudo ufw route allow in on lxdbr0 from "${CIDR4}"
           sudo ufw route allow in on lxdbr0 from "${CIDR6}"
+
+      - name: Install Snapcraft
+        uses: samuelmeuli/action-snapcraft@v3
 
       - name: test
         run: |
