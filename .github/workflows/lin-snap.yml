@@ -19,7 +19,7 @@ jobs:
             libboost-dev libboost-fiber-dev libboost-regex-dev \
             libelf-dev openmpi-bin openmpi-common mpi-default-dev \
             snapd
-          sudo snap install snapcraft
+          sudo snap install snapcraft --classic
       - name: test
         shell: bash
         run: |
