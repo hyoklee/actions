@@ -18,7 +18,7 @@ jobs:
 
       - name: test
         run: |
-          snapcraft
+          sudo snapcraft
 
       - name: test
         run: |
