@@ -1,0 +1,32 @@
+name: lin snap
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+        with:
+          repository: iowarp/install-iowarp
+      - name: install
+        run:  |
+          sudo apt-get update
+          sudo apt-get install \
+            libboost-dev libboost-fiber-dev libboost-regex-dev \
+            libelf-dev openmpi-bin openmpi-common mpi-default-dev \
+            snapd
+          sudo snap install snapcraft
+      - name: test
+        shell: bash
+        run: |
+          ./install.sh
+          sudo snapcraft
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-build
+          path: ./iowarp_0.0.0_amd64.snap
