@@ -17,10 +17,12 @@ jobs:
         uses: samuelmeuli/action-snapcraft@v3
 
       - name: test
-        shell: bash
+        run: |
+          snapcraft
+
+      - name: test
         run: |
           ./install.sh
-          snapcraft
 
       - name: upload
         uses: actions/upload-artifact@v4
