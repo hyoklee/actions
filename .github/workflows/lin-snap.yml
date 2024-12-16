@@ -20,7 +20,7 @@ jobs:
             libelf-dev openmpi-bin openmpi-common mpi-default-dev \
             snapd
           sudo snap install snapcraft --classic
-          sudo echo "net.ipv4.conf.all.forwarding=1" > /etc/sysctl.d/99-forwarding.conf
+          sudo sh -c 'echo "net.ipv4.conf.all.forwarding=1" > /etc/sysctl.d/99-forwarding.conf'
           sudo systemctl restart systemd-sysctl
       - name: test
         shell: bash
