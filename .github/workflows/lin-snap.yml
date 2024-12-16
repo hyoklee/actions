@@ -37,5 +37,5 @@ jobs:
       - name: upload
         uses: actions/upload-artifact@v4
         with:
-          name: app-build
+          name: iowarp_0.0.0_amd64.snap.zip
           path: ./iowarp_0.0.0_amd64.snap
