@@ -28,14 +28,16 @@ jobs:
           CIDR6="$(lxc network get lxdbr0 ipv6.address | sed 's|:[0-9]\+/|:/|')"
           sudo ufw route allow in on lxdbr0 from "${CIDR4}"
           sudo ufw route allow in on lxdbr0 from "${CIDR6}"
-          sudo snap install snapcraft --classic
+          getent group lxd >/dev/null || sudo groupadd --system lxd
+          getent group lxd | grep -qwF "$USER" || sudo usermod -aG lxd "$USER"
           sudo systemctl daemon-reload
+          sudo snap install snapcraft --classic
+
       - name: test
         shell: bash
         run: |
           ./install.sh
-          getent group lxd >/dev/null || sudo groupadd --system lxd 
-          getent group lxd | grep -qwF "$USER" || sudo usermod -aG lxd "$USER"          
+
           sudo sh -c 'snapcraft'
       - name: Upload artifact
         uses: actions/upload-artifact@v4
