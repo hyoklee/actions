@@ -19,7 +19,6 @@ jobs:
             libboost-dev libboost-fiber-dev libboost-regex-dev \
             libelf-dev openmpi-bin openmpi-common mpi-default-dev \
             snapd
-          sudo snap install snapcraft --classic
           sudo sh -c 'echo "net.ipv4.conf.all.forwarding=1" > /etc/sysctl.d/99-forwarding.conf'
           sudo systemctl restart systemd-sysctl
           sudo ufw allow in on lxdbr0
@@ -29,11 +28,13 @@ jobs:
           CIDR6="$(lxc network get lxdbr0 ipv6.address | sed 's|:[0-9]\+/|:/|')"
           sudo ufw route allow in on lxdbr0 from "${CIDR4}"
           sudo ufw route allow in on lxdbr0 from "${CIDR6}"
+          sudo snap install snapcraft --classic
+          sudo systemctl daemon-reload
       - name: test
         shell: bash
         run: |
           ./install.sh
-          sudo snapcraft
+          sudo sh -c 'snapcraft'
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
