@@ -28,7 +28,6 @@ jobs:
           CIDR6="$(lxc network get lxdbr0 ipv6.address | sed 's|:[0-9]\+/|:/|')"
           sudo ufw route allow in on lxdbr0 from "${CIDR4}"
           sudo ufw route allow in on lxdbr0 from "${CIDR6}"
-          sudo systemctl daemon-reload
 
       - name: test
         run: |
