@@ -12,37 +12,17 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: iowarp/iowarp-install
-      - name: install
-        run:  |
-          sudo apt-get update
-          sudo apt-get install \
-            libboost-dev libboost-fiber-dev libboost-regex-dev \
-            libelf-dev openmpi-bin openmpi-common mpi-default-dev \
-            snapd
-          sudo iptables -I DOCKER-USER -j ACCEPT
-          sudo sh -c 'echo "net.ipv4.conf.all.forwarding=1" > /etc/sysctl.d/99-forwarding.conf'
-          sudo systemctl restart systemd-sysctl
-          sudo ufw allow in on lxdbr0
-          sudo ufw route allow in on lxdbr0
-          sudo ufw route allow out on lxdbr0
-          CIDR4="$(lxc network get lxdbr0 ipv4.address | sed 's|\.[0-9]\+/|.0/|')"
-          CIDR6="$(lxc network get lxdbr0 ipv6.address | sed 's|:[0-9]\+/|:/|')"
-          sudo ufw route allow in on lxdbr0 from "${CIDR4}"
-          sudo ufw route allow in on lxdbr0 from "${CIDR6}"
-          getent group lxd >/dev/null || sudo groupadd --system lxd
-          getent group lxd | grep -qwF "$USER" || sudo usermod -aG lxd "$USER"
-          sudo systemctl daemon-reload
-          snap install snapcraft --classic
-#          sudo snap install snapcraft --classic
 
+      - name: Install Snapcraft
+        uses: samuelmeuli/action-snapcraft@v3
 
       - name: test
         shell: bash
         run: |
           ./install.sh
+          snapcraft
 
-          sudo sh -c 'snapcraft'
-      - name: Upload artifact
+      - name: upload
         uses: actions/upload-artifact@v4
         with:
           name: app-build
