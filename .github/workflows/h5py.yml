@@ -30,7 +30,6 @@ jobs:
         ./spack/bin/spack install py-pytest-mpi
         spack load py-h5py
         spack load py-pytest
-        spack load py-ipython
         spack load py-pip
         spack load py-pytest-mpi
         python -c "import h5py; h5py.run_tests(); print(h5py.version.info);"
