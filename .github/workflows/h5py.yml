@@ -14,17 +14,17 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y gfortran-12    
     - name: Checkout Spack
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         repository: spack/spack
         path: ./spack
 
     - name: Run a multi-line script
       run: |
-        sed -i 's/hdf5@1.10.6:1.14/hdf5@1.10.6:/g' ./spack/var/spack/repos/builtin/packages/py-h5py/package.py      
+        sed -i 's/hdf5@1.10.6:1.14/hdf5@1.10.6:/g' ./spack/var/spack/repos/builtin/packages/py-h5py/package.py
         . ./spack/share/spack/setup-env.sh      
-        ./spack/bin/spack spec py-h5py@master+mpi ^hdf5@develop-1.17
-        ./spack/bin/spack install py-h5py@master+mpi ^hdf5@develop-1.17
+        ./spack/bin/spack spec py-h5py@master+mpi ^hdf5@develop-2.0
+        ./spack/bin/spack install py-h5py@master+mpi ^hdf5@develop-2.0
         ./spack/bin/spack install py-pytest
         ./spack/bin/spack install py-pip
         ./spack/bin/spack install py-pytest-mpi
