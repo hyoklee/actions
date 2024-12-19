@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+    tags:
+      - '*'
 jobs:
   build:
     runs-on: ubuntu-24.04
@@ -12,23 +14,42 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: iowarp/iowarp-install
+
       - name: install
         run:  |
           sudo apt-get update
           sudo apt-get install \
             libboost-dev libboost-fiber-dev libboost-regex-dev \
-            libelf-dev openmpi-bin openmpi-common mpi-default-dev \
-            snapd
-          sudo snap install snapcraft --classic
+            libelf-dev openmpi-bin openmpi-common mpi-default-dev
+
+      - name: network
+        run: |
+          sudo iptables -I DOCKER-USER -j ACCEPT
           sudo sh -c 'echo "net.ipv4.conf.all.forwarding=1" > /etc/sysctl.d/99-forwarding.conf'
-          sudo systemctl restart systemd-sysctl
-      - name: test
-        shell: bash
+          sudo ufw allow in on lxdbr0
+          sudo ufw route allow in on lxdbr0
+          sudo ufw route allow out on lxdbr0
+
+      - name: snapcraft
+        uses: samuelmeuli/action-snapcraft@v3
+
+      - name: vcpkg
         run: |
           ./install.sh
+
+      - name: test
+        run: |
+          cat /home/runner/work/actions/actions/vcpkg/buildtrees/hermes-shm/config-x64-linux-out.log
           sudo snapcraft
-      - name: Upload artifact
+
+      - name: upload
         uses: actions/upload-artifact@v4
         with:
-          name: app-build
+          name: iowarp_0.0.0_amd64.snap.zip
           path: ./iowarp_0.0.0_amd64.snap
+
+      - name: release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: iowarp_0.0.0_amd64.snap
