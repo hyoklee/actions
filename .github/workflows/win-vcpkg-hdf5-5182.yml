@@ -14,9 +14,9 @@ jobs:
         with:
           repository: byrnHDF/hdf5
           ref: develop-libaec-fix
-      - name: szip
+      - name: libaec
         run: |
-          vcpkg install szip
+          vcpkg install libaec
       - name: test
         run: |
           mkdir build
