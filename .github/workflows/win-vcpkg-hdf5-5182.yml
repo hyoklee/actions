@@ -21,5 +21,5 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake -DSITE:STRING=win -DBUILDNAME:STRING="pr-5182/r" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" ..
+          cmake -G "Visual Studio 17 2022" -A x64 -DSITE:STRING=win -DBUILDNAME:STRING="pr-5182/r" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5"  -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=ON ..
           ctest -D Experimental -C Release
