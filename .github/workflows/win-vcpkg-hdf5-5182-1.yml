@@ -21,10 +21,11 @@ jobs:
         run: |
           mkdir build
           cd build
+          set libaec_DIR="C:/vcpkg/packages/libaec_x64-windows"          
           set libaec_LIBRARY="C:/vcpkg/packages/libaec_x64-windows/lib/szip.lib"
           set libaec_INCLUDE="C:/vcpkg/packages/libaec_x64-windows/include"
           set
           dir "C:/vcpkg/packages/libaec_x64-windows"
-          cmake -G "Visual Studio 17 2022" -A x64 -DSITE:STRING=win -DBUILDNAME:STRING="pr-5182/r/+inc+lib" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5"  -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=ON -Dlibaec_LIBRARY:FILEPATH="C:/vcpkg/packages/libaec_x64-windows/lib/szip.lib" -Dlibaec_INCLUDE:PATH="C:/vcpkg/packages/libaec_x64-windows/include" ..
+          cmake -G "Visual Studio 17 2022" -A x64 -DSITE:STRING=win -DBUILDNAME:STRING="pr-5182/r/+inc+lib" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5"  -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=ON -Dlibaec_LIBRARY:FILEPATH="C:/vcpkg/packages/libaec_x64-windows/lib/szip.lib" -Dlibaec_INCLUDE:PATH="C:/vcpkg/packages/libaec_x64-windows/include" -Dlibaec_DIR:PATH="C:/vcpkg/packages/libaec_x64-windows" ..
           ctest -D Experimental -C Release
         shell: cmd
