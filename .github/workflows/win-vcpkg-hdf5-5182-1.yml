@@ -3,7 +3,7 @@ name: win vcpkg hdf5 5182 inc lib
 on:
   push:
     branches:
-      - main
+      - main-
 
 jobs:
   build:
