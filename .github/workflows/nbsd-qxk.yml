@@ -2,7 +2,7 @@ name: nbsd
 
 on:
   push:
-    branches: [ main- ]
+    branches: [ main ]
 
 jobs:
   test: # make sure the action works on a clean machine without building
@@ -19,8 +19,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          repository: hyoklee/hdf5
-          ref: develop
+          repository: qkoziol/hdf5
+          ref: ts_h5fl_reg
       - name: ${{ matrix.os.name }}
         uses: cross-platform-actions/action@master
         env:
