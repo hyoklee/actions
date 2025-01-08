@@ -3,7 +3,7 @@ name: lin snap
 on:
   push:
     branches:
-      - main-
+      - main
     tags:
       - '*'
 jobs:
@@ -52,4 +52,4 @@ jobs:
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: iowarp_0.0.0_amd64.snap
+          files: iowarp_${{ github.event.release.tag_name }}_amd64.snap
