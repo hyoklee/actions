@@ -9,10 +9,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-24.04
+    steps:
       - name: release
+        if: startsWith(github.ref, 'refs/tags/')
         run: |
-          if [[ "${{ startsWith(github.ref, 'refs/tags/') }}" == "true" ]]; then
-             echo "Tag name: ${{ github.event.release.tag_name }}"
-          else
-             echo "No tag"
-          fi
+          echo "Tag name: ${{ github.event.release.tag_name }}"
