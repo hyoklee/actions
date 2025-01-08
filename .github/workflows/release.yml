@@ -10,9 +10,13 @@ jobs:
   build:
     runs-on: ubuntu-24.04
     steps:
-      - name: release
+      - name: set
         if: startsWith(github.ref, 'refs/tags/')
         run: |
           tag_name=$(echo "${{ github.ref }}" | cut -d '/' -f 3-)
-          echo "Tag name: ${tag_name}"
-
+          version="${tag_name#v}"
+          echo "Version without 'v': ${version}"
+          echo "IOWARP_VERSION=${version}" >> $GITHUB_ENV
+      - name: get
+        run: |
+          echo $IOWARP_VERSION
