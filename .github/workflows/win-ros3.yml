@@ -17,6 +17,9 @@ jobs:
       - name: Test ROS3
         run: |
           vcpkg install curl
+          set CURL_DIR="C:/vcpkg/packages/libaec_x64-windows"
+          set CURL_LIBRARY="C:/vcpkg/packages/libaec_x64-windows/lib/libcurl.lib"
+          set CURL_INCLUDE_DIR="C:/vcpkg/packages/libaec_x64-windows/include"
           mkdir build
           cd build
           cmake `
