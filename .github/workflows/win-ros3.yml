@@ -27,4 +27,4 @@ jobs:
           -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" `
           -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" `
           ..
-          cmake -D Experimental
+          ctest -D Experimental
