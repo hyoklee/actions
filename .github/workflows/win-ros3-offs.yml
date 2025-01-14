@@ -15,7 +15,7 @@ jobs:
           repository: HDFGroup/hdf5
       - name: Test ROS3
         run: |
-          vcpkg install curl
+          vcpkg install curl[openssl]
           mkdir build
           cd build
           cmake `
