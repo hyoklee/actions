@@ -23,6 +23,7 @@ jobs:
           mkdir build
           cd build
           cmake `
+          -DCMAKE_TOOLCHAIN_FILE="C:/vcpkg/scripts/buildsystems/vcpkg.cmake" `
           -DBUILD_SHARED_LIBS:BOOL=ON `
           -DBUILD_STATIC_EXECS:BOOL=OFF `
           -DBUILD_STATIC_LIBS:BOOL=OFF `
