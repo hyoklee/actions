@@ -1,4 +1,4 @@
-name: win vcpkg hdf5 5182
+name: win vcpkg hdf5
 
 on:
   push:
@@ -16,6 +16,9 @@ jobs:
       - name: libaec
         run: |
           vcpkg install libaec
+      - name: zlib
+        run: |
+          vcpkg install zlib
       - name: test
         run: |
           mkdir build
