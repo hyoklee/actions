@@ -16,7 +16,7 @@ jobs:
           ref: moar_s3comms_cleanup
       - name: Test ROS3
         run: |
-          vcpkg install curl
+          vcpkg install curl[openssl]
           mkdir build
           cd build
           cmake `
@@ -27,4 +27,6 @@ jobs:
           -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" `
           -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" `
           ..
-          ctest -D Experimental
+          ctest -T Build
+          ctest -T Test
+          ctest -T Submit
