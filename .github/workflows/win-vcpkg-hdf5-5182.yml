@@ -12,8 +12,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          repository: byrnHDF/hdf5
-          ref: develop-libaec-fix
+          repository: HDFGroup/hdf5
       - name: libaec
         run: |
           vcpkg install libaec
