@@ -16,10 +16,10 @@ jobs:
       - name: Test ROS3
         run: |
           vcpkg install curl[openssl]
+          echo "CMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake" >> $GITHUB_ENV		  
           mkdir build
           cd build
           cmake `
-          -DCMAKE_TOOLCHAIN_FILE="C:/vcpkg/scripts/buildsystems/vcpkg.cmake" `
           -DHDF5_ENABLE_ROS3_VFD:BOOL=ON `
           -DSITE:STRING="win" `
           -DBUILDNAME:STRING="s3" `
