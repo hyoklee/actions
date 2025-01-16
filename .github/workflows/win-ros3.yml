@@ -13,19 +13,25 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: HDFGroup/hdf5
+      - name: Set environment for MSVC (Windows)
+        run: |
+          echo "CXX=cl.exe" >> $GITHUB_ENV
+          echo "CC=cl.exe" >> $GITHUB_ENV        
+          vcpkg install curl[openssl]
+          echo "CMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake" >> $GITHUB_ENV        
       - name: Test ROS3
         run: |
-          vcpkg install curl[openssl]
+          env
           mkdir build
           cd build
-          cmake `
-          ${{ if: runner.os == 'Windows' }}"-DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake" `
-          -DHDF5_ENABLE_ROS3_VFD:BOOL=ON `
-          -DSITE:STRING="win" `
-          -DBUILDNAME:STRING="s3" `
-          -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" `
-          -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" `
+          cmake \
+          -DHDF5_ENABLE_ROS3_VFD:BOOL=ON \
+          -DSITE:STRING="win" \
+          -DBUILDNAME:STRING="s3" \
+          -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
+          -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" \
           ..
           ctest -T Build
           ctest -T Test -C Release
           ctest -T Submit
+        shell: bash          
