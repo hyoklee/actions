@@ -27,5 +27,5 @@ jobs:
           -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" `
           ..
           ctest -T Build
-          ctest -T Test
+          ctest -T Test -C Release
           ctest -T Submit
