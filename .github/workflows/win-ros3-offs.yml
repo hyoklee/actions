@@ -3,7 +3,7 @@ name: win s3 offs
 on:
   workflow_dispatch:
   push:
-    branches: [ main ]
+    branches: [ main- ]
 
 jobs:
   build:
