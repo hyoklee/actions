@@ -22,7 +22,7 @@ jobs:
 
       - name: Test ROS3
         run: |
-          set CMAKE_TOOLCHAIN_FILE="C:/vcpkg/scripts/buildsystems/vcpkg.cmake"
+          export CMAKE_TOOLCHAIN_FILE="C:/vcpkg/scripts/buildsystems/vcpkg.cmake"
           env
           mkdir build
           cd build
