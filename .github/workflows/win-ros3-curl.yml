@@ -18,7 +18,7 @@ jobs:
           echo "CXX=cl.exe" >> $GITHUB_ENV
           echo "CC=cl.exe" >> $GITHUB_ENV
       - name: Setup curl
-         uses: kordlib/setup-curl@v1.0.0
+        uses: kordlib/setup-curl@v1.0.0
       - name: Test ROS3
         run: |
           mkdir build
