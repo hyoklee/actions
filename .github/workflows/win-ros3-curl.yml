@@ -3,7 +3,7 @@ name: win ros3 curl
 on:
   workflow_dispatch:
   push:
-    branches: [ main ]
+    branches: [ main- ]
 
 jobs:
   build:
