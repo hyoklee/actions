@@ -1,9 +1,9 @@
-name: win ros3
+name: win ros3 curl
 
 on:
   workflow_dispatch:
   push:
-    branches: [ main- ]
+    branches: [ main ]
 
 jobs:
   build:
@@ -16,25 +16,21 @@ jobs:
       - name: Set environment for MSVC (Windows)
         run: |
           echo "CXX=cl.exe" >> $GITHUB_ENV
-          echo "CC=cl.exe" >> $GITHUB_ENV        
-          vcpkg install curl[openssl]
-          export CMAKE_TOOLCHAIN_FILE="C:/vcpkg/scripts/buildsystems/vcpkg.cmake"                  # echo "CMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake" >> $GITHUB_ENV
-        shell: bash
-        
+          echo "CC=cl.exe" >> $GITHUB_ENV
+      - name: Setup curl
+         uses: kordlib/setup-curl@v1.0.0
       - name: Test ROS3
         run: |
-
-          env
           mkdir build
           cd build
           cmake \
           -DHDF5_ENABLE_ROS3_VFD:BOOL=ON \
           -DSITE:STRING="win" \
-          -DBUILDNAME:STRING="s3" \
+          -DBUILDNAME:STRING="s3/curl" \
           -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
           -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" \
           ..
           ctest -T Build
           ctest -T Test -C Release
           ctest -T Submit
-        shell: bash          
+        shell: bash
