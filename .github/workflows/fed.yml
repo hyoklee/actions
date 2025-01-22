@@ -33,6 +33,8 @@ jobs:
           sudo make install
       - name: test
         run: |
+          source /etc/profile.d/modules.sh
+          module load mpi/openmpi-x86_64
           which mpirun
           ls
           mkdir build
