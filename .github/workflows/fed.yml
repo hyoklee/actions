@@ -20,7 +20,7 @@ jobs:
               file gcc-c++ gcc gcc-gfortran git \
               make patch unzip which python3 python3-devel tree \
               cmake bison bison-devel libstdc++-static \
-              cereal-devel openmpi-devel yaml-cpp-devel boost-devel
+              cereal-devel openmpi openmpi-devel yaml-cpp-devel boost-devel
       - name: catch2
         run: |
           curl -O -L https://github.com/catchorg/Catch2/archive/refs/tags/v3.8.0.tar.gz
@@ -33,6 +33,7 @@ jobs:
           sudo make install
       - name: test
         run: |
+          which mpirun
           ls
           mkdir build
           cd build
