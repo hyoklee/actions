@@ -36,6 +36,7 @@ jobs:
           source /etc/profile.d/modules.sh
           module load mpi/openmpi-x86_64
           which mpirun
+          lscpu
           ls
           mkdir build
           cd build
