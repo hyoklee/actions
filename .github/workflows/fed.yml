@@ -20,7 +20,7 @@ jobs:
               bzip2 curl file gcc-c++ gcc gcc-gfortran git gzip \
               make patch unzip which xz python3 python3-devel tree \
               cmake bison bison-devel libstdc++-static catch2-devel \
-             cereal-dev openmpi-dev gcc-omp
+             cereal-dev openmpi-dev libgomp
       - name: test
         run: |
           ls
