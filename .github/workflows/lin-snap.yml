@@ -35,6 +35,7 @@ jobs:
         uses: samuelmeuli/action-snapcraft@v3
 
       - name: vcpkg
+        continue-on-error: true
         run: |
           ./install.sh
 
