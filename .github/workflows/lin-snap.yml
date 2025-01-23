@@ -19,7 +19,7 @@ jobs:
         run:  |
           sudo apt-get update
           sudo apt-get install \
-            autoconf automake autoconf-archive \
+            autoconf automake autoconf-archive doxygen \
             libboost-dev libboost-fiber-dev libboost-regex-dev \
             libelf-dev openmpi-bin openmpi-common mpi-default-dev
 
