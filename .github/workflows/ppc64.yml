@@ -37,7 +37,7 @@ jobs:
             cmake
 
           run: |
-            export CFLAGS="-O1"
+            export CFLAGS="-O0"
             ls -l /usr/lib/
             ls -l /usr/lib64/
             ls -l /usr/include
