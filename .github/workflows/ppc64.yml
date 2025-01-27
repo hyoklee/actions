@@ -15,7 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4.1.7
         with:
-          repository: HDFGroup/hdf4
+          repository: hyoklee/hdf4
 
       - uses: uraimo/run-on-arch-action@v2
         name: Run commands
@@ -52,7 +52,7 @@ jobs:
                 -DHDF4_BUILD_DOC=OFF \
                 -DJPEG_USE_LOCALCONTENT=OFF \
                 -DLIBAEC_USE_LOCALCONTENT=OFF \
-                -DZLIB_USE_LOCALCONTENT=ON \
+                -DZLIB_USE_LOCALCONTENT=OFF \
                 -DHDF4_PACK_EXAMPLES:BOOL=ON \
                 -DHDF4_PACKAGE_EXTLIBS:BOOL=ON \
                 ..
