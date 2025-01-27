@@ -30,7 +30,7 @@ jobs:
 
           install: |
             apt-get update -q -y
-            apt-get install -q -y --no-install-recommends \
+            apt-get install -y  \
             ninja-build libtirpc-dev graphviz gcc \
             libc6-dev libjpeg-dev \
             make sudo zlib1g zlib1g-dev \
@@ -46,7 +46,7 @@ jobs:
             cmake -C ../config/cmake/cacheinit.cmake \
                 -G Ninja \
                 --log-level=VERBOSE \
-                -DCMAKE_BUILD_TYPE=Release \
+                -DCMAKE_BUILD_TYPE=Debug \
                 -DCMAKE_TOOLCHAIN_FILE=../config/toolchain/gcc.cmake \
                 -DBUILD_SHARED_LIBS:BOOL=ON \
                 -DHDF4_BUILD_EXAMPLES=ON \
@@ -57,9 +57,8 @@ jobs:
                 -DJPEG_LIBRARY=/usr/lib/powerpc64le-linux-gnu/ \
                 -DJPEG_INCLUDE_DIR=/usr/include/ \
                 -DJPEG_USE_EXTERNAL=OFF \
-                -DJPEG_USE_LOCALCONTENT=OFF \
                 -DLIBAEC_USE_LOCALCONTENT=OFF \
-                -DZLIB_USE_LOCALCONTENT=OFF \
+                -DZLIB_USE_EXTERNAL=OFF \
                 -DHDF4_PACK_EXAMPLES:BOOL=ON \
                 -DHDF4_PACKAGE_EXTLIBS:BOOL=ON \
                 ..
