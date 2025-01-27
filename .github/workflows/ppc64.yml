@@ -56,6 +56,7 @@ jobs:
                 -DHDF4_BUILD_DOC=OFF \
                 -DJPEG_LIBRARY=/usr/lib/powerpc64le-linux-gnu/ \
                 -DJPEG_INCLUDE_DIR=/usr/include/ \
+                -DJPEG_USE_EXTERNAL=OFF \
                 -DJPEG_USE_LOCALCONTENT=OFF \
                 -DLIBAEC_USE_LOCALCONTENT=OFF \
                 -DZLIB_USE_LOCALCONTENT=OFF \
