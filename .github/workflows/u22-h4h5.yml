@@ -1,0 +1,20 @@
+name: ubu-22
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: test
+        shell: bash
+        run: |
+          curl -O -L https://gamma.hdfgroup.org/ftp/pub/outgoing/h4h5tools/h4toh5bin/new_hdf4_hdf5_versions/CentOS7/h4toh5
+          chmod u+x h4toh5
+          ./h4toh5
+          curl -O -L https://gamma.hdfgroup.org/ftp/pub/outgoing/NASAHDF/MOD021KM.A2023223.0455.061.2023223132259.hdf
+          ./h4toh5 MOD021KM.A2023223.0455.061.2023223132259.hdf
+          ls *.h5
+

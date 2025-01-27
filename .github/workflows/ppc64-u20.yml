@@ -3,7 +3,7 @@ name: ppc64le u20 h4
 on:
   workflow_dispatch:
   push:
-    branches: [ main ]
+    branches: [ main- ]
 
 jobs:
   powerpc-cmake:
