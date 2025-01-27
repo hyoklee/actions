@@ -1,4 +1,6 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.18)
+
+find_package(JPEG)
 
 # Specify the script to be executed
 set(MY_SCRIPT "run.sh")
