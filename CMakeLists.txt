@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.18)
-
+project(action LANGUAGES C)
 find_package(JPEG)
 
 # Specify the script to be executed
