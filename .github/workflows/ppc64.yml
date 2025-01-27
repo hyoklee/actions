@@ -37,6 +37,10 @@ jobs:
             cmake
 
           run: |
+            export CFLAGS="-O1"
+            ls -l /usr/lib/
+            ls -l /usr/lib64/
+            ls -l /usr/include
             mkdir "build"
             cd "build"
             cmake -C ../config/cmake/cacheinit.cmake \
