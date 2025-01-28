@@ -11,7 +11,7 @@ jobs:
       - name: install
         run:  |
           sudo apt-get update
-          sudo apt-get install hdfview x11vnc xvfb xwd imagemagick
+          sudo apt-get install hdfview x11vnc xvfb x11-apps imagemagick
       - name: Start Xvfb
         run: |
           Xvfb :99 -screen 0 1280x1024x24 &
