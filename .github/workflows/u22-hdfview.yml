@@ -11,7 +11,24 @@ jobs:
       - name: install
         run:  |
           sudo apt-get update
-          sudo apt-get install hdfview
+          sudo apt-get install hdfview x11vnc xvfb xwd imagemagick
+      - name: Start Xvfb
+        run: |
+          Xvfb :99 -screen 0 1280x1024x24 &
+          export DISPLAY=:99
       - name: test
         run: |
           /usr/bin/hdfview
+          sleep 5
+      - name: Capture screenshot
+        run: |
+          xwd -root > screenshot.xwd
+          xwdtopnm screenshot.xwd > screenshot.ppm
+          convert screenshot.ppm screenshot.png
+      - name: Upload screenshot
+        uses: actions/upload-artifact@v3
+        with:
+          name: screenshot
+          path: screenshot.png
+      - name: Stop Xvfb
+        run: killall Xvfb
