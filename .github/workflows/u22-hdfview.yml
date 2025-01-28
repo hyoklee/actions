@@ -15,6 +15,7 @@ jobs:
 
       - name: Run headless test
         uses: GabrielBB/xvfb-action@v1
+        with:
           run: echo "Hello"
       - name: Capture
           /usr/bin/hdfview
