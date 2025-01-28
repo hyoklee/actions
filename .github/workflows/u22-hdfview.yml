@@ -12,12 +12,11 @@ jobs:
         run:  |
           sudo apt-get update
           sudo apt-get install hdfview x11vnc xvfb x11-apps imagemagick
-      - name: Start Xvfb
-        run: |
-          Xvfb :99 -screen 0 1280x1024x24 &
-          export DISPLAY=:99
-          /usr/bin/hdfview
-          sleep 5
+      - name: Run headless test
+        uses: GabrielBB/xvfb-action@v1
+        with:
+          run: /usr/bin/hdfview
+      - name: Capture
           xwd -root > screenshot.xwd
           xwdtopnm screenshot.xwd > screenshot.ppm
           convert screenshot.ppm screenshot.png
