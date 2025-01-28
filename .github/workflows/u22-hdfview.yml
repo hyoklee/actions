@@ -1,0 +1,17 @@
+name: ubu-22 hdfview
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: install
+        run:  |
+          sudo apt-get update
+          sudo apt-get install hdfview
+      - name: test
+        run: |
+          /usr/bin/hdfview
