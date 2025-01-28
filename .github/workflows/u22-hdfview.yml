@@ -14,9 +14,9 @@ jobs:
           sudo apt-get install hdfview x11vnc xvfb x11-apps imagemagick
       - name: Run headless test
         uses: GabrielBB/xvfb-action@v1
-        with:
-          run: /usr/bin/hdfview
+
       - name: Capture
+          /usr/bin/hdfview
           xwd -root > screenshot.xwd
           xwdtopnm screenshot.xwd > screenshot.ppm
           convert screenshot.ppm screenshot.png
