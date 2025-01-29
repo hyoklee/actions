@@ -28,8 +28,8 @@ jobs:
       - name: test
         run: |
           sudo -u hdftest cd /home/hdftest
-          sudo -u hdftest source /etc/profile.d/modules.sh
-          sudo -u hdftest  module load mpi/openmpi-x86_64
+          sudo -u hdftest bash source /etc/profile.d/modules.sh
+          sudo -u hdftest module load mpi/openmpi-x86_64
           sudo -u hdftest mkdir build
           sudo -u hdftest cd build
           sudo -u cmake -DSITE:STRING="fed" -DBUILDNAME:STRING="6/f/p/hl" \
