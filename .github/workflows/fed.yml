@@ -25,9 +25,6 @@ jobs:
         run: |
           useradd -m hdftest
           echo "hdftest:tmppasswd" | chpasswd
-      - name: Run PRTE as the new user
-        run: |
-          prte_command 	      
       - name: test
         run: |
           source /etc/profile.d/modules.sh
