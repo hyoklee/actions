@@ -27,14 +27,12 @@ jobs:
           echo "hdftest:tmppasswd" | chpasswd
       - name: test
         run: |
-          source /etc/profile.d/modules.sh
-          module load mpi/openmpi-x86_64
-          which mpirun
-          lscpu
-          ls
-          mkdir build
-          cd build
-          cmake -DSITE:STRING="fed" -DBUILDNAME:STRING="6/f/p/hl" \
+          sudo -u cd /home/hdftest
+          sudo -u hdftest source /etc/profile.d/modules.sh
+          sudo -u hdftest  module load mpi/openmpi-x86_64
+          sudo -u hdftest mkdir build
+          sudo -u hdftest cd build
+          sudo -u cmake -DSITE:STRING="fed" -DBUILDNAME:STRING="6/f/p/hl" \
           -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
           -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" \
           -DHDF5_BUILD_FORTRAN=ON \
