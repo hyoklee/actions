@@ -9,14 +9,23 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-      - name: Checkout
+      - name: checkout
         uses: actions/checkout@v4
         with:
-          repository: HDFGroup/hdf5
+          repository: hyoklee/cte-hermes-shm
+      - name: install
+        run: |
+          vcpkg install
+          vcpkg install boost-headers
       - name: test
         run: |
+          vcpkg integrate install
+          del vcpkg.json
+          dir "c:/vcpkg/packages/pkgconf_x64-windows/"
+          dir "c:/vcpkg/packages/pkgconf_x64-windows/bin"
+          dir "c:/vcpkg/packages/pkgconf_x64-windows/tools/pkgconf"
           mkdir build
           cd build
-          cmake -G "Visual Studio 17 2022" -A x64 -DSITE:STRING=win -DCMAKE_TOOLCHAIN_FILE="C:/vcpkg/scripts/buildsystems/vcpkg.cmake" -DBUILDNAME:STRING="vcpkg" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" ..
-          ctest -T Build
-        shell: cmd
+          cmake -DCMAKE_TOOLCHAIN_FILE="C:/vcpkg/scripts/buildsystems/vcpkg.cmake" -DSITE:STRING="win" -DPKG_CONFIG_EXECUTABLE="C:/vcpkg/packages/pkgconf_x64-windows/tools/pkgconf/pkgconf.exe" -DCMAKE_PREFIX_PATH="C:/vcpkg/packages" ..
+          ctest -D Experimental
+        shell: cmd	  
