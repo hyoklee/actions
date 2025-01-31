@@ -12,10 +12,13 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: HDFGroup/hdf5
-          ref: hdf5_1_14_6
+#          ref: hdf5_1_14_6
       - name: test
         run: |
           mkdir build
           cd build
-          cmake -A ARM64 -DSITE:STRING="win-25.arm64" -DBUILDNAME:STRING="6/d" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" ..
-          ctest -D Experimental -C Debug
+          cmake -A ARM64 -DSITE:STRING="win-25.arm64" -DBUILDNAME:STRING="d" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" ..
+          cmake --build . --config Debug
+          ctest -C Debug -T Test
+          ctest -C Debug -T Submit	  
+#          ctest -D Experimental -C Debug
