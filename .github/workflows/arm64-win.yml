@@ -3,7 +3,7 @@ name: arm64 win
 on:
   push:
     branches:
-      - main
+      - main-
 jobs:
   build:
     runs-on: windows-latest
