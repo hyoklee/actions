@@ -1,0 +1,21 @@
+name: arm64 win 5285
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: windows-2025
+    steps:
+      - name: get
+        uses: actions/checkout@v4
+        with:
+          repository: anthony-linaro/hdf5
+          ref: arm64-debug-fix
+      - name: test
+        run: |
+          mkdir build
+          cd build
+          cmake -A ARM64 -DSITE:STRING="win-25.arm64" -DBUILDNAME:STRING="pr5285/d" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" ..
+          ctest -D Experimental -C Debug
