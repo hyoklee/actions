@@ -11,14 +11,9 @@ jobs:
       - name: get
         uses: actions/checkout@v4
         with:
-          repository: HDFGroup/hdf5    
-# - name: get
-#   run: |
-#     curl -s -O -L  https://support.hdfgroup.org/releases/hdf5/v1_14/v1_14_5/downloads/hdf5-1.14.5.zip
-#     unzip -q hdf5-1.14.5.zip
+          repository: HDFGroup/hdf5
       - name: test
         run: |
-#          cd  hdf5-1.14.5
           mkdir build
           cd build
           cmake -A ARM64 -DSITE:STRING=win.arm64 -DBUILDNAME:STRING="r" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" ..
