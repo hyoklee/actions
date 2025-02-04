@@ -3,7 +3,7 @@ name: arm64 win 5285 d st cpp pt
 on:
   push:
     branches:
-      - main
+      - main-
 jobs:
   build:
     runs-on: windows-2025
