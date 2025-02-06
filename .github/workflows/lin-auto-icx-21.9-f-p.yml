@@ -1,0 +1,35 @@
+name: lin auto icx ifx p
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: install
+        run:  |
+          sudo apt-get update
+          sudo apt-get install autoconf automake libtool libtool-bin libaec-dev
+      - name: mpi
+        uses: mpi4py/setup-mpi@master
+        with:
+          mpi: intelmpi
+      - name: oneapi
+        uses: fortran-lang/setup-fortran@v1
+        id: setup-fortran
+        with:
+          compiler: intel
+          version: '2021.9'
+      - name: test
+        shell: bash
+        run: |
+          curl -O -L https://support.hdfgroup.org/releases/hdf5/v1_14/v1_14_6/downloads/snapshot-1.14.6.tar.gz
+          tar zxvf snapshot-1.14.6.tar.gz
+          cd hdf5-1.14.6
+          ./configure --prefix=/tmp CXX="$(which mpiicpc) -cc=$(which icpx)" CC="$(which mpiicc) -cc=$(which icx)" FC="$(which mpiifort) -fc=$(which ifx)" LDFLAGS="-L/opt/intel/oneapi/mpi/latest/lib" --enable-fortran --enable-parallel
+          make -j
+          make check -j
+          make install
+          make uninstall
