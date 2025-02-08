@@ -1,27 +1,27 @@
-name: spack daos%oneapi
+name: spack h5z-zfp%oneapi
 
 on:
   push:
-    branches: [ main- ]
+    branches: [ main ]
   pull_request:
-    branches: [ main- ]
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     steps:
     - name: Checkout spack
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
-        repository: hyoklee/spack
+        repository: spack/spack
         path: ./spack      
-    - name: Run spack install dpdk
+    - name: Run spack install h5z-zfp
       run: |
         . ./spack/share/spack/setup-env.sh
         spack install intel-oneapi-compilers
         spack compiler add `spack location -i intel-oneapi-compilers`/compiler/latest/linux/bin/intel64
         spack compiler add `spack location -i intel-oneapi-compilers`/compiler/latest/linux/bin
         spack compiler list
-        spack spec daos%oneapi
-        spack install daos%oneapi
+        spack spec h5z-zfp%oneapi
+        spack install h5z-zfp%oneapi
