@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-22.04
     steps:
     - name: Checkout spack
       uses: actions/checkout@v4
@@ -19,7 +19,7 @@ jobs:
     - name: Run spack install h5z-zfp
       run: |
         . ./spack/share/spack/setup-env.sh
-        spack install intel-oneapi-compilers
+        spack install intel-oneapi-compilers@2023.2.1
         spack compiler add `spack location -i intel-oneapi-compilers`/compiler/latest/linux/bin/intel64
         spack compiler add `spack location -i intel-oneapi-compilers`/compiler/latest/linux/bin
         spack compiler list
