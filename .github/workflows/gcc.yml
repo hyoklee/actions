@@ -24,6 +24,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y gcc-${{ matrix.gcc_version }} g++-${{ matrix.gcc_version }}
+          sudo apt install -y libaec-dev zlib1g-dev
 
       - name: Set GCC ${{ matrix.gcc_version }} as default
         run: |
@@ -33,3 +34,15 @@ jobs:
           gcc --version
           g++ --version
 
+      - name: Run Tests
+        run: |
+          mkdir build
+          cd build
+          cmake \
+            -DBUILDNAME:STRING="gcc-${{ matrix.gcc_version }}/r" \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \
+            -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
+            -DSITE:STRING=ubu \
+            ..
+          ctest -D Experimental
