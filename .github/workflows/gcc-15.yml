@@ -40,7 +40,7 @@ jobs:
           cd ..
           mkdir build
           cd build
-          ../gcc-15.0/configure -v  --enable-checking=release   --enable-shared \ --enable-threads=posix   --enable-__cxa_atexit   --enable-clocale=gnu \ --enable-languages=c,c++   --disable-multilib   --bindir=/usr/bin   --prefix=/usr/local/gcc-15.0   --program-suffix=-15
+          ../gcc-15.0/configure -v  --enable-checking=release   --enable-shared  --enable-threads=posix   --enable-__cxa_atexit  --enable-clocale=gnu  --enable-languages=c,c++   --disable-multilib   --bindir=/usr/bin   --prefix=/usr/local/gcc-15.0   --program-suffix=-15
           make -j
           sudo make install-strip
           sudo echo /usr/local/gcc-15.0/lib64 > /etc/ld.so.conf.d/gcc-15.0.conf
