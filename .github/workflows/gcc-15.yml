@@ -16,12 +16,46 @@ jobs:
 
       - name: Install GCC
         run: |
-          sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
-          sudo add-apt-repository -y ppa:ubuntu-toolchain-r/ppa
-          sudo apt update
-          sudo apt search gcc-15
-          sudo apt install -y gcc-15 g++-15
-          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-15 15 --slave /usr/bin/g++ g++ /usr/bin/g++-15
+          sudo apt-get updat
+          sudo apt-get install -y software-properties-common
+          sudo apt-get update
+          sudo apt-get install -y 
+            ca-certificates \
+            build-essential \
+            git \
+            apt-utils \
+            dialog \  
+            locales \
+            wget \
+            m4 \
+            flex \
+            bison 
+          mkdir src
+          cd src
+          git clone --depth 1 --branch master git://gcc.gnu.org/git/gcc.git gcc-15.0
+          cd gcc-15.0
+          contrib/download_prerequisites
+          cd ..
+          mkdir build
+          cd build
+          ../gcc-15.0/configure -v \
+  --enable-checking=release \
+  --enable-shared \
+  --enable-threads=posix \
+  --enable-__cxa_atexit \
+  --enable-clocale=gnu \
+  --enable-languages=c,c++ \
+  --disable-multilib \
+  --bindir=/usr/bin \
+  --prefix=/usr/local/gcc-15.0 \
+  --program-suffix=-15
+          make -j \
+          sudo make install-strip 
+          sudo echo /usr/local/gcc-15.0/lib64 > /etc/ld.so.conf.d/gcc-15.0.conf
+          rm /usr/bin/g++ 
+          sudo ln -s /usr/bin/g++-15 /usr/bin/g++
+          rm /usr/bin/gcc
+          ln -s /usr/bin/gcc-15 /usr/bin/gcc	
           gcc --version
           g++ --version
 
