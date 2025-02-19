@@ -10,7 +10,7 @@ jobs:
   test-on-debian-experimental:
     runs-on: ubuntu-latest
     container:
-      image: debian:stable-slim  # Start with stable Debian, then move to experimental
+      image: debian:latest
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
