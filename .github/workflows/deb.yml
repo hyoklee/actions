@@ -10,7 +10,7 @@ jobs:
   test-on-debian-experimental:
     runs-on: ubuntu-latest
     container:
-      image: debian:bookworm
+      image: debian:trixie
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
