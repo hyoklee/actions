@@ -54,11 +54,3 @@ jobs:
       run: |
         cat /etc/os-release  # This will show which Debian version is being used
 
-    - name: Upload Test Results
-      if: always()  # This step will run regardless of the test outcome
-      uses: actions/upload-artifact@v3
-      with:
-        name: test-results
-        path: |
-          # Specify paths where your test results are stored. Here's an example:
-          test-results/*.xml
