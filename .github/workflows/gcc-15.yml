@@ -19,17 +19,17 @@ jobs:
           sudo apt-get updat
           sudo apt-get install -y software-properties-common
           sudo apt-get update
-          sudo apt-get install -y 
+          sudo apt-get install -y \
             ca-certificates \
             build-essential \
             git \
             apt-utils \
-            dialog \  
+            dialog \
             locales \
             wget \
             m4 \
             flex \
-            bison 
+            bison
           mkdir src
           cd src
           git clone --depth 1 --branch master git://gcc.gnu.org/git/gcc.git gcc-15.0
@@ -49,13 +49,13 @@ jobs:
   --bindir=/usr/bin \
   --prefix=/usr/local/gcc-15.0 \
   --program-suffix=-15
-          make -j \
-          sudo make install-strip 
+          make -j
+          sudo make install-strip
           sudo echo /usr/local/gcc-15.0/lib64 > /etc/ld.so.conf.d/gcc-15.0.conf
-          rm /usr/bin/g++ 
+          rm /usr/bin/g++
           sudo ln -s /usr/bin/g++-15 /usr/bin/g++
           rm /usr/bin/gcc
-          ln -s /usr/bin/gcc-15 /usr/bin/gcc	
+          ln -s /usr/bin/gcc-15 /usr/bin/gcc
           gcc --version
           g++ --version
 
