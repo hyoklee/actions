@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
@@ -28,10 +28,10 @@ jobs:
           mkdir build
           cd build
           cmake \
-            -DBUILDNAME:STRING="gcc-${{ matrix.gcc_version }}/r" \
+            -DBUILDNAME:STRING="gcc-15/r" \
             -DCMAKE_BUILD_TYPE=Release \
             -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \
             -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
-            -DSITE:STRING="ubu.arm64" \
+            -DSITE:STRING="ubu" \
             ..
           ctest -D Experimental
