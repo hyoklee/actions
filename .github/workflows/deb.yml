@@ -36,7 +36,7 @@ jobs:
     - name: Install additional dependencies
       run: |
         # Install any other dependencies you might need
-        sudo apt-get install -y build-essential libjpeg-dev
+        sudo apt-get install -y build-essential libjpeg-dev cmake
 
     - name: Run Tests
       run: |
