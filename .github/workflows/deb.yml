@@ -1,4 +1,4 @@
-name: Test on Debian Experimental
+name: deb
 
 on:
   push:
@@ -15,7 +15,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
       with:
-        repository: HDFGroup/hdf4      
+        repository: HDFGroup/hdf5
     - name: Install sudo
       run: |
         su -c 'apt-get update'
@@ -36,7 +36,7 @@ jobs:
     - name: Install additional dependencies
       run: |
         # Install any other dependencies you might need
-        sudo apt-get install -y build-essential cmake libjpeg-dev zlib1g-dev 
+        sudo apt-get install -y build-essential cmake libaec-dev zlib1g-dev 
 
     - name: Run Tests
       run: |
@@ -47,7 +47,7 @@ jobs:
         cmake \
           -DBUILDNAME:STRING="gcc-15/r" \
           -DCMAKE_BUILD_TYPE=Release \
-          -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF4" \
+          -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \
           -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
           -DSITE:STRING="deb" \
           ..
