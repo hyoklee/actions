@@ -32,8 +32,8 @@ jobs:
             bison
       - name: Install GCC
         run: |
-          mkdir src
-          cd src
+          mkdir gccsrc
+          cd gccsrc
           git clone --depth 1 --branch master git://gcc.gnu.org/git/gcc.git gcc-15.0
           cd gcc-15.0
           contrib/download_prerequisites
