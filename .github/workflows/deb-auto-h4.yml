@@ -26,6 +26,10 @@ jobs:
         echo "deb http://deb.debian.org/debian experimental main" | sudo tee -a /etc/apt/sources.list
         sudo apt-get update
 
+    - name: Install additional dependencies
+      run: |
+        sudo apt-get install -y autoconf automake  build-essential libjpeg-dev  libtool libtool-bin zlib1g-dev 
+
     - name: Install g++ 15 from experimental
       run: |
         sudo apt-get install -y -t experimental g++-15
@@ -34,15 +38,11 @@ jobs:
       run: |
         g++-15 --version
 
-    - name: Install additional dependencies
-      run: |
-        # Install any other dependencies you might need
-        sudo apt-get install -y autoconf automake  build-essential libjpeg-dev  libtool libtool-bin zlib1g-dev 
 
     - name: Run Tests
       run: |
         export CC=gcc-15
         export CXX=g++-15
         ./autogen.sh
-        ./configure --prefix=/tmp  --enable-hdf4-xdr
+        ./configure CC=gcc-15 CXX=g++-15 --prefix=/tmp  --enable-hdf4-xdr
         make
