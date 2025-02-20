@@ -16,6 +16,7 @@ jobs:
       uses: actions/checkout@v4
       with:
         repository: HDFGroup/hdf4
+        ref: hdf_4_3_0
     - name: Install sudo
       run: |
         su -c 'apt-get update'
