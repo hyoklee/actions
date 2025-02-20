@@ -44,5 +44,5 @@ jobs:
         export CC=gcc-15
         export CXX=g++-15
         ./autogen.sh
-        ./configure CC=gcc-15 CXX=g++-15 --prefix=/tmp  --enable-hdf4-xdr
+        ./configure CC=gcc-15 CXX=g++-15 --prefix=/tmp --enable-shared --disable-fortran --disable-netcdf
         make
