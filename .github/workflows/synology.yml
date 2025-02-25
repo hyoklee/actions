@@ -11,10 +11,11 @@ jobs:
       - name: test
         shell: bash
         run: |
+          mkdir source
           git clone https://github.com/SynologyOpenSource/ExamplePackages
           git clone https://github.com/SynologyOpenSource/pkgscripts-ng
           cd pkgscripts-ng
           sudo ./EnvDeploy -v 7.2 -p alpine
-          cp -r ../ExamplePackages/ExamplePackage .
+          cp -r ../ExamplePackages/ExamplePackage ../source
           sudo ./PkgCreate.py -v 7.2 -p alpine -c ExamplePackage
           ls ../result_spk
