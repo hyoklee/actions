@@ -1,0 +1,16 @@
+name: synology
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: test
+        shell: bash
+        run: |
+          git clone https://github.com/SynologyOpenSource/pkgscripts-ng
+          cd pkgscript-sng
+          sudo ./EnvDeploy -v 7.2 -p alpine
