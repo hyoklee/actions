@@ -19,3 +19,8 @@ jobs:
           cp -r ../ExamplePackages/ExamplePackage ../source
           sudo ./PkgCreate.py -v 7.2 -p alpine -c ExamplePackage
           ls ../result_spk
+      - name: upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: ExamplePackage-1.0.0-0001.zip
+          path: /home/runner/work/actions/actions/result_spk/ExamplePackage-1.0.0-0001
