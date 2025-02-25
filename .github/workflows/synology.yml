@@ -12,5 +12,5 @@ jobs:
         shell: bash
         run: |
           git clone https://github.com/SynologyOpenSource/pkgscripts-ng
-          cd pkgscript-sng
+          cd pkgscripts-ng
           sudo ./EnvDeploy -v 7.2 -p alpine
