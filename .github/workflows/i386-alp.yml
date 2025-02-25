@@ -1,9 +1,9 @@
-name: i386 alp szip
+name: i386 alp pr5333
 
 on:
   push:
     branches:
-      - main-
+      - main
 
 jobs:
   build:
@@ -11,8 +11,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          repository: cho-m/hdf5
-          ref: fix-libaec-detection
+          repository: byrnHDF/hdf5
+          ref: develop-tb-data
 
       - name: setup alpine
         uses: jirutka/setup-alpine@v1
@@ -32,6 +32,6 @@ jobs:
           export LDFLAGS="-L/usr/lib -lsz"
           mkdir build
           cd build
-          cmake -DSITE:STRING=alp.i386 -DBUILDNAME:STRING="pr5010/r-st/+sz" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=ON -DBUILD_STATIC_LIBS:BOOL=OFF ..
+          cmake -DSITE:STRING=alp.i386 -DBUILDNAME:STRING="pr5333/r-st/+sz" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=ON -DBUILD_STATIC_LIBS:BOOL=OFF ..
           ctest -D Experimental -C Release
         shell: alpine.sh --root {0}
