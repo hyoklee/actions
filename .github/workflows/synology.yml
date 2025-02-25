@@ -16,5 +16,5 @@ jobs:
           cd pkgscripts-ng
           sudo ./EnvDeploy -v 7.2 -p alpine
           cp -r ../ExamplePackages/ExamplePackage .
-          ./PkgCreate.py -v 7.2 -p alpine -c ExamplePackage
+          sudo ./PkgCreate.py -v 7.2 -p alpine -c ExamplePackage
           ls ../result_spk
