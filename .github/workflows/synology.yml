@@ -15,9 +15,9 @@ jobs:
           git clone https://github.com/SynologyOpenSource/ExamplePackages
           git clone https://github.com/SynologyOpenSource/pkgscripts-ng
           cd pkgscripts-ng
-          sudo ./EnvDeploy -v 7.2 -p geminilake
+          sudo ./EnvDeploy -v 7.2 -p grantley
           cp -r ../ExamplePackages/ExamplePackage ../source
-          sudo ./PkgCreate.py -v 7.2 -p geminilake -c ExamplePackage
+          sudo ./PkgCreate.py -v 7.2 -p grantley -c ExamplePackage
           ls ../result_spk
       - name: upload
         uses: actions/upload-artifact@v4
