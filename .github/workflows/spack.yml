@@ -19,4 +19,4 @@ jobs:
     - name: spack
       run: |
         . ./spack/share/spack/setup-env.sh
-        spack spec -I hdf5@1.14.5 ~mpi
+        spack spec -I hdf5@1.14.5~mpi

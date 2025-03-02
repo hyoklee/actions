@@ -31,6 +31,8 @@ jobs:
           cat /etc/os-release
           export CMAKE_PREFIX_PATH=/usr/lib/cmake:$CMAKE_PREFIX_PATH
           export LDFLAGS="-L/usr/lib -lsz"
+          export OMPI_ALLOW_RUN_AS_ROOT=1
+          export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
           mkdir build
           cd build
           cmake -DSITE:STRING=alp.i386 -DBUILDNAME:STRING="pr5344/r-st/sz/p" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=ON -DBUILD_STATIC_LIBS:BOOL=OFF -DHDF5_ENABLE_PARALLEL=ON ..
