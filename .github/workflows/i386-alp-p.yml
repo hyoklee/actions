@@ -26,6 +26,7 @@ jobs:
             libaec-dev
             zlib-dev
             openmpi-dev
+            openssh-client
       - name: run script
         run: |
           cat /etc/os-release
