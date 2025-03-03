@@ -1,4 +1,4 @@
-name: spack hdf5@1.14.5-mpi
+name: spack hdf5@1.14.5-mpi%oneapi
 
 on:
   push:
@@ -19,5 +19,5 @@ jobs:
     - name: spack
       run: |
         . ./spack/share/spack/setup-env.sh
-        spack spec -I hdf5@1.14.5~mpi
-        spack install hdf5@1.14.5~mpi
+        spack spec -I hdf5@1.14.5~mpi%oneapi
+        spack install hdf5@1.14.5~mpi%oneapi
