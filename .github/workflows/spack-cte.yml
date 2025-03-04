@@ -25,5 +25,5 @@ jobs:
       run: |
         . ./spack/share/spack/setup-env.sh
         spack repo add iowarp/iowarp-spack
-        spack spec -I cte-hermes-shm+vfd
-        spack install cte-hermes-shm+vfd
+        spack spec -I cte-hermes-shm+vfd ^hdf5@develop-2.0
+        spack install cte-hermes-shm+vfd ^hdf5@develop-2.0

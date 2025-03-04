@@ -11,7 +11,13 @@ jobs:
   build:
     runs-on: ubuntu-24.04
     steps:
-    - name: Checkout spack
+    - name: oneapi
+      uses: fortran-lang/setup-fortran@v1
+      id: setup-fortran
+      with:
+        compiler: intel
+        version: '2025.0'
+    - name: checkout spack
       uses: actions/checkout@v4
       with:
         repository: spack/spack
@@ -19,8 +25,7 @@ jobs:
     - name: spack
       run: |
         . ./spack/share/spack/setup-env.sh
-        spack install intel-oneapi-compilers
-        spack compiler add `spack location -i intel-oneapi-compilers`/compiler/latest/linux/bin/intel64
-        spack compiler add `spack location -i intel-oneapi-compilers`/compiler/latest/linux/bin	
+        spack external find
+        spack compiler add
         spack spec -I hdf5@1.14.5~mpi%oneapi
         spack install hdf5@1.14.5~mpi%oneapi
