@@ -19,5 +19,8 @@ jobs:
     - name: spack
       run: |
         . ./spack/share/spack/setup-env.sh
+        spack install intel-oneapi-compilers
+        spack compiler add `spack location -i intel-oneapi-compilers`/compiler/latest/linux/bin/intel64
+        spack compiler add `spack location -i intel-oneapi-compilers`/compiler/latest/linux/bin	
         spack spec -I hdf5@1.14.5~mpi%oneapi
         spack install hdf5@1.14.5~mpi%oneapi
