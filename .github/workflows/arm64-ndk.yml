@@ -7,7 +7,14 @@ jobs:
   ndk:
     name: ndk
     runs-on: ubuntu-24.04-arm
+    
     steps:
+      - name: Setup Android Environment
+        uses: actions/setup-android@v1
+        with:
+          android-sdk-version: 'latest'
+          android-emulator-image: 'arm64-system-image'
+
       - name: Checkout
         uses: actions/checkout@v4
         with:
