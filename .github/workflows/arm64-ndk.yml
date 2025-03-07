@@ -35,6 +35,8 @@ jobs:
           mkdir ndk
           cd ndk
           ../repo init -u https://android.googlesource.com/platform/manifest -b master-ndk --partial-clone
+          ../repo sync
+          ls
           ./checkbuild.py
 
       - name: test
