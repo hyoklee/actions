@@ -1,0 +1,29 @@
+name: arm64 lin ndk
+on:
+  push:
+    branches:
+      - main
+jobs:
+  ndk:
+    name: ndk
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          repository: HDFGroup/hdf5
+
+      - name: test
+        run: |
+          dir /usr/local/lib/android/sdk/ndk/
+          mkdir build
+          cd build
+          cmake \
+          -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK/build/cmake/android.toolchain.cmake \
+          -DANDROID:BOOL=TRUE \
+          -DANDROID_ABI=arm64-v8a \
+          -DBUILDNAME:STRING=pr4986/ndk27.0 \
+          -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
+          -DSITE:STRING=arm64-v8a \
+          ..
+          ctest -D Experimental
