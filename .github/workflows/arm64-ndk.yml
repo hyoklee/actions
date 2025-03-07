@@ -10,11 +10,8 @@ jobs:
     
     steps:
       - name: Setup Android Environment
-        uses: actions/setup-android@v1
-        with:
-          android-sdk-version: 'latest'
-          android-emulator-image: 'arm64-system-image'
-
+        run: |
+          sudo apt install google-android-ndk-installer
       - name: Checkout
         uses: actions/checkout@v4
         with:
