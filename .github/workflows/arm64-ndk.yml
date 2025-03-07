@@ -9,17 +9,21 @@ jobs:
     runs-on: ubuntu-24.04-arm
     
     steps:
-      - name: Setup Android Environment
-        run: |
-          curl -O -L  https://github.com/lzhiyong/termux-ndk/releases/download/android-ndk/android-ndk-r27b-aarch64.zip
-          unzip android-ndk-r27b-aarch64.zip
       - name: Checkout
         uses: actions/checkout@v4
         with:
           repository: HDFGroup/hdf5
+    
+      - name: Setup Android Environment
+        run: |
+          curl -O -L  https://github.com/lzhiyong/termux-ndk/releases/download/android-ndk/android-ndk-r27b-aarch64.zip
+          unzip android-ndk-r27b-aarch64.zip
 
       - name: test
         run: |
+          pwd
+          export ANDROID_SDK=${{ runner.workspace }}/android-ndk-r27b
+          echo RANDROID_SDK
           dir .
           mkdir build
           cd build
