@@ -22,7 +22,7 @@ jobs:
       - name: test
         run: |
           pwd
-          export ANDROID_NDK=${{ runner.workspace }}/android-ndk-r27b
+          export ANDROID_NDK=${{ runner.workspace }}/actions/android-ndk-r27b
           echo $ANDROID_NDK
           dir .
           mkdir build
