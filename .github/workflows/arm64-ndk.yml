@@ -16,11 +16,11 @@ jobs:
     
       - name: Setup Android Environment
         run: |
-          curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
-          chmod a+x ~/bin/repo
+          curl -O  -L https://storage.googleapis.com/git-repo-downloads/repo
+          chmod a+x ./repo
           mkdir working-directory-name 
           cd working-directory-name 
-          repo init -u git://android.git.kernel.org/platform/manifest.git
+          ../repo init -u git://android.git.kernel.org/platform/manifest.git
 
       - name: test
         run: |
