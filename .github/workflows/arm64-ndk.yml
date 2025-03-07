@@ -16,8 +16,11 @@ jobs:
     
       - name: Setup Android Environment
         run: |
-          curl -O -L  https://github.com/lzhiyong/termux-ndk/releases/download/android-ndk/android-ndk-r27b-aarch64.zip
-          unzip android-ndk-r27b-aarch64.zip
+          curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
+          chmod a+x ~/bin/repo
+          mkdir working-directory-name 
+          cd working-directory-name 
+          repo init -u git://android.git.kernel.org/platform/manifest.git
 
       - name: test
         run: |
