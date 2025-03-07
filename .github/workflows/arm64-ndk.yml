@@ -20,7 +20,7 @@ jobs:
           chmod a+x ./repo
           mkdir working-directory-name 
           cd working-directory-name 
-          ../repo init -u git://android.git.kernel.org/platform/manifest.git
+          ../repo init -u https://android.googlesource.com/platform/manifest -b master-ndk --partial-clone
 
       - name: test
         run: |
