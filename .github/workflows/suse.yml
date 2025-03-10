@@ -7,7 +7,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    container: "opensuse:tumbleweed"
+    container: "opensuse/tumbleweed"
     steps:
       - name: checkout
         uses: actions/checkout@v4
