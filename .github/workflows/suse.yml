@@ -20,7 +20,7 @@ jobs:
           zypper in -y \
               file gcc-fortran git \
               make patch unzip which tree \
-              cmake bison libstdc++-static \
+              cmake bison  \
               openmpi openmpi-devel
       - name: test
         run: |
