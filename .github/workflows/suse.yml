@@ -20,8 +20,7 @@ jobs:
           zypper in -y \
               file gcc-fortran git \
               make patch unzip which tree \
-              cmake bison zlib-devel \
-              openmpi openmpi-devel
+              cmake bison zlib-devel
       - name: test
         run: |
           mkdir build && cd build && cmake -DSITE:STRING="sus-t" -DBUILDNAME:STRING="6/f/cpp/hl" \
