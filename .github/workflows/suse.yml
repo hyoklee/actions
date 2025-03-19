@@ -2,7 +2,7 @@ name: suse hdf5-1.14.6 f cpp hl
 
 on:
   push:
-    branches: main
+    branches: main-
 
 jobs:
   test:
