@@ -1,21 +1,14 @@
 name: lin auto jl
 
-on:
-  push:
-    branches:
-      - main-
-
-permissions:
-  contents: read
+on: [push, pull_request]
 
 jobs:
-  Julia:
-    name: Julia
+  julia:
+    name: lin auto jl
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
-          repository: HDFGroup/hdf5
           path: hdf5
       - name: Install HDF5
         run: |

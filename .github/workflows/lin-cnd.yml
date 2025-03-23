@@ -3,7 +3,7 @@ name: conda
 on:
   push:
     branches:
-      - main
+      - main-
 
 jobs:
   build:
@@ -36,4 +36,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: config-x64-linux-out.log
-          path: $SRC_DIR/vcpkg/buildtrees/cte-hermes-shm/config-x64-linux-out.log
+          path: /usr/share/miniconda/envs/test/conda-bld/iowarp_1742332809086/work/vcpkg/buildtrees/cte-hermes-shm/config-x64-linux-out.log

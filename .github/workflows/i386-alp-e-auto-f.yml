@@ -3,7 +3,7 @@ name: i386 alp e auto f
 on:
   push:
     branches:
-      - main-
+      - develop-
 
 jobs:
   build:
@@ -17,18 +17,19 @@ jobs:
           arch: x86
           branch: edge
           packages: >
+            autoconf
+            automake
             build-base
             libgit2-dev
-            curl
+            libtool
             gcc
             gfortran
+            perl
       - name: run script
         run: |
           uname -a
-          curl -O -L https://support.hdfgroup.org/releases/hdf5/v1_14/v1_14_5/downloads/hdf5-1.14.5.tar.gz
-          tar zxvf hdf5-1.14.5.tar.gz
-          cd hdf5-1.14.5
-          ./configure --enable-fortran --enable-hl --enable-shared --enable-cxx 
+          ./autogen.sh
+          ./configure --enable-fortran --enable-hl --enable-shared --enable-cxx
           make
           make check
         shell: alpine.sh --root {0}

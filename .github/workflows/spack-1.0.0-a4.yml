@@ -1,0 +1,32 @@
+name: spack-1.0.0.a4 hdf5@1.14.5-mpi%oneapi
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: oneapi
+      uses: fortran-lang/setup-fortran@v1
+      id: setup-fortran
+      with:
+        compiler: intel
+        version: '2025.0'
+    - name: checkout spack
+      uses: actions/checkout@v4
+      with:
+        repository: spack/spack
+        ref: v1.0.0-alpha.1
+        path: ./spack
+    - name: spack
+      run: |
+        . ./spack/share/spack/setup-env.sh
+        spack external find
+        spack compiler add
+        spack spec -I hdf5@1.14.5~mpi%oneapi
+        spack install hdf5@1.14.5~mpi%oneapi
