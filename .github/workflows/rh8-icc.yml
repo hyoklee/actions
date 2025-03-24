@@ -23,6 +23,6 @@ jobs:
           mv oneAPI.repo /etc/yum.repos.d
       - name: install oneapi
         run: |
-          dnf install intel-oneapi-base-toolkit
+          dnf install -y intel-oneapi-base-toolkit-2025.0.0-884
 
 # https://www.intel.com/content/www/us/en/docs/oneapi/installation-guide-linux/2025-0/yum-dnf-001.html#BASE-YUM-DNF
