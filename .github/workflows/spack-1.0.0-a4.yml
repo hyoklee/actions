@@ -2,9 +2,9 @@ name: spack-1.0.0.a4 hdf5@1.14.5-mpi%oneapi
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main- ]
   pull_request:
-    branches: [ main ]
+    branches: [ main- ]
   workflow_dispatch:
 
 jobs:

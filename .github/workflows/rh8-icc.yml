@@ -2,7 +2,7 @@ name: ubi8 icc hdf5-1.14.6
 
 on:
   push:
-    branches: main-
+    branches: main
 
 jobs:
   test:
