@@ -19,16 +19,30 @@ jobs:
           path: ./hdf5
       - name: install dependencies
         run: |
-          dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
-          dnf update
-          dnf list zlib
-          dnf list libaec
+#          dnf install  https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+#          dnf update
+          dnf install -y zlib
+          dnf install -y libaec
       - name: set repo
         run: |
           more /etc/redhat-release
           mv oneAPI.repo /etc/yum.repos.d
-#      - name: install oneapi
-#        run: |
-#          dnf install -y intel-oneapi-base-toolkit-2025.0.0-884
+      - name: install oneapi
+        run: |
+          dnf install -y intel-oneapi-base-toolkit-2025.0.0-884
+      - name: build hdf5
+        run: |
+          cd hdf5
+          mkdir build
+          cd build
+          cmake -G "Unix Makefiles" --log-level=VERBOSE --fresh \
+                -DBUILD_SHARED_LIBS:BOOL=ON \
+                -DHDF5_ENABLE_PARALLEL:BOOL=ON \
+                -DCMAKE_C_COMPILER=`which mpicc` -DCMAKE_CXX_COMPILER=`which mpicxx` -DCMAKE_Fortran_COMPILER=`which mpifort` \
+                -DHDF5_PACKAGE_EXTLIBS:BOOL=ON \
+                -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=ON -DHDF5_ENABLE_Z_LIB_SUPPORT:BOOL=ON \
+                -DZLIB_USE_EXTERNAL:BOOL=OFF -DZLIB_LIBRARY:PATH="/usr/lib64/libz.so.1" -DZLIB_INCLUDE_DIR="/usr/include" \
+                -DSZIP_USE_EXTERNAL:BOOL=OFF -DSZIP_LIBRARY:PATH="/usr/lib64/libsz.so.2.0.1" -DSZIP_INCLUDE_DIR="/usr/include" \
+                ..
 
 # https://www.intel.com/content/www/us/en/docs/oneapi/installation-guide-linux/2025-0/yum-dnf-001.html#BASE-YUM-DNF
