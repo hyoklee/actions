@@ -17,9 +17,9 @@ jobs:
       - name: set repo
         run: |
           more /etc/redhat-release
-          sudo mv oneAPI.repo /etc/yum.repos.d
+          mv oneAPI.repo /etc/yum.repos.d
       - name: install oneapi
         run: |
-          sudo dnf install intel-oneapi-base-toolkit
+          dnf install intel-oneapi-base-toolkit
 
 # https://www.intel.com/content/www/us/en/docs/oneapi/installation-guide-linux/2025-0/yum-dnf-001.html#BASE-YUM-DNF
