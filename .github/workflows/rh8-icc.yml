@@ -17,16 +17,18 @@ jobs:
           repository: HDFGroup/hdf5
           ref: hdf5_1_14_6
           path: ./hdf5
+      - name: install dependencies
+        run: |
+          dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+          dnf update
+          dnf list zlib
+          dnf list libaec
       - name: set repo
         run: |
           more /etc/redhat-release
           mv oneAPI.repo /etc/yum.repos.d
-      - name: install oneapi
-        run: |
-          dnf install -y intel-oneapi-base-toolkit-2025.0.0-884
-      - name: install dependencies
-        run: |
-          dnf list zlib
-          dnf list libaec
+#      - name: install oneapi
+#        run: |
+#          dnf install -y intel-oneapi-base-toolkit-2025.0.0-884
 
 # https://www.intel.com/content/www/us/en/docs/oneapi/installation-guide-linux/2025-0/yum-dnf-001.html#BASE-YUM-DNF
