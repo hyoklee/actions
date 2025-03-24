@@ -11,6 +11,8 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v4
+      - name: checkout hdf5
+        uses: actions/checkout@v4
         with:
           repository: HDFGroup/hdf5
           ref: hdf5_1_14_6
