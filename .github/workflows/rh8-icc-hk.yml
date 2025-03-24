@@ -22,6 +22,7 @@ jobs:
           dnf install -y libaec
           dnf install -y procps-ng
           dnf install -y zlib
+          find / -name 'libaec*.cmake'
       - name: set repo
         run: |
           more /etc/redhat-release
