@@ -16,6 +16,7 @@ jobs:
         with:
           repository: HDFGroup/hdf5
           ref: hdf5_1_14_6
+          path: ./hdf5
       - name: set repo
         run: |
           more /etc/redhat-release
