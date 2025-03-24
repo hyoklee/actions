@@ -21,6 +21,7 @@ jobs:
         run: |
           dnf install -y zlib
           dnf install -y libaec
+          dnf install -y procps-ng
       - name: set repo
         run: |
           more /etc/redhat-release
