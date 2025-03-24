@@ -1,8 +1,8 @@
-name: ubi8 icc hdf5-1.14.6
+name: ubi8 icc hk
 
 on:
   push:
-    branches: main-
+    branches: main
 
 jobs:
   test:
@@ -14,8 +14,7 @@ jobs:
       - name: checkout hdf5
         uses: actions/checkout@v4
         with:
-          repository: HDFGroup/hdf5
-          ref: hdf5_1_14_6
+          repository: hyoklee/hdf5
           path: ./hdf5
       - name: install dependencies
         run: |
