@@ -1,0 +1,19 @@
+name: ubi8 icc hdf5-1.14.6
+
+on:
+  push:
+    branches: main-
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    container: "ubi8:latest"
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+        with:
+          repository: HDFGroup/hdf5
+          ref: hdf5_1_14_6
+      - name: install
+        run: |
+          more /etc/redhat-release
