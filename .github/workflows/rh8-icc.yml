@@ -7,7 +7,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    container: "ubi8:latest"
+    container: "redhat/ubi8:latest"
     steps:
       - name: checkout
         uses: actions/checkout@v4
