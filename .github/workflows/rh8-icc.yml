@@ -26,6 +26,6 @@ jobs:
           dnf install -y intel-oneapi-base-toolkit-2025.0.0-884
       - name: install dependencies
         run: |
-          dnf install -y zlib-dev libaec-dev
+          dnf install -y zlib-develop libaec-develop
 
 # https://www.intel.com/content/www/us/en/docs/oneapi/installation-guide-linux/2025-0/yum-dnf-001.html#BASE-YUM-DNF
