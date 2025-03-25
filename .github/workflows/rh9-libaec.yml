@@ -1,13 +1,13 @@
-name: ubi10 libaec
+name: ubi9 libaec
 
 on:
   push:
-    branches: main-
+    branches: main
 
 jobs:
   test:
     runs-on: ubuntu-latest
-    container: "redhat/ubi10:latest"
+    container: "redhat/ubi9:latest"
     steps:
       - name: install dependencies
         run: |
