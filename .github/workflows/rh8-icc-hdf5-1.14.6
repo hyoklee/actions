@@ -1,8 +1,8 @@
-name: ubi8 icx hdf5
+name: ubi8 icc hdf5-1.14.6
 
 on:
   push:
-    branches: main
+    branches: main-
 
 jobs:
   test:
@@ -15,6 +15,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: HDFGroup/hdf5
+          ref: hdf5_1_14_6
           path: ./hdf5
       - name: install dependencies
         run: |
