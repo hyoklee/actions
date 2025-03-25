@@ -2,7 +2,7 @@ name: ubi8 icc hk
 
 on:
   push:
-    branches: main
+    branches: main-
 
 jobs:
   test:
@@ -20,6 +20,7 @@ jobs:
         run: |
           dnf install -y cmake
           dnf install -y libaec
+          dnf install -y libaec-devel
           dnf install -y procps-ng
           dnf install -y zlib
           find / -name 'libaec*.cmake'

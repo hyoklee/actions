@@ -1,0 +1,14 @@
+name: ubi8 libaec
+
+on:
+  push:
+    branches: main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    container: "redhat/ubi8:latest"
+    steps:
+      - name: install dependencies
+        run: |
+          dnf install -y libaec-devel
