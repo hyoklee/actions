@@ -20,6 +20,7 @@ jobs:
         run: |
           dnf install -y cmake
           dnf install -y libaec
+          dnf install -y libaec-devel
           dnf install -y procps-ng
           dnf install -y zlib
       - name: set repo
