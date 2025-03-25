@@ -42,8 +42,9 @@ jobs:
                 -DHDF5_ENABLE_PARALLEL:BOOL=ON \
                 -DCMAKE_C_COMPILER=`which mpicc` -DCMAKE_CXX_COMPILER=`which mpicxx` -DCMAKE_Fortran_COMPILER=`which mpifort` \
                 -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=ON -DHDF5_ENABLE_ZLIB_SUPPORT:BOOL=ON \
+                -DSZIP_LIBRARY:PATH="/usr/lib64/libsz.so.2.0.1" -DSZIP_INCLUDE_DIR="/usr/include" \
                 -DSITE:STRING=rh8 -DBUILDNAME:STRING="hk/r/icx/ae+zl/p" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \
                 ..
                 ctest -D Experimental -C Release
-          
+
 # https://www.intel.com/content/www/us/en/docs/oneapi/installation-guide-linux/2025-0/yum-dnf-001.html#BASE-YUM-DNF
