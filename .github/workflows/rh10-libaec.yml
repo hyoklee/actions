@@ -1,0 +1,15 @@
+name: ubi10 libaec
+
+on:
+  push:
+    branches: main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    container: "redhat/ubi10:latest"
+    steps:
+      - name: install dependencies
+        run: |
+          dnf install -y libaec-devel
+          find / -name 'libaec*.cmake'
