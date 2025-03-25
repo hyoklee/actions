@@ -11,5 +11,5 @@ jobs:
     steps:
       - name: install dependencies
         run: |
-          dnf install -y libaec-devel
+          dnf install -y libaec
           find / -name 'libaec*.cmake'
