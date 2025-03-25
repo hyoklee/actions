@@ -2,7 +2,7 @@ name: ubi9 libaec
 
 on:
   push:
-    branches: main
+    branches: main-
 
 jobs:
   test:

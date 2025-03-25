@@ -14,7 +14,7 @@ jobs:
       - name: checkout hdf5
         uses: actions/checkout@v4
         with:
-          repository: HDFGroup/hdf5
+          repository: hyoklee/hdf5
           path: ./hdf5
       - name: install dependencies
         run: |

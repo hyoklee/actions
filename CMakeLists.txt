@@ -1,14 +1,9 @@
 cmake_minimum_required(VERSION 3.18)
 project(action LANGUAGES C)
-find_package(JPEG)
+find_package(libaec CONFIG)
+get_cmake_property(_variableNames VARIABLES)
 
-# Specify the script to be executed
-set(MY_SCRIPT "run.sh")
-
-# Add a custom command to execute the script
-add_custom_command(
-    TARGET my_target
-    POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E cmake_execute_process
-    ARGS ${MY_SCRIPT}
-)
+if (DEFINED SZIP_LIBRARY)
+  message(${SZIP_LIBRARY})
+  message(${SZIP_INCLUDE_DIR})
+endif()
