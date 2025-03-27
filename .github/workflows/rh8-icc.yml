@@ -2,7 +2,7 @@ name: ubi8 icx hdf5
 
 on:
   push:
-    branches: main
+    branches: main-
 
 jobs:
   test:
