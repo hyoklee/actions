@@ -11,7 +11,8 @@ jobs:
     steps:
       - name: install
         run: |
+          brew install docker
           brew install colima
-          colima start
+          brew services start colima
           docker version
           docker model status
