@@ -1,0 +1,13 @@
+name: mac-15 docker
+
+on:
+  push:
+    branches: main
+
+jobs:
+  build:
+    name: docker
+    runs-on: macos-15
+    steps:
+      - name: install
+        run: brew install docker
