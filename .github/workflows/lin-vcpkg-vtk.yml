@@ -14,7 +14,7 @@ jobs:
           sudo apt update
       - name: Install vcpkg
         run: |
-          --branch 2025.03.19 --single-branch
+          git clone --branch 2025.03.19 --single-branch https://github.com/microsoft/vcpkg
           ./vcpkg/bootstrap-vcpkg.sh
           cd vcpkg
           ./vcpkg install gdal[core,hdf5]
