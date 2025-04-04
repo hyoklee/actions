@@ -17,5 +17,5 @@ jobs:
           git clone https://github.com/microsoft/vcpkg
           ./vcpkg/bootstrap-vcpkg.sh
           cd vcpkg
-          ./vcpkg install gdal[core, hdf5]
-          ./vcpkg install vtk[core, gdal]
+          ./vcpkg install gdal[core,hdf5]
+          ./vcpkg install vtk[core,gdal]
