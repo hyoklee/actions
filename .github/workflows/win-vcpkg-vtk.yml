@@ -3,7 +3,7 @@ name: win vcpkg vtk
 on:
   push:
     branches:
-      - main
+      - main-
 
 jobs:
   build:
