@@ -1,0 +1,15 @@
+name: win vcpkg vtk
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: install
+        run: |
+          vcpkg install gdal[core,hdf5]
+          vcpkg install vtk[core,gdal]
