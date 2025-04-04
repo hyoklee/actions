@@ -14,9 +14,9 @@ jobs:
           sudo apt update
       - name: Install vcpkg
         run: |
-          git clone https://github.com/microsoft/vcpkg
+          --branch 2025.03.19 --single-branch
           ./vcpkg/bootstrap-vcpkg.sh
           cd vcpkg
           ./vcpkg install gdal[core,hdf5]
-          ./vcpkg install mapnik[core,input-gdal]
-#          ./vcpkg install gz-common[core,gdal]
+          ./vcpkg install gz-common[core]
+#          ./vcpkg install mapnik[core,input-gdal]
