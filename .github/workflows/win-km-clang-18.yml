@@ -1,0 +1,16 @@
+name: win km clang-18
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: install
+        uses: KyleMayes/install-llvm-action@v2
+        with:
+          version: "18"    
