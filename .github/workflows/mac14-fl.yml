@@ -1,4 +1,4 @@
-name: mac-13 flang
+name: mac-14 flang
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    runs-on: macos-13
+    runs-on: macos-14
     steps:
       - name: install
         run: |
@@ -22,7 +22,7 @@ jobs:
           mkdir build
           cd build
           cmake -G Ninja \
-            -DSITE:STRING=mac-13 \
+            -DSITE:STRING=mac-14 \
             -DBUILDNAME:STRING=fl \
             -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
             -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \
