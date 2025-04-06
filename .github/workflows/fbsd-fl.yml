@@ -36,7 +36,7 @@ jobs:
             cd build
             cmake \
             -DCMAKE_Fortran_FLAGS="--backend=llvm -fPIC  -fno-PIE" \
-            -DHDF5_BUILD_FORTRAN:BOOL=ON \	    
+            -DHDF5_BUILD_FORTRAN:BOOL=ON \
             -DSITE:STRING=fbsd14 \
             -DBUILDNAME:STRING="5/r/f" \
             -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
