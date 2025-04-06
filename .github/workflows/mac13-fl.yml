@@ -17,6 +17,7 @@ jobs:
         with:
           repository: HDFGroup/hdf5
       - name: test
+        run: |
           export FC=/usr/local/bin/flang-new
           mkdir build
           cd build
