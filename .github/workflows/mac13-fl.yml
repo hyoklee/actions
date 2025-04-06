@@ -1,0 +1,15 @@
+name: mac-13 flang
+
+on:
+  push:
+    branches: main
+
+jobs:
+  build:
+    runs-on: macos-13
+    steps:
+      - name: test
+        run: |
+          brew install ninja
+          brew install flang
+          which flang-new
