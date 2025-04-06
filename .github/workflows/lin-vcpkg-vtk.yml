@@ -9,8 +9,6 @@ jobs:
     name: vcpkg
     runs-on: ubuntu-latest
     steps:
-      - name: install cmake and ninja
-        uses: lukka/get-cmake@latest    
       - name: install dependencies
         run: |
           sudo apt update
