@@ -3,17 +3,19 @@ name: lin vcpkg vtk
 on:
   push:
     branches:
-      - main-
+      - main
 jobs:
   vcpkg:
     name: vcpkg
     runs-on: ubuntu-latest
     steps:
-      - name: Install dependencies
+      - name: install cmake and ninja
+        uses: lukka/get-cmake@latest    
+      - name: install dependencies
         run: |
           sudo apt update
           sudo apt install -y nasm
-      - name: Install vcpkg
+      - name: install vcpkg
         run: |
           git clone --branch 2025.03.19 --single-branch https://github.com/microsoft/vcpkg
           ./vcpkg/bootstrap-vcpkg.sh

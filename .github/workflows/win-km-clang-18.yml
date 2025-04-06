@@ -3,7 +3,7 @@ name: win km clang-18
 on:
   push:
     branches:
-      - main
+      - main-
 
 jobs:
   build:
