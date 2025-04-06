@@ -1,4 +1,4 @@
-name: fbsd fl
+name: fbsd lf
 
 on:
   push:
@@ -35,7 +35,7 @@ jobs:
             mkdir build
             cd build
             cmake \
-            -DCMAKE_Fortran_FLAGS="--backend=llvm -fPIC  -fno-PIE" \
+            -DCMAKE_Fortran_FLAGS="--backend=llvm -fPIC  -fno-pie" \
             -DHDF5_BUILD_FORTRAN:BOOL=ON \
             -DSITE:STRING=fbsd14 \
             -DBUILDNAME:STRING="5/r/f" \
