@@ -8,8 +8,23 @@ jobs:
   build:
     runs-on: macos-13
     steps:
-      - name: test
+      - name: install
         run: |
           brew install ninja
           brew install flang
-          which flang-new
+      - name: checkout
+        uses: actions/checkout@v4
+        with:
+          repository: HDFGroup/hdf5
+      - name: test
+          export FC=/usr/local/bin/flang-new
+          mkdir build
+          cd build
+          cmake -G Ninja \
+            -DSITE:STRING=mac-14 \
+            -DBUILDNAME:STRING=f \
+            -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
+            -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \
+            -DHDF5_BUILD_FORTRAN=ON \
+            ..
+          ctest -T Build
