@@ -2,7 +2,7 @@ name: mac-13 flang
 
 on:
   push:
-    branches: main
+    branches: main-
 
 jobs:
   build:
