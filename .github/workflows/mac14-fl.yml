@@ -18,7 +18,7 @@ jobs:
           repository: HDFGroup/hdf5
       - name: test
         run: |
-          export FC=/opt/brew/bin/flang-new
+          export FC=/opt/homebrew/bin/flang-new
           mkdir build
           cd build
           cmake -G Ninja \
