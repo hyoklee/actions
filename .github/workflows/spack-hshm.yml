@@ -1,0 +1,28 @@
+name: spack hshm~mochi
+
+on:
+  push:
+    branches: main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+    - name: checkout spack
+      uses: actions/checkout@v4
+      with:
+        repository: spack/spack
+        ref: v0.23.0
+        path: ./spack
+    - name: checkout iowarp
+      uses: actions/checkout@v4
+      with:
+        repository: iowarp/iowarp-install
+        path: ./iowarp
+    - name: spack
+      run: |
+        . ./spack/share/spack/setup-env.sh
+        spack repo add iowarp/iowarp-spack
+        spack spec -I cte-hermes-shm~mochi
+        spack install cte-hermes-shm~mochi
