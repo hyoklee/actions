@@ -20,8 +20,9 @@ jobs:
       - name: test
         run: |
           ls /opt/homebrew/bin/*lang*
+          ls /opt/homebrew/opt/llvm/*lang*
           export FC=/opt/homebrew/bin/flang-20
-          export CC=/opt/homebrew/bin/clang
+          export CC=/opt/homebrew/opt/llvm/bin/clang
           mkdir build
           cd build
           cmake -G Ninja \
