@@ -18,7 +18,7 @@ jobs:
           repository: HDFGroup/hdf5
       - name: test
         run: |
-          export FC=/opt/homebrew/bin/flang-new
+          export FC=/opt/homebrew/bin/flang
           mkdir build
           cd build
           cmake -G Ninja \
@@ -27,6 +27,6 @@ jobs:
             -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
             -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \
             -DHDF5_BUILD_FORTRAN=ON \
-            -DH5_FORTRAN_C_LONG_DOUBLE_IS_UNIQUE:BOOL=OFF \	    
+            -DH5_FORTRAN_C_LONG_DOUBLE_IS_UNIQUE=OFF \
             ..
           ctest -D Experimental
