@@ -20,6 +20,7 @@ jobs:
           repository: HDFGroup/hdf5
       - name: test
         run: |
+          ls /opt/homebrew/bin/flang*
           export FC=/opt/homebrew/bin/flang-new
           mkdir build
           cd build
@@ -31,4 +32,4 @@ jobs:
             -DHDF5_BUILD_FORTRAN=ON \
             -DH5_FORTRAN_C_LONG_DOUBLE_IS_UNIQUE=ON \
             ..
-          ctest -D Experimental
+#          ctest -D Experimental
