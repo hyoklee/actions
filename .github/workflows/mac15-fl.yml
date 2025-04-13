@@ -10,9 +10,8 @@ jobs:
     steps:
       - name: install
         run: |
-          brew outdated
-          brew upgrade
-          brew cleanup
+          brew update
+ brew info flang
           brew install flang@20.1.2
       - name: checkout
         uses: actions/checkout@v4
