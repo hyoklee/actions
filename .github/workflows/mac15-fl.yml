@@ -21,6 +21,7 @@ jobs:
         run: |
           ls /opt/homebrew/bin/flang*
           export FC=/opt/homebrew/bin/flang-20
+          export CC=/opt/homebrew/bin/clang
           mkdir build
           cd build
           cmake -G Ninja \
