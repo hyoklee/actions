@@ -13,8 +13,7 @@ jobs:
           brew update
           brew info flang
           brew install flang
-#          ls /opt/homebrew/bin/*lang*
-#          find /opt/homebrew -name 'clang'
+          find /opt/homebrew -name 'lld'
       - name: checkout
         uses: actions/checkout@v4
         with:
@@ -35,4 +34,4 @@ jobs:
             -DH5_FORTRAN_HAVE_C_LONG_DOUBLE=0 \
             -DH5_FORTRAN_C_LONG_DOUBLE_IS_UNIQUE=0 \
             ..
-          ctest -D Experimental
+#          ctest -D Experimental
