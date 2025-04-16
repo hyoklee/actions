@@ -24,7 +24,7 @@ jobs:
           cd build
           cmake -G Ninja \
             -DSITE:STRING=mac-15 \
-            -DBUILDNAME:STRING="ninja/o4/+f+j/+ompi+np=4/+h+sf+tv" \
+            -DBUILDNAME:STRING="ninja/o4/+j/+ompi+np=3/+h+sf+tv" \
             -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
             -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \
             -DHDF5_BUILD_FORTRAN=OFF \
@@ -41,6 +41,6 @@ jobs:
             -DHDF5_ENABLE_SUBFILING_VFD:BOOL=ON \
             -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF \
             -DHDF5_TEST_VFD:BOOL=ON \
-            -DMPIEXEC_MAX_NUMPROCS:STRING=4  \
+            -DMPIEXEC_MAX_NUMPROCS:STRING=3  \
             ..
           ctest -D Experimental
