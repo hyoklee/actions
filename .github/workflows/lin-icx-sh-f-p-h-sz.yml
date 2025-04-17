@@ -16,22 +16,22 @@ jobs:
         run:  |
           sudo apt-get update
           sudo apt-get install autoconf automake libtool libtool-bin libaec-dev
-      - name: mpi
-        uses: mpi4py/setup-mpi@master
-        with:
-          mpi: intelmpi
-      - name: oneapi
-        uses: fortran-lang/setup-fortran@v1
-        id: setup-fortran
-        with:
-          compiler: intel
-          version: '2025.1'
+      # - name: mpi
+      #   uses: mpi4py/setup-mpi@master
+      #   with:
+      #     mpi: intelmpi
+      # - name: oneapi
+      #   uses: fortran-lang/setup-fortran@v1
+      #   id: setup-fortran
+      #   with:
+      #     compiler: intel
+      #     version: '2025.1'
       - name: test
         shell: bash
         run: |
           mkdir build
           cd build
-          ls /usr/lib64/libsz*
+          ls /usr/x86_64-linux-gnu/libsz*
           cmake -DSITE:STRING="ubu" -DBUILDNAME:STRING="hk/icx/-sh/f/p/h/sz" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" \
           -DHDF5_BUILD_FORTRAN=ON \
           -DHDF5_ENABLE_PARALLEL=ON \
