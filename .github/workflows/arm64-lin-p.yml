@@ -1,36 +1,33 @@
-name: mac-15 thread
+name: arm64 lin p
 
 on:
   push:
-    branches: main-
-
+    branches:
+      - main
 jobs:
   build:
-    runs-on: macos-15
+    runs-on: ubuntu-24.04-arm
     steps:
-      - name: install
-        run: |
-          brew update
-          brew install openmpi
-      - uses: lukka/get-cmake@latest
       - name: checkout
         uses: actions/checkout@v4
         with:
           repository: HDFGroup/hdf5
+      - name: install
+        run:  |
+          sudo apt-get update
+          sudo apt-get install libaec-dev
       - name: test
         run: |
-          cmake --version
           mkdir build
           cd build
-          cmake -G Ninja \
-            -DSITE:STRING=mac-15 \
-            -DBUILDNAME:STRING="ninja/o4/+j/+ompi+np=3/+h+sf+tv" \
+          cmake \
+            -DSITE:STRING="ubu-24.arm64" \
+            -DBUILDNAME:STRING="ninja/o4/j/sz/ompi+np=2/h+sf+tv" \
             -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
             -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \
             -DHDF5_BUILD_FORTRAN=OFF \
             -DBUILD_SHARED_LIBS=ON \
             -DCMAKE_BUILD_TYPE=Release \
-            -DCMAKE_TOOLCHAIN_FILE=config/toolchain/clang.cmake \
             -DHDF5_BUILD_CPP_LIB:BOOL=OFF \
             -DHDF5_BUILD_HL_LIB:BOOL=ON \
             -DHDF5_BUILD_JAVA=ON \
@@ -39,8 +36,8 @@ jobs:
             -DHDF5_ENABLE_PARALLEL:BOOL=ON \
             -DHDF5_ENABLE_THREADSAFE:BOOL=OFF \
             -DHDF5_ENABLE_SUBFILING_VFD:BOOL=ON \
-            -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF \
+            -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=ON \
             -DHDF5_TEST_VFD:BOOL=ON \
-            -DMPIEXEC_MAX_NUMPROCS:STRING=3  \
+            -DMPIEXEC_MAX_NUMPROCS:STRING=2  \
             ..
           ctest -D Experimental
