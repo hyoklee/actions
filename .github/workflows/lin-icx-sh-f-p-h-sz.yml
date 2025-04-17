@@ -21,7 +21,11 @@ jobs:
         id: setup-fortran
         with:
           compiler: intel
-          version: '2025.1'	  
+          version: '2025.1'
+      - name: mpi
+        uses: mpi4py/setup-mpi@master
+        with:
+          mpi: intelmpi	  
       - name: test
         shell: bash
         run: |
