@@ -1,0 +1,27 @@
+name: lin vcpkg icx sz zl
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  vcpkg:
+    name: vcpkg
+    runs-on: ubuntu-latest
+    steps:
+      - name: install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y nasm
+      - name: oneapi
+        uses: fortran-lang/setup-fortran@v1
+        id: setup-fortran
+        with:
+          compiler: intel
+          version: '2025.1'	  
+      - name: install vcpkg
+        run: |
+          git clone --branch 2025.04.09 --single-branch https://github.com/microsoft/vcpkg
+          ./vcpkg/bootstrap-vcpkg.sh
+          cd vcpkg
+          ./vcpkg install hdf5
