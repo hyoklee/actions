@@ -3,7 +3,7 @@ name: arm64 lin p
 on:
   push:
     branches:
-      - main
+      - main-
 jobs:
   build:
     runs-on: ubuntu-24.04-arm
