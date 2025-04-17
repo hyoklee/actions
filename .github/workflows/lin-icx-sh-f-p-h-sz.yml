@@ -31,7 +31,7 @@ jobs:
         run: |
           mkdir build
           cd build
-          ls /usr/x86_64-linux-gnu/libsz*
+          find /usr -name 'sz*'
           cmake -DSITE:STRING="ubu" -DBUILDNAME:STRING="hk/icx/-sh/f/p/h/sz" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" \
           -DHDF5_BUILD_FORTRAN=ON \
           -DHDF5_ENABLE_PARALLEL=ON \
