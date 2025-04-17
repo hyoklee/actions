@@ -38,6 +38,8 @@ jobs:
             -DHDF5_ENABLE_SUBFILING_VFD:BOOL=ON \
             -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=ON \
             -DHDF5_TEST_VFD:BOOL=ON \
+            -DSZIP_LIBRARY:PATH="/usr/lib/aarch64-linux-gnu/libsz.so.2.0.1" \
+            -DSZIP_INCLUDE_DIR="/usr/include" \
             -DMPIEXEC_MAX_NUMPROCS:STRING=2  \
             ..
           ctest -D Experimental
