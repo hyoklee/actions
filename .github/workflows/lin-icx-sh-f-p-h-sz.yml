@@ -16,30 +16,27 @@ jobs:
         run:  |
           sudo apt-get update
           sudo apt-get install autoconf automake libtool libtool-bin libaec-dev
-      # - name: mpi
-      #   uses: mpi4py/setup-mpi@master
-      #   with:
-      #     mpi: intelmpi
-      # - name: oneapi
-      #   uses: fortran-lang/setup-fortran@v1
-      #   id: setup-fortran
-      #   with:
-      #     compiler: intel
-      #     version: '2025.1'
+      - name: mpi
+        uses: mpi4py/setup-mpi@master
+        with:
+          mpi: intelmpi
+      - name: oneapi
+        uses: fortran-lang/setup-fortran@v1
+        id: setup-fortran
+        with:
+          compiler: intel
+          version: '2025.1'
       - name: test
-        shell: bash
         run: |
           mkdir build
           cd build
-          ls  /usr/lib/x86_64-linux-gnu/
-          find /usr -name '*sz*'
           cmake -DSITE:STRING="ubu" -DBUILDNAME:STRING="hk/icx/-sh/f/p/h/sz" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" \
           -DHDF5_BUILD_FORTRAN=ON \
           -DHDF5_ENABLE_PARALLEL=ON \
           -DBUILD_SHARED_LIBS:BOOL=OFF \
           -DHDF5_BUILD_HL_LIB=ON \
           -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=ON \
-          -DSZIP_LIBRARY:PATH="/usr/lib64/libsz.a" \
+          -DSZIP_LIBRARY:PATH="/usr/lib/x86_64-linux-gnu/libsz.a" \
           -DSZIP_INCLUDE_DIR="/usr/include" \
-           ..
-#          ctest -D Experimental -C Release
+          ..
+          ctest -D Experimental -C Release
