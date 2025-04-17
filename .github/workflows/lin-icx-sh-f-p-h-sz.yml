@@ -30,7 +30,7 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake -G Ninja -DSITE:STRING="ubu" -DBUILDNAME:STRING="hk/icx/-sh/f/p/h/sz" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" \
+          cmake --log-level=Verbose -G Ninja -DSITE:STRING="ubu" -DBUILDNAME:STRING="hk/icx/-sh/f/p/h/sz" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" \
           -DHDF5_BUILD_FORTRAN=ON \
           -DHDF5_ENABLE_PARALLEL=ON \
           -DBUILD_SHARED_LIBS:BOOL=OFF \
