@@ -36,7 +36,7 @@ jobs:
           -DBUILD_SHARED_LIBS:BOOL=OFF \
           -DHDF5_BUILD_HL_LIB=ON \
           -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=ON \
-          -DSZIP_LIBRARY="/usr/lib/x86_64-linux-gnu/libaec.a" \
+          -DSZIP_LIBRARY="/usr/lib/x86_64-linux-gnu/libsz.a;/usr/lib/x86_64-linux-gnu/libaec.a" \
           -DSZIP_INCLUDE_DIR="/usr/include" \
           ..
           ctest -D Experimental -C Release
