@@ -15,7 +15,7 @@ jobs:
       - name: install
         run:  |
           sudo apt-get update
-          sudo apt-get install libaec-dev
+          sudo apt-get install libaec-dev libopenmpi-dev
       - name: test
         run: |
           mkdir build
