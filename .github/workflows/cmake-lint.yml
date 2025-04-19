@@ -1,0 +1,26 @@
+name: Run cmake-format linter
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Format CMake files
+      id: cmake-format
+      uses: puneetmatharu/cmake-format-lint-action@v1.0.6
+      with:
+        args: --config-files .cmake-format.json --in-place
+        file-regex: '(.*\.cmake$|.*\.cmake\.in$|CMakeLists.txt$)'
+
+    - name: Commit changes
+      uses: stefanzweifel/git-auto-commit-action@v5
+      with:
+        commit_user_name: cmake-format-bot
+        commit_message: 'Automated commit of cmake-format changes.'
