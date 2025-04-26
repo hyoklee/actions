@@ -3,7 +3,7 @@ name: lin vcpkg icx sz zl
 on:
   push:
     branches:
-      - main
+      - main-
 jobs:
   vcpkg:
     name: vcpkg
