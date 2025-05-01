@@ -1,30 +1,18 @@
-name: lin spack module
+name: lin lmod
 
 on:
   push:
     branches:
-      - main-
+      - main
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: checkout spack
-      uses: actions/checkout@v4
-      with:
-        repository: spack/spack
-        ref: v0.23.0
-        path: ./spack
-    - name: spack
-      run: |
-        . ./spack/share/spack/setup-env.sh
-        spack external find
-        spack install environment-modules
-        spack load environment-modules
-        module list
     - name: test
       run: |
-        sudo apt -y install environment-modules
-        set -v
+        sudo apt -y install lmod
+        tree /usr/share/modules/
+        set -v        
         . /usr/share/modules/init/bash
         which module
         module list
