@@ -1,0 +1,16 @@
+name: lin
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: test
+        shell: bash
+        run: |
+          sudo apt -y lmod
+          which module
+          module list
