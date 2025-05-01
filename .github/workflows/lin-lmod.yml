@@ -1,4 +1,4 @@
-name: lin lmod
+name: lin modules
 
 on:
   push:
@@ -17,6 +17,7 @@ jobs:
     - name: spack
       run: |
         . ./spack/share/spack/setup-env.sh
+        spack external find
         spack install environment-modules
         spack load environment-modules
         module list
