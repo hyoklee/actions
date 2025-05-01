@@ -1,0 +1,17 @@
+name: lin modules
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: test
+      run: |
+        sudo apt -y install environment-modules coreutils
+        set -v
+        . /usr/share/modules/init/bash
+        which module
+        module list
