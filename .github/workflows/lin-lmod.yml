@@ -13,5 +13,6 @@ jobs:
         sudo apt -y install lmod coreutils
         which which
         tree /etc/profile.d
-        . /etc/profile.d/lmod.sh
+        cat /etc/profile.d/lmod.sh
+        source /etc/profile.d/lmod.sh
         which module
