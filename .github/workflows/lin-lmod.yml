@@ -17,6 +17,8 @@ jobs:
     - name: test2
       run: |
         source /etc/profile.d/lmod.sh
+        module avail
+        echo "source /usr/local/lmod/lmod/init/bash" >> ~/.bashrc
     - name: test3
       run: |
         module avail
