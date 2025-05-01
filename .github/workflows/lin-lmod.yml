@@ -9,8 +9,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: test
-        shell: bash
         run: |
           sudo apt -y install lmod
+          eval "$(SHELL=/bin/bash module shinit bash)"
           which module
           module list
