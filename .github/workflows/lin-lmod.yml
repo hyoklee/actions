@@ -10,9 +10,14 @@ jobs:
     steps:
     - name: test
       run: |
-        sudo apt -y install lmod
-        tree /usr/share/modules/
-        set -v        
-        . /usr/share/modules/init/bash
+        sudo apt -y install lmod coreutils
+        which which
+        if [ -d /etc/profile.d ]; then
+         for i in /etc/profile.d/*.sh; do
+         if [ -r $i ]; then
+           . $i
+         fi
+         done
+        fi
         which module
         module list
