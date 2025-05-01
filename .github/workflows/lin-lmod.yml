@@ -11,7 +11,6 @@ jobs:
       - name: test
         run: |
           sudo apt -y install environment-modules
-          ls /usr/share/modules/init/
-          source /usr/share/modules/init/bash
+          source /etc/profile.d/modules.sh
           which module
           module list
