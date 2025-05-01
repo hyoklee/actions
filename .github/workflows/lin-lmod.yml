@@ -1,4 +1,4 @@
-name: lin
+name: lin lmod
 
 on:
   push:
@@ -11,6 +11,6 @@ jobs:
       - name: test
         shell: bash
         run: |
-          sudo apt -y lmod
+          sudo apt -y install lmod
           which module
           module list
