@@ -10,7 +10,7 @@ jobs:
     steps:
       - name: test
         run: |
-          sudo apt -y install enivorment-modules
+          sudo apt -y install environment-modules
           ls /usr/share/modules/init/
           . /usr/share/modules/init/bash
           which module
