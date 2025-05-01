@@ -12,6 +12,6 @@ jobs:
         run: |
           sudo apt -y install environment-modules
           ls /usr/share/modules/init/
-          . /usr/share/modules/init/bash
+          eval "$(SHELL=/bin/bash module shinit)"
           which module
           module list
