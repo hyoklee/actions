@@ -14,5 +14,9 @@ jobs:
         which which
         tree /etc/profile.d
         cat /etc/profile.d/lmod.sh
+    - name: test2
+      run: |
         source /etc/profile.d/lmod.sh
-        which module
+    - name: test3
+      run: |
+        module avail
