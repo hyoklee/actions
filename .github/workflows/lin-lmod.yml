@@ -11,6 +11,7 @@ jobs:
       - name: test
         run: |
           sudo apt -y install lmod
-          eval "$(SHELL=/bin/bash module shinit bash)"
+          ls /usr/share/modules/init/
+          . /usr/share/modules/init/bash
           which module
           module list
