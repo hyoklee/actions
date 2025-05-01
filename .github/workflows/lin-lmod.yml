@@ -8,9 +8,22 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: test
-        run: |
-          sudo apt -y install environment-modules
-          source /etc/profile.d/modules.sh
-          which module
-          module list
+    - name: checkout spack
+      uses: actions/checkout@v4
+      with:
+        repository: spack/spack
+        ref: v0.23.0
+        path: ./spack
+    - name: spack
+      run: |
+        . ./spack/share/spack/setup-env.sh
+        spack install environment-modules
+        spack load environment-modules
+        module list
+    - name: test
+      run: |
+        sudo apt -y install environment-modules
+        set -v
+        . /usr/share/modules/init/bash
+        which module
+        module list
