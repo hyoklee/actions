@@ -10,7 +10,8 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: ps
-         run: ps aux | grep sshd
+         run: |
+           ps aux | grep sshd
 
       - name: install
         run: |
