@@ -35,11 +35,10 @@ jobs:
       - name: Configure and Start SSHD on Port 22 (for localhost access)
         run: |
           echo "Starting sshd with custom config in background..."
-          # Start sshd with the custom config in the background
-          # Use `sudo` because sshd needs to bind to port 22 (privileged port)
+          sudo mkdir -p /run/sshd
+          sudo chown root:root /run/sshd
+          sudo chmod 0755 /run/sshd
           sudo /usr/sbin/sshd &
-
-          # Give sshd a moment to start and verify
           sleep 5
           echo "Checking if sshd is listening on 127.0.0.1:22..."
           netstat -tuln | grep 127.0.0.1:22 || (echo "ERROR: SSHD not listening on 127.0.0.1:22!" && exit 1)
