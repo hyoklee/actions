@@ -37,7 +37,7 @@ jobs:
           echo "Starting sshd with custom config in background..."
           # Start sshd with the custom config in the background
           # Use `sudo` because sshd needs to bind to port 22 (privileged port)
-          sudo /usr/sbin/sshd -f /tmp/sshd_config_local &
+          sudo /usr/sbin/sshd &
 
           # Give sshd a moment to start and verify
           sleep 5
