@@ -1,4 +1,4 @@
-name: Test Local SSH on Runner
+name: Run Local SSHD on Runner (Internal Only)
 
 on:
   push:
@@ -6,56 +6,78 @@ on:
       - main  
 
 jobs:
-  test_local_ssh:
-    runs-on: ubuntu-24.04 # Use 22.04 or 24.04, same steps apply
+  run_local_sshd:
+    runs-on: ubuntu-22.04 # Or ubuntu-24.04
     steps:
       - name: Install OpenSSH Server and generate host keys
         run: |
+          echo "Updating apt and installing openssh-server..."
           sudo apt-get update
           sudo apt-get install -y openssh-server
 
-          # sshd requires host keys, which are usually generated on install
-          # but ensuring they exist:
-          sudo ssh-keygen -A
+          echo "Generating host keys if they don't exist..."
+          sudo ssh-keygen -A # Ensures default host keys are generated
 
       - name: Generate User SSH Key Pair
         run: |
+          echo "Generating user SSH key pair..."
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh
           ssh-keygen -t ed25519 -f ~/.ssh/id_runner_local -N "" -q
           cat ~/.ssh/id_runner_local.pub >> ~/.ssh/authorized_keys
           chmod 600 ~/.ssh/authorized_keys
 
-          # Set user permissions for SSH server
+          # Ensure the .ssh directory and its contents are owned by the current user (runner)
           sudo chown -R $USER:$USER ~/.ssh
+          ls -la ~/.ssh/
 
-      - name: Configure and Start SSHD (for localhost access)
+      - name: Configure and Start SSHD on Port 22 (for localhost access)
         run: |
-          # Create a minimal sshd_config for local access
-          echo "Port 2222" > /tmp/sshd_config_local
-          echo "ListenAddress 127.0.0.1" >> /tmp/sshd_config_local
-          echo "PermitRootLogin prohibit-password" >> /tmp/sshd_config_local
-          echo "PubkeyAuthentication yes" >> /tmp/sshd_config_local
-          echo "AuthorizedKeysFile %h/.ssh/authorized_keys" >> /tmp/sshd_config_local
-          echo "PasswordAuthentication no" >> /tmp/sshd_config_local
-          echo "ChallengeResponseAuthentication no" >> /tmp/sshd_config_local
+          echo "Configuring sshd_config for local access on port 22..."
+          # Create a custom sshd_config to ensure it listens only on localhost
+          # and accepts public key authentication.
+          # We'll avoid using the default /etc/ssh/sshd_config directly to prevent conflicts
+          # and ensure our settings are isolated.
+
+          # Make a copy of the default config to modify, or create a minimal one
+          sudo cp /etc/ssh/sshd_config /tmp/sshd_config_local
+
+          # Modify relevant settings for localhost
+          sudo sed -i 's/^Port .*/Port 22/' /tmp/sshd_config_local
+          sudo sed -i 's/^ListenAddress .*/ListenAddress 127.0.0.1/' /tmp/sshd_config_local
+          sudo sed -i 's/^#PasswordAuthentication yes/PasswordAuthentication no/' /tmp/sshd_config_local
+          sudo sed -i 's/^PasswordAuthentication yes/PasswordAuthentication no/' /tmp/sshd_config_local # ensure no
+          sudo sed -i 's/^PermitRootLogin prohibit-password/PermitRootLogin no/' /tmp/sshd_config_local
+          sudo sed -i 's/^#PubkeyAuthentication yes/PubkeyAuthentication yes/' /tmp/sshd_config_local
+          sudo sed -i 's/^#AuthorizedKeysFile/AuthorizedKeysFile/' /tmp/sshd_config_local # Ensure this line is uncommented and points to %h/.ssh/authorized_keys
+
+          # Add any other necessary configurations
           echo "UsePAM yes" >> /tmp/sshd_config_local
           echo "X11Forwarding no" >> /tmp/sshd_config_local
           echo "PrintMotd no" >> /tmp/sshd_config_local
           echo "AcceptEnv LANG LC_*" >> /tmp/sshd_config_local
           echo "Subsystem sftp /usr/lib/openssh/sftp-server" >> /tmp/sshd_config_local
 
+          echo "Starting sshd with custom config in background..."
           # Start sshd with the custom config in the background
+          # Use `sudo` because sshd needs to bind to port 22 (privileged port)
           sudo /usr/sbin/sshd -f /tmp/sshd_config_local &
 
-          # Give sshd a moment to start
+          # Give sshd a moment to start and verify
           sleep 5
+          echo "Checking if sshd is listening on 127.0.0.1:22..."
+          netstat -tuln | grep 127.0.0.1:22 || (echo "ERROR: SSHD not listening on 127.0.0.1:22!" && exit 1)
+          echo "SSHD should be running internally."
 
-          # Verify it's listening locally
-          netstat -tuln | grep 127.0.0.1:2222 || (echo "SSHD not listening!" && exit 1)
-
-
-      - name: Test SSH to Localhost
+      - name: Test SSH to Localhost (using generated key)
         run: |
-          echo "Attempting to SSH to localhost:2222..."
-          ssh -vvv -i ~/.ssh/id_runner_local -p 2222 runner@localhost -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null "echo 'SSH successful: Whoami is $(whoami) and pwd is $(pwd)'"
+          echo "Attempting to SSH to localhost:22..."
+          # Use the 'runner' user, which is the default user on GitHub Actions runners
+          ssh -vvv -i ~/.ssh/id_runner_local -p 22 runner@localhost \
+            -o StrictHostKeyChecking=no \
+            -o UserKnownHostsFile=/dev/null \
+            "echo 'SSH successful: Whoami is $(whoami) and pwd is $(pwd)' && ls -la"
+
+      - name: Optional: List processes to verify sshd
+        if: always()
+        run: ps aux | grep sshd
