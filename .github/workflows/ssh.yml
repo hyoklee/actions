@@ -1,4 +1,4 @@
-name: Run Local SSHD on Runner (Internal Only)
+name: ssh
 
 on:
   push:
@@ -7,14 +7,16 @@ on:
 
 jobs:
   run_local_sshd:
-    runs-on: ubuntu-22.04 # Or ubuntu-24.04
+    runs-on: ubuntu-24.04
     steps:
-      - name: Install OpenSSH Server and generate host keys
+      - name: ps
+         run: ps aux | grep sshd
+
+      - name: install
         run: |
           echo "Updating apt and installing openssh-server..."
           sudo apt-get update
           sudo apt-get install -y openssh-server
-
           echo "Generating host keys if they don't exist..."
           sudo ssh-keygen -A # Ensures default host keys are generated
 
@@ -26,23 +28,13 @@ jobs:
           ssh-keygen -t ed25519 -f ~/.ssh/id_runner_local -N "" -q
           cat ~/.ssh/id_runner_local.pub >> ~/.ssh/authorized_keys
           chmod 600 ~/.ssh/authorized_keys
-
-          # Ensure the .ssh directory and its contents are owned by the current user (runner)
           sudo chown -R $USER:$USER ~/.ssh
           ls -la ~/.ssh/
 
       - name: Configure and Start SSHD on Port 22 (for localhost access)
         run: |
           echo "Configuring sshd_config for local access on port 22..."
-          # Create a custom sshd_config to ensure it listens only on localhost
-          # and accepts public key authentication.
-          # We'll avoid using the default /etc/ssh/sshd_config directly to prevent conflicts
-          # and ensure our settings are isolated.
-
-          # Make a copy of the default config to modify, or create a minimal one
           sudo cp /etc/ssh/sshd_config /tmp/sshd_config_local
-
-          # Modify relevant settings for localhost
           sudo sed -i 's/^Port .*/Port 22/' /tmp/sshd_config_local
           sudo sed -i 's/^ListenAddress .*/ListenAddress 127.0.0.1/' /tmp/sshd_config_local
           sudo sed -i 's/^#PasswordAuthentication yes/PasswordAuthentication no/' /tmp/sshd_config_local
@@ -78,6 +70,3 @@ jobs:
             -o UserKnownHostsFile=/dev/null \
             "echo 'SSH successful: Whoami is $(whoami) and pwd is $(pwd)' && ls -la"
 
-      - name: Optional: List processes to verify sshd
-        if: always()
-        run: ps aux | grep sshd
