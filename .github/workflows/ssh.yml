@@ -3,7 +3,7 @@ name: ssh
 on:
   push:
     branches:
-      - main  
+      - main-
 
 jobs:
   run_local_sshd:
