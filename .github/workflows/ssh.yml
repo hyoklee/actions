@@ -13,7 +13,7 @@ jobs:
         run: |
            ps aux | grep sshd
 
-      - name: install
+      - name: install sshd
         run: |
           echo "Updating apt and installing openssh-server..."
           sudo apt-get update

@@ -1,7 +1,7 @@
 name: localstack-action-example
 on:
   push:
-    branches: [ main- ]
+    branches: [ main ]
 jobs:
   example-job:
     runs-on: ubuntu-latest
@@ -13,7 +13,7 @@ jobs:
           localstack start -d
           echo "Waiting for LocalStack startup..."
           localstack wait -t 30
-          echo "Startup complete"          
+          echo "Startup complete"
       - name: Run some Tests against LocalStack
         run: |
           awslocal s3 mb s3://test
@@ -25,7 +25,23 @@ jobs:
           awslocal sts get-session-token \
               --duration-seconds 3600 \
               --serial-number "YourMFADeviceSerialNumber" \
-              --token-code 123456          
+              --token-code 123456
           echo "Test Execution complete!"
-      
-          
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          repository: hyoklee/content-assimilation-engine
+      - name: install
+        run: |
+          sudo apt-get install -y libpoco-dev libyaml-cpp-dev
+          sudo apt-get install -y python3-pip python3-venv
+      - name: test
+        run: |
+            vcpkg install aws-sdk-cpp[s3]
+            vcpkg integrate install
+            cd omni
+            mkdir build
+            cd build
+            cmake -DAWSN=ON -DPOCO=ON -DSITE:STRING="ubu" -DBUILDNAME="omni/r/aws+poco" ..
+            ctest -C Release -T Build
+            cd ../..
