@@ -42,6 +42,6 @@ jobs:
             cd omni
             mkdir build
             cd build
-            cmake -DAWS=ON -DPOCO=ON -DSITE:STRING="ubu" -DBUILDNAME="omni/r/aws+poco" ..
+            cmake -DCMAKE_TOOLCHAIN_FILE=/usr/local/share/vcpkg/scripts/buildsystems/vcpkg.cmak -DAWS=ON -DPOCO=ON -DSITE:STRING="ubu" -DBUILDNAME="omni/r/aws+poco" ..
             ctest -C Release -T Build
             cd ../..
