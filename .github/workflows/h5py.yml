@@ -22,6 +22,9 @@ jobs:
     - name: Run a multi-line script
       run: |
         . ./spack/share/spack/setup-env.sh
+        ./spack/bin/spack spec py-h5py@master+mpi
+         sed -i 's/hdf5@1.10.6:1.14/hdf5@1.10.6:/g' \
+        /home/runner/.spack/package_repos/fncqgg4/repos/spack_repo/builtin/packages/packages/py_h5py/package.py
         ./spack/bin/spack spec py-h5py@master+mpi ^hdf5@develop-2.0
         ./spack/bin/spack install py-h5py@master+mpi ^hdf5@develop-2.0
         ./spack/bin/spack install py-pytest
