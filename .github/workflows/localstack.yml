@@ -1,7 +1,7 @@
 name: localstack-action-example
 on:
   push:
-    branches: [ main ]
+    branches: [ main- ]
 jobs:
   example-job:
     runs-on: ubuntu-latest
