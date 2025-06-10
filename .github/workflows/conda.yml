@@ -3,7 +3,7 @@ name: conda
 on:
   push:
     branches:
-      - main-
+      - main
 
 jobs:
   install:
@@ -14,10 +14,7 @@ jobs:
     steps:
       - name: miniconda
         uses: conda-incubator/setup-miniconda@v3
-      - name: build-conda
+      - name: iowarp
         run: |
-          conda install -y conda-build
-          conda list conda-build
-          which conda-build
-          conda-build .
+          conda install -y iowarp::iowarp
 
