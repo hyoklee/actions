@@ -17,4 +17,8 @@ jobs:
       - name: iowarp
         run: |
           conda install -y iowarp::iowarp
+          which wrp
+          wrp
+
+
 
