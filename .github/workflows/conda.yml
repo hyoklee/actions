@@ -16,6 +16,7 @@ jobs:
         uses: conda-incubator/setup-miniconda@v3
       - name: iowarp
         run: |
+          conda install -y libgcc-ng=11.2.0
           conda install -y iowarp::iowarp
           which wrp
           wrp
