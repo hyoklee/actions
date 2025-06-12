@@ -1,0 +1,15 @@
+name: mac vcpkg
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  vcpkg:
+    name: vcpkg
+    runs-on: macos-latest
+    steps:
+      - name: Install vcpkg
+        run: |
+          vcpkg install poco[crypto,netssl] yaml-cpp
+          vcpkg integrate install
