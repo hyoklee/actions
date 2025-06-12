@@ -12,13 +12,17 @@ jobs:
       run:
         shell: bash -l {0}
     steps:
+      - name: apt
+        run: |
+          sudo apt update
+          sudo apt -y install libstdc++6
       - name: miniconda
         uses: conda-incubator/setup-miniconda@v3
       - name: iowarp
         run: |
+          conda install -c conda-forge libgcc-ng
+          conda install -y libgcc-ng=11.2.0
           conda install -y iowarp::iowarp
           which wrp
+          ldd /usr/share/miniconda/envs/test/bin/wrp
           wrp
-
-
-
