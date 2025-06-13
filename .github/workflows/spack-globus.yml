@@ -1,0 +1,23 @@
+name: spack globus
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+    - name: checkout spack
+      uses: actions/checkout@v4
+      with:
+        repository: spack/spack
+        path: ./spack
+    - name: spack
+      run: |
+        . ./spack/share/spack/setup-env.sh
+        spack external find
+        spack compiler add
+        spack spec -I globus-ftp-client
+        spack install globus-ftp-client
