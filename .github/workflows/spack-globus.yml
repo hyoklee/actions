@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
     - name: Install dependencies
-      run: sudo apt-get update && sudo apt-get install -y libtool
+      run: sudo apt-get update && sudo apt-get install -y libltdl-dev
     - name: checkout spack
       uses: actions/checkout@v4
       with:
