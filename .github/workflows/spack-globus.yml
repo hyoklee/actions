@@ -9,6 +9,8 @@ jobs:
   build:
     runs-on: ubuntu-24.04
     steps:
+    - name: Install dependencies
+      run: sudo apt-get update && sudo apt-get install -y libtool
     - name: checkout spack
       uses: actions/checkout@v4
       with:
