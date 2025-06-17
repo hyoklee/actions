@@ -2,7 +2,7 @@ name: spack globus
 
 on:
   push:
-    branches: [main]
+    branches: [main-]
   workflow_dispatch:
 
 jobs:
