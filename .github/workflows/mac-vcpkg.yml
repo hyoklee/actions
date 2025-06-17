@@ -3,7 +3,7 @@ name: mac vcpkg
 on:
   push:
     branches:
-      - main
+      - main-
 jobs:
   vcpkg:
     name: vcpkg
