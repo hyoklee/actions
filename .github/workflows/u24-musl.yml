@@ -11,11 +11,12 @@ jobs:
     - name: Install Musl Compiler
       run: |
         sudo apt-get update
+
         sudo apt-get install -y software-properties-common
         sudo add-apt-repository universe
         sudo apt-get update
         sudo apt-get install -y gcc-aarch64-linux-gnu
-        sudo apt-get install binfmt-support qemu qemu-user-static
+        sudo apt install qemu-kvm libvirt-daemon-system libvirt-clients virt-manager binfmt-support qemu-user-static
     - name: Get Sources
       uses: actions/checkout@v3
     - name: Build and Test
