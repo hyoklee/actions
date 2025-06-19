@@ -3,7 +3,7 @@ name: ubuntu 24.04 CMake aarch64-gcc-musl
 on:
   workflow_dispatch:
   push:
-    branches: [ main ]
+    branches: [ main- ]
 jobs:
   build:
     runs-on: ubuntu-24.04

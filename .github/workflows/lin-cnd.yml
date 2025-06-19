@@ -1,9 +1,9 @@
-name: conda
+name: lin conda
 
 on:
   push:
     branches:
-      - main-
+      - main
 
 jobs:
   build:
@@ -25,15 +25,18 @@ jobs:
           libelf-dev openmpi-bin openmpi-common mpi-default-dev python3-dev
       - name: miniconda
         uses: conda-incubator/setup-miniconda@v3
+        with:
+          auto-update-conda: true
+          python-version: 3.11
       - name: build-conda
         run: |
           conda install -y conda-build
           conda install -y conda-verify
           conda install -y anaconda-client
           conda-build .
-        continue-on-error: true	  
+#        continue-on-error: true
       - name: upload
         uses: actions/upload-artifact@v4
         with:
           name: config-x64-linux-out.log
-          path: /usr/share/miniconda/envs/test/conda-bld/iowarp_1742332809086/work/vcpkg/buildtrees/cte-hermes-shm/config-x64-linux-out.log
+          path: /usr/share/miniconda/envs/test/conda-bld/iowarp-0.0.0-py311_0.tar.bz2
