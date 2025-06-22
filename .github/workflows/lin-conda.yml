@@ -3,57 +3,18 @@ name: lin conda
 on:
   workflow_dispatch:
   push:
-    branches: [ main- ]
+    branches: main
 
 jobs:
   build:
     name: lin conda
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash -l {0}
-
     steps:
-      - uses: actions/checkout@v4.1.1
       - uses: conda-incubator/setup-miniconda@v3
         with:
-         auto-activate-base: true
-         activate-environment: ""
-      - name: Test HDF5
-        run: |
-          conda install -y -v lfortran -c conda-forge
-          clang --version
-          which lfortran
-          lfortran --version
-          pwd
-          ls /usr/local/bin/
-          git clone https://github.com/HDFGroup/hdf5
-          cd hdf5
-          mkdir build
-          cd build
-          cmake \
-          -DBUILDNAME:STRING=1f.h.j.mpich.sf.sa.cd \
-          -DBUILD_SHARED_LIBS=ON \
-          -DCMAKE_BUILD_TYPE=Release \
-          -DCMAKE_TOOLCHAIN_FILE=config/toolchain/clang.cmake \
-          -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
-          -DHDF5_BUILD_CPP_LIB:BOOL=OFF \
-          -DHDF5_BUILD_JAVA=ON \
-          -DHDF5_BUILD_FORTRAN:BOOL=ON \
-          -DHDF5_BUILD_HL_LIB:BOOL=ON \
-          -DHDF5_ENABLE_ALL_WARNINGS=ON \
-          -DHDF5_ENABLE_ANALYZER_TOOLS:BOOL=ON \
-          -DHDF5_ENABLE_PARALLEL:BOOL=ON \
-          -DHDF5_ENABLE_THREADSAFE:BOOL=OFF \
-          -DHDF5_ENABLE_SANITIZERS:BOOL=ON \
-          -DHDF5_ENABLE_SUBFILING_VFD:BOOL=ON \
-          -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF \
-          -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF \
-          -DHDF5_TEST_VFD:BOOL=ON \
-          -DMPIEXEC_MAX_NUMPROCS:STRING=3 \
-          -DUSE_SANITIZER:STRING='Address;Memory;MemoryWithOrigins;Undefined;Thread;Leak' \
-          -DSITE:STRING='lin' \
-          ..
-          ctest -T Build --output-on-error -j
-          ctest -T Test --output-on-error -j
-          ctest -T Submit
+          channels: conda-forge,spyder-ide
+      - name: install OMNI
+        run: conda install iowarp::omni
+      - name: test OMNI
+        run: wrp
+
