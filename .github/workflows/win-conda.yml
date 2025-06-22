@@ -15,7 +15,4 @@ jobs:
       - name: Install OMNI
         run: |
           conda install iowarp::omni
-          rehash
-          which conda
-          conda activate test
           wrp
