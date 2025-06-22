@@ -18,4 +18,4 @@ jobs:
           conda install iowarp::omni
           which conda
           ls /usr/share/miniconda/bin/
-          locate wrp
+          /usr/share/miniconda/bin/wrp
