@@ -14,11 +14,9 @@ jobs:
         with:
           channels: conda-forge,spyder-ide
       - name: install OMNI
-        run: conda install iowarp::omni
-      - name: test OMNI
         run: |
+          conda install iowarp::omni
           which conda
-          conda activate test
           which wrp
-          wrp
+          locate wrp
 
