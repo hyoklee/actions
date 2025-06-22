@@ -10,6 +10,8 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: conda-incubator/setup-miniconda@v3
+        with:
+          channels: conda-forge,spyder-ide
       - name: Install OMNI
         run: conda install iowarp::omni
       - name: Test OMNI
