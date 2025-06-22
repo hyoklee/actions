@@ -17,6 +17,5 @@ jobs:
         run: |
           conda install iowarp::omni
           which conda
-          which wrp
+          ls /usr/share/miniconda/bin/
           locate wrp
-
