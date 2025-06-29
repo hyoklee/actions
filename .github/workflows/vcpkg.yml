@@ -13,7 +13,7 @@ jobs:
         with:
           repository: hyoklee/vcpkg
       - name: Install Autotools dependencies
-        run: sudo apt-get update && sudo apt-get install -y autoconf automake libtool m4 autoconf-archive          
+        run: sudo apt-get update && sudo apt-get install -y autoconf automake libtool m4 autoconf-archive libelf-dev
       - name: Install vcpkg
         run: |
           ./bootstrap-vcpkg.sh          
