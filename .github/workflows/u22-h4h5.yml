@@ -3,7 +3,7 @@ name: ubu-22
 on:
   push:
     branches:
-      - main
+      - main-
 jobs:
   build:
     runs-on: ubuntu-22.04

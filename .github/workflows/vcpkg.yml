@@ -1,25 +1,19 @@
-name: vcpkg hdf5 1.14.4 snapshot
+name: vcpkg iowarp-runtime
 
 on:
   push:
     branches:
-      - main-
+      - main
 jobs:
   vcpkg:
     name: vcpkg
     runs-on: ubuntu-latest
     steps:
-      - name: Install dependencies
-        run: |
-          sudo apt update
-          sudo apt install -y mingw-w64 mingw-w64-tools wine64
+      - uses: actions/checkout@v4
+        with:
+          repository: hyoklee/vcpkg
       - name: Install vcpkg
         run: |
-          git clone https://github.com/hyoklee/vcpkg
-          ./vcpkg/bootstrap-vcpkg.sh
-          cd vcpkg
-          mkdir downloads
-          cd downloads
-          curl -O https://gamma.hdfgroup.org/ftp/pub/outgoing/joe/HDFGroup-hdf5-hdf5-1_14_4.tar.gz
-          cd ..
-          ./vcpkg install hdf5:x64-mingw-dynamic
+          ./bootstrap-vcpkg.sh          
+          ./vcpkg install iowarp-runtime
+
