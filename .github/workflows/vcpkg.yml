@@ -3,7 +3,7 @@ name: vcpkg iowarp-runtime
 on:
   push:
     branches:
-      - main
+      - main-
 jobs:
   vcpkg:
     name: vcpkg
