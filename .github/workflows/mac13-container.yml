@@ -9,8 +9,8 @@ on:
 jobs:
   test-on-mac:
     runs-on: macos-13
-    container:
-      image: iowarp/iowarp-test
+#    container:
+#      image: iowarp/iowarp-test
     steps:
     - name: Setup Docker on macOS
       uses: douglascamata/setup-docker-macos-action@v1.0.0
