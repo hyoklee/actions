@@ -9,8 +9,6 @@ on:
 jobs:
   test-on-mac:
     runs-on: macos-13
-#    container:
-#      image: iowarp/iowarp-test
     steps:
     - name: Setup Docker on macOS
       uses: douglascamata/setup-docker-macos-action@v1.0.0
@@ -22,8 +20,7 @@ jobs:
       uses: actions/checkout@v4
     - name: Show system details
       run: |
-        cat /etc/os-release  # This will show which Linux version is being used
+        docker pull iowarp/iowarp-test
     - name: Test
       run: |
-        spack load iowarp
-        jarvis ppl run
+        docker run -it iowarp/iowarp-test bash -c  "spack load iowarp && jarvis ppl run"
