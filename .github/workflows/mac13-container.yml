@@ -9,14 +9,15 @@ on:
 jobs:
   test-on-mac:
     runs-on: macos-13
-    
     container:
       image: iowarp/iowarp-test
     steps:
     - name: Setup Docker on macOS
       uses: douglascamata/setup-docker-macos-action@v1.0.0
     - name: Verify Docker installation
-      run: docker --version
+      run: |
+        brew install docker
+        docker --version
     - name: Checkout code
       uses: actions/checkout@v4
     - name: Show system details
