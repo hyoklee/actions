@@ -21,6 +21,14 @@ jobs:
     - name: Show system details
       run: |
         docker pull iowarp/iowarp-test
+    - name: Create a shared output directory
+      run: mkdir -p ${{ github.workspace }}/docker_results
     - name: Test
       run: |
-        docker run iowarp/iowarp-test bash -c  "spack load iowarp && jarvis ppl run"
+        docker run  -v ${{ github.workspace }}/docker_results:/root/  iowarp/iowarp-test bash -c  "spack load iowarp && jarvis ppl run >& /root/output.log"
+      working-directory: ${{ github.workspace }}
+    - name: Upload generated artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: docker-run-output
+        path: ${{ github.workspace }}/docker_results/
