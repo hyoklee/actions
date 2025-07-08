@@ -23,4 +23,4 @@ jobs:
         docker pull iowarp/iowarp-test
     - name: Test
       run: |
-        docker run -it iowarp/iowarp-test bash -c  "spack load iowarp && jarvis ppl run"
+        docker run iowarp/iowarp-test bash -c  "spack load iowarp && jarvis ppl run"
