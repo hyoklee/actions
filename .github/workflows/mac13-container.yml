@@ -25,7 +25,7 @@ jobs:
       run: mkdir -p ${{ github.workspace }}/docker_results
     - name: Test
       run: |
-        docker run --entrypoint "/bin/bash"  -v "${{ github.workspace }}/docker_results:/mnt/log/" -c "ls /mnt/log && echo hello > /mnt/log/output.log"
+        docker run --entrypoint "/bin/bash"  -v "${{ github.workspace }}/docker_results:/mnt/log/" iowarp/iowarp-test -c "ls /mnt/log && echo hello > /mnt/log/output.log"
       working-directory: ${{ github.workspace }}
     - name: Upload generated artifacts
       uses: actions/upload-artifact@v4
