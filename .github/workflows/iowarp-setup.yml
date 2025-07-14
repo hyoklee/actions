@@ -37,15 +37,12 @@ jobs:
           cd "${IOWARP}/iowarp-install"
           pip3 install -r requirements.txt
           chmod +x wrpgit
-          cd "${IOWARP}/iowarp-install"
-          cd "${IOWARP}/iowarp-install"
           yq eval '
             .username = strenv(GITHUB_USERNAME) |
             .protocol = "https" |
             .token = strenv(GITHUB_TOKEN) |
             .modules[].fork = true
           ' -i wrpgit.yaml
-          cd "${IOWARP}/iowarp-install"
           ./wrpgit clone
           git clone https://github.com/spack/spack.git -b v0.23.0 "${HOME}/spack"
           source "${HOME}/spack/share/spack/setup-env.sh"
