@@ -37,6 +37,7 @@ jobs:
           cd "${IOWARP}/iowarp-install"
           pip3 install -r requirements.txt
           chmod +x wrpgit
+          ./wrpgit init
           yq eval '
             .username = strenv(GITHUB_USERNAME) |
             .protocol = "https" |
