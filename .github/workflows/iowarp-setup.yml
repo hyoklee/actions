@@ -48,24 +48,24 @@ jobs:
           cd "${IOWARP}/iowarp-install"
           yq eval '
             .username = strenv(GITHUB_USERNAME) |
-            .protocol = "ssh" |
+            .protocol = "https" |
             .token = strenv(GITHUB_TOKEN) |
             .modules[].fork = true
           ' -i wrpgit.yaml
 
-      - name: Fork IOWarp repos
-        run: |
-          cd "${IOWARP}/iowarp-install"
-          ./wrpgit fork
-
-#      - name: Clone IOWarp repos
+#      - name: Fork IOWarp repos
 #        run: |
 #          cd "${IOWARP}/iowarp-install"
-#          ./wrpgit clone
+#          ./wrpgit fork
+
+      - name: Clone IOWarp repos
+        run: |
+          cd "${IOWARP}/iowarp-install"
+          ./wrpgit clone
 
       - name: Install Spack
         run: |
-          git clone https://github.com/spack/spack.git "${HOME}/spack"
+          git clone https://github.com/spack/spack.git -b v0.23.0 "${HOME}/spack"
 #          echo ". ${HOME}/spack/share/spack/setup-env.sh" >> $GITHUB_ENV
 
       - name: Add IOWarp Spack repo and install iowarp
