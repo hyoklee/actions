@@ -1,0 +1,96 @@
+name: IOWarp Install and Build
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+jobs:
+  iowarp-setup:
+    runs-on: ubuntu-latest
+    env:
+      IOWARP: ${{ github.workspace }}/iowarp
+      GITHUB_USERNAME: hyoklee
+      GITHUB_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
+
+    steps:
+      - name: Checkout this repo
+        uses: actions/checkout@v4
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3 python3-pip git
+
+      - name: Install yq (YAML processor)
+        run: |
+          sudo wget -O /usr/bin/yq "https://github.com/mikefarah/yq/releases/download/v4.43.1/yq_linux_amd64"
+          sudo chmod +x /usr/bin/yq
+
+      - name: Clone IOWarp Install Repo
+        run: |
+          mkdir -p "${IOWARP}"
+          git clone https://github.com/iowarp/iowarp-install.git "${IOWARP}/iowarp-install"
+
+      - name: Install wrpgit requirements
+        run: |
+          cd "${IOWARP}/iowarp-install"
+          pip3 install -r requirements.txt
+          chmod +x wrpgit
+
+      - name: Initialize wrpgit
+        run: |
+          cd "${IOWARP}/iowarp-install"
+          ./wrpgit init
+
+      - name: Patch wrpgit.yaml for forking
+        run: |
+          cd "${IOWARP}/iowarp-install"
+          yq eval '
+            .username = strenv(GITHUB_USERNAME) |
+            .protocol = "ssh" |
+            .token = strenv(GITHUB_TOKEN) |
+            .modules[].fork = true
+          ' -i wrpgit.yaml
+
+      - name: Fork IOWarp repos
+        run: |
+          cd "${IOWARP}/iowarp-install"
+          ./wrpgit fork
+
+      - name: Clone IOWarp repos
+        run: |
+          cd "${IOWARP}/iowarp-install"
+          ./wrpgit clone
+
+      - name: Install Spack
+        run: |
+          git clone https://github.com/spack/spack.git "${HOME}/spack"
+          echo ". ${HOME}/spack/share/spack/setup-env.sh" >> $GITHUB_ENV
+
+      - name: Add IOWarp Spack repo and install iowarp
+        run: |
+          source "${HOME}/spack/share/spack/setup-env.sh"
+          spack repo add "${IOWARP}/iowarp-install/iowarp-spack"
+          spack install iowarp
+          spack load iowarp
+
+      - name: Setup repo environments
+        run: |
+          cd "${IOWARP}/iowarp-install"
+          ./wrpgit setup
+
+      - name: Build and install repos
+        run: |
+          cd "${IOWARP}/iowarp-install"
+          ./wrpgit build
+
+      - name: Clean build directories (optional)
+        run: |
+          cd "${IOWARP}/iowarp-install"
+          ./wrpgit clean
+
+      - name: Recreate modules (optional)
+        run: |
+          cd "${IOWARP}/iowarp-install"
+          ./wrpgit recreate 
