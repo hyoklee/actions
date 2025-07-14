@@ -53,15 +53,15 @@ jobs:
             .modules[].fork = true
           ' -i wrpgit.yaml
 
-#      - name: Fork IOWarp repos
-#        run: |
-#          cd "${IOWARP}/iowarp-install"
-#          ./wrpgit fork
-
-      - name: Clone IOWarp repos
+      - name: Fork IOWarp repos
         run: |
           cd "${IOWARP}/iowarp-install"
-          ./wrpgit clone
+          ./wrpgit fork
+
+#      - name: Clone IOWarp repos
+#        run: |
+#          cd "${IOWARP}/iowarp-install"
+#          ./wrpgit clone
 
       - name: Install Spack
         run: |
