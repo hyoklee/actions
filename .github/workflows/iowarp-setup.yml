@@ -66,31 +66,12 @@ jobs:
       - name: Install Spack
         run: |
           git clone https://github.com/spack/spack.git -b v0.23.0 "${HOME}/spack"
-#          echo ". ${HOME}/spack/share/spack/setup-env.sh" >> $GITHUB_ENV
-
-      - name: Add IOWarp Spack repo and install iowarp
-        run: |
           source "${HOME}/spack/share/spack/setup-env.sh"
           spack repo add "${IOWARP}/iowarp-install/iowarp-spack"
           spack install iowarp
           spack load iowarp
-
-      - name: Setup repo environments
-        run: |
           cd "${IOWARP}/iowarp-install"
           ./wrpgit setup
-
-      - name: Build and install repos
-        run: |
-          cd "${IOWARP}/iowarp-install"
           ./wrpgit build
-
-      - name: Clean build directories (optional)
-        run: |
-          cd "${IOWARP}/iowarp-install"
           ./wrpgit clean
-
-      - name: Recreate modules (optional)
-        run: |
-          cd "${IOWARP}/iowarp-install"
           ./wrpgit recreate 
