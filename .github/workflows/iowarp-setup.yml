@@ -47,16 +47,16 @@ jobs:
         run: |
           cd "${IOWARP}/iowarp-install"
           yq eval '
-            .username = "hyoklee" |
+            .username = strenv(GITHUB_USERNAME) |
             .protocol = "ssh" |
-            .token = ${{ secrets.PERSONAL_TOKEN }} |
+            .token = strenv(GITHUB_TOKEN) |
             .modules[].fork = true
           ' -i wrpgit.yaml
 
-      - name: Fork IOWarp repos
-        run: |
-          cd "${IOWARP}/iowarp-install"
-          ./wrpgit fork
+#      - name: Fork IOWarp repos
+#        run: |
+#          cd "${IOWARP}/iowarp-install"
+#          ./wrpgit fork
 
       - name: Clone IOWarp repos
         run: |
