@@ -2,9 +2,9 @@ name: mac13 container
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main- ]
   pull_request:
-    branches: [ main ]
+    branches: [ main- ]
 
 jobs:
   test-on-mac:

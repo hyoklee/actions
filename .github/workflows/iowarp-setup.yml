@@ -47,9 +47,9 @@ jobs:
         run: |
           cd "${IOWARP}/iowarp-install"
           yq eval '
-            .username = strenv(GITHUB_USERNAME) |
+            .username = "hyoklee" |
             .protocol = "ssh" |
-            .token = strenv(GITHUB_TOKEN) |
+            .token = ${{ secrets.PERSONAL_TOKEN }} |
             .modules[].fork = true
           ' -i wrpgit.yaml
 
