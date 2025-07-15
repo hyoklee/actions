@@ -42,7 +42,7 @@ jobs:
             .username = strenv(GITHUB_USERNAME) |
             .protocol = "https" |
             .token = strenv(GITHUB_TOKEN) |
-            .modules[].fork = true
+            .modules[].fork = false
           ' -i wrpgit.yaml
           ./wrpgit clone
           git clone https://github.com/spack/spack.git -b v0.23.0 "${HOME}/spack"
