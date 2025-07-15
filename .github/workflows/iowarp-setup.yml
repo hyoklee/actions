@@ -48,6 +48,8 @@ jobs:
           git clone https://github.com/spack/spack.git -b v0.23.0 "${HOME}/spack"
           source "${HOME}/spack/share/spack/setup-env.sh"
           spack repo add "${IOWARP}/iowarp-install/iowarp-spack"
+          spack external find
+          spack spec iowarp          
           spack install iowarp
           spack load iowarp
           cd "${IOWARP}/iowarp-install"
