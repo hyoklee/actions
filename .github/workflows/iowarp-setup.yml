@@ -49,11 +49,13 @@ jobs:
           source "${HOME}/spack/share/spack/setup-env.sh"
           spack repo add "${IOWARP}/iowarp-install/iowarp-spack"
           spack external find
-          spack spec iowarp          
+          spack external find python
+          spack spec iowarp
           spack install iowarp
           spack load iowarp
           cd "${IOWARP}/iowarp-install"
+          pip install -r requirements.txt
           ./wrpgit setup
           ./wrpgit build
           ./wrpgit clean
-          ./wrpgit recreate 
+          ./wrpgit recreate
