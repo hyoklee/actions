@@ -20,7 +20,7 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y lmod libhdf5-dev
+          sudo apt-get install -y lmod
 
       - name: Install yq (YAML processor)
         run: |
@@ -50,6 +50,8 @@ jobs:
           spack repo add "${IOWARP}/iowarp-install/iowarp-spack"
           spack external find
           spack external find python
+          spack install hdf5
+          spack load hdf5
           spack spec iowarp
           spack install iowarp
           spack load iowarp
