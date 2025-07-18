@@ -2,7 +2,7 @@ name: fbsd flang
 
 on:
   push:
-    branches: main
+    branches: main-
 
 jobs:
   test:

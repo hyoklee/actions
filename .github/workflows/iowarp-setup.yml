@@ -61,7 +61,7 @@ jobs:
           ./wrpgit build
           jarvis bootstrap from local
           jarvis env build hermes
-          jarvis ppl load yaml /home/runner/.scspkg/packages/content-assimilation-engine/jarvis/pipelines/omni/test_omni_scaling.yaml
+          jarvis ppl run yaml /home/runner/.scspkg/packages/content-assimilation-engine/jarvis/pipelines/omni/test_omni_quick.yaml
           jarvis ppl run
           ./wrpgit clean
           ./wrpgit recreate
