@@ -28,6 +28,9 @@ jobs:
             sudo pkg install -y perl5
             sudo pkg install -y cmake
             sudo pkg install -y git
+            sudo pkg bootstrap
+            sudo mkdir -p /usr/ports
+            sudo git clone https://git.FreeBSD.org/ports.git /usr/ports
             cd /usr/ports
             sudo git pull
             cd /usr/ports/devel/llvm-devel
