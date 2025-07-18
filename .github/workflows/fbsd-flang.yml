@@ -18,7 +18,7 @@ jobs:
             host: ubuntu-latest
     steps:
       - name: ${{ matrix.os.name }}
-        uses: cross-platform-actions/action@v0.28.0
+        uses: cross-platform-actions/action@master
         with:
           operating_system: ${{ matrix.os.name }}
           architecture: ${{ matrix.os.architecture }}
