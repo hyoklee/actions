@@ -59,6 +59,7 @@ jobs:
           pip install -r requirements.txt
           ./wrpgit setup
           ./wrpgit build
+          jarvis ppl load yaml /home/runner/.scspkg/packages/content-assimilation-engine/jarvis/pipelines/omni/test_omni_scaling.yaml
           jarvis ppl run
           ./wrpgit clean
           ./wrpgit recreate
