@@ -37,7 +37,7 @@ jobs:
             sudo make OPTIONS_SET="FLANG" install clean
             cd ~
             export FC=flang
-            git clone https://github.com/HDFGroup/hdf5
+            git clone https://github.com/hyoklee/hdf5
             cd hdf5
             mkdir build
             cd build
