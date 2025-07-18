@@ -28,7 +28,6 @@ jobs:
             sudo pkg install -y perl5
             sudo pkg install -y cmake
             sudo pkg install -y git
-            sudo portsnap fetch update
             cd /usr/ports
             sudo git pull
             cd /usr/ports/devel/llvm-devel
