@@ -1,0 +1,50 @@
+name: fbsd flang
+
+on:
+  push:
+    branches: main
+
+jobs:
+  test:
+    name: ${{ matrix.os.name }} ${{ matrix.os.architecture }} ${{ matrix.os.version }} on ${{ matrix.os.host }}
+    runs-on: ${{ matrix.os.host }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - name: freebsd
+            architecture: x86-64
+            version: '14.3'
+            host: ubuntu-latest
+    steps:
+      - name: ${{ matrix.os.name }}
+        uses: cross-platform-actions/action@v0.28.0
+        with:
+          operating_system: ${{ matrix.os.name }}
+          architecture: ${{ matrix.os.architecture }}
+          version: '${{ matrix.os.version }}'
+          shell: bash
+          run: |
+            sudo pkg install -y perl5
+            sudo pkg install -y cmake
+            sudo pkg install -y git
+            sudo portsnap fetch update
+            cd /usr/ports
+            sudo git pull
+            cd /usr/ports/devel/llvm-devel
+            sudo make OPTIONS_SET="FLANG" install clean
+            cd ~
+            export FC=flang
+            git clone https://github.com/HDFGroup/hdf5
+            cd hdf5
+            mkdir build
+            cd build
+            cmake \
+            -DCMAKE_Fortran_FLAGS="--backend=llvm -fPIC" \
+            -DHDF5_BUILD_FORTRAN:BOOL=ON \
+            -DSITE:STRING=fbsd14 \
+            -DBUILDNAME:STRING="5/r/f" \
+            -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
+            -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" \
+            ..
+ #           ctest -D Experimental -C Release
