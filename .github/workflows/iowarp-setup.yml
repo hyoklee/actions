@@ -59,9 +59,8 @@ jobs:
           pip install -r requirements.txt
           ./wrpgit setup
           ./wrpgit build
-          jarvis bootstrap from local
-          jarvis env build hermes
-          jarvis ppl run yaml /home/runner/.scspkg/packages/content-assimilation-engine/jarvis/pipelines/omni/test_omni_quick.yaml
-          jarvis ppl run
           ./wrpgit clean
           ./wrpgit recreate
+          jarvis bootstrap from local
+          jarvis env build hermes
+          find / -name '*.yaml'

@@ -2,7 +2,7 @@ name: fbsd flang
 
 on:
   push:
-    branches: main-
+    branches: main
 
 jobs:
   test:
@@ -34,7 +34,7 @@ jobs:
             cd /usr/ports
             sudo git pull
             cd /usr/ports/devel/llvm-devel
-            sudo make OPTIONS_SET="FLANG" install clean
+            sudo make OPTIONS_SET="FLANG" -DBATCH install clean
             cd ~
             export FC=flang
             git clone https://github.com/hyoklee/hdf5
