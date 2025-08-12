@@ -16,3 +16,4 @@ jobs:
       - name: Download data with curl
         run: |
           curl -L -n -c ~/.urs_cookies -b ~/.urs_cookies -O https://data.asdc.earthdata.nasa.gov/asdc-prod-protected/MOPITT/MOP02J.9/2013.11.29/MOP02J-20131129-L2V19.9.3.he5
+          cat *.he5
