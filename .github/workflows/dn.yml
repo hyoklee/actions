@@ -10,7 +10,7 @@ jobs:
     steps:
       - name: Set up NASA Earthdata credentials
         run: |
-          echo "machine urs.earthdata.nasa.gov login ${{ secrets.EARTHDATA_USERNAME }} password ${{ secrets.EARTHDATA_PASSWORD }}" > ~/.netrc
+          echo "machine urs.earthdata.nasa.gov login ${{ secrets.EARTHDATA_LOGIN }} password ${{ secrets.EARTHDATA_PASSWORD }}" > ~/.netrc
           chmod 0600 ~/.netrc
           touch ~/.urs_cookies
       - name: Download data with curl
