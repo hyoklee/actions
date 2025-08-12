@@ -3,7 +3,7 @@ name: IOWarp Install and Build
 on:
   workflow_dispatch:
   push:
-    branches: [main]
+    branches: [main-]
 
 jobs:
   iowarp-setup:
