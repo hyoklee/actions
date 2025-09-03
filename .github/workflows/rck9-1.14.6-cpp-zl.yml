@@ -1,9 +1,9 @@
-name: rck9 cpp zl
+name: rck9 1.14.6 cpp zl
 
 on:
   push:
     branches:
-      - main
+      - main-
 
 jobs:
   build-and-test:
@@ -15,6 +15,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: HDFGroup/hdf5
+          ref: hdf5_1_14_6
           path: ./hdf5
       - name: Verify OS
         run: cat /etc/os-release
@@ -36,7 +37,7 @@ jobs:
                 -DSZIP_LIBRARY:PATH="/usr/lib64/libsz.so.2.0.1" \
                 -DSZIP_INCLUDE_DIR="/usr/include" \
                 -DSITE:STRING="rck-9" \
-                -DBUILDNAME:STRING="r/cpp/zl" \
+                -DBUILDNAME:STRING="1.14.6/r/cpp/zl" \
                 -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
                 -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \
                 ..
