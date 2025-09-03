@@ -24,7 +24,7 @@ jobs:
           dnf install -y cmake
           dnf install -y procps-ng
           dnf install -y zlib
-          dnf group install "Development Tools"
+          dnf group install -y "Development Tools"
       - name: build hdf5
         run: |
           cd hdf5
