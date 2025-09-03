@@ -1,0 +1,42 @@
+name: rck9 hdf5-1.14.6 cpp ae zl
+
+on: [push, pull_request]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    container:
+      image: rockylinux/rockylinux:9
+    steps:
+      - name: checkout hdf5
+        uses: actions/checkout@v4
+        with:
+          repository: HDFGroup/hdf5
+          ref: hdf5_1_14_6
+          path: ./hdf5
+      - name: Verify OS
+        run: cat /etc/os-release
+      - name: Install dependencies
+        run: |
+          dnf install -y cmake
+          dnf install -y libaec
+          dnf install -y libaec-devel
+          dnf install -y procps-ng
+          dnf install -y zlib
+      - name: build hdf5
+        run: |
+          cd hdf5
+          mkdir build
+          cd build
+          cmake --log-level=VERBOSE --fresh \
+                -DHDF5_BUILD_CPP_LIB:BOOL=ON \
+                -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=ON \
+                -DHDF5_ENABLE_ZLIB_SUPPORT:BOOL=ON \
+                -DSZIP_LIBRARY:PATH="/usr/lib64/libsz.so.2.0.1" \
+                -DSZIP_INCLUDE_DIR="/usr/include" \
+                -DSITE:STRING="rck-9" \
+                -DBUILDNAME:STRING="1.14.6/r/cpp/ae/zl" \
+                -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
+                -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \
+                ..
+                ctest -D Experimental -C Release
