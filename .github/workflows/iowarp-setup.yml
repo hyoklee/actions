@@ -47,6 +47,8 @@ jobs:
           ./wrpgit clone
           git clone https://github.com/spack/spack.git -b v0.23.0 "${HOME}/spack"
           source "${HOME}/spack/share/spack/setup-env.sh"
+          spack external find
+          spack external find python
           spack config add "modules:default:enable:[lmod]"
           source $(spack location -i lmod)/lmod/lmod/init/bash
           echo $SPACK_ROOT
@@ -54,8 +56,6 @@ jobs:
           echo $MODULEPATH
           ls $MODULEPATH
           spack repo add "${IOWARP}/iowarp-install/iowarp-spack"
-          spack external find
-          spack external find python
           spack install hdf5
           spack load hdf5
           spack spec iowarp
