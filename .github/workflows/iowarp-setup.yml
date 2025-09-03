@@ -20,7 +20,7 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y lmod
+#          sudo apt-get install -y lmod
 
       - name: Install yq (YAML processor)
         run: |
@@ -48,8 +48,8 @@ jobs:
           git clone https://github.com/spack/spack.git -b v0.23.0 "${HOME}/spack"
           source "${HOME}/spack/share/spack/setup-env.sh"
           spack external find
-          spack external find python
           spack config add "modules:default:enable:[lmod]"
+          spack install lmod
           source $(spack location -i lmod)/lmod/lmod/init/bash
           echo $SPACK_ROOT
           export MODULEPATH=$SPACK_ROOT/share/spack/lmod/linux-ubuntu24.04-x86_64/Core
