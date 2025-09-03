@@ -3,7 +3,7 @@ name: IOWarp Install and Build
 on:
   workflow_dispatch:
   push:
-    branches: [main-]
+    branches: [main]
 
 jobs:
   iowarp-setup:
@@ -47,6 +47,12 @@ jobs:
           ./wrpgit clone
           git clone https://github.com/spack/spack.git -b v0.23.0 "${HOME}/spack"
           source "${HOME}/spack/share/spack/setup-env.sh"
+          spack config add "modules:default:enable:[lmod]"
+          source $(spack location -i lmod)/lmod/lmod/init/bash
+          echo $SPACK_ROOT
+          export MODULEPATH=$SPACK_ROOT/share/spack/lmod/linux-ubuntu24.04-x86_64/Core
+          echo $MODULEPATH
+          ls $MODULEPATH
           spack repo add "${IOWARP}/iowarp-install/iowarp-spack"
           spack external find
           spack external find python
@@ -55,12 +61,18 @@ jobs:
           spack spec iowarp
           spack install iowarp
           spack load iowarp
+          module use $MODULEPATH
+          module spider
+          module avail
+          module list
           cd "${IOWARP}/iowarp-install"
           pip install -r requirements.txt
           ./wrpgit setup
           ./wrpgit build
           ./wrpgit clean
           ./wrpgit recreate
+          SCSPKG_MODULE_DIR=$(scspkg module dir)
+          module use ${SCSPKG_MODULE_DIR}
           jarvis bootstrap from local
           jarvis env build hermes
-          find / -name '*.yaml'
+          find ${IOWARP} -name '*.yaml'
