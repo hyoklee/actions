@@ -54,7 +54,6 @@ jobs:
           echo $SPACK_ROOT
           export MODULEPATH=$SPACK_ROOT/share/spack/lmod/linux-ubuntu24.04-x86_64/Core
           echo $MODULEPATH
-          ls $MODULEPATH
           spack repo add "${IOWARP}/iowarp-install/iowarp-spack"
           spack install hdf5
           spack load hdf5
