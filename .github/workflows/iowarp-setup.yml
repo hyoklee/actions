@@ -76,12 +76,13 @@ jobs:
           sleep 5
           jarvis rg build
           sleep 5
-          jarvis env build hermes
+          jarvis env build jarvis_wrp_cae
           find ${IOWARP} -name '*.yaml'
           find ${HOME}/.jarvis
-          jarvis ppl load yaml /home/runner/work/actions/actions/iowarp/content-transfer-engine/test/jarvis_hermes/pipelines/hermes/test_hermes.yaml
+          find ${HOME}/.scspkg
           jarvis ppl print
           jarvis ppl run
+          jarvis ppl load yaml /home/runner/.scspkg/packages/content-assimilation-engine/jarvis/jarvis_wrp_cae/pipelines/omni/test_omni_quick.yaml          
 #          cat $(jarvis path +shared)/chimaera_run/hostfile
 #          cat $(jarvis path +shared)/chimaera_run/chimaera_server.yaml
 #          ctest -VV
@@ -90,3 +91,5 @@ jobs:
 #          jarvis ppl index load jarvis_hermes.hermes.test_hermes
 #           jarvis ppl load yaml /home/runner/work/actions/actions/iowarp/content-assimilation-engine/test/jarvis_wrp_cae/pipelines/omni/test_omni_demo.yaml
 #           jarvis ppl load yaml /home/runner/.jarvis/builtin/pipelines/simple_test.yaml
+#           jarvis ppl load yaml /home/runner/work/actions/actions/iowarp/content-transfer-engine/test/jarvis_hermes/pipelines/hermes/test_hermes.yaml
+#          jarvis env build hermes
