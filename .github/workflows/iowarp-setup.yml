@@ -79,7 +79,7 @@ jobs:
           jarvis env build hermes
           find ${IOWARP} -name '*.yaml'
           find ${HOME}/.jarvis
-          jarvis ppl load yaml /home/runner/.jarvis/builtin/pipelines/simple_test.yaml
+          jarvis ppl load yaml /home/runner/work/actions/actions/iowarp/content-transfer-engine/test/jarvis_hermes/pipelines/hermes/test_hermes.yaml
           jarvis ppl print
           jarvis ppl run
 #          cat $(jarvis path +shared)/chimaera_run/hostfile
@@ -89,3 +89,4 @@ jobs:
 #          jarvis ppl print
 #          jarvis ppl index load jarvis_hermes.hermes.test_hermes
 #           jarvis ppl load yaml /home/runner/work/actions/actions/iowarp/content-assimilation-engine/test/jarvis_wrp_cae/pipelines/omni/test_omni_demo.yaml
+#           jarvis ppl load yaml /home/runner/.jarvis/builtin/pipelines/simple_test.yaml
