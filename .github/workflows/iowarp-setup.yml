@@ -75,10 +75,10 @@ jobs:
           jarvis bootstrap from local
           jarvis env build hermes
           find ${IOWARP} -name '*.yaml'
-          jarvis ppl load yaml /home/runner/work/actions/actions/iowarp/content-assimilation-engine/test/jarvis_wrp_cae/pipelines/omni/test_omni_demo.yaml
           jarvis pkg conf chimaera_run data_shm=500m rdata_shm=500m task_shm=500m qdepth=50 worker_cpus=[0,1,1]
           jarvis ppl print
           cat $(jarvis path +shared)/chimaera_run/hostfile
           cat $(jarvis path +shared)/chimaera_run/chimaera_server.yaml
           ctest -VV
 #          jarvis ppl index load jarvis_hermes.hermes.test_hermes
+#           jarvis ppl load yaml /home/runner/work/actions/actions/iowarp/content-assimilation-engine/test/jarvis_wrp_cae/pipelines/omni/test_omni_demo.yaml
