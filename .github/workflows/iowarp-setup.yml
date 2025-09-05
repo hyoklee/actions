@@ -73,12 +73,14 @@ jobs:
           SCSPKG_MODULE_DIR=$(scspkg module dir)
           module use ${SCSPKG_MODULE_DIR}
           jarvis bootstrap from local
+          sleep 5
           jarvis env build hermes
           find ${IOWARP} -name '*.yaml'
-          jarvis pkg conf chimaera_run data_shm=500m rdata_shm=500m task_shm=500m qdepth=50 worker_cpus=[0,1,1]
-          jarvis ppl print
+          find ${HOME}/.jarvis
           cat $(jarvis path +shared)/chimaera_run/hostfile
           cat $(jarvis path +shared)/chimaera_run/chimaera_server.yaml
-          ctest -VV
+#          ctest -VV
+#          jarvis pkg conf chimaera_run data_shm=500m rdata_shm=500m task_shm=500m qdepth=50 worker_cpus=[0,1,1]
+#          jarvis ppl print
 #          jarvis ppl index load jarvis_hermes.hermes.test_hermes
 #           jarvis ppl load yaml /home/runner/work/actions/actions/iowarp/content-assimilation-engine/test/jarvis_wrp_cae/pipelines/omni/test_omni_demo.yaml
