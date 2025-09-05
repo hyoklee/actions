@@ -74,11 +74,16 @@ jobs:
           module use ${SCSPKG_MODULE_DIR}
           jarvis bootstrap from local
           sleep 5
+          jarvis rg build
+          sleep 5
           jarvis env build hermes
           find ${IOWARP} -name '*.yaml'
           find ${HOME}/.jarvis
-          cat $(jarvis path +shared)/chimaera_run/hostfile
-          cat $(jarvis path +shared)/chimaera_run/chimaera_server.yaml
+          jarvis ppl load yaml /home/runner/.jarvis/builtin/pipelines/simple_test.yaml
+          jarvis ppl print
+          jarvis ppl run
+#          cat $(jarvis path +shared)/chimaera_run/hostfile
+#          cat $(jarvis path +shared)/chimaera_run/chimaera_server.yaml
 #          ctest -VV
 #          jarvis pkg conf chimaera_run data_shm=500m rdata_shm=500m task_shm=500m qdepth=50 worker_cpus=[0,1,1]
 #          jarvis ppl print
