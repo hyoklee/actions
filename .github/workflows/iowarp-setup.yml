@@ -70,6 +70,7 @@ jobs:
           ./wrpgit build
           ./wrpgit clean
           ./wrpgit recreate
+          sleep 10
           SCSPKG_MODULE_DIR=$(scspkg module dir)
           which module
           which scspkg
