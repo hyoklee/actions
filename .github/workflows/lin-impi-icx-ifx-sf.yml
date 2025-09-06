@@ -3,7 +3,7 @@ name: lin impi mpiicx mpiifx sf
 on:
   push:
     branches:
-      - main
+      - main-
 
 permissions:
   contents: read

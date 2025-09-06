@@ -3,7 +3,7 @@ name: IOWarp Install and Build
 on:
   workflow_dispatch:
   push:
-    branches: [main-]
+    branches: [main]
 
 jobs:
   iowarp-setup:
@@ -80,7 +80,10 @@ jobs:
           find ${IOWARP} -name '*.yaml'
           find ${HOME}/.jarvis
           find ${HOME}/.scspkg
-          jarvis ppl load yaml /home/runner/.scspkg/packages/content-assimilation-engine/jarvis/jarvis_wrp_cae/pipelines/omni/test_omni_quick.yaml                    
+          which scspkg
+          which jarvis
+          jarvis ppl load yaml /home/runner/work/actions/actions/iowarp/content-assimilation-engine/test/jarvis_wrp_cae/pipelines/omni/test_omni_quick.yam
+          sleep 5
           jarvis ppl print
           jarvis ppl run
 #          cat $(jarvis path +shared)/chimaera_run/hostfile
@@ -93,3 +96,4 @@ jobs:
 #           jarvis ppl load yaml /home/runner/.jarvis/builtin/pipelines/simple_test.yaml
 #           jarvis ppl load yaml /home/runner/work/actions/actions/iowarp/content-transfer-engine/test/jarvis_hermes/pipelines/hermes/test_hermes.yaml
 #          jarvis env build hermes
+#           jarvis ppl load yaml /home/runner/.scspkg/packages/content-assimilation-engine/jarvis/jarvis_wrp_cae/pipelines/omni/test_omni_quick.yaml                    
