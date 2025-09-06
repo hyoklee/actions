@@ -72,7 +72,10 @@ jobs:
           ./wrpgit recreate
           SCSPKG_MODULE_DIR=$(scspkg module dir)
           which module
+          which scspkg
+          which jarvis
           module use ${SCSPKG_MODULE_DIR}
+          module load omni_parse
           module load content-transfer-engine
           module load content-assimilation-engine
           module list
@@ -85,8 +88,6 @@ jobs:
           find ${IOWARP} -name '*.yaml'
           find ${HOME}/.jarvis
           find ${HOME}/.scspkg
-          which scspkg
-          which jarvis
           jarvis ppl load yaml /home/runner/work/actions/actions/iowarp/content-assimilation-engine/test/jarvis_wrp_cae/pipelines/omni/test_omni_quick.yaml
           sleep 5
           jarvis ppl print
