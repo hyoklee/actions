@@ -82,7 +82,7 @@ jobs:
           find ${HOME}/.scspkg
           which scspkg
           which jarvis
-          jarvis ppl load yaml /home/runner/work/actions/actions/iowarp/content-assimilation-engine/test/jarvis_wrp_cae/pipelines/omni/test_omni_quick.yam
+          jarvis ppl load yaml /home/runner/work/actions/actions/iowarp/content-assimilation-engine/test/jarvis_wrp_cae/pipelines/omni/test_omni_quick.yaml
           sleep 5
           jarvis ppl print
           jarvis ppl run
