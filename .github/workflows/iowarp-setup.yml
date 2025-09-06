@@ -72,6 +72,8 @@ jobs:
           ./wrpgit recreate
           SCSPKG_MODULE_DIR=$(scspkg module dir)
           module use ${SCSPKG_MODULE_DIR}
+          module load content-transfer-engine
+          module load content-assimilation-engine
           jarvis bootstrap from local
           sleep 5
           jarvis rg build
