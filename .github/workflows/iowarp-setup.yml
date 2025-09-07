@@ -69,15 +69,14 @@ jobs:
           ./wrpgit setup
           ./wrpgit build
       - name: jarvis
-        run: |          
-          sleep 10
+        run: |
           source "${HOME}/spack/share/spack/setup-env.sh"
           spack load lmod
           spack load hdf5
           spack load iowarp
-          SCSPKG_MODULE_DIR=$(scspkg module dir)
-          which module
+          source $(spack location -i lmod)/lmod/lmod/init/bash
           which scspkg
+          SCSPKG_MODULE_DIR=$(scspkg module dir)
           which jarvis
           module use ${SCSPKG_MODULE_DIR}
           module load omni_parse
