@@ -68,6 +68,9 @@ jobs:
           pip install -r requirements.txt
           ./wrpgit setup
           ./wrpgit build
+# I don't know why these are necessary yet.
+#          ./wrpgit clean
+#          ./wrpgit recreate
       - name: jarvis
         run: |
           source "${HOME}/spack/share/spack/setup-env.sh"
@@ -79,7 +82,7 @@ jobs:
           SCSPKG_MODULE_DIR=$(scspkg module dir)
           which jarvis
           module use ${SCSPKG_MODULE_DIR}
-          module load omni_parse
+          module avail
           module load content-transfer-engine
           module load content-assimilation-engine
           module list
@@ -96,6 +99,11 @@ jobs:
           sleep 5
           jarvis ppl print
           jarvis ppl run
+# The following always returns 1 (error).
+#          whilc module
+# Module Not found
+#          module load omni_parse
+#
 #          cat $(jarvis path +shared)/chimaera_run/hostfile
 #          cat $(jarvis path +shared)/chimaera_run/chimaera_server.yaml
 #          ctest -VV
@@ -107,3 +115,4 @@ jobs:
 #           jarvis ppl load yaml /home/runner/work/actions/actions/iowarp/content-transfer-engine/test/jarvis_hermes/pipelines/hermes/test_hermes.yaml
 #          jarvis env build hermes
 #           jarvis ppl load yaml /home/runner/.scspkg/packages/content-assimilation-engine/jarvis/jarvis_wrp_cae/pipelines/omni/test_omni_quick.yaml                    
+ 
