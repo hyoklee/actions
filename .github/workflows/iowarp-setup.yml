@@ -68,9 +68,9 @@ jobs:
           pip install -r requirements.txt
           ./wrpgit setup
           ./wrpgit build
-# I don't know why these are necessary yet.
-#          ./wrpgit clean
-#          ./wrpgit recreate
+          ./wrpgit clean
+          ./wrpgit recreate
+# I don't know why "clean" & "recreate" are necessary yet.
       - name: jarvis
         run: |
           source "${HOME}/spack/share/spack/setup-env.sh"
