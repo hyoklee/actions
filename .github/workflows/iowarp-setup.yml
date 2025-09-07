@@ -68,7 +68,13 @@ jobs:
           pip install -r requirements.txt
           ./wrpgit setup
           ./wrpgit build
+      - name: jarvis
+        run: |          
           sleep 10
+          source "${HOME}/spack/share/spack/setup-env.sh"
+          spack load lmod
+          spack load hdf5
+          spack load iowarp
           SCSPKG_MODULE_DIR=$(scspkg module dir)
           which module
           which scspkg
