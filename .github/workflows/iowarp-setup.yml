@@ -68,8 +68,6 @@ jobs:
           pip install -r requirements.txt
           ./wrpgit setup
           ./wrpgit build
-          ./wrpgit clean
-          ./wrpgit recreate
           sleep 10
           SCSPKG_MODULE_DIR=$(scspkg module dir)
           which module
