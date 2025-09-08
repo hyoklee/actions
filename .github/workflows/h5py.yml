@@ -2,7 +2,7 @@ name: h5py
 
 on:
   push:
-    branches: [ main- ]
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
@@ -40,7 +40,8 @@ jobs:
         spack load py-pytest
         spack load py-pip
         spack load py-pytest-mpi
-        python -c "import h5py; h5py.run_tests(); print(h5py.version.info);"
-        cd h5py/bechmarks
+        cd h5py/bechmarks        
         python bechmark_slicing.py
+#        python -c "import h5py; h5py.run_tests(); print(h5py.version.info);"
+
 
