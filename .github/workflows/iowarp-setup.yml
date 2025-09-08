@@ -3,7 +3,7 @@ name: IOWarp Install and Build
 on:
   workflow_dispatch:
   push:
-    branches: [main-]
+    branches: [main]
 
 jobs:
   iowarp-setup:
@@ -101,9 +101,13 @@ jobs:
           find ${IOWARP} -name '*.yaml'
           find ${HOME}/.jarvis
           find ${HOME}/.scspkg
+          pwd
+          jarvis ppl create test_omni
+          jarvis ppl append omni_parse omni_yaml=/home/runner/work/actions/actions/iowarp/content-assimilation-engine/omni/config/demo_job.yaml
           jarvis ppl load yaml /home/runner/work/actions/actions/iowarp/content-assimilation-engine/test/jarvis_wrp_cae/pipelines/omni/test_omni_quick.yaml
           sleep 5
           jarvis ppl print
+          cd /home/runner/work/actions/actions/iowarp/content-assimilation-engine/omni
           jarvis ppl run
 # The following always returns 1 (error).
 #          whilc module
