@@ -91,7 +91,7 @@ jobs:
           jarvis rg build
           sleep 5
           jarvis env build jarvis_wrp_cae
-          jarvis env build hermes
+
           find ${IOWARP} -name '*.yaml'
           find ${HOME}/.jarvis
           find ${HOME}/.scspkg
@@ -107,6 +107,8 @@ jobs:
 #          cat $(jarvis path +shared)/chimaera_run/hostfile
 #          cat $(jarvis path +shared)/chimaera_run/chimaera_server.yaml
 #          ctest -VV
+# This makes omni_parse not found.
+#          jarvis env build hermes
 #          jarvis pkg conf chimaera_run data_shm=500m rdata_shm=500m task_shm=500m qdepth=50 worker_cpus=[0,1,1]
 #          jarvis ppl print
 #          jarvis ppl index load jarvis_hermes.hermes.test_hermes
