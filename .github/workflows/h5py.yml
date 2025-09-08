@@ -41,7 +41,7 @@ jobs:
         spack load py-pip
         spack load py-pytest-mpi
         cd h5py/benchmarks        
-        python bechmark_slicing.py
+        python benchmark_slicing.py
 #        python -c "import h5py; h5py.run_tests(); print(h5py.version.info);"
 
 
