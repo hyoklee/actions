@@ -82,16 +82,21 @@ jobs:
           SCSPKG_MODULE_DIR=$(scspkg module dir)
           which jarvis
           module use ${SCSPKG_MODULE_DIR}
+          module spider
           module avail
           module load content-transfer-engine
           module load content-assimilation-engine
+          module load ppi-chi-nettest
+          module load ppi-jarvis-util
+          module load ppi-jarvis-cd
+          module load iowarp-runtime-util
           module list
           jarvis bootstrap from local
           sleep 5
           jarvis rg build
           sleep 5
           jarvis env build jarvis_wrp_cae
-
+          jarvis env build hermes
           find ${IOWARP} -name '*.yaml'
           find ${HOME}/.jarvis
           find ${HOME}/.scspkg
