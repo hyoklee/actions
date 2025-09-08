@@ -103,6 +103,7 @@ jobs:
           find ${HOME}/.scspkg
           pwd
           jarvis ppl create test_omni
+          ln -s /home/runner/work/actions/actions/iowarp/content-assimilation-engine/omni
           jarvis ppl append omni_parse omni_yaml=/home/runner/work/actions/actions/iowarp/content-assimilation-engine/omni/config/demo_job.yaml wrp_path=/home/runner/.scspkg/packages/content-assimilation-engine/bin/wrp
 
           jarvis ppl load yaml /home/runner/work/actions/actions/iowarp/content-assimilation-engine/test/jarvis_wrp_cae/pipelines/omni/test_omni_quick.yaml
