@@ -2,24 +2,30 @@ name: h5py
 
 on:
   push:
-    branches: [ main- ]
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Install gfortran
+    - name: gfortran
       run: |
         sudo apt-get update
         sudo apt-get install -y gfortran-12
-    - name: Checkout Spack
+    - name: spack
       uses: actions/checkout@v4
       with:
         repository: spack/spack
         path: ./spack
 
-    - name: Run a multi-line script
+    - name: h5py
+      uses: actions/checkout@v4
+      with:
+        repository: h5py/h5py
+        path: ./h5py
+        
+    - name: test
       run: |
         . ./spack/share/spack/setup-env.sh
         ./spack/bin/spack spec py-h5py@master+mpi
@@ -35,3 +41,6 @@ jobs:
         spack load py-pip
         spack load py-pytest-mpi
         python -c "import h5py; h5py.run_tests(); print(h5py.version.info);"
+        cd h5py/bechmarks
+        python bechmark_slicing.py
+
