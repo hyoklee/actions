@@ -68,8 +68,8 @@ jobs:
           pip install -r requirements.txt
           ./wrpgit setup
           ./wrpgit build
-          ./wrpgit clean
-          ./wrpgit recreate
+#          ./wrpgit clean
+#          ./wrpgit recreate
 # I don't know why "clean" & "recreate" are necessary yet.
       - name: jarvis
         run: |
@@ -95,6 +95,7 @@ jobs:
           sleep 5
           jarvis rg build
           sleep 5
+          jarvis repo list
           jarvis env build jarvis_wrp_cae
           jarvis env build hermes
           find ${IOWARP} -name '*.yaml'
@@ -122,4 +123,6 @@ jobs:
 #           jarvis ppl load yaml /home/runner/work/actions/actions/iowarp/content-transfer-engine/test/jarvis_hermes/pipelines/hermes/test_hermes.yaml
 #          jarvis env build hermes
 #           jarvis ppl load yaml /home/runner/.scspkg/packages/content-assimilation-engine/jarvis/jarvis_wrp_cae/pipelines/omni/test_omni_quick.yaml                    
- 
+# This causes omni_parse package not found 
+#           jarvis ppl load yaml /home/runner/work/actions/actions/iowarp/content-assimilation-engine/test/jarvis_wrp_cae/pipelines/omni/test_omni_quick.yaml
+#           jarvis ppl create test_omni_quick
