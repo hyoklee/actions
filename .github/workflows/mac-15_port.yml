@@ -10,7 +10,7 @@ jobs:
     steps:
       - name: get
         run: |
-          curl -O -L  macports.pkg https://distfiles.macports.org/MacPorts/MacPorts-2.8.1-12-Sonoma.pkg
+          curl -o macports.pkg https://github.com/macports/macports-base/releases/download/v2.11.5/MacPorts-2.11.5-15-Sequoia.pkg
       - name: install
         run: |
           ls
