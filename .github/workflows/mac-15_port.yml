@@ -17,6 +17,9 @@ jobs:
           sudo installer -pkg MacPorts-2.11.5-15-Sequoia.pkg -target /
       - name: update
         run: |
+          export PATH=/opt/local/bin:/opt/local/sbin:$PATH
+          ls -l /opt/local/bin
+          ls -l /opt/local/sbin
           sudo port selfupdate        
       - name: install
         run: |
