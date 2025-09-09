@@ -1,0 +1,23 @@
+name: mac-15 port
+
+on:
+  push:
+    branches: main
+
+jobs:
+  build:
+    runs-on: macos-15
+    steps:
+      - name: get
+        run: |
+          curl -o macports.pkg https://distfiles.macports.org/MacPorts/MacPorts-2.8.1-12-Sonoma.pkg
+      - name: install
+        run: |
+          sudo installer -pkg macports.pkg -target /
+      - name: update
+        run: |
+          sudo port selfupdate        
+      - name: install
+        run: |
+          port version
+          sudo port install mpich-clang
