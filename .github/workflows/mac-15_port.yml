@@ -10,9 +10,10 @@ jobs:
     steps:
       - name: get
         run: |
-          curl -o macports.pkg https://distfiles.macports.org/MacPorts/MacPorts-2.8.1-12-Sonoma.pkg
+          curl -O -L  macports.pkg https://distfiles.macports.org/MacPorts/MacPorts-2.8.1-12-Sonoma.pkg
       - name: install
         run: |
+          ls
           sudo installer -pkg macports.pkg -target /
       - name: update
         run: |
