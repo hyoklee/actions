@@ -10,11 +10,11 @@ jobs:
     steps:
       - name: get
         run: |
-          curl -o macports.pkg https://github.com/macports/macports-base/releases/download/v2.11.5/MacPorts-2.11.5-15-Sequoia.pkg
+          curl -O -L   https://github.com/macports/macports-base/releases/download/v2.11.5/MacPorts-2.11.5-15-Sequoia.pkg
       - name: install
         run: |
-          ls
-          sudo installer -pkg macports.pkg -target /
+          ls -l
+          sudo installer -pkg MacPorts-2.11.5-15-Sequoia.pkg -target /
       - name: update
         run: |
           sudo port selfupdate        
