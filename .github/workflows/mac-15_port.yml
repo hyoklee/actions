@@ -1,0 +1,15 @@
+name: mac-15 port
+
+on:
+  push:
+    branches: main
+
+jobs:
+  build:
+    runs-on: macos-15
+    steps:
+      - uses: melusina-org/setup-macports@v1
+      - name: install
+        run: |
+          port version
+          sudo port install mpich-clang
