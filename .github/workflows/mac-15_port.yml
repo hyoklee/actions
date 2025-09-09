@@ -20,8 +20,9 @@ jobs:
           export PATH=/opt/local/bin:/opt/local/sbin:$PATH
           ls -l /opt/local/bin
           ls -l /opt/local/sbin
-          sudo port selfupdate        
+          sudo port selfupdate
       - name: install
         run: |
+          export PATH=/opt/local/bin:/opt/local/sbin:$PATH          
           port version
           sudo port install mpich-clang
