@@ -1,4 +1,4 @@
-name: mac-15 port
+name: mac-14 port
 
 on:
   push:
@@ -6,9 +6,12 @@ on:
 
 jobs:
   build:
-    runs-on: macos-15
+    runs-on: macos-14
     steps:
       - uses: melusina-org/setup-macports@v1
+        with:
+          parameters: 'testsuite/run-testsuite-on-macos-14-package.yaml'
+        
       - name: install
         run: |
           port version
