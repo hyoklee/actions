@@ -26,8 +26,4 @@ jobs:
           -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
           -DSITE:STRING="mac-15" \
           ..
-          ctest -T Build
-          ctest -T Test
-#          cmake --build . --config Debug
-#          ctest --test-dir . -C Debug
-#          sudo cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DCMAKE_INSTALL_CONFIG_NAME=Debug -P cmake_install.cmake
+          ctest -D Experimental
