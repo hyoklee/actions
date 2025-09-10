@@ -26,4 +26,4 @@ jobs:
           -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
           -DSITE:STRING="mac-15" \
           ..
-          ctest -D Experimental
+          ctest -C Release -D Experimental
