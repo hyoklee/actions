@@ -1,0 +1,45 @@
+name: h5py h5-1.14.6
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: gfortran
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y gfortran-12
+    - name: spack
+      uses: actions/checkout@v4
+      with:
+        repository: spack/spack
+        path: ./spack
+
+    - name: h5py
+      uses: actions/checkout@v4
+      with:
+        repository: h5py/h5py
+        path: ./h5py
+        
+    - name: test
+      run: |
+        . ./spack/share/spack/setup-env.sh
+        ./spack/bin/spack spec py-h5py@master+mpi
+        ./spack/bin/spack spec py-h5py@master+mpi ^hdf5@1.14.6
+        ./spack/bin/spack install py-h5py@master+mpi ^hdf5@1.14.6
+        ./spack/bin/spack install py-pytest
+        ./spack/bin/spack install py-pip
+        ./spack/bin/spack install py-pytest-mpi
+        spack load py-h5py
+        spack load py-pytest
+        spack load py-pip
+        spack load py-pytest-mpi
+        cd h5py/benchmarks        
+        python benchmark_slicing.py
+#        python -c "import h5py; h5py.run_tests(); print(h5py.version.info);"
+
+
