@@ -1,0 +1,15 @@
+name: ubuntu-24.04 lscpu
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+    - name: lscpu
+      run: |
+        sudo apt-get update
+        lscpu
+        
