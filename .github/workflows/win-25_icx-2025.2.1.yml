@@ -41,6 +41,6 @@ jobs:
           call %SETVARS%
           mkdir build
           cd build
-          cmake -G Ninja -DCMAKE_C_COMPILER="C:/Program Files (x86)/Intel/oneAPI/compiler/latest/bin/icx.exe" -DCMAKE_CXX_COMPILER="C:/Program Files (x86)/Intel/oneAPI/compiler/latest/bin/icpx.exe"  -DBUILD_SHARED_LIBS:BOOL=OFF  -DHDF5_BUILD_FORTRAN:BOOL=ON  -DHDF5_ENABLE_Z_LIB_SUPPORT:BOOL=OFF -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF -DCTEST_DROP_SITE_INIT=my.cdash.org -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" -DSITE="win-25" -DBUILDNAME="ninja/icx-2025.2.1/-sh" ..
+          cmake -G Ninja -DCMAKE_C_COMPILER="C:/Program Files (x86)/Intel/oneAPI/compiler/latest/bin/icx.exe" -DCMAKE_CXX_COMPILER="C:/Program Files (x86)/Intel/oneAPI/compiler/latest/bin/icpx.exe"  -DBUILD_SHARED_LIBS:BOOL=OFF  -DHDF5_ENABLE_Z_LIB_SUPPORT:BOOL=OFF -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF -DCTEST_DROP_SITE_INIT=my.cdash.org -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" -DSITE="win-25" -DBUILDNAME="ninja/icx-2025.2.1/-sh" ..
           ctest -D Experimental
 
