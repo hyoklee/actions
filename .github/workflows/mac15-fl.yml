@@ -33,5 +33,6 @@ jobs:
             -DHDF5_BUILD_FORTRAN=ON \
             -DH5_FORTRAN_HAVE_C_LONG_DOUBLE=0 \
             -DH5_FORTRAN_C_LONG_DOUBLE_IS_UNIQUE=0 \
+            -DCMAKE_TOOLCHAIN_FILE=config/toolchain/clang.cmake \
             ..
 #          ctest -D Experimental
