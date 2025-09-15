@@ -2,7 +2,7 @@ name: mac-15 flang
 
 on:
   push:
-    branches: main-
+    branches: main
 
 jobs:
   build:
@@ -13,16 +13,16 @@ jobs:
           brew update
           brew info flang
           brew install flang
-          find /opt/homebrew -name 'lld'
+          find /opt/homebrew
       - name: checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: HDFGroup/hdf5
       - name: test
         run: |
-          export FC=/opt/homebrew/bin/flang-20
-          export CC=/opt/homebrew/Cellar/llvm/20.1.2/bin/clang
-          export CXX=/opt/homebrew/Cellar/llvm/20.1.2/bin/clang++
+          export FC=/opt/homebrew/bin/flang-21
+          export CC=/opt/homebrew/bin/clang
+          export LDFLAGS="-L/opt/llvm/lib/c++ -Wl,-rpath"
           mkdir build
           cd build
           cmake -G Ninja \
