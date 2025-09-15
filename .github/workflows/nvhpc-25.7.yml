@@ -3,7 +3,7 @@ name: nvhpc-25.7 nvc nvfortran
 on:
   push:
     branches:
-      - main
+      - main-
 
 jobs:
   build:
