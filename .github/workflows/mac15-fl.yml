@@ -37,4 +37,4 @@ jobs:
             -DH5_FORTRAN_HAVE_C_LONG_DOUBLE=0 \
             -DH5_FORTRAN_C_LONG_DOUBLE_IS_UNIQUE=0 \
             ..
-#          ctest -D Experimental
+          ctest -D Experimental
