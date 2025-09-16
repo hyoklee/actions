@@ -20,13 +20,15 @@ jobs:
           repository: HDFGroup/hdf5
       - name: test
         run: |
+
           export FC=/opt/homebrew/bin/flang-21
           export CC=/opt/homebrew/Cellar/llvm/21.1.1/bin/clang-21
           export LDFLAGS="-L/opt/homebrew/Cellar/llvm/21.1.1/lib -Wl,-rpath"
           export CFLAGS=-I/opt/homebrew/Cellar/llvm/21.1.1include
           mkdir build
           cd build
-          cmake -G Ninja \
+          cmake \
+            -DCMAKE_OSX_SYSROOT=$(xcrun --show-sdk-path) \
             -DSITE:STRING=mac-15 \
             -DBUILDNAME:STRING=fl \
             -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
