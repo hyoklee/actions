@@ -28,7 +28,7 @@ jobs:
           mkdir build
           cd build
           cmake \
-            -G Xcode
+            -G Xcode \
             -DCMAKE_OSX_SYSROOT=$(xcrun --show-sdk-path) \
             -DSITE:STRING=mac-15 \
             -DBUILDNAME:STRING="clang-21" \
