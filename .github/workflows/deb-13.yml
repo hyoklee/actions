@@ -2,9 +2,9 @@ name: deb-13
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main- ]
   pull_request:
-    branches: [ main ]
+    branches: [ main- ]
 
 jobs:
   test-on-debian-experimental:
