@@ -39,7 +39,7 @@ jobs:
         -DHDF5_BUILD_HL_LIB:BOOL=ON \
         -DHDF5_ENABLE_MAP_API:BOOL=ON \
         -DHDF5_ENABLE_PARALLEL:BOOL=ON \
-        -DHDF5_ENABLE_SUBFILING_VFD:BOOL=ON \        
+        -DHDF5_ENABLE_SUBFILING_VFD:BOOL=ON \
         ..
         ctest -C Release -D Experimental      
 
