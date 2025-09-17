@@ -31,11 +31,11 @@ jobs:
             -G Xcode \
             -DCMAKE_OSX_SYSROOT=$(xcrun --show-sdk-path) \
             -DSITE:STRING=mac-15 \
-            -DBUILDNAME:STRING="clang-21" \
+            -DBUILDNAME:STRING="xcode/clang-21/flang-21" \
             -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
             -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \
             -DHDF5_BUILD_FORTRAN=OFF \
             -DH5_FORTRAN_HAVE_C_LONG_DOUBLE=0 \
             -DH5_FORTRAN_C_LONG_DOUBLE_IS_UNIQUE=0 \
             ..
-          ctest -D Experimental
+          ctest -C Release -D Experimental
