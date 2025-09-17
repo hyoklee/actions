@@ -1,0 +1,49 @@
+name: deb-13
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test-on-debian-experimental:
+    runs-on: ubuntu-latest
+    container:
+      image: debian:trixie
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        repository: HDFGroup/hdf5
+    - name: Install sudo
+      run: |
+        su -c 'apt-get update'
+        su -c 'apt-get install -y sudo'
+    - name: Install additional dependencies
+      run: |
+        sudo apt-get install -y build-essential cmake gfortran libaec-dev zlib1g-dev libopenmpi-dev
+
+    - name: Run Tests
+      run: |
+        mkdir build
+        cd build
+        cmake \
+        -DCMAKE_CXX_COMPILER=mpicxx \
+        -DCMAKE_C_COMPILER=mpicc \
+        -DCMAKE_Fortran_COMPILER=mpifort \
+        -DSITE:STRING="deb-13.1" \
+        -DBUILDNAME:STRING="ompi/f/h/mp/sf" \
+        -DCTEST_DROP_SITE_INIT:STRING=my.cdash.org \
+        -DHDF5_BUILD_FORTRAN:BOOL=ON \
+        -DHDF5_BUILD_HL_LIB:BOOL=ON \
+        -DHDF5_ENABLE_MAP_API:BOOL=ON \
+        -DHDF5_ENABLE_PARALLEL:BOOL=ON \
+        -DHDF5_ENABLE_SUBFILING_VFD:BOOL=ON \        
+        ..
+        ctest -C Release -D Experimental      
+
+    - name: Show system details
+      run: |
+        cat /etc/os-release  # This will show which Debian version is being used
+
