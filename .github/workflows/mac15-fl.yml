@@ -2,7 +2,7 @@ name: mac-15 flang
 
 on:
   push:
-    branches: main-
+    branches: main
 
 jobs:
   build:
@@ -23,12 +23,15 @@ jobs:
 
           export FC=/opt/homebrew/bin/flang-21
           export CC=/opt/homebrew/Cellar/llvm/21.1.1/bin/clang-21
-          export LDFLAGS="-L/opt/homebrew/Cellar/llvm/21.1.1/lib -Wl,-rpath"
+          export LDFLAGS=-L/opt/homebrew/Cellar/llvm/21.1.1/lib
           export CFLAGS=-I/opt/homebrew/Cellar/llvm/21.1.1include
           mkdir build
           cd build
           cmake \
             -G Xcode \
+            -DCMAKE_C_COMPILER=/opt/homebrew/Cellar/llvm/21.1.1/bin/clang-21 \
+            -DCMAKE_CXX_COMPILER=/opt/homebrew/Cellar/llvm/21.1.1/bin/clang++-21 \
+            -DCMAKE_Fortran_COMPILER=/opt/homebrew/bin/flang-21 \
             -DCMAKE_OSX_SYSROOT=$(xcrun --show-sdk-path) \
             -DSITE:STRING=mac-15 \
             -DBUILDNAME:STRING="xcode/clang-21/flang-21" \
