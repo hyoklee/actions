@@ -2,7 +2,7 @@ name: s390x h5
 
 on:
   push:
-    branches: [ main- ]
+    branches: [ main ]
 
 jobs:
   aarch64_job:
@@ -10,6 +10,11 @@ jobs:
     runs-on: ubuntu-latest
     name: Build on ubuntu-latest aarch64
     steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: lrknox/hdf5
+          ref: add-bigiendian-files
+
       - uses: uraimo/run-on-arch-action@v2
         name: Run commands
         id: runcmd
@@ -26,12 +31,14 @@ jobs:
             apt-get install -q -y gfortran g++  yacc flex libtool autotools-dev
           run: |
             echo ::set-output name=uname::$(uname -a)
-            git clone https://github.com/HDFGroup/hdf5
-            cd hdf5
             mkdir build
             cd build
-            cmake ..
-            ctest -D Experimental
+            cmake \
+            -D CTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
+            -D SITE:STRING=s390x \
+            -DBUILDNAME:STRING="pr-5849" \
+            ..
+            ctest -C Release -D Experimental
 
 
       - name: Get the output
