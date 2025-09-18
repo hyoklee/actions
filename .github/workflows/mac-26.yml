@@ -13,19 +13,17 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: HDFGroup/hdf5
-
       - name: install
         run: brew install libaec
-
-      - name: xcode
+      - name: test
         run: |
           mkdir build
           cd build
           cmake \
-          -DBUILDNAME:STRING=sz/zl" \
-          -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
+          -DBUILDNAME:STRING=sz/zl \
+          -DCTEST_DROP_SITE_INIT:STRING=my.cdash.org \
           -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=ON \
           -DHDF5_ENABLE_ZLIB_SUPPORT:BOOL=ON \
-          -DSITE:STRING="mac-26" \
+          -DSITE:STRING=mac-26 \
           ..
           ctest -C Release -D Experimental
