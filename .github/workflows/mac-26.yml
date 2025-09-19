@@ -24,7 +24,7 @@ jobs:
           -DCMAKE_Fortran_COMPILER=/opt/homebrew/bin/gfortran-15 \
           -DCTEST_DROP_SITE_INIT=my.cdash.org \
           -DHDF5_BUILD_FORTRAN=ON \
-          -DHDF5_BUILD_JAVA=ON
+          -DHDF5_BUILD_JAVA=ON \
           -DHDF5_ENABLE_SZIP_SUPPORT=ON \
           -DHDF5_ENABLE_ZLIB_SUPPORT=ON \
           -DSITE:STRING=mac-26 \
