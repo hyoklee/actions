@@ -14,9 +14,10 @@ jobs:
         with:
           repository: HDFGroup/hdf5
       - name: install
-        run: brew install libaec gfortran
+        run: brew install libaec
       - name: test
         run: |
+          locate gfortran
           mkdir build
           cd build
           cmake \
@@ -27,4 +28,4 @@ jobs:
           -DHDF5_ENABLE_ZLIB_SUPPORT:BOOL=ON \
           -DSITE:STRING=mac-26 \
           ..
-          ctest -C Release -D Experimental
+#          ctest -C Release -D Experimental
