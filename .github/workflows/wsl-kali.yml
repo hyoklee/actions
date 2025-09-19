@@ -1,11 +1,9 @@
 name: wsl kali
 
-
 on:
   push:
     branches:
-      - main-
-
+      - main
 
 jobs:
   build:
@@ -14,10 +12,13 @@ jobs:
         os: [kali-linux]
     defaults:
       run:
-        shell: wsl-bash {0}        
-    runs-on: windows-latest
+        shell: wsl-bash {0}
+    runs-on: windows-2025
     steps:
-      - uses: Vampire/setup-wsl@v3
+      - uses: actions/checkout@v4
+        with:
+          repository: HDFGroup/hdf5
+      - uses: Vampire/setup-wsl@v6
         with:
           distribution: ${{ matrix.os }}
           additional-packages:
@@ -25,12 +26,11 @@ jobs:
             cmake
             curl
             build-essential
-      - name: Run the script
+      - name: test
         run: |
-          curl -O -L https://support.hdfgroup.org/releases/hdf5/v1_14/v1_14_5/downloads/snapshot-1.14.5.tar.gz
-          tar zxvf snapshot-1.14.5.tar.gz
-          cd hdf5-1.14.5-2
           mkdir build
           cd build
-          cmake -DSITE:STRING="kali/wsl" -DBUILDNAME:STRING="4" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" ..
-          ctest -D Experimental
+          cmake -DSITE:STRING="kali/WSL" -DBUILDNAME:STRING="r" \
+          -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
+          -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" ..
+          ctest -C Release -D Experimental
