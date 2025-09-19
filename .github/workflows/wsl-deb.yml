@@ -12,7 +12,7 @@ jobs:
     defaults:
       run:
         shell: wsl-bash {0}
-    runs-on: windows-latest
+    runs-on: windows-2025
     steps:
       - uses: actions/checkout@v4
         with:
@@ -20,6 +20,7 @@ jobs:
       - uses: Vampire/setup-wsl@v6
         with:
           distribution: ${{ matrix.os }}
+          update: 'true'
           additional-packages:
             dos2unix
             cmake

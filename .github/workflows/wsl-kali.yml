@@ -21,6 +21,7 @@ jobs:
       - uses: Vampire/setup-wsl@v6
         with:
           distribution: ${{ matrix.os }}
+          update: 'true'
           additional-packages:
             dos2unix
             cmake
