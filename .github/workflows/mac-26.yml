@@ -28,4 +28,4 @@ jobs:
           -DHDF5_ENABLE_ZLIB_SUPPORT:BOOL=ON \
           -DSITE:STRING=mac-26 \
           ..
-#          ctest -C Release -D Experimental
+          ctest -C Release -D Experimental
