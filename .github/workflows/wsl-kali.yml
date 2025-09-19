@@ -1,33 +1,3 @@
-name: Kali Linux Simple Setup
-on:
-  workflow_dispatch:
-  push:
-    branches: [ main ]
-
-jobs:
-  kali-basic:
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Setup Kali Linux
-        uses: Vampire/setup-wsl@v6
-        with:
-          distribution: kali-linux
-          use-cache: false
-      - name: Quick Fix and Install
-        shell: wsl-bash {0}
-        run: |
-          # Quick dpkg-divert fix
-          sudo sed -i 's/--no-rename//g' /var/lib/dpkg/info/*.preinst 2>/dev/null || true
-          sudo sed -i 's/--no-rename//g' /var/lib/dpkg/info/*.postinst 2>/dev/null || true
-          # Force configure
-          sudo dpkg --configure -a
-          # Update without upgrade
-          sudo apt update
-          # Install only essential tools
-          sudo apt install -y curl wget git python3 nmap
-          echo "Basic Kali setup complete!"
-          nmap --version
 name: WSL Kali Linux Setup and Update
 
 on:
