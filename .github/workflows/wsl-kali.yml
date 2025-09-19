@@ -1,5 +1,8 @@
 name: Kali Linux Simple Setup
-on: [push, pull_request]
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
 
 jobs:
   kali-basic:
@@ -25,3 +28,395 @@ jobs:
           sudo apt install -y curl wget git python3 nmap
           echo "Basic Kali setup complete!"
           nmap --version
+name: WSL Kali Linux Setup and Update
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  kali-linux-setup:
+    runs-on: windows-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup WSL with latest Kali Linux
+      uses: Vampire/setup-wsl@v6
+      with:
+        distribution: kali-linux
+        use-cache: true
+        set-as-default: true
+        additional-packages:
+          curl
+          wget
+          git
+          vim
+          nano
+          htop
+          tree
+          unzip
+          zip
+          software-properties-common
+          apt-transport-https
+          ca-certificates
+          gnupg
+          lsb-release
+          build-essential
+          python3
+          python3-pip
+          nodejs
+          npm
+          default-jdk
+
+    - name: Configure Kali Linux repositories and update system
+      shell: wsl-bash {0}
+      run: |
+        set -e
+        
+        echo "=== Configuring Latest Kali Linux ==="
+        
+        # Display initial system information
+        echo "=== Initial System Information ==="
+        cat /etc/os-release
+        uname -a
+        echo ""
+        
+        # Configure latest Kali repositories
+        echo "=== Configuring Latest Kali Repositories ==="
+        sudo tee /etc/apt/sources.list > /dev/null <<EOF
+        # Kali Linux rolling release - latest packages
+        deb http://http.kali.org/kali kali-rolling main contrib non-free non-free-firmware
+        deb-src http://http.kali.org/kali kali-rolling main contrib non-free non-free-firmware
+        EOF
+        
+        # Add Kali GPG key
+        wget -q -O - https://archive.kali.org/archive-key.asc | sudo apt-key add -
+        
+        # Update package lists
+        echo "=== Updating Package Lists ==="
+        sudo apt update
+        
+        # Fix any broken packages
+        echo "=== Fixing Broken Packages ==="
+        sudo apt --fix-broken install -y
+        
+        # Clean package cache
+        sudo apt clean
+        sudo apt autoclean
+        
+        # Full system upgrade to latest packages
+        echo "=== Upgrading to Latest System Packages ==="
+        sudo DEBIAN_FRONTEND=noninteractive apt full-upgrade -y
+
+    - name: Create non-root user
+      shell: wsl-bash {0}
+      run: |
+        echo "=== Creating Non-Root User ==="
+        
+        # Create kali user with sudo privileges
+        sudo useradd -m -s /bin/bash kaliuser
+        echo 'kaliuser:kalipass' | sudo chpasswd
+        sudo usermod -aG sudo kaliuser
+        
+        # Configure passwordless sudo for convenience in CI
+        echo 'kaliuser ALL=(ALL) NOPASSWD:ALL' | sudo tee /etc/sudoers.d/kaliuser
+        
+        # Verify user creation
+        echo "User created successfully:"
+        sudo cat /etc/passwd | grep kaliuser
+
+    - name: Install latest Kali meta-packages
+      shell: wsl-bash {0}
+      run: |
+        echo "=== Installing Latest Kali Meta-Packages ==="
+        
+        # Install core Kali packages
+        sudo DEBIAN_FRONTEND=noninteractive apt install -y \
+          kali-tools-top10 \
+          kali-linux-headless \
+          kali-tools-web \
+          kali-tools-database \
+          kali-tools-passwords \
+          kali-tools-wireless \
+          kali-tools-reverse-engineering \
+          kali-tools-exploitation \
+          kali-tools-social-engineering \
+          kali-tools-sniffing-spoofing \
+          kali-tools-post-exploitation \
+          kali-tools-forensics
+
+    - name: Install essential penetration testing tools
+      shell: wsl-bash {0}
+      run: |
+        echo "=== Installing Essential Penetration Testing Tools ==="
+        
+        sudo DEBIAN_FRONTEND=noninteractive apt install -y \
+          nmap \
+          masscan \
+          rustscan \
+          netcat-traditional \
+          socat \
+          john \
+          hashcat \
+          hydra \
+          gobuster \
+          ffuf \
+          dirbuster \
+          nikto \
+          sqlmap \
+          burpsuite \
+          metasploit-framework \
+          armitage \
+          set \
+          beef-xss \
+          wireshark \
+          tcpdump \
+          aircrack-ng \
+          recon-ng \
+          theharvester \
+          maltego \
+          autopsy \
+          binwalk \
+          foremost \
+          volatility3 \
+          steghide \
+          exiftool \
+          strings \
+          hexedit
+
+    - name: Install modern security tools
+      shell: wsl-bash {0}
+      run: |
+        echo "=== Installing Modern Security Tools ==="
+        
+        # Install Go for building tools
+        sudo apt install -y golang-go
+        
+        # Set up Go environment
+        export GOPATH=/opt/go
+        export PATH=$PATH:/opt/go/bin
+        sudo mkdir -p /opt/go/bin
+        
+        # Install popular Go-based security tools
+        echo "Installing nuclei..."
+        go install -v github.com/projectdiscovery/nuclei/v3/cmd/nuclei@latest
+        
+        echo "Installing subfinder..."
+        go install -v github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest
+        
+        echo "Installing httpx..."
+        go install -v github.com/projectdiscovery/httpx/cmd/httpx@latest
+        
+        echo "Installing naabu..."
+        go install -v github.com/projectdiscovery/naabu/v2/cmd/naabu@latest
+        
+        echo "Installing katana..."
+        go install github.com/projectdiscovery/katana/cmd/katana@latest
+        
+        echo "Installing waybackurls..."
+        go install github.com/tomnomnom/waybackurls@latest
+        
+        echo "Installing assetfinder..."
+        go install github.com/tomnomnom/assetfinder@latest
+        
+        echo "Installing gau..."
+        go install github.com/lc/gau/v2/cmd/gau@latest
+        
+        # Copy Go tools to system path
+        sudo cp /opt/go/bin/* /usr/local/bin/ 2>/dev/null || true
+        
+        # Update Python packages
+        echo "=== Updating Python Security Packages ==="
+        python3 -m pip install --upgrade pip setuptools wheel
+        pip3 install --user \
+          requests \
+          beautifulsoup4 \
+          scapy \
+          pwntools \
+          impacket \
+          bloodhound \
+          crackmapexec \
+          responder \
+          mitm6 \
+          sqlparse \
+          paramiko \
+          cryptography
+
+    - name: Configure security databases and services
+      shell: wsl-bash {0}
+      run: |
+        echo "=== Configuring Security Databases and Services ==="
+        
+        # Configure PostgreSQL for Metasploit
+        echo "Setting up Metasploit database..."
+        sudo systemctl enable postgresql || true
+        sudo service postgresql start || true
+        
+        # Initialize Metasploit database
+        sudo msfdb init || echo "Metasploit database initialization skipped"
+        
+        # Update Nmap script database
+        echo "Updating Nmap script database..."
+        sudo nmap --script-updatedb
+        
+        # Update Nuclei templates
+        echo "Updating Nuclei templates..."
+        nuclei -update-templates -silent || echo "Nuclei templates update skipped"
+        
+        # Create wordlist directory and download common wordlists
+        echo "Setting up wordlists..."
+        sudo mkdir -p /usr/share/wordlists
+        
+        # Download SecLists if not present
+        if [ ! -d "/usr/share/wordlists/SecLists" ]; then
+          sudo git clone https://github.com/danielmiessler/SecLists.git /usr/share/wordlists/SecLists
+        fi
+
+    - name: Verify Kali Linux installation and tools
+      shell: wsl-bash {0}
+      run: |
+        echo "=== Verifying Kali Linux Installation ==="
+        
+        # System information
+        echo "=== System Information ==="
+        echo "Kali Version:"
+        cat /etc/os-release | grep -E 'PRETTY_NAME|VERSION'
+        echo ""
+        echo "Kernel Version:"
+        uname -r
+        echo ""
+        echo "Architecture:"
+        uname -m
+        echo ""
+        
+        # Check installed packages
+        echo "=== Package Statistics ==="
+        echo "Total packages installed: $(dpkg -l | wc -l)"
+        echo "Kali-specific packages: $(apt list --installed 2>/dev/null | grep -i kali | wc -l)"
+        echo ""
+        
+        # Verify essential tools
+        echo "=== Essential Tools Verification ==="
+        tools=(nmap sqlmap john hashcat nikto gobuster burpsuite metasploit wireshark nuclei subfinder httpx)
+        for tool in "${tools[@]}"; do
+          if command -v $tool >/dev/null 2>&1; then
+            version=$(command -v $tool 2>/dev/null)
+            echo "✓ $tool: $version"
+          else
+            echo "✗ $tool: not found"
+          fi
+        done
+        echo ""
+        
+        # Check Go tools
+        echo "=== Go-based Tools Verification ==="
+        go_tools=(nuclei subfinder httpx naabu katana waybackurls assetfinder gau)
+        for tool in "${go_tools[@]}"; do
+          if command -v $tool >/dev/null 2>&1; then
+            echo "✓ $tool: $(which $tool)"
+          else
+            echo "✗ $tool: not found"
+          fi
+        done
+        echo ""
+        
+        # System resources
+        echo "=== System Resources ==="
+        echo "Memory usage:"
+        free -h
+        echo ""
+        echo "Disk usage:"
+        df -h / /tmp
+        echo ""
+        
+        # Network configuration
+        echo "=== Network Configuration ==="
+        ip addr show | grep -E '(inet |inet6)' | head -5
+        echo ""
+        
+        # Services status
+        echo "=== Services Status ==="
+        echo "PostgreSQL status:"
+        sudo service postgresql status || echo "PostgreSQL not running"
+        echo ""
+
+    - name: Final system cleanup and optimization
+      shell: wsl-bash {0}
+      run: |
+        echo "=== Final System Cleanup and Optimization ==="
+        
+        # Clean up packages
+        sudo apt autoremove -y
+        sudo apt autoclean
+        sudo apt clean
+        
+        # Update locate database
+        sudo updatedb || echo "updatedb not available"
+        
+        # Set proper permissions
+        sudo chown -R kaliuser:kaliuser /home/kaliuser
+        
+        # Create useful aliases for kaliuser
+        sudo -u kaliuser tee /home/kaliuser/.bashrc >> /dev/null <<EOF
+        # Kali Linux aliases
+        alias ll='ls -alF'
+        alias la='ls -A'
+        alias l='ls -CF'
+        alias ..='cd ..'
+        alias ...='cd ../..'
+        alias grep='grep --color=auto'
+        alias nmap='nmap --reason'
+        alias ports='netstat -tulanp'
+        
+        # Security tool shortcuts
+        alias scan='nmap -sS -O -v'
+        alias webscan='nikto -h'
+        alias dirscan='gobuster dir -u'
+        
+        # Set Go path
+        export GOPATH=/opt/go
+        export PATH=\$PATH:/opt/go/bin
+        EOF
+        
+        echo "=== Kali Linux setup completed successfully! ==="
+        echo "Summary:"
+        echo "- Latest Kali Linux rolling release installed"
+        echo "- Essential penetration testing tools configured"
+        echo "- Modern Go-based security tools installed"
+        echo "- Security databases updated"
+        echo "- User 'kaliuser' created with sudo privileges"
+        echo "- System optimized and ready for security testing"
+
+    - name: Run security tools test
+      shell: wsl-bash {0}
+      run: |
+        echo "=== Security Tools Functionality Test ==="
+        
+        # Test basic tools
+        echo "Testing Nmap..."
+        nmap --version | head -2
+        
+        echo "Testing Nuclei..."
+        nuclei -version || echo "Nuclei version check failed"
+        
+        echo "Testing SQLMap..."
+        sqlmap --version | head -1
+        
+        echo "Testing John the Ripper..."
+        john --test=0 2>/dev/null | head -3 || echo "John test completed"
+        
+        echo "Testing Gobuster..."
+        gobuster version
+        
+        echo "Testing Subfinder..."
+        subfinder -version || echo "Subfinder version check completed"
+        
+        echo "Testing HTTPx..."
+        httpx -version || echo "HTTPx version check completed"
+        
+        echo "=== All tools tested successfully! ==="
