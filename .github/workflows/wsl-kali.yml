@@ -21,27 +21,27 @@ jobs:
         distribution: kali-linux
         use-cache: true
         set-as-default: true
-        additional-packages:
-          curl
-          wget
-          git
-          vim
-          nano
-          htop
-          tree
-          unzip
-          zip
-          software-properties-common
-          apt-transport-https
-          ca-certificates
-          gnupg
-          lsb-release
-          build-essential
-          python3
-          python3-pip
-          nodejs
-          npm
-          default-jdk
+        # additional-packages:
+        #   curl
+        #   wget
+        #   git
+        #   vim
+        #   nano
+        #   htop
+        #   tree
+        #   unzip
+        #   zip
+        #   software-properties-common
+        #   apt-transport-https
+        #   ca-certificates
+        #   gnupg
+        #   lsb-release
+        #   build-essential
+        #   python3
+        #   python3-pip
+        #   nodejs
+        #   npm
+        #   default-jdk
 
     - name: Configure Kali Linux repositories and update system
       shell: wsl-bash {0}
