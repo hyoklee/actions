@@ -17,11 +17,11 @@ jobs:
         run: brew install libaec
       - name: test
         run: |
-          ls /opt/homebrew/bin/
           mkdir build
           cd build
           cmake \
           -DBUILDNAME:STRING=f/sz/zl \
+          -DCMAKE_Fortran_COMPILER=/opt/homebrew/bin/gfortran-15 \
           -DCTEST_DROP_SITE_INIT:STRING=my.cdash.org \
           -DHDF5_BUILD_FORTRAN:BOOL=ON \
           -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=ON \
