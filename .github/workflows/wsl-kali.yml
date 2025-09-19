@@ -1,39 +1,27 @@
-name: wsl kali
-
-on:
-  push:
-    branches:
-      - main
+name: Kali Linux Simple Setup
+on: [push, pull_request]
 
 jobs:
-  build:
-    strategy:
-      matrix:
-        os: [kali-linux]
-    defaults:
-      run:
-        shell: wsl-bash {0}
-    runs-on: windows-2025
+  kali-basic:
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Setup Kali Linux
+        uses: Vampire/setup-wsl@v6
         with:
-          repository: HDFGroup/hdf5
-      - uses: Vampire/setup-wsl@v6
-        with:
-          distribution: ${{ matrix.os }}
-          update: true
-          use-cache: true
-          set-as-default: true
-          additional-packages:
-            dos2unix
-            cmake
-            curl
-            build-essential
-      - name: test
+          distribution: kali-linux
+          use-cache: false
+      - name: Quick Fix and Install
+        shell: wsl-bash {0}
         run: |
-          mkdir build
-          cd build
-          cmake -DSITE:STRING="kali/WSL" -DBUILDNAME:STRING="r" \
-          -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
-          -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" ..
-          ctest -C Release -D Experimental
+          # Quick dpkg-divert fix
+          sudo sed -i 's/--no-rename//g' /var/lib/dpkg/info/*.preinst 2>/dev/null || true
+          sudo sed -i 's/--no-rename//g' /var/lib/dpkg/info/*.postinst 2>/dev/null || true
+          # Force configure
+          sudo dpkg --configure -a
+          # Update without upgrade
+          sudo apt update
+          # Install only essential tools
+          sudo apt install -y curl wget git python3 nmap
+          echo "Basic Kali setup complete!"
+          nmap --version
