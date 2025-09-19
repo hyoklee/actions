@@ -20,7 +20,10 @@ jobs:
       - uses: Vampire/setup-wsl@v6
         with:
           distribution: ${{ matrix.os }}
-          update: 'true'
+          update: true
+          version: 13.1
+          use-cache: true
+          set-as-default: true
           additional-packages:
             dos2unix
             cmake
