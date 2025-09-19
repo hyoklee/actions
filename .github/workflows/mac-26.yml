@@ -17,7 +17,7 @@ jobs:
         run: brew install libaec
       - name: test
         run: |
-          locate gfortran
+          ls /opt/homebrew/bin/
           mkdir build
           cd build
           cmake \
