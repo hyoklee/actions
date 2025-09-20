@@ -31,34 +31,40 @@ jobs:
           echo ""
 
           echo "=== Cleaning up problematic repositories ==="
-          # Install required packages for GPG key management
+          # First, completely clean up existing repositories
+          sudo rm -f /etc/apt/sources.list.d/* 2>/dev/null || true
+
+          # Backup original sources list
+          sudo cp /etc/apt/sources.list /etc/apt/sources.list.backup
+
+          # Install required packages for GPG key management using existing repos
           echo "=== Installing GPG key management tools ==="
-          sudo apt update
-          sudo apt install -y wget gnupg
+          sudo apt update || true
+          sudo apt install -y wget gnupg ca-certificates
 
           # Add Debian GPG keys
           echo "=== Adding Debian GPG keys ==="
           wget -q -O - https://ftp-master.debian.org/keys/archive-key-12.asc | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/debian-archive-key-12.gpg
           wget -q -O - https://ftp-master.debian.org/keys/release-12.asc | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/debian-release-12.gpg
 
-          # Update to Trixie repositories
+          # Completely replace sources.list with Trixie repositories
           echo "=== Updating to Debian Trixie ==="
           sudo tee /etc/apt/sources.list > /dev/null <<EOF
-          # Debian Trixie (testing) repositories
-          deb http://deb.debian.org/debian trixie main contrib non-free non-free-firmware
-          deb-src http://deb.debian.org/debian trixie main contrib non-free non-free-firmware
+# Debian Trixie (testing) repositories
+deb http://deb.debian.org/debian trixie main contrib non-free non-free-firmware
+deb-src http://deb.debian.org/debian trixie main contrib non-free non-free-firmware
 
-          # Trixie security updates
-          deb http://deb.debian.org/debian-security trixie-security main contrib non-free non-free-firmware
-          deb-src http://deb.debian.org/debian-security trixie-security main contrib non-free non-free-firmware
+# Trixie security updates
+deb http://deb.debian.org/debian-security trixie-security main contrib non-free non-free-firmware
+deb-src http://deb.debian.org/debian-security trixie-security main contrib non-free non-free-firmware
 
-          # Trixie updates
-          deb http://deb.debian.org/debian trixie-updates main contrib non-free non-free-firmware
-          deb-src http://deb.debian.org/debian trixie-updates main contrib non-free non-free-firmware
-          EOF
+# Trixie updates
+deb http://deb.debian.org/debian trixie-updates main contrib non-free non-free-firmware
+deb-src http://deb.debian.org/debian trixie-updates main contrib non-free non-free-firmware
+EOF
 
-          # Remove any additional sources that might cause issues
-          sudo rm -f /etc/apt/sources.list.d/* 2>/dev/null || true
+          # Clean apt cache to force fresh repository data
+          sudo apt clean
 
           echo "=== Updated Sources ==="
           cat /etc/apt/sources.list
@@ -66,11 +72,18 @@ jobs:
       - name: Update Package Lists and Upgrade to Trixie
         shell: wsl-bash {0}
         run: |
-          echo "=== Cleaning package cache ==="
-          sudo apt clean
-
-          echo "=== Updating package lists with new repositories ==="
-          sudo apt update
+          echo "=== Updating package lists with Trixie repositories ==="
+          # Try multiple times in case of temporary network issues
+          for i in {1..3}; do
+            echo "Update attempt $i/3..."
+            if sudo apt update; then
+              echo "Package list update successful"
+              break
+            else
+              echo "Update failed, retrying in 10 seconds..."
+              sleep 10
+            fi
+          done
 
           echo "=== Installing additional required packages ==="
           sudo DEBIAN_FRONTEND=noninteractive apt install -y \
@@ -79,19 +92,20 @@ jobs:
             ca-certificates \
             apt-transport-https
 
-          echo "=== Updating package lists again ==="
+          echo "=== Final package list update ==="
           sudo apt update
 
           echo "=== Upgrading to Debian Trixie ==="
           sudo DEBIAN_FRONTEND=noninteractive apt full-upgrade -y \
             -o Dpkg::Options::="--force-confdef" \
-            -o Dpkg::Options::="--force-confold"
+            -o Dpkg::Options::="--force-confold" \
+            -o APT::Get::Fix-Missing=true
 
           echo "=== Verifying Trixie Installation ==="
           cat /etc/os-release
           lsb_release -a 2>/dev/null || echo "lsb_release not available"
 
-          echo "=== Verifying apt repositories ==="
+          echo "=== Final repository verification ==="
           sudo apt update
 
       - name: Install Basic Tools
