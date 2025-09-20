@@ -92,6 +92,10 @@ jobs:
             ca-certificates \
             apt-transport-https
 
+          echo "=== Converting to merged-usr layout ==="
+          # Install usrmerge package to convert system to merged-usr
+          sudo DEBIAN_FRONTEND=noninteractive apt install -y usrmerge
+
           echo "=== Final package list update ==="
           sudo apt update
 

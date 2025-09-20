@@ -3,7 +3,7 @@ name: mac-26 ompi f j sz zl
 on:
   workflow_dispatch:
   push:
-    branches: [ main- ]
+    branches: [ main ]
 
 jobs:
   build:
@@ -39,6 +39,4 @@ jobs:
           -DMPIEXEC_PREFLAGS="--oversubscribe" \
           -DSITE:STRING=mac-26 \
           ..
-          ctest -C Release -T Build
-          /opt/homebrew/bin/mpiexec "-n" "2" "--oversubscribe" "/Users/runner/work/actions/actions/build/bin/t_filters_parallel"
-#          ctest -C Release -D Experimental
+          ctest -C Release -D Experimental
