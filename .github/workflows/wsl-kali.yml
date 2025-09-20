@@ -116,10 +116,10 @@ jobs:
         }
 
         Write-Host "Updating package lists..."
-        wsl -d $env:KALI_DISTRO_NAME -- bash -c "apt update"
+        wsl -d $env:KALI_DISTRO_NAME -- bash -c 'sudo apt update'
 
         Write-Host "Installing essential packages..."
-        wsl -d $env:KALI_DISTRO_NAME -- bash -c "apt install -y gnupg curl wget git vim"
+        wsl -d $env:KALI_DISTRO_NAME -- bash -c 'sudo apt install -y gnupg curl wget git vim'
       shell: pwsh
 
     - name: Configure Kali Linux repositories and update system
@@ -208,43 +208,63 @@ jobs:
 
     - name: Create non-root user
       run: |
-        wsl -d $env:KALI_DISTRO_NAME -- bash -c '
-        echo "=== Creating Non-Root User ==="
-        
-        # Create kali user with sudo privileges
-        sudo useradd -m -s /bin/bash kaliuser
-        echo 'kaliuser:kalipass' | sudo chpasswd
-        sudo usermod -aG sudo kaliuser
-        
-        # Configure passwordless sudo for convenience in CI
-        echo 'kaliuser ALL=(ALL) NOPASSWD:ALL' | sudo tee /etc/sudoers.d/kaliuser
-        
-        # Verify user creation
-        echo "User created successfully:"
-        sudo cat /etc/passwd | grep kaliuser
-        '
+        $scriptLines = @(
+          "echo '=== Creating Non-Root User ==='",
+          "",
+          "# Create kali user with sudo privileges",
+          "sudo useradd -m -s /bin/bash kaliuser",
+          "echo 'kaliuser:kalipass' | sudo chpasswd",
+          "sudo usermod -aG sudo kaliuser",
+          "",
+          "# Configure passwordless sudo for convenience in CI",
+          "echo 'kaliuser ALL=(ALL) NOPASSWD:ALL' | sudo tee /etc/sudoers.d/kaliuser",
+          "",
+          "# Verify user creation",
+          "echo 'User created successfully:'",
+          "sudo cat /etc/passwd | grep kaliuser"
+        )
+
+        $tempScript = New-TemporaryFile
+        $scriptContent = $scriptLines -join "`n"
+        Set-Content -Path $tempScript.FullName -Value $scriptContent -Encoding UTF8
+
+        $wslScriptPath = "/tmp/create-user-$(Get-Random).sh"
+        wsl -d $env:KALI_DISTRO_NAME -- cp $tempScript.FullName $wslScriptPath
+        wsl -d $env:KALI_DISTRO_NAME -- bash $wslScriptPath
+        wsl -d $env:KALI_DISTRO_NAME -- rm -f $wslScriptPath
+        Remove-Item $tempScript.FullName -ErrorAction SilentlyContinue
       shell: pwsh
 
     - name: Install latest Kali meta-packages
       run: |
-        wsl -d $env:KALI_DISTRO_NAME -- bash -c '
-        echo "=== Installing Latest Kali Meta-Packages ==="
-        
-        # Install core Kali packages
-        sudo DEBIAN_FRONTEND=noninteractive apt install -y \
-          kali-tools-top10 \
-          kali-linux-headless \
-          kali-tools-web \
-          kali-tools-database \
-          kali-tools-passwords \
-          kali-tools-wireless \
-          kali-tools-reverse-engineering \
-          kali-tools-exploitation \
-          kali-tools-social-engineering \
-          kali-tools-sniffing-spoofing \
-          kali-tools-post-exploitation \
-          kali-tools-forensics
-        '
+        $scriptLines = @(
+          "echo '=== Installing Latest Kali Meta-Packages ==='",
+          "",
+          "# Install core Kali packages",
+          "sudo DEBIAN_FRONTEND=noninteractive apt install -y \\",
+          "  kali-tools-top10 \\",
+          "  kali-linux-headless \\",
+          "  kali-tools-web \\",
+          "  kali-tools-database \\",
+          "  kali-tools-passwords \\",
+          "  kali-tools-wireless \\",
+          "  kali-tools-reverse-engineering \\",
+          "  kali-tools-exploitation \\",
+          "  kali-tools-social-engineering \\",
+          "  kali-tools-sniffing-spoofing \\",
+          "  kali-tools-post-exploitation \\",
+          "  kali-tools-forensics"
+        )
+
+        $tempScript = New-TemporaryFile
+        $scriptContent = $scriptLines -join "`n"
+        Set-Content -Path $tempScript.FullName -Value $scriptContent -Encoding UTF8
+
+        $wslScriptPath = "/tmp/install-meta-$(Get-Random).sh"
+        wsl -d $env:KALI_DISTRO_NAME -- cp $tempScript.FullName $wslScriptPath
+        wsl -d $env:KALI_DISTRO_NAME -- bash $wslScriptPath
+        wsl -d $env:KALI_DISTRO_NAME -- rm -f $wslScriptPath
+        Remove-Item $tempScript.FullName -ErrorAction SilentlyContinue
       shell: pwsh
 
     - name: Install essential penetration testing tools
