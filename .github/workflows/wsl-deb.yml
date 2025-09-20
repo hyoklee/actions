@@ -50,18 +50,18 @@ jobs:
           # Completely replace sources.list with Trixie repositories
           echo "=== Updating to Debian Trixie ==="
           sudo tee /etc/apt/sources.list > /dev/null <<EOF
-# Debian Trixie (testing) repositories
-deb http://deb.debian.org/debian trixie main contrib non-free non-free-firmware
-deb-src http://deb.debian.org/debian trixie main contrib non-free non-free-firmware
+          # Debian Trixie (testing) repositories
+          deb http://deb.debian.org/debian trixie main contrib non-free non-free-firmware
+          deb-src http://deb.debian.org/debian trixie main contrib non-free non-free-firmware
 
-# Trixie security updates
-deb http://deb.debian.org/debian-security trixie-security main contrib non-free non-free-firmware
-deb-src http://deb.debian.org/debian-security trixie-security main contrib non-free non-free-firmware
+          # Trixie security updates
+          deb http://deb.debian.org/debian-security trixie-security main contrib non-free non-free-firmware
+          deb-src http://deb.debian.org/debian-security trixie-security main contrib non-free non-free-firmware
 
-# Trixie updates
-deb http://deb.debian.org/debian trixie-updates main contrib non-free non-free-firmware
-deb-src http://deb.debian.org/debian trixie-updates main contrib non-free non-free-firmware
-EOF
+          # Trixie updates
+          deb http://deb.debian.org/debian trixie-updates main contrib non-free non-free-firmware
+          deb-src http://deb.debian.org/debian trixie-updates main contrib non-free non-free-firmware
+          EOF
 
           # Clean apt cache to force fresh repository data
           sudo apt clean
