@@ -180,7 +180,7 @@ jobs:
             -DHDF5_ENABLE_PARALLEL:BOOL=ON \
             -DHDF5_ENABLE_SUBFILING_VFD:BOOL=ON \
             -DMPIEXEC_MAX_NUMPROCS=2 \
-            -DMPIEXEC_PREFLAGS="--allow-run-as-root --oversubscribe" \
+            -DMPIEXEC_PREFLAGS="--allow-run-as-root;--oversubscribe" \
             -DSITE:STRING="win-25/deb-13.1" \
             ..
 

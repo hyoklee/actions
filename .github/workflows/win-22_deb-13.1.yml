@@ -1,4 +1,4 @@
-name: wsl deb
+name: win-22 deb-13.1
 on:
   workflow_dispatch:
   push:
@@ -6,7 +6,7 @@ on:
 
 jobs:
   debian-test:
-    runs-on: windows-latest
+    runs-on: windows-2022
     steps:
       - uses: actions/checkout@v4
       - name: Setup Debian Trixie WSL
@@ -180,8 +180,8 @@ jobs:
             -DHDF5_ENABLE_PARALLEL:BOOL=ON \
             -DHDF5_ENABLE_SUBFILING_VFD:BOOL=ON \
             -DMPIEXEC_MAX_NUMPROCS=2 \
-            -DMPIEXEC_PREFLAGS="--allow-run-as-root --oversubscribe" \
-            -DSITE:STRING="wsl/deb-13.1" \
+            -DMPIEXEC_PREFLAGS="--allow-run-as-root;--oversubscribe" \
+            -DSITE:STRING="win-22/deb-13.1" \
             ..
 
           echo "=== Building HDF5 ==="
