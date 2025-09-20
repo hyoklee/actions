@@ -24,6 +24,9 @@ jobs:
 
     - name: Download and install latest Kali Linux
       run: |
+        Write-Host "Setting WSL version to 2..."
+        wsl --set-default-version 2
+
         Write-Host "Downloading latest Kali Linux..."
         $ProgressPreference = 'SilentlyContinue'
 
@@ -33,29 +36,67 @@ jobs:
 
         Invoke-WebRequest -Uri $kaliUrl -OutFile $kaliPath -UseBasicParsing
 
-        Write-Host "Installing Kali Linux..."
+        Write-Host "Installing Kali Linux appx package..."
         Add-AppxPackage -Path $kaliPath
 
-        Write-Host "Setting WSL version to 2..."
-        wsl --set-default-version 2
+        Write-Host "Waiting for installation to complete..."
+        Start-Sleep -Seconds 10
 
-        Write-Host "Installing Kali Linux distribution..."
-        & "$env:LOCALAPPDATA\Microsoft\WindowsApps\kali.exe" install --root
+        Write-Host "Initializing Kali Linux distribution..."
+        # Use the kali.exe to install and create the distribution
+        $kaliExePath = "$env:LOCALAPPDATA\Microsoft\WindowsApps\kali.exe"
+        if (Test-Path $kaliExePath) {
+          & $kaliExePath install --root
+        } else {
+          Write-Host "Kali.exe not found, trying alternative installation..."
+          # Alternative: try to install using wsl --install
+          wsl --install -d kali-linux --no-launch
+        }
+
+        Write-Host "Waiting for Kali distribution to be ready..."
+        Start-Sleep -Seconds 15
+
+        Write-Host "Listing available distributions..."
+        wsl --list --verbose
 
         Write-Host "Setting Kali as default distribution..."
         wsl --set-default kali-linux
-
-        Write-Host "Verifying installation..."
-        wsl --list --verbose
       shell: pwsh
 
-    - name: Initialize Kali Linux
+    - name: Initialize Kali Linux and install essential packages
       run: |
-        Write-Host "Initializing Kali Linux..."
-        wsl -d kali-linux -- bash -c "echo 'Kali Linux initialized successfully'"
+        Write-Host "Verifying Kali Linux is available..."
+        wsl --list --verbose
+
+        Write-Host "Testing Kali Linux connection..."
+        # First, test if we can connect to the distribution
+        $maxAttempts = 5
+        $attempt = 1
+        $success = $false
+
+        while ($attempt -le $maxAttempts -and -not $success) {
+          Write-Host "Attempt $attempt of $maxAttempts to connect to Kali Linux..."
+          try {
+            wsl -d kali-linux -- echo "Kali Linux connection successful"
+            $success = $true
+            Write-Host "Successfully connected to Kali Linux!"
+          } catch {
+            Write-Host "Connection failed, waiting 10 seconds before retry..."
+            Start-Sleep -Seconds 10
+            $attempt++
+          }
+        }
+
+        if (-not $success) {
+          Write-Host "Failed to connect to Kali Linux after $maxAttempts attempts"
+          exit 1
+        }
+
+        Write-Host "Updating package lists..."
+        wsl -d kali-linux -- bash -c "apt update"
 
         Write-Host "Installing essential packages..."
-        wsl -d kali-linux -- bash -c "apt update && apt install -y gnupg curl wget git vim"
+        wsl -d kali-linux -- bash -c "apt install -y gnupg curl wget git vim"
       shell: pwsh
 
     - name: Configure Kali Linux repositories and update system
