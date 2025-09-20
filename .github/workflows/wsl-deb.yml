@@ -31,6 +31,16 @@ jobs:
           echo ""
 
           echo "=== Cleaning up problematic repositories ==="
+          # Install required packages for GPG key management
+          echo "=== Installing GPG key management tools ==="
+          sudo apt update
+          sudo apt install -y wget gnupg
+
+          # Add Debian GPG keys
+          echo "=== Adding Debian GPG keys ==="
+          wget -q -O - https://ftp-master.debian.org/keys/archive-key-12.asc | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/debian-archive-key-12.gpg
+          wget -q -O - https://ftp-master.debian.org/keys/release-12.asc | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/debian-release-12.gpg
+
           # Update to Trixie repositories
           echo "=== Updating to Debian Trixie ==="
           sudo tee /etc/apt/sources.list > /dev/null <<EOF
@@ -56,15 +66,33 @@ jobs:
       - name: Update Package Lists and Upgrade to Trixie
         shell: wsl-bash {0}
         run: |
+          echo "=== Cleaning package cache ==="
           sudo apt clean
+
+          echo "=== Updating package lists with new repositories ==="
+          sudo apt update
+
+          echo "=== Installing additional required packages ==="
+          sudo DEBIAN_FRONTEND=noninteractive apt install -y \
+            debian-archive-keyring \
+            debian-keyring \
+            ca-certificates \
+            apt-transport-https
+
+          echo "=== Updating package lists again ==="
           sudo apt update
 
           echo "=== Upgrading to Debian Trixie ==="
-          sudo DEBIAN_FRONTEND=noninteractive apt full-upgrade -y
+          sudo DEBIAN_FRONTEND=noninteractive apt full-upgrade -y \
+            -o Dpkg::Options::="--force-confdef" \
+            -o Dpkg::Options::="--force-confold"
 
           echo "=== Verifying Trixie Installation ==="
           cat /etc/os-release
           lsb_release -a 2>/dev/null || echo "lsb_release not available"
+
+          echo "=== Verifying apt repositories ==="
+          sudo apt update
 
       - name: Install Basic Tools
         shell: wsl-bash {0}
