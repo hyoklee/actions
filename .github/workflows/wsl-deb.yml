@@ -2,7 +2,7 @@ name: wsl deb
 on:
   workflow_dispatch:
   push:
-    branches: [ main- ]
+    branches: [ main ]
 
 jobs:
   debian-test:
@@ -14,10 +14,6 @@ jobs:
         with:
           distribution: Debian
           use-cache: true
-          # additional-packages:
-          #   curl
-          #   wget
-          #   git
 
       - name: Fix Repository Issues
         shell: wsl-bash {0}
@@ -184,6 +180,7 @@ jobs:
             -DHDF5_ENABLE_MAP_API:BOOL=ON \
             -DHDF5_ENABLE_PARALLEL:BOOL=ON \
             -DHDF5_ENABLE_SUBFILING_VFD:BOOL=ON \
+            -DMPIEXEC_PREFLAGS="--allow-run-as-root" \
             ..
 
           echo "=== Building HDF5 ==="
