@@ -2,7 +2,7 @@ name: win-22 deb-13.1
 on:
   workflow_dispatch:
   push:
-    branches: main
+    branches: main-
 
 jobs:
   debian-test:
