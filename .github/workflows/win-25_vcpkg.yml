@@ -15,17 +15,9 @@ jobs:
           git clone https://github.com/microsoft/vcpkg.git
           .\vcpkg\bootstrap-vcpkg.bat
 
-      - name: Modify HDF5 port to use develop branch
+      - name: Install HDF5 develop branch via vcpkg
         run: |
-          cd vcpkg\ports\hdf5
-          $portfile = Get-Content portfile.cmake -Raw
-          $portfile = $portfile -replace 'REF.*', 'REF develop'
-          $portfile | Set-Content portfile.cmake
-          Get-Content portfile.cmake
-
-      - name: Install HDF5 via vcpkg
-        run: |
-          .\vcpkg\vcpkg install hdf5:x64-windows
+          .\vcpkg\vcpkg install hdf5:x64-windows --head
 
       - name: Test HDF5 installation
         run: |
