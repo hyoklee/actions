@@ -194,11 +194,16 @@ jobs:
         $scriptContent = $scriptLines -join "`n"
         Set-Content -Path $tempScript.FullName -Value $scriptContent -Encoding UTF8
 
-        # Execute the script
-        wsl -d $env:KALI_DISTRO_NAME -- bash $tempScript.FullName
+        # Copy script to WSL accessible location
+        $wslScriptPath = "/tmp/kali-setup-$(Get-Random).sh"
+        wsl -d $env:KALI_DISTRO_NAME -- cp $tempScript.FullName $wslScriptPath
 
-        # Clean up
-        Remove-Item $tempScript.FullName
+        # Execute the script
+        wsl -d $env:KALI_DISTRO_NAME -- bash $wslScriptPath
+
+        # Clean up both files
+        wsl -d $env:KALI_DISTRO_NAME -- rm -f $wslScriptPath
+        Remove-Item $tempScript.FullName -ErrorAction SilentlyContinue
       shell: pwsh
 
     - name: Create non-root user

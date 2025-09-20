@@ -42,6 +42,34 @@ jobs:
           sudo apt update || true
           sudo apt install -y wget gnupg ca-certificates
 
+          # Convert to merged-usr layout BEFORE changing repositories
+          echo "=== Converting to merged-usr layout ==="
+          sudo DEBIAN_FRONTEND=noninteractive apt install -y usrmerge || true
+
+          # Verify the conversion worked
+          if [ -L /bin ]; then
+            echo "SUCCESS: /bin is now a symbolic link"
+          else
+            echo "WARNING: /bin is still a directory, attempting manual conversion"
+            # Manual conversion if usrmerge failed
+            sudo mkdir -p /usr/bin /usr/sbin /usr/lib
+            if [ -d /bin ] && [ ! -L /bin ]; then
+              sudo cp -a /bin/* /usr/bin/ 2>/dev/null || true
+              sudo rm -rf /bin
+              sudo ln -s /usr/bin /bin
+            fi
+            if [ -d /sbin ] && [ ! -L /sbin ]; then
+              sudo cp -a /sbin/* /usr/sbin/ 2>/dev/null || true
+              sudo rm -rf /sbin
+              sudo ln -s /usr/sbin /sbin
+            fi
+            if [ -d /lib ] && [ ! -L /lib ]; then
+              sudo cp -a /lib/* /usr/lib/ 2>/dev/null || true
+              sudo rm -rf /lib
+              sudo ln -s /usr/lib /lib
+            fi
+          fi
+
           # Add Debian GPG keys
           echo "=== Adding Debian GPG keys ==="
           wget -q -O - https://ftp-master.debian.org/keys/archive-key-12.asc | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/debian-archive-key-12.gpg
@@ -91,10 +119,6 @@ jobs:
             debian-keyring \
             ca-certificates \
             apt-transport-https
-
-          echo "=== Converting to merged-usr layout ==="
-          # Install usrmerge package to convert system to merged-usr
-          sudo DEBIAN_FRONTEND=noninteractive apt install -y usrmerge
 
           echo "=== Final package list update ==="
           sudo apt update
