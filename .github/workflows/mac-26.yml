@@ -3,7 +3,7 @@ name: mac-26 ompi f j sz zl
 on:
   workflow_dispatch:
   push:
-    branches: [ main ]
+    branches: [ main- ]
 
 jobs:
   build:

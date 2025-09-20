@@ -22,129 +22,104 @@ jobs:
         dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
       shell: pwsh
 
-    - name: Download and install latest Kali Linux
+    - name: Install Kali Linux using WSL
       run: |
         Write-Host "Setting WSL version to 2..."
         wsl --set-default-version 2
 
-        Write-Host "Downloading latest Kali Linux..."
-        $ProgressPreference = 'SilentlyContinue'
+        Write-Host "Checking available online distributions..."
+        wsl -l -o
 
-        # Download latest Kali Linux appx package
-        $kaliUrl = "https://aka.ms/wsl-kali-linux-new"
-        $kaliPath = "$env:TEMP\kali-linux.appx"
+        Write-Host "Installing Kali Linux directly using WSL..."
+        # Install Kali Linux using the official WSL method
+        wsl --install -d kali-linux --no-launch
 
-        Invoke-WebRequest -Uri $kaliUrl -OutFile $kaliPath -UseBasicParsing
+        Write-Host "Waiting for Kali Linux installation to complete..."
+        Start-Sleep -Seconds 30
 
-        Write-Host "Installing Kali Linux appx package..."
-        Add-AppxPackage -Path $kaliPath
-
-        Write-Host "Waiting for installation to complete..."
-        Start-Sleep -Seconds 10
-
-        Write-Host "Initializing Kali Linux distribution..."
-        # Use the kali.exe to install and create the distribution
-        $kaliExePath = "$env:LOCALAPPDATA\Microsoft\WindowsApps\kali.exe"
-        if (Test-Path $kaliExePath) {
-          Write-Host "Running kali.exe install --root..."
-          & $kaliExePath install --root
-        } else {
-          Write-Host "Kali.exe not found, trying alternative installation..."
-          # Alternative: try to install using wsl --install
-          wsl --install -d kali-linux --no-launch
-        }
-
-        Write-Host "Waiting for Kali distribution to be ready..."
-        Start-Sleep -Seconds 15
-
-        Write-Host "Listing available distributions..."
+        Write-Host "Verifying Kali Linux installation..."
         wsl --list --verbose
 
-        # Find the actual distribution name (it might not be exactly "kali-linux")
+        # Find the Kali distribution name
         $wslOutput = wsl --list --quiet
         $kaliDistroName = $null
+
+        Write-Host "Available distributions:"
         foreach ($line in $wslOutput) {
-          $line = $line.Trim()
-          if ($line -like "*kali*" -or $line -like "*Kali*") {
-            $kaliDistroName = $line
-            break
+          $cleanLine = $line.Trim() -replace '\0', ''
+          Write-Host "  - '$cleanLine'"
+          if ($cleanLine -match "kali|Kali") {
+            $kaliDistroName = $cleanLine
+            Write-Host "Found Kali distribution: '$kaliDistroName'"
+          }
+        }
+
+        if (-not $kaliDistroName) {
+          Write-Host "Kali not found, checking for exact name 'kali-linux'..."
+          if ((wsl --list --quiet | ForEach-Object { $_.Trim() -replace '\0', '' }) -contains "kali-linux") {
+            $kaliDistroName = "kali-linux"
+            Write-Host "Found kali-linux distribution"
           }
         }
 
         if ($kaliDistroName) {
-          Write-Host "Found Kali distribution: $kaliDistroName"
-          Write-Host "Setting $kaliDistroName as default distribution..."
+          Write-Host "Setting '$kaliDistroName' as default distribution..."
           wsl --set-default $kaliDistroName
+
+          # Set environment variable for subsequent steps
+          Add-Content $env:GITHUB_ENV "KALI_DISTRO_NAME=$kaliDistroName"
+          Write-Host "Kali distribution name set to: $kaliDistroName"
         } else {
-          Write-Host "No Kali distribution found. Available distributions:"
+          Write-Host "ERROR: Kali Linux installation failed!"
+          Write-Host "Available distributions:"
           wsl --list --verbose
-          Write-Host "Attempting to use first available distribution..."
-          $firstDistro = (wsl --list --quiet | Select-Object -First 1).Trim()
-          if ($firstDistro) {
-            Write-Host "Using distribution: $firstDistro"
-            $kaliDistroName = $firstDistro
-          } else {
-            Write-Host "No distributions found!"
-            exit 1
-          }
+          exit 1
         }
       shell: pwsh
 
     - name: Initialize Kali Linux and install essential packages
       run: |
+        Write-Host "Using Kali distribution: $env:KALI_DISTRO_NAME"
         Write-Host "Verifying Kali Linux is available..."
         wsl --list --verbose
 
-        # Find the Kali distribution name again
-        $wslOutput = wsl --list --quiet
-        $kaliDistroName = $null
-        foreach ($line in $wslOutput) {
-          $line = $line.Trim()
-          if ($line -like "*kali*" -or $line -like "*Kali*") {
-            $kaliDistroName = $line
-            break
-          }
-        }
-
-        if (-not $kaliDistroName) {
-          Write-Host "No Kali distribution found, using first available distribution..."
-          $kaliDistroName = (wsl --list --quiet | Select-Object -First 1).Trim()
-        }
-
-        Write-Host "Using distribution: $kaliDistroName"
-
         Write-Host "Testing Kali Linux connection..."
-        # First, test if we can connect to the distribution
+        # Test if we can connect to the distribution
         $maxAttempts = 5
         $attempt = 1
         $success = $false
 
         while ($attempt -le $maxAttempts -and -not $success) {
-          Write-Host "Attempt $attempt of $maxAttempts to connect to $kaliDistroName..."
+          Write-Host "Attempt $attempt of $maxAttempts to connect to $env:KALI_DISTRO_NAME..."
           try {
-            wsl -d $kaliDistroName -- echo "Kali Linux connection successful"
-            $success = $true
-            Write-Host "Successfully connected to $kaliDistroName!"
+            $result = wsl -d $env:KALI_DISTRO_NAME -- echo "Kali Linux connection successful" 2>&1
+            if ($LASTEXITCODE -eq 0) {
+              $success = $true
+              Write-Host "Successfully connected to $env:KALI_DISTRO_NAME!"
+              Write-Host "Connection result: $result"
+            } else {
+              throw "WSL command failed with exit code $LASTEXITCODE"
+            }
           } catch {
-            Write-Host "Connection failed, waiting 10 seconds before retry..."
+            Write-Host "Connection failed: $_"
+            Write-Host "Waiting 10 seconds before retry..."
             Start-Sleep -Seconds 10
             $attempt++
           }
         }
 
         if (-not $success) {
-          Write-Host "Failed to connect to $kaliDistroName after $maxAttempts attempts"
+          Write-Host "Failed to connect to $env:KALI_DISTRO_NAME after $maxAttempts attempts"
+          Write-Host "Current WSL distributions:"
+          wsl --list --verbose
           exit 1
         }
 
         Write-Host "Updating package lists..."
-        wsl -d $kaliDistroName -- bash -c "apt update"
+        wsl -d $env:KALI_DISTRO_NAME -- bash -c "apt update"
 
         Write-Host "Installing essential packages..."
-        wsl -d $kaliDistroName -- bash -c "apt install -y gnupg curl wget git vim"
-
-        # Set environment variable for subsequent steps
-        Add-Content $env:GITHUB_ENV "KALI_DISTRO_NAME=$kaliDistroName"
+        wsl -d $env:KALI_DISTRO_NAME -- bash -c "apt install -y gnupg curl wget git vim"
       shell: pwsh
 
     - name: Configure Kali Linux repositories and update system

@@ -15,9 +15,9 @@ jobs:
           distribution: Debian
           use-cache: true
           additional-packages:
-            - curl
-            - wget
-            - git
+          - curl
+          - wget
+          - git
 
       - name: Fix Repository Issues
         shell: wsl-bash {0}
