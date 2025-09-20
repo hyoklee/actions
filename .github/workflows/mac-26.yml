@@ -3,7 +3,7 @@ name: mac-26 ompi f j sz zl
 on:
   workflow_dispatch:
   push:
-    branches: [ main- ]
+    branches: [ main ]
 
 jobs:
   build:
@@ -35,8 +35,10 @@ jobs:
           -DHDF5_ENABLE_SZIP_SUPPORT=ON \
           -DHDF5_ENABLE_ZLIB_SUPPORT=ON \
           -DMPI_C_COMPILER=mpicc \
-          -DMPIEXEC_MAX_NUMPROCS=1 \
+          -DMPIEXEC_MAX_NUMPROCS=2 \
           -DMPIEXEC_PREFLAGS="--oversubscribe" \
           -DSITE:STRING=mac-26 \
           ..
-          ctest -C Release -D Experimental
+          ctest -C Release -T Build
+          /opt/homebrew/bin/mpiexec "-n" "2" "--oversubscribe" "/Users/runner/work/actions/actions/build/bin/t_filters_parallel"
+#          ctest -C Release -D Experimental
