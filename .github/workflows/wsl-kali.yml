@@ -71,17 +71,42 @@ jobs:
         echo "=== Updating Package Lists ==="
         sudo apt update
         
+        # Configure dpkg to avoid interactive prompts
+        echo "=== Configuring Package Management ==="
+        sudo dpkg --configure -a
+
         # Fix any broken packages
         echo "=== Fixing Broken Packages ==="
         sudo apt --fix-broken install -y
-        
+
         # Clean package cache
         sudo apt clean
         sudo apt autoclean
-        
-        # Full system upgrade to latest packages
+
+        # Configure debconf for non-interactive mode
+        echo 'debconf debconf/frontend select Noninteractive' | sudo debconf-set-selections
+
+        # Handle problematic packages first
+        echo "=== Handling Problematic Packages ==="
+        sudo DEBIAN_FRONTEND=noninteractive apt-mark hold libc6 || true
+
+        # Full system upgrade to latest packages with retries
         echo "=== Upgrading to Latest System Packages ==="
-        sudo DEBIAN_FRONTEND=noninteractive apt full-upgrade -y
+        for i in {1..3}; do
+          echo "Upgrade attempt $i/3..."
+          if sudo DEBIAN_FRONTEND=noninteractive apt full-upgrade -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" -o Dpkg::Options::="--force-overwrite"; then
+            echo "Upgrade successful on attempt $i"
+            break
+          else
+            echo "Upgrade failed on attempt $i, retrying..."
+            sudo dpkg --configure -a
+            sudo apt --fix-broken install -y
+            sleep 5
+          fi
+        done
+
+        # Unhold packages after upgrade
+        sudo apt-mark unhold libc6 || true
 
     - name: Create non-root user
       shell: wsl-bash {0}
