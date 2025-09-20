@@ -9,43 +9,58 @@ on:
 
 jobs:
   kali-linux-setup:
-    runs-on: windows-latest
+    runs-on: windows-2025
     
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Setup WSL with latest Kali Linux
-      uses: Vampire/setup-wsl@v6
-      with:
-        distribution: kali-linux
-        use-cache: true
-        set-as-default: true
-        additional-packages:
-        #   curl
-        #   wget
-        #   git
-        #   vim
-        #   nano
-        #   htop
-        #   tree
-        #   unzip
-        #   zip
-        #   software-properties-common
-        #   apt-transport-https
-        #   ca-certificates
-            gnupg
-        #   lsb-release
-        #   build-essential
-        #   python3
-        #   python3-pip
-        #   nodejs
-        #   npm
-        #   default-jdk
+    - name: Enable WSL feature
+      run: |
+        Write-Host "Enabling WSL feature..."
+        dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
+        dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+      shell: pwsh
+
+    - name: Download and install latest Kali Linux
+      run: |
+        Write-Host "Downloading latest Kali Linux..."
+        $ProgressPreference = 'SilentlyContinue'
+
+        # Download latest Kali Linux appx package
+        $kaliUrl = "https://aka.ms/wsl-kali-linux-new"
+        $kaliPath = "$env:TEMP\kali-linux.appx"
+
+        Invoke-WebRequest -Uri $kaliUrl -OutFile $kaliPath -UseBasicParsing
+
+        Write-Host "Installing Kali Linux..."
+        Add-AppxPackage -Path $kaliPath
+
+        Write-Host "Setting WSL version to 2..."
+        wsl --set-default-version 2
+
+        Write-Host "Installing Kali Linux distribution..."
+        & "$env:LOCALAPPDATA\Microsoft\WindowsApps\kali.exe" install --root
+
+        Write-Host "Setting Kali as default distribution..."
+        wsl --set-default kali-linux
+
+        Write-Host "Verifying installation..."
+        wsl --list --verbose
+      shell: pwsh
+
+    - name: Initialize Kali Linux
+      run: |
+        Write-Host "Initializing Kali Linux..."
+        wsl -d kali-linux -- bash -c "echo 'Kali Linux initialized successfully'"
+
+        Write-Host "Installing essential packages..."
+        wsl -d kali-linux -- bash -c "apt update && apt install -y gnupg curl wget git vim"
+      shell: pwsh
 
     - name: Configure Kali Linux repositories and update system
-      shell: wsl-bash {0}
       run: |
+        wsl -d kali-linux -- bash -c '
         set -e
         
         echo "=== Configuring Latest Kali Linux ==="
@@ -107,10 +122,12 @@ jobs:
 
         # Unhold packages after upgrade
         sudo apt-mark unhold libc6 || true
+        '
+      shell: pwsh
 
     - name: Create non-root user
-      shell: wsl-bash {0}
       run: |
+        wsl -d kali-linux -- bash -c '
         echo "=== Creating Non-Root User ==="
         
         # Create kali user with sudo privileges
@@ -124,10 +141,12 @@ jobs:
         # Verify user creation
         echo "User created successfully:"
         sudo cat /etc/passwd | grep kaliuser
+        '
+      shell: pwsh
 
     - name: Install latest Kali meta-packages
-      shell: wsl-bash {0}
       run: |
+        wsl -d kali-linux -- bash -c '
         echo "=== Installing Latest Kali Meta-Packages ==="
         
         # Install core Kali packages
@@ -144,10 +163,12 @@ jobs:
           kali-tools-sniffing-spoofing \
           kali-tools-post-exploitation \
           kali-tools-forensics
+        '
+      shell: pwsh
 
     - name: Install essential penetration testing tools
-      shell: wsl-bash {0}
       run: |
+        wsl -d kali-linux -- bash -c '
         echo "=== Installing Essential Penetration Testing Tools ==="
         
         sudo DEBIAN_FRONTEND=noninteractive apt install -y \
@@ -183,10 +204,12 @@ jobs:
           exiftool \
           strings \
           hexedit
+        '
+      shell: pwsh
 
     - name: Install modern security tools
-      shell: wsl-bash {0}
       run: |
+        wsl -d kali-linux -- bash -c '
         echo "=== Installing Modern Security Tools ==="
         
         # Install Go for building tools
@@ -241,10 +264,12 @@ jobs:
           sqlparse \
           paramiko \
           cryptography
+        '
+      shell: pwsh
 
     - name: Configure security databases and services
-      shell: wsl-bash {0}
       run: |
+        wsl -d kali-linux -- bash -c '
         echo "=== Configuring Security Databases and Services ==="
         
         # Configure PostgreSQL for Metasploit
@@ -271,10 +296,12 @@ jobs:
         if [ ! -d "/usr/share/wordlists/SecLists" ]; then
           sudo git clone https://github.com/danielmiessler/SecLists.git /usr/share/wordlists/SecLists
         fi
+        '
+      shell: pwsh
 
     - name: Verify Kali Linux installation and tools
-      shell: wsl-bash {0}
       run: |
+        wsl -d kali-linux -- bash -c '
         echo "=== Verifying Kali Linux Installation ==="
         
         # System information
@@ -339,10 +366,12 @@ jobs:
         echo "PostgreSQL status:"
         sudo service postgresql status || echo "PostgreSQL not running"
         echo ""
+        '
+      shell: pwsh
 
     - name: Final system cleanup and optimization
-      shell: wsl-bash {0}
       run: |
+        wsl -d kali-linux -- bash -c '
         echo "=== Final System Cleanup and Optimization ==="
         
         # Clean up packages
@@ -386,10 +415,12 @@ jobs:
         echo "- Security databases updated"
         echo "- User 'kaliuser' created with sudo privileges"
         echo "- System optimized and ready for security testing"
+        '
+      shell: pwsh
 
     - name: Run security tools test
-      shell: wsl-bash {0}
       run: |
+        wsl -d kali-linux -- bash -c '
         echo "=== Security Tools Functionality Test ==="
         
         # Test basic tools
@@ -415,3 +446,5 @@ jobs:
         httpx -version || echo "HTTPx version check completed"
         
         echo "=== All tools tested successfully! ==="
+        '
+      shell: pwsh
