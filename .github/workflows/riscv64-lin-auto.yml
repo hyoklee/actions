@@ -1,6 +1,8 @@
 name: riscv64 lin auto
 
-on: [push, pull_request]
+on:
+  push:
+    branches: main-
 
 jobs:
   riscv64_job:

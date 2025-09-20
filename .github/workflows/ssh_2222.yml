@@ -1,9 +1,9 @@
-name: Test Local SSH on Runner
+name: ssh 2222
 
 on:
   push:
     branches:
-      - main  
+      - main-
 
 jobs:
   test_local_ssh:

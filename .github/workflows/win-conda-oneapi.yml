@@ -1,9 +1,9 @@
-name: win conda
+name: win conda oneapi
 
 on:
   push:
     branches:
-      - main
+      - main-
 
 jobs:
   install:
