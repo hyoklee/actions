@@ -3,7 +3,7 @@ name: mac-26 ompi f j sz zl
 on:
   workflow_dispatch:
   push:
-    branches: [ main- ]
+    branches: [ main ]
 
 jobs:
   build:
@@ -18,11 +18,13 @@ jobs:
       - name: test
         run: |
           export OMPI_MCA_rmaps_base_oversubscribe=1
+          sudo ln -s /opt/homebrew/bin/gfortran-15 /opt/homebrew/bin/gfortran
           mkdir build
           cd build
           cmake \
           -DBUILDNAME:STRING=ompi/f/j/sz/zl \
-          -DCMAKE_Fortran_COMPILER=/opt/homebrew/bin/gfortran-15 \
+          -DMPI_C_COMPILER=mpicc=mpicc \
+          -DCMAKE_Fortran_COMPILER=mpifort \
           -DCTEST_DROP_SITE_INIT=my.cdash.org \
           -DHDF5_ALLOW_UNSUPPORTED=ON \
           -DHDF5_BUILD_FORTRAN=ON \

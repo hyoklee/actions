@@ -21,7 +21,7 @@ jobs:
         distribution: kali-linux
         use-cache: true
         set-as-default: true
-        # additional-packages:
+        additional-packages:
         #   curl
         #   wget
         #   git
@@ -34,7 +34,7 @@ jobs:
         #   software-properties-common
         #   apt-transport-https
         #   ca-certificates
-        #   gnupg
+            gnupg
         #   lsb-release
         #   build-essential
         #   python3
