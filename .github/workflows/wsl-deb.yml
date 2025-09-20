@@ -2,7 +2,7 @@ name: wsl deb
 on:
   workflow_dispatch:
   push:
-    branches: main-
+    branches: main
 
 jobs:
   debian-test:
@@ -169,18 +169,19 @@ jobs:
 
           echo "=== Configuring HDF5 with CMake ==="
           cmake \
+            -DBUILDNAME:STRING="ompi/f/h/mp/sf" \
             -DCMAKE_CXX_COMPILER=mpicxx \
             -DCMAKE_C_COMPILER=mpicc \
             -DCMAKE_Fortran_COMPILER=mpifort \
-            -DSITE:STRING="deb-13.1/WSL" \
-            -DBUILDNAME:STRING="ompi/f/h/mp/sf" \
             -DCTEST_DROP_SITE_INIT:STRING=my.cdash.org \
             -DHDF5_BUILD_FORTRAN:BOOL=ON \
             -DHDF5_BUILD_HL_LIB:BOOL=ON \
             -DHDF5_ENABLE_MAP_API:BOOL=ON \
             -DHDF5_ENABLE_PARALLEL:BOOL=ON \
             -DHDF5_ENABLE_SUBFILING_VFD:BOOL=ON \
-            -DMPIEXEC_PREFLAGS="--allow-run-as-root" \
+            -DMPIEXEC_MAX_NUMPROCS=2 \
+            -DMPIEXEC_PREFLAGS="--allow-run-as-root --oversubscribe" \
+            -DSITE:STRING="wsl/deb-13.1" \
             ..
 
           echo "=== Building HDF5 ==="
