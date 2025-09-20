@@ -1,0 +1,61 @@
+name: Test Local SSH on Runner
+
+on:
+  push:
+    branches:
+      - main  
+
+jobs:
+  test_local_ssh:
+    runs-on: ubuntu-24.04 # Use 22.04 or 24.04, same steps apply
+    steps:
+      - name: Install OpenSSH Server and generate host keys
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y openssh-server
+
+          # sshd requires host keys, which are usually generated on install
+          # but ensuring they exist:
+          sudo ssh-keygen -A
+
+      - name: Generate User SSH Key Pair
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          ssh-keygen -t ed25519 -f ~/.ssh/id_runner_local -N "" -q
+          cat ~/.ssh/id_runner_local.pub >> ~/.ssh/authorized_keys
+          chmod 600 ~/.ssh/authorized_keys
+
+          # Set user permissions for SSH server
+          sudo chown -R $USER:$USER ~/.ssh
+
+      - name: Configure and Start SSHD (for localhost access)
+        run: |
+          # Create a minimal sshd_config for local access
+          echo "Port 2222" > /tmp/sshd_config_local
+          echo "ListenAddress 127.0.0.1" >> /tmp/sshd_config_local
+          echo "PermitRootLogin prohibit-password" >> /tmp/sshd_config_local
+          echo "PubkeyAuthentication yes" >> /tmp/sshd_config_local
+          echo "AuthorizedKeysFile %h/.ssh/authorized_keys" >> /tmp/sshd_config_local
+          echo "PasswordAuthentication no" >> /tmp/sshd_config_local
+          echo "ChallengeResponseAuthentication no" >> /tmp/sshd_config_local
+          echo "UsePAM yes" >> /tmp/sshd_config_local
+          echo "X11Forwarding no" >> /tmp/sshd_config_local
+          echo "PrintMotd no" >> /tmp/sshd_config_local
+          echo "AcceptEnv LANG LC_*" >> /tmp/sshd_config_local
+          echo "Subsystem sftp /usr/lib/openssh/sftp-server" >> /tmp/sshd_config_local
+
+          # Start sshd with the custom config in the background
+          sudo /usr/sbin/sshd -f /tmp/sshd_config_local &
+
+          # Give sshd a moment to start
+          sleep 5
+
+          # Verify it's listening locally
+          netstat -tuln | grep 127.0.0.1:2222 || (echo "SSHD not listening!" && exit 1)
+
+
+      - name: Test SSH to Localhost
+        run: |
+          echo "Attempting to SSH to localhost:2222..."
+          ssh -vvv -i ~/.ssh/id_runner_local -p 2222 runner@localhost -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null "echo 'SSH successful: Whoami is $(whoami) and pwd is $(pwd)'"

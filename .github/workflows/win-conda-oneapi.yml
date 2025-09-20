@@ -1,0 +1,35 @@
+name: win conda
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  install:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: bash -el {0}    
+    steps:
+      - uses: conda-incubator/setup-miniconda@v3
+        with:
+          miniconda-version: "latest"
+          activate-environment: foo
+      - name: Install Intel® oneAPI Threading Building Blocks (oneTBB).
+        run: conda install -c intel tbb-devel
+      - name: Install Intel® oneAPI DPC++/C++ Compiler.
+        run: conda install -c intel dpcpp-cpp-rt
+      - name: Install Intel Fortran
+        run: conda install -c intel intel-fortran-rt
+      - name: Test HDF5
+        run: |
+          find /c/Miniconda3
+#          ls /c/Miniconda3/envs/foo/Library/bin
+#          echo $PATHw          
+#          git clone https://github.com/hyoklee/hdf5.git
+#          cd hdf5
+#          cmake --preset="ci-Intel" -B build -G Ninja -DHDF5_BUILD_FORTRAN:BOOL=ON 
+#         cat build\CMakeCache.txt
+#          cmake --build build
+        

@@ -1,0 +1,59 @@
+name: deb h4
+
+on:
+  push:
+    branches: [ main- ]
+  pull_request:
+    branches: [ main- ]
+
+jobs:
+  test-on-debian-experimental:
+    runs-on: ubuntu-latest
+    container:
+      image: debian:trixie
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        repository: HDFGroup/hdf4      
+    - name: Install sudo
+      run: |
+        su -c 'apt-get update'
+        su -c 'apt-get install -y sudo'
+    - name: Setup experimental repository
+      run: |
+        echo "deb http://deb.debian.org/debian experimental main" | sudo tee -a /etc/apt/sources.list
+        sudo apt-get update
+
+    - name: Install g++ 15 from experimental
+      run: |
+        sudo apt-get install -y -t experimental g++-15
+
+    - name: Verify g++ version
+      run: |
+        g++-15 --version
+
+    - name: Install additional dependencies
+      run: |
+        # Install any other dependencies you might need
+        sudo apt-get install -y build-essential cmake libjpeg-dev zlib1g-dev 
+
+    - name: Run Tests
+      run: |
+        export CC=gcc-15
+        export CXX=g++-15
+        mkdir build
+        cd build
+        cmake \
+          -DBUILDNAME:STRING="gcc-15/r" \
+          -DCMAKE_BUILD_TYPE=Release \
+          -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF4" \
+          -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
+          -DSITE:STRING="deb" \
+          ..
+        ctest -D Experimental      
+
+    - name: Show system details
+      run: |
+        cat /etc/os-release  # This will show which Debian version is being used
+

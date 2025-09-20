@@ -1,0 +1,30 @@
+name: win egor-tensin clang 
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Install Clang
+        uses: egor-tensin/setup-clang@v1.4
+        with:
+          platform: x64
+
+      - name: Install curl
+        run: |
+          choco install curl
+
+      - name: Build project
+        run: |
+          set CURL_ROOT C:\programdata\chocolatey\lib\curl\tools\curl-8.1.2_1-win64-mingw
+          copy C:\programdata\chocolatey\lib\curl\tools\curl-8.1.2_1-win64-mingw\lib\libcurl.a C:\programdata\chocolatey\lib\curl\tools\curl-8.1.2_1-win64-mingw\lib\libcurl.lib
+          git clone https://github.com/hyoklee/hdf5.git
+          cd hdf5
+          cmake -DBUILD_SHARED_LIBS:BOOL=OFF -DCURL_INCLUDE_DIR=C:\programdata\chocolatey\lib\curl\tools\curl-8.1.2_1-win64-mingw\include  -DCURL_LIBRARY=C:\programdata\chocolatey\lib\curl\tools\curl-8.1.2_1-win64-mingw\lib\libcurl.a -DHDF5_ENABLE_ROS3_VFD:BOOL=ON -B build -G "Visual Studio 17 2022" -A x64 -T ClangCL 
+          cmake --build build --config Release
+          cd build && ctest -C Release -VV 

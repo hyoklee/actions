@@ -1,0 +1,57 @@
+name: GCC Version Test
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        gcc_version: ['9', '10', '11', '12', '13'] # Add or remove versions as needed
+
+    name: GCC ${{ matrix.gcc_version }} Test
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install GCC ${{ matrix.gcc_version }}
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc-${{ matrix.gcc_version }} g++-${{ matrix.gcc_version }}
+
+      - name: Set GCC ${{ matrix.gcc_version }} as default
+        run: |
+          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-${{ matrix.gcc_version }} 100
+          sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-${{ matrix.gcc_version }} 100
+          # Verify the correct version is selected.
+          gcc --version
+          g++ --version
+
+      - name: Build
+        run: |
+          make # Or your preferred build command (e.g., cmake, meson)
+
+      - name: Run Tests
+        run: |
+          ./your_test_program # Or your test execution command.  Consider using a test framework.
+          # Example with ctest:
+          # ctest
+
+      - name: Upload Test Results (Optional)
+        uses: actions/upload-artifact@v3
+        if: always() # Ensure it runs even if tests fail
+        with:
+          name: test-results-gcc-${{ matrix.gcc_version }}
+          path: path/to/your/test/results # Replace with the actual path
+          retention-days: 7 # Keep results for a week
+
+      - name: Check for Test Failures
+        if: failure()
+        run: |
+          echo "Tests failed on GCC ${{ matrix.gcc_version }}"
+          exit 1 # Fail the workflow if any test fails
+	  

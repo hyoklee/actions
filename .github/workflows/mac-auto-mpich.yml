@@ -1,0 +1,24 @@
+name: mac auto mpich
+
+on:
+  push:
+    branches: [ develop- ]
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+    - name: Install Dependencies
+      run: brew install ninja autoconf automake libtool mpich
+    - name: Get Source
+      uses: actions/checkout@v4.1.1
+    - name: Build and test
+      env:
+        NPROCS: 3
+      run: |
+        export HDF5_Make_Ignore=yes
+        set
+        ./autogen.sh
+        ./configure --enable-parallel CC=mpicc
+        make
+        make check

@@ -194,9 +194,12 @@ jobs:
         $scriptContent = $scriptLines -join "`n"
         Set-Content -Path $tempScript.FullName -Value $scriptContent -Encoding UTF8
 
-        # Copy script to WSL accessible location
+        # Convert Windows path to WSL path
+        $wslTempPath = wsl -d $env:KALI_DISTRO_NAME -- wslpath $tempScript.FullName
         $wslScriptPath = "/tmp/kali-setup-$(Get-Random).sh"
-        wsl -d $env:KALI_DISTRO_NAME -- cp $tempScript.FullName $wslScriptPath
+
+        # Copy script to WSL accessible location
+        wsl -d $env:KALI_DISTRO_NAME -- cp $wslTempPath $wslScriptPath
 
         # Execute the script
         wsl -d $env:KALI_DISTRO_NAME -- bash $wslScriptPath
@@ -224,15 +227,17 @@ jobs:
           "sudo cat /etc/passwd | grep kaliuser"
         )
 
-        $tempScript = New-TemporaryFile
         $scriptContent = $scriptLines -join "`n"
-        Set-Content -Path $tempScript.FullName -Value $scriptContent -Encoding UTF8
-
         $wslScriptPath = "/tmp/create-user-$(Get-Random).sh"
-        wsl -d $env:KALI_DISTRO_NAME -- cp $tempScript.FullName $wslScriptPath
+
+        # Write script content directly to WSL file system
+        Write-Host "Creating script in WSL: $wslScriptPath"
+        $scriptContent | wsl -d $env:KALI_DISTRO_NAME -- tee $wslScriptPath > /dev/null
+
+        # Make script executable and run it
+        wsl -d $env:KALI_DISTRO_NAME -- chmod +x $wslScriptPath
         wsl -d $env:KALI_DISTRO_NAME -- bash $wslScriptPath
         wsl -d $env:KALI_DISTRO_NAME -- rm -f $wslScriptPath
-        Remove-Item $tempScript.FullName -ErrorAction SilentlyContinue
       shell: pwsh
 
     - name: Install latest Kali meta-packages
@@ -256,15 +261,17 @@ jobs:
           "  kali-tools-forensics"
         )
 
-        $tempScript = New-TemporaryFile
         $scriptContent = $scriptLines -join "`n"
-        Set-Content -Path $tempScript.FullName -Value $scriptContent -Encoding UTF8
-
         $wslScriptPath = "/tmp/install-meta-$(Get-Random).sh"
-        wsl -d $env:KALI_DISTRO_NAME -- cp $tempScript.FullName $wslScriptPath
+
+        # Write script content directly to WSL file system
+        Write-Host "Creating script in WSL: $wslScriptPath"
+        $scriptContent | wsl -d $env:KALI_DISTRO_NAME -- tee $wslScriptPath > /dev/null
+
+        # Make script executable and run it
+        wsl -d $env:KALI_DISTRO_NAME -- chmod +x $wslScriptPath
         wsl -d $env:KALI_DISTRO_NAME -- bash $wslScriptPath
         wsl -d $env:KALI_DISTRO_NAME -- rm -f $wslScriptPath
-        Remove-Item $tempScript.FullName -ErrorAction SilentlyContinue
       shell: pwsh
 
     - name: Install essential penetration testing tools
