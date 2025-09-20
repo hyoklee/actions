@@ -3,7 +3,7 @@ name: mac-26 ompi f j sz zl
 on:
   workflow_dispatch:
   push:
-    branches: [ main- ]
+    branches: [ main ]
 
 jobs:
   build:
@@ -36,7 +36,7 @@ jobs:
           -DHDF5_ENABLE_ZLIB_SUPPORT=ON \
           -DMPI_C_COMPILER=mpicc \
           -DMPIEXEC_MAX_NUMPROCS=1 \
-          -DMPIEXEC_PREFLAGS="--map-by :OVERSUBSCRIBE" \
+          -DMPIEXEC_PREFLAGS="--oversubscribe" \
           -DSITE:STRING=mac-26 \
           ..
           ctest -C Release -D Experimental

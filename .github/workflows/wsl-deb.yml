@@ -2,18 +2,22 @@ name: wsl deb
 on:
   workflow_dispatch:
   push:
-    branches: [ main- ]
+    branches: [ main ]
 
 jobs:
   debian-test:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Setup Debian WSL
+      - name: Setup Debian Trixie WSL
         uses: Vampire/setup-wsl@v6
         with:
           distribution: Debian
           use-cache: true
+          additional-packages:
+            - curl
+            - wget
+            - git
 
       - name: Fix Repository Issues
         shell: wsl-bash {0}
@@ -27,21 +31,40 @@ jobs:
           echo ""
 
           echo "=== Cleaning up problematic repositories ==="
-          # Remove any backports or problematic entries
-          sudo sed -i '/bullseye-backports/d' /etc/apt/sources.list
-          sudo sed -i '/bullseye\/updates/d' /etc/apt/sources.list
+          # Update to Trixie repositories
+          echo "=== Updating to Debian Trixie ==="
+          sudo tee /etc/apt/sources.list > /dev/null <<EOF
+          # Debian Trixie (testing) repositories
+          deb http://deb.debian.org/debian trixie main contrib non-free non-free-firmware
+          deb-src http://deb.debian.org/debian trixie main contrib non-free non-free-firmware
+
+          # Trixie security updates
+          deb http://deb.debian.org/debian-security trixie-security main contrib non-free non-free-firmware
+          deb-src http://deb.debian.org/debian-security trixie-security main contrib non-free non-free-firmware
+
+          # Trixie updates
+          deb http://deb.debian.org/debian trixie-updates main contrib non-free non-free-firmware
+          deb-src http://deb.debian.org/debian trixie-updates main contrib non-free non-free-firmware
+          EOF
 
           # Remove any additional sources that might cause issues
-          sudo rm -f /etc/apt/sources.list.d/*backports* 2>/dev/null || true
+          sudo rm -f /etc/apt/sources.list.d/* 2>/dev/null || true
 
           echo "=== Updated Sources ==="
           cat /etc/apt/sources.list
 
-      - name: Update Package Lists
+      - name: Update Package Lists and Upgrade to Trixie
         shell: wsl-bash {0}
         run: |
           sudo apt clean
           sudo apt update
+
+          echo "=== Upgrading to Debian Trixie ==="
+          sudo DEBIAN_FRONTEND=noninteractive apt full-upgrade -y
+
+          echo "=== Verifying Trixie Installation ==="
+          cat /etc/os-release
+          lsb_release -a 2>/dev/null || echo "lsb_release not available"
 
       - name: Install Basic Tools
         shell: wsl-bash {0}

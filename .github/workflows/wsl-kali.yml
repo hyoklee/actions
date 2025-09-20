@@ -46,6 +46,7 @@ jobs:
         # Use the kali.exe to install and create the distribution
         $kaliExePath = "$env:LOCALAPPDATA\Microsoft\WindowsApps\kali.exe"
         if (Test-Path $kaliExePath) {
+          Write-Host "Running kali.exe install --root..."
           & $kaliExePath install --root
         } else {
           Write-Host "Kali.exe not found, trying alternative installation..."
@@ -59,14 +60,58 @@ jobs:
         Write-Host "Listing available distributions..."
         wsl --list --verbose
 
-        Write-Host "Setting Kali as default distribution..."
-        wsl --set-default kali-linux
+        # Find the actual distribution name (it might not be exactly "kali-linux")
+        $wslOutput = wsl --list --quiet
+        $kaliDistroName = $null
+        foreach ($line in $wslOutput) {
+          $line = $line.Trim()
+          if ($line -like "*kali*" -or $line -like "*Kali*") {
+            $kaliDistroName = $line
+            break
+          }
+        }
+
+        if ($kaliDistroName) {
+          Write-Host "Found Kali distribution: $kaliDistroName"
+          Write-Host "Setting $kaliDistroName as default distribution..."
+          wsl --set-default $kaliDistroName
+        } else {
+          Write-Host "No Kali distribution found. Available distributions:"
+          wsl --list --verbose
+          Write-Host "Attempting to use first available distribution..."
+          $firstDistro = (wsl --list --quiet | Select-Object -First 1).Trim()
+          if ($firstDistro) {
+            Write-Host "Using distribution: $firstDistro"
+            $kaliDistroName = $firstDistro
+          } else {
+            Write-Host "No distributions found!"
+            exit 1
+          }
+        }
       shell: pwsh
 
     - name: Initialize Kali Linux and install essential packages
       run: |
         Write-Host "Verifying Kali Linux is available..."
         wsl --list --verbose
+
+        # Find the Kali distribution name again
+        $wslOutput = wsl --list --quiet
+        $kaliDistroName = $null
+        foreach ($line in $wslOutput) {
+          $line = $line.Trim()
+          if ($line -like "*kali*" -or $line -like "*Kali*") {
+            $kaliDistroName = $line
+            break
+          }
+        }
+
+        if (-not $kaliDistroName) {
+          Write-Host "No Kali distribution found, using first available distribution..."
+          $kaliDistroName = (wsl --list --quiet | Select-Object -First 1).Trim()
+        }
+
+        Write-Host "Using distribution: $kaliDistroName"
 
         Write-Host "Testing Kali Linux connection..."
         # First, test if we can connect to the distribution
@@ -75,11 +120,11 @@ jobs:
         $success = $false
 
         while ($attempt -le $maxAttempts -and -not $success) {
-          Write-Host "Attempt $attempt of $maxAttempts to connect to Kali Linux..."
+          Write-Host "Attempt $attempt of $maxAttempts to connect to $kaliDistroName..."
           try {
-            wsl -d kali-linux -- echo "Kali Linux connection successful"
+            wsl -d $kaliDistroName -- echo "Kali Linux connection successful"
             $success = $true
-            Write-Host "Successfully connected to Kali Linux!"
+            Write-Host "Successfully connected to $kaliDistroName!"
           } catch {
             Write-Host "Connection failed, waiting 10 seconds before retry..."
             Start-Sleep -Seconds 10
@@ -88,20 +133,23 @@ jobs:
         }
 
         if (-not $success) {
-          Write-Host "Failed to connect to Kali Linux after $maxAttempts attempts"
+          Write-Host "Failed to connect to $kaliDistroName after $maxAttempts attempts"
           exit 1
         }
 
         Write-Host "Updating package lists..."
-        wsl -d kali-linux -- bash -c "apt update"
+        wsl -d $kaliDistroName -- bash -c "apt update"
 
         Write-Host "Installing essential packages..."
-        wsl -d kali-linux -- bash -c "apt install -y gnupg curl wget git vim"
+        wsl -d $kaliDistroName -- bash -c "apt install -y gnupg curl wget git vim"
+
+        # Set environment variable for subsequent steps
+        Add-Content $env:GITHUB_ENV "KALI_DISTRO_NAME=$kaliDistroName"
       shell: pwsh
 
     - name: Configure Kali Linux repositories and update system
       run: |
-        wsl -d kali-linux -- bash -c '
+        wsl -d $env:KALI_DISTRO_NAME -- bash -c '
         set -e
         
         echo "=== Configuring Latest Kali Linux ==="
@@ -168,7 +216,7 @@ jobs:
 
     - name: Create non-root user
       run: |
-        wsl -d kali-linux -- bash -c '
+        wsl -d $env:KALI_DISTRO_NAME -- bash -c '
         echo "=== Creating Non-Root User ==="
         
         # Create kali user with sudo privileges
@@ -187,7 +235,7 @@ jobs:
 
     - name: Install latest Kali meta-packages
       run: |
-        wsl -d kali-linux -- bash -c '
+        wsl -d $env:KALI_DISTRO_NAME -- bash -c '
         echo "=== Installing Latest Kali Meta-Packages ==="
         
         # Install core Kali packages
@@ -209,7 +257,7 @@ jobs:
 
     - name: Install essential penetration testing tools
       run: |
-        wsl -d kali-linux -- bash -c '
+        wsl -d $env:KALI_DISTRO_NAME -- bash -c '
         echo "=== Installing Essential Penetration Testing Tools ==="
         
         sudo DEBIAN_FRONTEND=noninteractive apt install -y \
@@ -250,7 +298,7 @@ jobs:
 
     - name: Install modern security tools
       run: |
-        wsl -d kali-linux -- bash -c '
+        wsl -d $env:KALI_DISTRO_NAME -- bash -c '
         echo "=== Installing Modern Security Tools ==="
         
         # Install Go for building tools
@@ -310,7 +358,7 @@ jobs:
 
     - name: Configure security databases and services
       run: |
-        wsl -d kali-linux -- bash -c '
+        wsl -d $env:KALI_DISTRO_NAME -- bash -c '
         echo "=== Configuring Security Databases and Services ==="
         
         # Configure PostgreSQL for Metasploit
@@ -342,7 +390,7 @@ jobs:
 
     - name: Verify Kali Linux installation and tools
       run: |
-        wsl -d kali-linux -- bash -c '
+        wsl -d $env:KALI_DISTRO_NAME -- bash -c '
         echo "=== Verifying Kali Linux Installation ==="
         
         # System information
@@ -412,7 +460,7 @@ jobs:
 
     - name: Final system cleanup and optimization
       run: |
-        wsl -d kali-linux -- bash -c '
+        wsl -d $env:KALI_DISTRO_NAME -- bash -c '
         echo "=== Final System Cleanup and Optimization ==="
         
         # Clean up packages
@@ -461,7 +509,7 @@ jobs:
 
     - name: Run security tools test
       run: |
-        wsl -d kali-linux -- bash -c '
+        wsl -d $env:KALI_DISTRO_NAME -- bash -c '
         echo "=== Security Tools Functionality Test ==="
         
         # Test basic tools
