@@ -3,7 +3,7 @@ name: windows-25 vcpkg hdf5 develop
 on:
   push:
     branches:
-      - main-
+      - main
 
 jobs:
   build:
@@ -25,7 +25,7 @@ jobs:
 
       - name: Install HDF5 develop branch via vcpkg
         run: |
-          .\vcpkg\vcpkg install hdf5:x64-windows --head
+          .\vcpkg\vcpkg install hdf5[mpi,test]:x64-windows --head
 
       - name: Test HDF5 installation
         run: |
