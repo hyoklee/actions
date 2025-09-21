@@ -19,7 +19,7 @@ jobs:
         run: |
           cd vcpkg\ports\hdf5
           $portfile = Get-Content portfile.cmake -Raw
-          $portfile = $portfile -replace '    PATCHES[^)]*\)', ''
+          $portfile = $portfile -replace '(?s)    PATCHES.*?(?=\))', ''
           $portfile | Set-Content portfile.cmake
 
       - name: Install HDF5 develop branch via vcpkg
