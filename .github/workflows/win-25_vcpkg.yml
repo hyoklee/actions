@@ -20,7 +20,7 @@ jobs:
           cd vcpkg\ports\hdf5
           $portfile = Get-Content portfile.cmake -Raw
           $portfile = $portfile -replace '(?s)    PATCHES.*?(?=\))', ''
-          $portfile = $portfile -replace 'file\(RENAME "\$\{CURRENT_PACKAGES_DIR\}/share/\$\{PORT\}/data/COPYING"', 'file(RENAME "${CURRENT_PACKAGES_DIR}/share/${PORT}/LICENSE"'
+          $portfile = $portfile -replace 'file\(RENAME.*?copyright\"\)', '# License file handling removed for develop branch'
           $portfile | Set-Content portfile.cmake
 
       - name: Install HDF5 develop branch via vcpkg
