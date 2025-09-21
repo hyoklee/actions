@@ -15,11 +15,12 @@ jobs:
           git clone https://github.com/microsoft/vcpkg.git
           .\vcpkg\bootstrap-vcpkg.bat
 
-      - name: Remove patches from HDF5 portfile
+      - name: Modify HDF5 portfile for develop branch
         run: |
           cd vcpkg\ports\hdf5
           $portfile = Get-Content portfile.cmake -Raw
           $portfile = $portfile -replace '(?s)    PATCHES.*?(?=\))', ''
+          $portfile = $portfile -replace 'file\(RENAME "\$\{CURRENT_PACKAGES_DIR\}/share/\$\{PORT\}/data/COPYING"', 'file(RENAME "${CURRENT_PACKAGES_DIR}/share/${PORT}/LICENSE"'
           $portfile | Set-Content portfile.cmake
 
       - name: Install HDF5 develop branch via vcpkg
