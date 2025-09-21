@@ -25,7 +25,7 @@ jobs:
 
       - name: Install HDF5 develop branch via vcpkg
         run: |
-          .\vcpkg\vcpkg install hdf5[parallel]:arm64-windows --head
+          .\vcpkg\vcpkg install hdf5[fortran]:arm64-windows --head
 
       - name: Test HDF5 installation
         run: |

@@ -23,6 +23,12 @@ jobs:
           $portfile = $portfile -replace 'file\(RENAME.*?copyright\"\)', '# License file handling removed for develop branch'
           $portfile | Set-Content portfile.cmake
 
+      - name: Install MSMPI redistributable
+        run: |
+          # Download and install MSMPI redistributable
+          Invoke-WebRequest -Uri "https://github.com/microsoft/Microsoft-MPI/releases/download/v10.1.1/msmpisetup.exe" -OutFile "msmpisetup.exe"
+          Start-Process -FilePath "msmpisetup.exe" -ArgumentList "-unattend" -Wait
+
       - name: Install HDF5 develop branch via vcpkg
         run: |
           .\vcpkg\vcpkg install hdf5[parallel]:x64-windows --head
