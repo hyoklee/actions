@@ -24,7 +24,8 @@ jobs:
         sudo apt-get update
     - name: gdl
       run: |
-        sudo apt-get install -y -t gdl
+        apt search gdl
+        sudo apt-get install -y gdl
         gdl --version
 
     - name: test
