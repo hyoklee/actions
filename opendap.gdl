@@ -60,15 +60,15 @@ PRINT, 'Lon array size:', N_ELEMENTS(lon)
 ; Plot contour on map.
 datamin = MIN(dataf, /NAN)
 datamax = MAX(dataf, /NAN)
-levels=20
-contour_levels = FINDGEN(levels) * (datamax - datamin) / (levels-1) + datamin
+levels=254
+; contour_levels = FINDGEN(levels) * (datamax - datamin) / (levels-1) + datamin
 LOADCT, 33, NCOLORS=levels, BOTTOM=1
 ; Set up color indices for filled contours
 c_colors = INDGEN(levels) + 1
 
 ; Set Z buffer device (off-screen)
 SET_PLOT, 'Z'
-DEVICE, SET_RESOLUTION=[800,600], Z_BUFFERING=0
+DEVICE, SET_RESOLUTION=[800, 600], Z_BUFFERING=1
 
 ; Set projection.
 MAP_SET, POSITION=[0.05, 0.06, 0.82, 0.80]
@@ -84,12 +84,18 @@ MAP_SET, POSITION=[0.05, 0.06, 0.82, 0.80]
 ; No transposition needed
 PRINT, 'Data dimensions match lon,lat order: [360,180]'
 ; SCATTER, ROTATE(dataf, 1), lat, lon, $
-CONTOUR, BYTSCL(TRANSPOSE(dataf)), lat, lon, $
-         /FILL, LEVELS=contour_levels, C_COLORS=c_colors, $
-         POSITION=[0.05, 0.06, 0.82, 0.80], $
-         /YST, /XST, XTICKINT=45, YTICKINT=30
+; CONTOUR, BYTSCL(TRANSPOSE(dataf)), lat, lon, $
+;         /FILL, LEVELS=contour_levels, C_COLORS=c_colors, $
+;         POSITION=[0.05, 0.06, 0.82, 0.80], $
+;         /YST, /XST, XTICKINT=45, YTICKINT=30
+
 
 ; Thus, restore projection information.
+MAP_SET, POSITION=[0.05, 0.06, 0.82, 0.80]
+; GDL's contour kills projection information.
+CONTOUR, dataf, lon,lat, /FILL, NLEVELS=levels, $
+	 POSITION=[0.05, 0.06, 0.82, 0.80], $
+         /XST, /YST, XTICKINT=45, YTICKINT=30
 MAP_SET, POSITION=[0.05, 0.06, 0.82, 0.80], /NOERASE
 MAP_CONTINENTS, COLOR=WHITE
 
