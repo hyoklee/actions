@@ -3,7 +3,7 @@ name: windows-25 vcpkg hdf5 develop
 on:
   push:
     branches:
-      - main
+      - main-
 
 jobs:
   build:
