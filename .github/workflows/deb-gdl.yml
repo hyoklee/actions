@@ -24,8 +24,8 @@ jobs:
         sudo apt-get update
     - name: gdl
       run: |
-        apt search gdl
-        sudo apt-get install -y gdl
+        apt search gnudatalanguage
+        sudo apt-get install -y gnudatalanguage
         gdl --version
 
     - name: test
