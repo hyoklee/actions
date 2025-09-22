@@ -110,7 +110,8 @@ XYOUTS, 0.94, 0.86, /NORMAL, 'UNIT:' + units, $
 
 ; Save Z buffer to file
 image = TVRD(TRUE=3)
-WRITE_PNG, 'topography_plot.png', image
+fixed_image = TRANSPOSE(image, [2, 0, 1])
+WRITE_PNG, 'topography_plot.png', fixed_image
 
 EXIT
 
