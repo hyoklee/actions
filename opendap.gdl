@@ -109,7 +109,7 @@ XYOUTS, 0.94, 0.86, /NORMAL, 'UNIT:' + units, $
     CHARSIZE=1.25,  ALIGNMENT=1.0
 
 ; Save Z buffer to file
-image = TVRD()
+image = TVRD(TRUE=3)
 WRITE_PNG, 'topography_plot.png', image
 
 EXIT
