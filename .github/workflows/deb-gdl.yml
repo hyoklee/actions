@@ -36,5 +36,5 @@ jobs:
       if: always() # Ensure it runs even if tests fail
       with:
         name: image
-        path: topography_plot.png
+        path: opendap.gdl.png
         retention-days: 7 # Keep results for a week
