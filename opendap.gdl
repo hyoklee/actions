@@ -1,141 +1,115 @@
-; Copyright (C) 2025 The HDF Group
-;   All rights reserved.
-;
-;  This example code illustrates how to access and visualize OPeNDAP
-; AIRS Grid file in GDL.
-;
-; If you have any questions, suggestions, comments  on this example, 
-; please use the HDF-EOS Forum (http://hdfeos.org/forums).
-;
-; Acknowledgement: We'd like to thank "giloo" [1] for improving our code
-; to make it work on world map.
-
-
-; Tested under: GDL 1.0.4
-; Last updated: 2025-09-22
-
 ; Open OPeNDAP URL.
 url='https://eosdap.hdfgroup.org/opendap/data/NASAFILES/hdf4/AIRS.2024.01.19.L3.RetStd_IR001.v7.0.7.0.G24022205217.hdf'
 fid = NCDF_OPEN(url)
 
 ; Open dataset.
-;vid = NCDF_VARID(fid, 'Temperature_A')
-vid = NCDF_VARID(fid, 'Topography')
+vid = NCDF_VARID(fid, 'Temperature_A')
+NCDF_VARGET, fid, vid, data
+
+; Subset data.
+data2D = data[*,*,0]
+data2D=Reform(data2D)
 
 ; Retrieve fill value attribute.
 NCDF_ATTGET, fid, vid, '_FillValue', fillvalue
-PRINT, fillvalue
 
 ; Retrieve data.
 NCDF_VARGET, fid, vid, data
 
-; Retrieve lat/lon /data.
+; Retrieve lat/lon.
 vid = NCDF_VARID(fid, 'Longitude')
 NCDF_VARGET, fid, vid, lon
 
 vid = NCDF_VARID(fid, 'Latitude')
 NCDF_VARGET, fid, vid, lat
 
-; Close.
+; Close file.
 NCDF_CLOSE, fid
-
-; Subset data.
-;data2D = data[*,*,0]
-;data2D = Reform(data2D)
-data2D = data
 
 ; Process fill values, convert data that are equal to fillvalue to NaN.
 dataf = float(data2D)
 fillvaluef = float(fillvalue(0))
 idx = WHERE(dataf eq fillvaluef, cnt)
-PRINT, 'Fill values found:', cnt
-PRINT, 'Data min/max before fill processing:', MIN(dataf), MAX(dataf)
 IF cnt GT 0 THEN dataf[idx] = !Values.F_NAN
-PRINT, 'Data min/max after fill processing:', MIN(dataf, /NAN), MAX(dataf, /NAN)
-PRINT, 'Valid data points:', N_ELEMENTS(WHERE(FINITE(dataf)))
-PRINT, 'Data array dimensions:', SIZE(dataf, /DIMENSIONS)
-PRINT, 'Lat array size:', N_ELEMENTS(lat)
-PRINT, 'Lon array size:', N_ELEMENTS(lon)
-
-; Plot contour on map.
-datamin = MIN(dataf, /NAN)
-datamax = MAX(dataf, /NAN)
-levels=254
-; contour_levels = FINDGEN(levels) * (datamax - datamin) / (levels-1) + datamin
-LOADCT, 33, NCOLORS=levels, BOTTOM=1
-; Set up color indices for filled contours
-c_colors = INDGEN(levels) + 1
 
 ; Set Z buffer device (off-screen)
 SET_PLOT, 'Z'
 DEVICE, SET_RESOLUTION=[800, 600], Z_BUFFERING=1
 
-; Set projection.
-MAP_SET, POSITION=[0.05, 0.06, 0.82, 0.80]
+; Plot contour on map.
+datamin = MIN(dataf, /NAN)
+datamax = MAX(dataf, /NAN)
 
-;PRINT, lat
-;PRINT, lon
-; GDL's contour kills projection information.
-; CONTOUR, dataf, lon, lat, $
-; 
-; CONTOUR, BROTATE(dataf, -1), lon, lat, $
-;
-; The data is [360,180] which matches [lon,lat] dimensions
-; No transposition needed
-PRINT, 'Data dimensions match lon,lat order: [360,180]'
-; SCATTER, ROTATE(dataf, 1), lat, lon, $
-; CONTOUR, BYTSCL(TRANSPOSE(dataf)), lat, lon, $
-;         /FILL, LEVELS=contour_levels, C_COLORS=c_colors, $
-;         POSITION=[0.05, 0.06, 0.82, 0.80], $
-;         /YST, /XST, XTICKINT=45, YTICKINT=30
+levels=254
+contour_levels = FINDGEN(levels) * (datamax - datamin) / (levels-1) + datamin
+LOADCT, 33, NCOLORS=levels, BOTTOM=1
 
+; Set up color indices for filled contours
+c_colors = INDGEN(levels) + 1
 
-; Thus, restore projection information.
-MAP_SET, POSITION=[0.05, 0.06, 0.82, 0.80]
-; GDL's contour kills projection information.
-CONTOUR, dataf, lon,lat, /FILL, NLEVELS=levels, $
-	 POSITION=[0.05, 0.06, 0.82, 0.80], $
+; HACK: Don't call MAP_SET before CONTOUR.
+; MAP_SET, POSITION=[0.05, 0.06, 0.82, 0.80]
+CONTOUR, dataf, lon, lat, $ ; DO NOT USE /OVERPLOT, $
+         /FILL, LEVELS=contour_levels, C_COLORS=c_colors, $	 
+         POSITION=[0.05, 0.06, 0.82, 0.80], $
          /XST, /YST, XTICKINT=45, YTICKINT=30
 MAP_SET, POSITION=[0.05, 0.06, 0.82, 0.80], /NOERASE
 MAP_CONTINENTS, COLOR=WHITE
 
-
 ; Add some labels.
 units = 'K'
-XYOUTS, 0.5, 0.9, /NORMAL, url , CHARSIZE=1.3, ALIGNMENT=0.5
-XYOUTS, 0.05, 0.86, /NORMAL, 'FIELD:Temperature_A at TempPrsLvls=0', $
+XYOUTS, 0.5, 0.9, /NORMAL, url , CHARSIZE=0.8, ALIGNMENT=0.5
+XYOUTS, 0.05, 0.86, /NORMAL, 'FIELD:Temperature_A at StdPressureLev=0', $
     CHARSIZE=1.25,  ALIGNMENT=0.0
 XYOUTS, 0.94, 0.86, /NORMAL, 'UNIT:' + units, $ 
     CHARSIZE=1.25,  ALIGNMENT=1.0
 
+; Create colorbar using generic GDL functions
+cb_x1 = 0.9
+cb_x2 = 0.94
+cb_y1 = 0.08
+cb_y2 = 0.8
+
+; Create colorbar using TV command with proper color table
+cb_width = LONG((cb_x2 - cb_x1) * 800)  ; Convert to device coordinates
+cb_height = LONG((cb_y2 - cb_y1) * 600) ; Convert to device coordinates
+cb_x_dev = LONG(cb_x1 * 800)
+cb_y_dev = LONG(cb_y1 * 600)
+
+; Create colorbar array with 3 channels (RGB)
+colorbar = BYTARR(3, cb_width, cb_height)
+nsegments = cb_height
+
+; Get the current color table
+TVLCT, r, g, b, /GET
+
+; Fill colorbar with colors from the loaded color table
+FOR k = 0, nsegments-1 DO colorbar[0, *, k] = r[1 + LONG(k * (levels-1) / (nsegments-1))]
+FOR k = 0, nsegments-1 DO colorbar[1, *, k] = g[1 + LONG(k * (levels-1) / (nsegments-1))]
+FOR k = 0, nsegments-1 DO colorbar[2, *, k] = b[1 + LONG(k * (levels-1) / (nsegments-1))]
+
+; Display colorbar
+TV, colorbar, cb_x_dev, cb_y_dev, TRUE=1
+
+; Add colorbar frame
+PLOTS, [cb_x1, cb_x2, cb_x2, cb_x1, cb_x1], [cb_y1, cb_y1, cb_y2, cb_y2, cb_y1], $
+       /NORMAL, COLOR=WHITE, THICK=2
+
+; Add colorbar labels and tick marks
+nticks = 5
+tick_values = FINDGEN(nticks) * (datamax - datamin) / (nticks-1) + datamin
+tick_positions = FINDGEN(nticks) * (cb_y2 - cb_y1) / (nticks-1) + cb_y1
+
+FOR m = 0, nticks-1 DO PLOTS, [cb_x2, cb_x2+0.01], [tick_positions[m], tick_positions[m]], /NORMAL, COLOR=WHITE, THICK=2
+FOR m = 0, nticks-1 DO XYOUTS, cb_x2+0.015, tick_positions[m]-0.005, STRING(tick_values[m], FORMAT='(F6.1)'), /NORMAL, CHARSIZE=0.8, ALIGNMENT=0.0, COLOR=WHITE
+
 ; Save Z buffer to file
 image = TVRD(TRUE=3)
 fixed_image = TRANSPOSE(image, [2, 0, 1])
-WRITE_PNG, 'topography_plot.png', fixed_image
-
+WRITE_PNG, 'opendap.gdl.png', fixed_image
 EXIT
 
-; We assume that the coyote library [2] is installed under the current working
-; directory that this code exists.
-  !PATH=EXPAND_PATH('+coyote/')+':'+!PATH
-
-; Get max and min value of data for color bar.
-  datamin = MIN(dataf, /NAN)
-  datamax = MAX(dataf, /NAN)
-
-; The following code assumes that you've already download and installed 
-; "Dr. Fanning's Coyote Library" and add the coyote directory above. 
-;
-; If you don't need a color bar in your plot, you can ignore this step
-; by adding comment character ';' at the beginning of the code.
-; Simple text-based colorbar for now
-XYOUTS, 0.85, 0.8, /NORMAL, 'Max: ' + STRTRIM(STRING(datamax, FORMAT='(F0.0)'),2) + ' m', CHARSIZE=0.8
-XYOUTS, 0.85, 0.5, /NORMAL, 'Elevation', CHARSIZE=0.8
-XYOUTS, 0.85, 0.2, /NORMAL, 'Min: ' + STRTRIM(STRING(datamin, FORMAT='(F0.0)'),2) + ' m', CHARSIZE=0.8
-
-
-
-; References
+; Reference
 ;
 ; [1] http://sourceforge.net/p/gnudatalanguage/discussion/338692/thread/88c6ad3d/
-; [2] http://www.dfanning.com/documents/programs.html
+
