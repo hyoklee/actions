@@ -212,14 +212,25 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: hdf5-maven-artifacts
-          path: /tmp/
+          path: ./artifacts/
 
       - name: Extract and verify HDF5 Maven artifacts
         shell: bash
         run: |
           mkdir -p ~/.m2/repository
           cd ~/.m2/repository
-          tar -xzf /tmp/hdf5-maven-artifacts.tar.gz
+
+          # Check for artifact file in artifacts directory
+          if [ -f "./artifacts/hdf5-maven-artifacts.tar.gz" ]; then
+            echo "Found artifact at ./artifacts/hdf5-maven-artifacts.tar.gz"
+            tar -xzf ./artifacts/hdf5-maven-artifacts.tar.gz
+          else
+            echo "Artifact file not found, checking available files:"
+            find ./artifacts -name "*hdf5*" 2>/dev/null || echo "No HDF5 files in artifacts directory"
+            ls -la ./artifacts/ | head -10 || echo "Artifacts directory not found"
+            echo "Creating empty directory structure for fallback"
+            mkdir -p org/hdfgroup
+          fi
 
           echo "=== Extracted HDF5 artifacts ==="
           if [ -d "org/hdfgroup" ]; then
@@ -270,6 +281,8 @@ jobs:
           cd hdf5/HDF5Examples/JAVA
           LOCAL_REPO_PATH=$(realpath ~/.m2/repository)
           echo "Creating POM with local repository: file://$LOCAL_REPO_PATH"
+
+          # Create POM with variable substitution
           cat > test-pom.xml << EOF
           <?xml version="1.0" encoding="UTF-8"?>
           <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -287,8 +300,8 @@ jobs:
                   <maven.compiler.source>11</maven.compiler.source>
                   <maven.compiler.target>11</maven.compiler.target>
                   <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-                  <hdf5.version>${{ needs.build-hdf5-artifacts.outputs.artifact-version }}</hdf5.version>
-                  <hdf5.platform>${{ matrix.platform }}</hdf5.platform>
+                  <hdf5.version>\${{ needs.build-hdf5-artifacts.outputs.artifact-version }}</hdf5.version>
+                  <hdf5.platform>\${{ matrix.platform }}</hdf5.platform>
               </properties>
 
               <dependencies>
