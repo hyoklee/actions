@@ -65,6 +65,7 @@ jobs:
             ubuntu-maven-
 
       - name: Build HDF5 Maven artifacts
+        shell: bash
         run: |
           cd hdf5
           # Use CMake to configure and build HDF5 with Maven support
@@ -126,6 +127,7 @@ jobs:
 
       - name: Get artifact version
         id: version
+        shell: bash
         run: |
           cd hdf5/build
           if [ -f "java/src/hdf/hdf5lib/pom.xml" ]; then
@@ -139,6 +141,7 @@ jobs:
           fi
 
       - name: Verify and package local Maven repository
+        shell: bash
         run: |
           cd ~/.m2/repository
           echo "=== Maven Repository Contents ==="
@@ -212,6 +215,7 @@ jobs:
           path: /tmp/
 
       - name: Extract and verify HDF5 Maven artifacts
+        shell: bash
         run: |
           mkdir -p ~/.m2/repository
           cd ~/.m2/repository
@@ -244,6 +248,7 @@ jobs:
             ${{ runner.os }}-maven-
 
       - name: Configure Maven to prefer local repository
+        shell: bash
         run: |
           mkdir -p ~/.m2
           LOCAL_REPO_PATH=$(realpath ~/.m2/repository)
@@ -260,6 +265,7 @@ jobs:
           echo "Configured Maven to use local repository: $LOCAL_REPO_PATH"
 
       - name: Create test POM file
+        shell: bash
         run: |
           cd hdf5/HDF5Examples/JAVA
           cat > test-pom.xml << 'EOF'
@@ -336,6 +342,7 @@ jobs:
           EOF
 
       - name: Validate Maven dependencies
+        shell: bash
         run: |
           cd hdf5/HDF5Examples/JAVA
           echo "=== Debugging Maven Repository Setup ==="
@@ -352,6 +359,7 @@ jobs:
           mvn dependency:resolve -f test-pom.xml -e -Dmaven.repo.local=~/.m2/repository
 
       - name: Compile representative examples (H5D category)
+        shell: bash
         run: |
           cd hdf5/HDF5Examples/JAVA
           echo "=== Compiling H5D examples ==="
@@ -377,6 +385,7 @@ jobs:
           done
 
       - name: Compile representative examples (H5T category)
+        shell: bash
         run: |
           cd hdf5/HDF5Examples/JAVA
           CLASSPATH=$(cat classpath.txt)
@@ -398,6 +407,7 @@ jobs:
           done
 
       - name: Compile representative examples (H5G category)
+        shell: bash
         run: |
           cd hdf5/HDF5Examples/JAVA
           CLASSPATH=$(cat classpath.txt)
@@ -419,6 +429,7 @@ jobs:
           done
 
       - name: Compile representative examples (TUTR category)
+        shell: bash
         run: |
           cd hdf5/HDF5Examples/JAVA
           CLASSPATH=$(cat classpath.txt)
@@ -441,6 +452,7 @@ jobs:
 
       - name: Test representative examples (if full-test mode)
         if: inputs.test_mode == 'full-test'
+        shell: bash
         run: |
           cd hdf5/HDF5Examples/JAVA
           CLASSPATH=$(cat classpath.txt)
@@ -477,6 +489,7 @@ jobs:
           done
 
       - name: Maven clean compile test
+        shell: bash
         run: |
           cd hdf5/HDF5Examples/JAVA
           echo "=== Maven compile using original pom-examples.xml template ==="
@@ -512,6 +525,7 @@ jobs:
 
       - name: Summary
         if: always()
+        shell: bash
         run: |
           echo "=== HDF5 Maven Build Test Summary ==="
           echo "Platform: ${{ matrix.platform }}"
