@@ -171,7 +171,7 @@ jobs:
             ${{ runner.os }}-maven-hdf5-
             ${{ runner.os }}-maven-
 
-      - name: Configure Maven to use local repository only
+      - name: Configure Maven to prefer local repository
         run: |
           mkdir -p ~/.m2
           cat > ~/.m2/settings.xml << 'EOF'
@@ -180,10 +180,33 @@ jobs:
                     xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
                     http://maven.apache.org/xsd/settings-1.0.0.xsd">
             <localRepository>~/.m2/repository</localRepository>
-            <offline>true</offline>
+            <repositories>
+              <repository>
+                <id>central</id>
+                <url>https://repo.maven.apache.org/maven2</url>
+                <releases>
+                  <enabled>true</enabled>
+                </releases>
+                <snapshots>
+                  <enabled>false</enabled>
+                </snapshots>
+              </repository>
+            </repositories>
+            <pluginRepositories>
+              <pluginRepository>
+                <id>central</id>
+                <url>https://repo.maven.apache.org/maven2</url>
+                <releases>
+                  <enabled>true</enabled>
+                </releases>
+                <snapshots>
+                  <enabled>false</enabled>
+                </snapshots>
+              </pluginRepository>
+            </pluginRepositories>
           </settings>
           EOF
-          echo "Configured Maven to use local repository only (offline mode)"
+          echo "Configured Maven to use local repository with central for plugins"
 
       - name: Create test POM file
         run: |
