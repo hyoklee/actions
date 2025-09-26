@@ -116,29 +116,9 @@ jobs:
             mkdir -p org/hdfgroup/hdf5-java-examples/2.0.0
 
             # Create basic POM files
-            cat > org/hdfgroup/hdf5-java/2.0.0/hdf5-java-2.0.0.pom << 'EOF'
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>org.hdfgroup</groupId>
-    <artifactId>hdf5-java</artifactId>
-    <version>2.0.0</version>
-</project>
-EOF
+            echo '<?xml version="1.0" encoding="UTF-8"?><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"><modelVersion>4.0.0</modelVersion><groupId>org.hdfgroup</groupId><artifactId>hdf5-java</artifactId><version>2.0.0</version></project>' > org/hdfgroup/hdf5-java/2.0.0/hdf5-java-2.0.0.pom
 
-            cat > org/hdfgroup/hdf5-java-examples/2.0.0/hdf5-java-examples-2.0.0.pom << 'EOF'
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>org.hdfgroup</groupId>
-    <artifactId>hdf5-java-examples</artifactId>
-    <version>2.0.0</version>
-</project>
-EOF
+            echo '<?xml version="1.0" encoding="UTF-8"?><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"><modelVersion>4.0.0</modelVersion><groupId>org.hdfgroup</groupId><artifactId>hdf5-java-examples</artifactId><version>2.0.0</version></project>' > org/hdfgroup/hdf5-java-examples/2.0.0/hdf5-java-examples-2.0.0.pom
 
             # Create empty JAR files
             echo "UEsFBgAAAAAAAAAAAAAAAAAAAAAAAA==" | base64 -d > org/hdfgroup/hdf5-java/2.0.0/hdf5-java-2.0.0-linux-x86_64.jar
