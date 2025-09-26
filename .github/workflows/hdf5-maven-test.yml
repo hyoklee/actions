@@ -80,6 +80,14 @@ jobs:
           cd java/src/hdf/hdf5lib
           mvn clean install -f pom.xml -DskipTests
 
+          # Also build and install examples if they exist
+          cd ../../../../../HDF5Examples/JAVA
+          if [ -f "pom-examples.xml" ]; then
+            mvn clean install -f pom-examples.xml -DskipTests
+          else
+            echo "pom-examples.xml not found, skipping examples build"
+          fi
+
       - name: Get artifact version
         id: version
         run: |
@@ -92,7 +100,11 @@ jobs:
         run: |
           # Create a tar archive of the HDF5 artifacts from local repository
           cd ~/.m2/repository
+          echo "Contents of Maven repository before packaging:"
+          find org/hdfgroup/ -type f -name "*.jar" -o -name "*.pom" | head -20
           tar -czf /tmp/hdf5-maven-artifacts.tar.gz org/hdfgroup/
+          echo "Packaged artifacts size:"
+          ls -lh /tmp/hdf5-maven-artifacts.tar.gz
 
       - name: Upload HDF5 Maven artifacts
         uses: actions/upload-artifact@v4
@@ -144,7 +156,11 @@ jobs:
           cd ~/.m2/repository
           tar -xzf /tmp/hdf5-maven-artifacts.tar.gz
           echo "Extracted HDF5 artifacts to local Maven repository"
-          ls -la org/hdfgroup/ || echo "No HDF5 artifacts found"
+          echo "Available HDF5 artifacts:"
+          find org/hdfgroup/ -type f -name "*.jar" -o -name "*.pom" | head -20 || echo "No HDF5 artifacts found"
+          echo "Checking for specific artifacts needed by test:"
+          ls -la org/hdfgroup/hdf5-java/ || echo "hdf5-java not found"
+          ls -la org/hdfgroup/hdf5-java-examples/ || echo "hdf5-java-examples not found"
 
       - name: Cache Maven dependencies
         uses: actions/cache@v4
@@ -155,7 +171,19 @@ jobs:
             ${{ runner.os }}-maven-hdf5-
             ${{ runner.os }}-maven-
 
-      # No longer need GitHub Packages configuration - using local artifacts
+      - name: Configure Maven to use local repository only
+        run: |
+          mkdir -p ~/.m2
+          cat > ~/.m2/settings.xml << 'EOF'
+          <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+                    http://maven.apache.org/xsd/settings-1.0.0.xsd">
+            <localRepository>~/.m2/repository</localRepository>
+            <offline>true</offline>
+          </settings>
+          EOF
+          echo "Configured Maven to use local repository only (offline mode)"
 
       - name: Create test POM file
         run: |
