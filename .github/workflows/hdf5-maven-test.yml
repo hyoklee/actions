@@ -282,8 +282,8 @@ jobs:
           LOCAL_REPO_PATH=$(realpath ~/.m2/repository)
           echo "Creating POM with local repository: file://$LOCAL_REPO_PATH"
 
-          # Create POM with variable substitution
-          cat > test-pom.xml << EOF
+          # Create POM with placeholder, then substitute file URL
+          cat > test-pom.xml << 'EOF'
           <?xml version="1.0" encoding="UTF-8"?>
           <project xmlns="http://maven.apache.org/POM/4.0.0"
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -300,8 +300,8 @@ jobs:
                   <maven.compiler.source>11</maven.compiler.source>
                   <maven.compiler.target>11</maven.compiler.target>
                   <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-                  <hdf5.version>\${{ needs.build-hdf5-artifacts.outputs.artifact-version }}</hdf5.version>
-                  <hdf5.platform>\${{ matrix.platform }}</hdf5.platform>
+                  <hdf5.version>${{ needs.build-hdf5-artifacts.outputs.artifact-version }}</hdf5.version>
+                  <hdf5.platform>${{ matrix.platform }}</hdf5.platform>
               </properties>
 
               <dependencies>
@@ -355,7 +355,7 @@ jobs:
               <repositories>
                   <repository>
                       <id>local-maven-repo</id>
-                      <url>file://$LOCAL_REPO_PATH</url>
+                      <url>PLACEHOLDER_LOCAL_REPO_URL</url>
                       <releases>
                           <enabled>true</enabled>
                       </releases>
@@ -376,6 +376,9 @@ jobs:
               </repositories>
           </project>
           EOF
+
+          # Substitute the actual file URL
+          sed -i "s|PLACEHOLDER_LOCAL_REPO_URL|file://$LOCAL_REPO_PATH|g" test-pom.xml
 
       - name: Validate Maven dependencies
         shell: bash
