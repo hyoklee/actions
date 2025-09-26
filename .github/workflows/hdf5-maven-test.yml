@@ -107,8 +107,7 @@ jobs:
           fi
 
           # Verify artifacts were actually installed
-          echo "
-=== Verifying installed artifacts ==="
+          echo "=== Verifying installed artifacts ==="
           cd ~/.m2/repository
           if [ ! -d "org/hdfgroup" ]; then
             echo "⚠️  No artifacts installed by build, attempting manual installation"
