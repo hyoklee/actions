@@ -30,9 +30,66 @@ permissions:
   contents: read
 
 jobs:
+  build-hdf5-artifacts:
+    name: "Build HDF5 Maven Artifacts"
+    runs-on: ubuntu-latest
+    outputs:
+      artifact-version: ${{ steps.version.outputs.version }}
+
+    steps:
+      - name: Checkout HDF5 repository
+        uses: actions/checkout@v4
+        with:
+          repository: byrnHDF/hdf5
+          ref: develop-maven-upload
+          path: hdf5
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Cache Maven dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: ubuntu-maven-hdf5-build-${{ hashFiles('**/pom*.xml*') }}
+          restore-keys: |
+            ubuntu-maven-hdf5-
+            ubuntu-maven-
+
+      - name: Build HDF5 Maven artifacts
+        run: |
+          cd hdf5
+          # Build and install HDF5 artifacts to local repository
+          mvn clean install -DskipTests
+
+      - name: Get artifact version
+        id: version
+        run: |
+          cd hdf5
+          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Built HDF5 version: $VERSION"
+
+      - name: Package local Maven repository
+        run: |
+          # Create a tar archive of the HDF5 artifacts from local repository
+          cd ~/.m2/repository
+          tar -czf /tmp/hdf5-maven-artifacts.tar.gz org/hdfgroup/
+
+      - name: Upload HDF5 Maven artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: hdf5-maven-artifacts
+          path: /tmp/hdf5-maven-artifacts.tar.gz
+          retention-days: 1
+
   test-hdf5-maven:
     name: "Test HDF5 Maven Build (${{ matrix.os }})"
     runs-on: ${{ matrix.os }}
+    needs: build-hdf5-artifacts
     continue-on-error: true
     strategy:
       fail-fast: false
@@ -60,6 +117,20 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
+      - name: Download HDF5 Maven artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: hdf5-maven-artifacts
+          path: /tmp/
+
+      - name: Extract HDF5 Maven artifacts to local repository
+        run: |
+          mkdir -p ~/.m2/repository
+          cd ~/.m2/repository
+          tar -xzf /tmp/hdf5-maven-artifacts.tar.gz
+          echo "Extracted HDF5 artifacts to local Maven repository"
+          ls -la org/hdfgroup/ || echo "No HDF5 artifacts found"
+
       - name: Cache Maven dependencies
         uses: actions/cache@v4
         with:
@@ -69,28 +140,7 @@ jobs:
             ${{ runner.os }}-maven-hdf5-
             ${{ runner.os }}-maven-
 
-      - name: Configure Maven settings for GitHub Packages
-        run: |
-          mkdir -p ~/.m2
-          cat > ~/.m2/settings.xml << 'EOF'
-          <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
-                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                    xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
-                    http://maven.apache.org/xsd/settings-1.0.0.xsd">
-            <repositories>
-              <repository>
-                <id>github-packages</id>
-                <url>https://maven.pkg.github.com/HDFGroup/hdf5</url>
-                <releases>
-                  <enabled>true</enabled>
-                </releases>
-                <snapshots>
-                  <enabled>true</enabled>
-                </snapshots>
-              </repository>
-            </repositories>
-          </settings>
-          EOF
+      # No longer need GitHub Packages configuration - using local artifacts
 
       - name: Create test POM file
         run: |
@@ -112,7 +162,7 @@ jobs:
                   <maven.compiler.source>11</maven.compiler.source>
                   <maven.compiler.target>11</maven.compiler.target>
                   <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-                  <hdf5.version>${{ inputs.maven_version || '2.0.0-3' }}</hdf5.version>
+                  <hdf5.version>${{ needs.build-hdf5-artifacts.outputs.artifact-version }}</hdf5.version>
                   <hdf5.platform>${{ matrix.platform }}</hdf5.platform>
               </properties>
 
@@ -162,18 +212,7 @@ jobs:
                   </plugins>
               </build>
 
-              <repositories>
-                  <repository>
-                      <id>github-packages</id>
-                      <url>https://maven.pkg.github.com/HDFGroup/hdf5</url>
-                      <releases>
-                          <enabled>true</enabled>
-                      </releases>
-                      <snapshots>
-                          <enabled>true</enabled>
-                      </snapshots>
-                  </repository>
-              </repositories>
+              <!-- Using local Maven repository - no external repositories needed -->
           </project>
           EOF
 
