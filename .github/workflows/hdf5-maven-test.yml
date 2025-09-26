@@ -246,12 +246,15 @@ jobs:
       - name: Configure Maven to prefer local repository
         run: |
           mkdir -p ~/.m2
-          cat > ~/.m2/settings.xml << 'EOF'
+          LOCAL_REPO_PATH=$(realpath ~/.m2/repository)
+          echo "Using local repository path: $LOCAL_REPO_PATH"
+
+          cat > ~/.m2/settings.xml << EOF
           <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
                     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                     xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
                     http://maven.apache.org/xsd/settings-1.0.0.xsd">
-            <localRepository>~/.m2/repository</localRepository>
+            <localRepository>$LOCAL_REPO_PATH</localRepository>
             <repositories>
               <repository>
                 <id>central</id>
@@ -278,7 +281,7 @@ jobs:
             </pluginRepositories>
           </settings>
           EOF
-          echo "Configured Maven to use local repository with central for plugins"
+          echo "Configured Maven to use local repository: $LOCAL_REPO_PATH"
 
       - name: Create test POM file
         run: |
@@ -359,8 +362,18 @@ jobs:
       - name: Validate Maven dependencies
         run: |
           cd hdf5/HDF5Examples/JAVA
+          echo "=== Debugging Maven Repository Setup ==="
+          echo "Maven settings location: ~/.m2/settings.xml"
+          cat ~/.m2/settings.xml
+
+          echo "Local repository path from settings:"
+          mvn help:evaluate -Dexpression=settings.localRepository -f test-pom.xml -q -DforceStdout
+
+          echo "Actual local repository contents:"
+          ls -la ~/.m2/repository/org/hdfgroup/hdf5-java/2.0.0/ || echo "HDF5 artifacts not found in expected location"
+
           echo "=== Validating Maven dependencies ==="
-          mvn dependency:resolve -f test-pom.xml -e
+          mvn dependency:resolve -f test-pom.xml -e -Dmaven.repo.local=~/.m2/repository
 
       - name: Compile representative examples (H5D category)
         run: |
@@ -368,7 +381,7 @@ jobs:
           echo "=== Compiling H5D examples ==="
 
           # Set up classpath from Maven dependencies
-          mvn dependency:build-classpath -f test-pom.xml -Dmdep.outputFile=classpath.txt
+          mvn dependency:build-classpath -f test-pom.xml -Dmdep.outputFile=classpath.txt -Dmaven.repo.local=~/.m2/repository
           CLASSPATH=$(cat classpath.txt)
 
           # Compile examples from H5D directory
