@@ -50,6 +50,11 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
+      - name: Install CMake
+        uses: jwlawson/actions-setup-cmake@v1
+        with:
+          cmake-version: '3.26'
+
       - name: Cache Maven dependencies
         uses: actions/cache@v4
         with:
@@ -62,14 +67,24 @@ jobs:
       - name: Build HDF5 Maven artifacts
         run: |
           cd hdf5
-          # Build and install HDF5 artifacts to local repository
-          mvn clean install -DskipTests
+          # Use CMake to configure and build HDF5 with Maven support
+          mkdir build && cd build
+          cmake .. \
+            -DHDF5_BUILD_JAVA=ON \
+            -DHDF5_ENABLE_MAVEN_DEPLOY=ON \
+            -DHDF5_MAVEN_SNAPSHOT=OFF \
+            -DCMAKE_BUILD_TYPE=Release
+          cmake --build . --config Release
+
+          # Install Maven artifacts using generated POM files
+          cd java/src/hdf/hdf5lib
+          mvn clean install -f pom.xml -DskipTests
 
       - name: Get artifact version
         id: version
         run: |
-          cd hdf5
-          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+          cd hdf5/build/java/src/hdf/hdf5lib
+          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout -f pom.xml)
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "Built HDF5 version: $VERSION"
 
