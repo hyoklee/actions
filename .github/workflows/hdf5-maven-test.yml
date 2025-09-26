@@ -315,7 +315,7 @@ jobs:
 
           # Create platform-specific pom-examples.xml from template
           if [ -f "pom-examples.xml.in" ]; then
-            sed -e "s/@HDF5_PACKAGE_VERSION@/${{ inputs.maven_version || '2.0.0-3' }}/g" \
+            sed -e "s/@HDF5_PACKAGE_VERSION@/${{ needs.build-hdf5-artifacts.outputs.artifact-version }}/g" \
                 -e "s/@HDF5_MAVEN_VERSION_SUFFIX@//g" \
                 -e "s/@HDF5_MAVEN_PLATFORM@/${{ matrix.platform }}/g" \
                 -e "s/@HDF5_MAVEN_ARCHITECTURE@/x86_64/g" \
@@ -347,7 +347,7 @@ jobs:
         run: |
           echo "=== HDF5 Maven Build Test Summary ==="
           echo "Platform: ${{ matrix.platform }}"
-          echo "Maven Version: ${{ inputs.maven_version || '2.0.0-3' }}"
+          echo "Maven Version: ${{ needs.build-hdf5-artifacts.outputs.artifact-version }}"
           echo "Test Mode: ${{ inputs.test_mode || 'compile-only' }}"
           echo ""
           echo "✅ Test completed. Check individual steps for details."
