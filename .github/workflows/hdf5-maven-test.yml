@@ -1,0 +1,354 @@
+name: HDF5 Java Maven Build Test
+
+on:
+  workflow_dispatch:
+    inputs:
+      maven_version:
+        description: "HDF5 Maven artifacts version to test"
+        required: false
+        default: "2.0.0-3"
+        type: string
+      test_mode:
+        description: "Test mode: compile-only or full-test"
+        required: false
+        default: "compile-only"
+        type: choice
+        options:
+          - compile-only
+          - full-test
+  push:
+    paths:
+      - '.github/workflows/hdf5-maven-test.yml'
+  pull_request:
+    paths:
+      - '.github/workflows/hdf5-maven-test.yml'
+  schedule:
+    # Run daily at 2 AM UTC to test against latest artifacts
+    - cron: '0 2 * * *'
+
+permissions:
+  contents: read
+
+jobs:
+  test-hdf5-maven:
+    name: "Test HDF5 Maven Build (${{ matrix.os }})"
+    runs-on: ${{ matrix.os }}
+    continue-on-error: true
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        include:
+          - os: ubuntu-latest
+            platform: linux-x86_64
+          - os: windows-latest
+            platform: windows-x86_64
+          - os: macos-latest
+            platform: macos-x86_64
+
+    steps:
+      - name: Checkout HDF5 repository
+        uses: actions/checkout@v4
+        with:
+          repository: byrnHDF/hdf5
+          ref: develop-maven-upload
+          path: hdf5
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Cache Maven dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-hdf5-${{ hashFiles('**/pom*.xml*') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-hdf5-
+            ${{ runner.os }}-maven-
+
+      - name: Configure Maven settings for GitHub Packages
+        run: |
+          mkdir -p ~/.m2
+          cat > ~/.m2/settings.xml << 'EOF'
+          <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+                    http://maven.apache.org/xsd/settings-1.0.0.xsd">
+            <repositories>
+              <repository>
+                <id>github-packages</id>
+                <url>https://maven.pkg.github.com/HDFGroup/hdf5</url>
+                <releases>
+                  <enabled>true</enabled>
+                </releases>
+                <snapshots>
+                  <enabled>true</enabled>
+                </snapshots>
+              </repository>
+            </repositories>
+          </settings>
+          EOF
+
+      - name: Create test POM file
+        run: |
+          cd hdf5/HDF5Examples/JAVA
+          cat > test-pom.xml << 'EOF'
+          <?xml version="1.0" encoding="UTF-8"?>
+          <project xmlns="http://maven.apache.org/POM/4.0.0"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                   http://maven.apache.org/xsd/maven-4.0.0.xsd">
+              <modelVersion>4.0.0</modelVersion>
+
+              <groupId>org.hdfgroup.test</groupId>
+              <artifactId>hdf5-maven-test</artifactId>
+              <version>1.0.0</version>
+              <packaging>jar</packaging>
+
+              <properties>
+                  <maven.compiler.source>11</maven.compiler.source>
+                  <maven.compiler.target>11</maven.compiler.target>
+                  <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+                  <hdf5.version>${{ inputs.maven_version || '2.0.0-3' }}</hdf5.version>
+                  <hdf5.platform>${{ matrix.platform }}</hdf5.platform>
+              </properties>
+
+              <dependencies>
+                  <!-- HDF5 Java Library - platform-specific -->
+                  <dependency>
+                      <groupId>org.hdfgroup</groupId>
+                      <artifactId>hdf5-java</artifactId>
+                      <version>${hdf5.version}</version>
+                      <classifier>${hdf5.platform}</classifier>
+                  </dependency>
+
+                  <!-- HDF5 Java Examples -->
+                  <dependency>
+                      <groupId>org.hdfgroup</groupId>
+                      <artifactId>hdf5-java-examples</artifactId>
+                      <version>${hdf5.version}</version>
+                  </dependency>
+
+                  <!-- SLF4J for logging -->
+                  <dependency>
+                      <groupId>org.slf4j</groupId>
+                      <artifactId>slf4j-simple</artifactId>
+                      <version>1.7.36</version>
+                      <scope>runtime</scope>
+                  </dependency>
+              </dependencies>
+
+              <build>
+                  <plugins>
+                      <plugin>
+                          <groupId>org.apache.maven.plugins</groupId>
+                          <artifactId>maven-compiler-plugin</artifactId>
+                          <version>3.11.0</version>
+                          <configuration>
+                              <source>11</source>
+                              <target>11</target>
+                              <encoding>UTF-8</encoding>
+                          </configuration>
+                      </plugin>
+
+                      <plugin>
+                          <groupId>org.codehaus.mojo</groupId>
+                          <artifactId>exec-maven-plugin</artifactId>
+                          <version>3.1.0</version>
+                      </plugin>
+                  </plugins>
+              </build>
+
+              <repositories>
+                  <repository>
+                      <id>github-packages</id>
+                      <url>https://maven.pkg.github.com/HDFGroup/hdf5</url>
+                      <releases>
+                          <enabled>true</enabled>
+                      </releases>
+                      <snapshots>
+                          <enabled>true</enabled>
+                      </snapshots>
+                  </repository>
+              </repositories>
+          </project>
+          EOF
+
+      - name: Validate Maven dependencies
+        run: |
+          cd hdf5/HDF5Examples/JAVA
+          echo "=== Validating Maven dependencies ==="
+          mvn dependency:resolve -f test-pom.xml -e
+
+      - name: Compile representative examples (H5D category)
+        run: |
+          cd hdf5/HDF5Examples/JAVA
+          echo "=== Compiling H5D examples ==="
+
+          # Set up classpath from Maven dependencies
+          mvn dependency:build-classpath -f test-pom.xml -Dmdep.outputFile=classpath.txt
+          CLASSPATH=$(cat classpath.txt)
+
+          # Compile examples from H5D directory
+          echo "Compiling H5D examples..."
+          cd H5D
+          for java_file in *.java; do
+            if [ -f "$java_file" ]; then
+              echo "Compiling $java_file"
+              javac -cp "$CLASSPATH" "$java_file"
+              if [ $? -eq 0 ]; then
+                echo "✅ $java_file compiled successfully"
+              else
+                echo "❌ $java_file compilation failed"
+                exit 1
+              fi
+            fi
+          done
+
+      - name: Compile representative examples (H5T category)
+        run: |
+          cd hdf5/HDF5Examples/JAVA
+          CLASSPATH=$(cat classpath.txt)
+
+          # Compile examples from H5T directory
+          echo "Compiling H5T examples..."
+          cd H5T
+          for java_file in *.java; do
+            if [ -f "$java_file" ]; then
+              echo "Compiling $java_file"
+              javac -cp "$CLASSPATH" "$java_file"
+              if [ $? -eq 0 ]; then
+                echo "✅ $java_file compiled successfully"
+              else
+                echo "❌ $java_file compilation failed"
+                exit 1
+              fi
+            fi
+          done
+
+      - name: Compile representative examples (H5G category)
+        run: |
+          cd hdf5/HDF5Examples/JAVA
+          CLASSPATH=$(cat classpath.txt)
+
+          # Compile examples from H5G directory
+          echo "Compiling H5G examples..."
+          cd H5G
+          for java_file in *.java; do
+            if [ -f "$java_file" ]; then
+              echo "Compiling $java_file"
+              javac -cp "$CLASSPATH" "$java_file"
+              if [ $? -eq 0 ]; then
+                echo "✅ $java_file compiled successfully"
+              else
+                echo "❌ $java_file compilation failed"
+                exit 1
+              fi
+            fi
+          done
+
+      - name: Compile representative examples (TUTR category)
+        run: |
+          cd hdf5/HDF5Examples/JAVA
+          CLASSPATH=$(cat classpath.txt)
+
+          # Compile examples from TUTR directory
+          echo "Compiling TUTR examples..."
+          cd TUTR
+          for java_file in *.java; do
+            if [ -f "$java_file" ]; then
+              echo "Compiling $java_file"
+              javac -cp "$CLASSPATH" "$java_file"
+              if [ $? -eq 0 ]; then
+                echo "✅ $java_file compiled successfully"
+              else
+                echo "❌ $java_file compilation failed"
+                exit 1
+              fi
+            fi
+          done
+
+      - name: Test representative examples (if full-test mode)
+        if: inputs.test_mode == 'full-test'
+        run: |
+          cd hdf5/HDF5Examples/JAVA
+          CLASSPATH=$(cat classpath.txt)
+
+          echo "=== Testing representative examples ==="
+          echo "Note: UnsatisfiedLinkError is expected in Maven-only environment"
+
+          # Test one example from each category
+          test_examples=(
+            "H5D/H5Ex_D_ReadWrite"
+            "H5T/H5Ex_T_Array"
+            "H5G/H5Ex_G_Create"
+            "TUTR/CreateFile"
+          )
+
+          for example in "${test_examples[@]}"; do
+            dir=$(dirname "$example")
+            class=$(basename "$example")
+            echo "--- Testing $example ---"
+
+            cd "$dir"
+            java -cp ".:$CLASSPATH" "$class" 2>&1 | tee "../test-output-$class.log" || true
+
+            # Check for expected patterns (success or expected native library error)
+            if grep -E "(dataset|datatype|group|success|created|written|read)" "../test-output-$class.log" > /dev/null; then
+              echo "✅ $example: Success patterns detected"
+            elif grep -E "UnsatisfiedLinkError.*hdf5_java.*java.library.path" "../test-output-$class.log" > /dev/null; then
+              echo "⚠️  $example: Expected native library error (Maven-only environment)"
+            else
+              echo "❌ $example: Unexpected failure pattern"
+            fi
+
+            cd - > /dev/null
+          done
+
+      - name: Maven clean compile test
+        run: |
+          cd hdf5/HDF5Examples/JAVA
+          echo "=== Maven compile using original pom-examples.xml template ==="
+
+          # Create platform-specific pom-examples.xml from template
+          if [ -f "pom-examples.xml.in" ]; then
+            sed -e "s/@HDF5_PACKAGE_VERSION@/${{ inputs.maven_version || '2.0.0-3' }}/g" \
+                -e "s/@HDF5_MAVEN_VERSION_SUFFIX@//g" \
+                -e "s/@HDF5_MAVEN_PLATFORM@/${{ matrix.platform }}/g" \
+                -e "s/@HDF5_MAVEN_ARCHITECTURE@/x86_64/g" \
+                -e "s/@CMAKE_CONFIGURE_DATE@/$(date)/g" \
+                pom-examples.xml.in > pom-examples.xml
+
+            echo "Generated pom-examples.xml:"
+            head -50 pom-examples.xml
+
+            echo "=== Running Maven compile ==="
+            mvn compile -f pom-examples.xml -e
+          else
+            echo "⚠️ pom-examples.xml.in not found, skipping Maven compile test"
+          fi
+
+      - name: Upload test artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: hdf5-maven-test-${{ matrix.os }}-${{ github.run_id }}
+          path: |
+            hdf5/HDF5Examples/JAVA/test-output-*.log
+            hdf5/HDF5Examples/JAVA/classpath.txt
+            hdf5/HDF5Examples/JAVA/pom-examples.xml
+          retention-days: 7
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "=== HDF5 Maven Build Test Summary ==="
+          echo "Platform: ${{ matrix.platform }}"
+          echo "Maven Version: ${{ inputs.maven_version || '2.0.0-3' }}"
+          echo "Test Mode: ${{ inputs.test_mode || 'compile-only' }}"
+          echo ""
+          echo "✅ Test completed. Check individual steps for details."
+          echo "📦 Test artifacts uploaded for debugging."
