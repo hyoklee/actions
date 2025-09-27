@@ -32,7 +32,7 @@ permissions:
 jobs:
   hdf5-maven-test:
     name: "HDF5 Maven Build and Test"
-    runs-on: ubuntu-24.04-arm
+    runs-on: windows-2025-arm64
 
     steps:
       - name: Checkout HDF5 repository
@@ -52,10 +52,10 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.m2/repository
-          key: ubuntu-maven-hdf5-${{ hashFiles('**/pom*.xml*') }}
+          key: windows-maven-hdf5-${{ hashFiles('**/pom*.xml*') }}
           restore-keys: |
-            ubuntu-maven-hdf5-
-            ubuntu-maven-
+            windows-maven-hdf5-
+            windows-maven-
 
       - name: Build HDF5 Maven artifacts
         shell: bash
@@ -68,7 +68,7 @@ jobs:
             -DHDF5_ENABLE_MAVEN_DEPLOY=ON \
             -DHDF5_MAVEN_SNAPSHOT=OFF \
             -DCMAKE_BUILD_TYPE=Release \
-            -DHDF5_MAVEN_PLATFORM=linux-aarch64 \
+            -DHDF5_MAVEN_PLATFORM=windows-arm64 \
             -DHDF5_BUILD_EXAMPLES=ON \
             -DHDF5_BUILD_TOOLS=ON
 
@@ -193,7 +193,7 @@ jobs:
                   <maven.compiler.target>11</maven.compiler.target>
                   <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
                   <hdf5.version>$HDF5_VERSION</hdf5.version>
-                  <hdf5.platform>linux-aarch64</hdf5.platform>
+                  <hdf5.platform>windows-arm64</hdf5.platform>
               </properties>
 
               <dependencies>
@@ -475,8 +475,8 @@ jobs:
             VERSION=$(cat ../../build/java/src/hdf/hdf5lib/pom.xml | grep -o '<version>[^<]*</version>' | head -1 | sed 's/<version>//;s/<\/version>//' || echo "2.0.0")
             sed -e "s/@HDF5_PACKAGE_VERSION@/$VERSION/g" \
                 -e "s/@HDF5_MAVEN_VERSION_SUFFIX@//g" \
-                -e "s/@HDF5_MAVEN_PLATFORM@/linux-aarch64/g" \
-                -e "s/@HDF5_MAVEN_ARCHITECTURE@/aarch64/g" \
+                -e "s/@HDF5_MAVEN_PLATFORM@/windows-arm64/g" \
+                -e "s/@HDF5_MAVEN_ARCHITECTURE@/arm64/g" \
                 -e "s/@CMAKE_CONFIGURE_DATE@/$(date)/g" \
                 pom-examples.xml.in > pom-examples.xml
 
@@ -493,7 +493,7 @@ jobs:
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: hdf5-maven-test-ubuntu-${{ github.run_id }}
+          name: hdf5-maven-test-windows-arm64-${{ github.run_id }}
           path: |
             hdf5/HDF5Examples/JAVA/test-output-*.log
             hdf5/HDF5Examples/JAVA/classpath.txt
@@ -505,7 +505,7 @@ jobs:
         shell: bash
         run: |
           echo "=== HDF5 Maven Build Test Summary ==="
-          echo "Platform: linux-aarch64"
+          echo "Platform: windows-arm64"
           echo "Maven Version: ${{ steps.version.outputs.version }}"
           echo "Test Mode: ${{ inputs.test_mode || 'compile-only' }}"
           echo ""
