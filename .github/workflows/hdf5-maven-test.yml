@@ -425,24 +425,44 @@ jobs:
           echo "Classpath: $CLASSPATH"
 
           # Check if HDF5 JAR actually contains classes
-          HDF5_JAR=$(echo "$CLASSPATH" | tr ':' '\n' | grep hdf5-java | head -1)
+          echo "Classpath separator detection..."
+          if [[ "$CLASSPATH" == *";"* ]]; then
+            echo "Windows classpath detected (using ; separator)"
+            HDF5_JAR=$(echo "$CLASSPATH" | tr ';' '\n' | grep hdf5-java | head -1)
+          else
+            echo "Unix classpath detected (using : separator)"
+            HDF5_JAR=$(echo "$CLASSPATH" | tr ':' '\n' | grep hdf5-java | head -1)
+          fi
+
           if [ -n "$HDF5_JAR" ] && [ -f "$HDF5_JAR" ]; then
             echo "=== Checking HDF5 JAR contents ==="
             echo "HDF5 JAR: $HDF5_JAR"
-            jar -tf "$HDF5_JAR" | head -10
 
-            if jar -tf "$HDF5_JAR" | grep -q "hdf/hdf5lib/H5.class"; then
-              echo "✅ HDF5 JAR contains actual classes, proceeding with compilation"
-              COMPILE_EXAMPLES=true
+            # Check if jar command works and JAR is valid
+            if jar -tf "$HDF5_JAR" >/dev/null 2>&1; then
+              echo "JAR file is valid, checking contents..."
+              jar -tf "$HDF5_JAR" | head -10
+
+              if jar -tf "$HDF5_JAR" | grep -q "hdf/hdf5lib/H5.class" 2>/dev/null; then
+                echo "✅ HDF5 JAR contains actual classes, proceeding with compilation"
+                COMPILE_EXAMPLES=true
+              else
+                echo "⚠️  HDF5 JAR appears to be empty/minimal, skipping compilation"
+                echo "JAR size: $(du -h "$HDF5_JAR" 2>/dev/null | cut -f1 || echo "unknown")"
+                COMPILE_EXAMPLES=false
+              fi
             else
-              echo "⚠️  HDF5 JAR appears to be empty/minimal, skipping compilation"
-              echo "JAR size: $(du -h "$HDF5_JAR" | cut -f1)"
+              echo "⚠️  JAR file is invalid or jar command failed, skipping compilation"
               COMPILE_EXAMPLES=false
             fi
           else
             echo "⚠️  No HDF5 JAR found in classpath, skipping compilation"
+            echo "Classpath was: $CLASSPATH"
             COMPILE_EXAMPLES=false
           fi
+
+          # Save compilation decision for subsequent steps
+          echo "$COMPILE_EXAMPLES" > ../compile_examples.flag
 
           if [ "$COMPILE_EXAMPLES" = "true" ]; then
             # Compile examples from H5D directory
@@ -470,9 +490,14 @@ jobs:
           cd hdf5/HDF5Examples/JAVA
           CLASSPATH=$(cat classpath.txt)
 
-          # Check if we should compile (same logic as H5D)
-          HDF5_JAR=$(echo "$CLASSPATH" | tr ':' '\n' | grep hdf5-java | head -1)
-          if [ -n "$HDF5_JAR" ] && jar -tf "$HDF5_JAR" | grep -q "hdf/hdf5lib/H5.class" 2>/dev/null; then
+          # Check if we should compile (check for COMPILE_EXAMPLES from previous step)
+          if [ -f "../compile_examples.flag" ]; then
+            COMPILE_EXAMPLES=$(cat ../compile_examples.flag)
+          else
+            COMPILE_EXAMPLES=false
+          fi
+
+          if [ "$COMPILE_EXAMPLES" = "true" ]; then
             echo "=== Compiling H5T examples ==="
             cd H5T
             for java_file in *.java; do
@@ -498,8 +523,13 @@ jobs:
           CLASSPATH=$(cat classpath.txt)
 
           # Check if we should compile
-          HDF5_JAR=$(echo "$CLASSPATH" | tr ':' '\n' | grep hdf5-java | head -1)
-          if [ -n "$HDF5_JAR" ] && jar -tf "$HDF5_JAR" | grep -q "hdf/hdf5lib/H5.class" 2>/dev/null; then
+          if [ -f "../compile_examples.flag" ]; then
+            COMPILE_EXAMPLES=$(cat ../compile_examples.flag)
+          else
+            COMPILE_EXAMPLES=false
+          fi
+
+          if [ "$COMPILE_EXAMPLES" = "true" ]; then
             echo "=== Compiling H5G examples ==="
             cd H5G
             for java_file in *.java; do
@@ -525,8 +555,13 @@ jobs:
           CLASSPATH=$(cat classpath.txt)
 
           # Check if we should compile
-          HDF5_JAR=$(echo "$CLASSPATH" | tr ':' '\n' | grep hdf5-java | head -1)
-          if [ -n "$HDF5_JAR" ] && jar -tf "$HDF5_JAR" | grep -q "hdf/hdf5lib/H5.class" 2>/dev/null; then
+          if [ -f "../compile_examples.flag" ]; then
+            COMPILE_EXAMPLES=$(cat ../compile_examples.flag)
+          else
+            COMPILE_EXAMPLES=false
+          fi
+
+          if [ "$COMPILE_EXAMPLES" = "true" ]; then
             echo "=== Compiling TUTR examples ==="
             cd TUTR
             for java_file in *.java; do
@@ -630,21 +665,27 @@ jobs:
 
           # Check what kind of artifacts we ended up with
           cd hdf5/HDF5Examples/JAVA
-          if [ -f "classpath.txt" ]; then
-            CLASSPATH=$(cat classpath.txt)
-            HDF5_JAR=$(echo "$CLASSPATH" | tr ':' '\n' | grep hdf5-java | head -1)
-            if [ -n "$HDF5_JAR" ] && [ -f "$HDF5_JAR" ]; then
-              if jar -tf "$HDF5_JAR" | grep -q "hdf/hdf5lib/H5.class" 2>/dev/null; then
-                echo "✅ Used real HDF5 Java library with classes"
-              else
-                echo "⚠️  Used minimal/fallback HDF5 artifacts (compilation skipped)"
-              fi
-              echo "JAR size: $(du -h "$HDF5_JAR" | cut -f1)"
+          if [ -f "../compile_examples.flag" ]; then
+            COMPILE_EXAMPLES=$(cat ../compile_examples.flag)
+            if [ "$COMPILE_EXAMPLES" = "true" ]; then
+              echo "✅ Used real HDF5 Java library with classes"
             else
-              echo "❌ No HDF5 JAR found in classpath"
+              echo "⚠️  Used minimal/fallback HDF5 artifacts (compilation skipped)"
             fi
           else
-            echo "❌ No classpath generated"
+            echo "❓ Could not determine artifact type"
+          fi
+
+          if [ -f "classpath.txt" ]; then
+            CLASSPATH=$(cat classpath.txt)
+            if [[ "$CLASSPATH" == *";"* ]]; then
+              HDF5_JAR=$(echo "$CLASSPATH" | tr ';' '\n' | grep hdf5-java | head -1)
+            else
+              HDF5_JAR=$(echo "$CLASSPATH" | tr ':' '\n' | grep hdf5-java | head -1)
+            fi
+            if [ -n "$HDF5_JAR" ] && [ -f "$HDF5_JAR" ]; then
+              echo "JAR size: $(du -h "$HDF5_JAR" 2>/dev/null | cut -f1 || echo "unknown")"
+            fi
           fi
 
           echo ""
