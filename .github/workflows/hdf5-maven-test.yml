@@ -32,7 +32,7 @@ permissions:
 jobs:
   hdf5-maven-test:
     name: "HDF5 Maven Build and Test"
-    runs-on: ubuntu-24.04-arm64
+    runs-on: ubuntu-24.04-arm
 
     steps:
       - name: Checkout HDF5 repository
