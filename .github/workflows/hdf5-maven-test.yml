@@ -73,22 +73,45 @@ jobs:
             -DHDF5_ENABLE_MAVEN_DEPLOY=ON \
             -DHDF5_MAVEN_SNAPSHOT=OFF \
             -DCMAKE_BUILD_TYPE=Release \
-            -DHDF5_MAVEN_PLATFORM=linux-x86_64
+            -DHDF5_MAVEN_PLATFORM=linux-x86_64 \
+            -DHDF5_BUILD_EXAMPLES=ON \
+            -DHDF5_BUILD_TOOLS=ON
 
           echo "=== CMake Configuration Summary ==="
-          grep -E "(HDF5_BUILD_JAVA|HDF5_ENABLE_MAVEN|MAVEN)" CMakeCache.txt || echo "No Maven config found"
+          grep -E "(HDF5_BUILD_JAVA|HDF5_ENABLE_MAVEN|MAVEN|JAVA)" CMakeCache.txt || echo "No Java/Maven config found"
 
+          echo "=== Building HDF5 with Java support ==="
           cmake --build . --config Release
+
+          echo "=== Checking Java build directory structure ==="
+          find . -type d -name "*java*" | head -10
+          find . -type f -name "*.java" | head -10
 
           echo "=== Checking for generated POM files ==="
           find . -name "pom.xml" -o -name "pom-*.xml" | head -10
+
+          # Check if Java compilation happened
+          echo "=== Checking for compiled Java classes ==="
+          find . -name "*.class" | head -10
 
           # Install Maven artifacts using generated POM files
           if [ -f "java/src/hdf/hdf5lib/pom.xml" ]; then
             echo "=== Installing main HDF5 Java library ==="
             cd java/src/hdf/hdf5lib
-            cat pom.xml | head -20
-            mvn clean install -f pom.xml -DskipTests
+
+            echo "Directory contents:"
+            ls -la
+
+            echo "Source directory contents:"
+            ls -la src/ || echo "No src directory found"
+
+            echo "Target directory contents:"
+            ls -la target/ || echo "No target directory found"
+
+            cat pom.xml | head -30
+
+            echo "Running Maven install..."
+            mvn clean install -f pom.xml -DskipTests -X
             cd ../../../..
           else
             echo "❌ Main POM not found at java/src/hdf/hdf5lib/pom.xml"
@@ -111,6 +134,12 @@ jobs:
           if [ -d "org/hdfgroup" ]; then
             echo "✅ HDF Group directory found"
             find org/hdfgroup/ -type f -name "*.jar" -o -name "*.pom" | head -20
+
+            echo "=== Checking JAR contents ==="
+            for jar in $(find org/hdfgroup/ -name "*.jar"); do
+              echo "JAR: $jar"
+              jar -tf "$jar" | head -5 || echo "Empty or invalid JAR"
+            done
           else
             echo "❌ No HDF Group artifacts found in Maven repository"
             # Create minimal artifacts for testing
