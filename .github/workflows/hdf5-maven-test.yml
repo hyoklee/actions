@@ -143,6 +143,14 @@ jobs:
           LOCAL_REPO_PATH=$(realpath ~/.m2/repository)
           echo "Creating POM with local repository: file://$LOCAL_REPO_PATH"
 
+          # Get the actual version from the build
+          if [ -f "../../build/java/src/hdf/hdf5lib/pom.xml" ]; then
+            HDF5_VERSION=$(cd ../../build/java/src/hdf/hdf5lib && mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+          else
+            HDF5_VERSION="2.0.0"
+          fi
+          echo "Using HDF5 version: $HDF5_VERSION"
+
           cat > test-pom.xml << EOF
           <?xml version="1.0" encoding="UTF-8"?>
           <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -160,7 +168,7 @@ jobs:
                   <maven.compiler.source>11</maven.compiler.source>
                   <maven.compiler.target>11</maven.compiler.target>
                   <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-                  <hdf5.version>\${{ steps.version.outputs.version }}</hdf5.version>
+                  <hdf5.version>$HDF5_VERSION</hdf5.version>
                   <hdf5.platform>linux-x86_64</hdf5.platform>
               </properties>
 
