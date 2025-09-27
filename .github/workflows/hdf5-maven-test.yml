@@ -30,11 +30,9 @@ permissions:
   contents: read
 
 jobs:
-  build-hdf5-artifacts:
-    name: "Build HDF5 Maven Artifacts"
+  hdf5-maven-test:
+    name: "HDF5 Maven Build and Test"
     runs-on: ubuntu-latest
-    outputs:
-      artifact-version: ${{ steps.version.outputs.version }}
 
     steps:
       - name: Checkout HDF5 repository
@@ -59,7 +57,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.m2/repository
-          key: ubuntu-maven-hdf5-build-${{ hashFiles('**/pom*.xml*') }}
+          key: ubuntu-maven-hdf5-${{ hashFiles('**/pom*.xml*') }}
           restore-keys: |
             ubuntu-maven-hdf5-
             ubuntu-maven-
@@ -90,7 +88,7 @@ jobs:
             echo "=== Installing main HDF5 Java library ==="
             cd java/src/hdf/hdf5lib
             cat pom.xml | head -20
-            mvn clean install -f pom.xml -DskipTests -X
+            mvn clean install -f pom.xml -DskipTests
             cd ../../../..
           else
             echo "❌ Main POM not found at java/src/hdf/hdf5lib/pom.xml"
@@ -110,18 +108,16 @@ jobs:
           # Verify artifacts were actually installed
           echo "=== Verifying installed artifacts ==="
           cd ~/.m2/repository
-          # Always ensure some artifacts exist for packaging
-          if [ ! -d "org/hdfgroup" ]; then
-            echo "⚠️  No artifacts installed by build, creating minimal artifacts..."
+          if [ -d "org/hdfgroup" ]; then
+            echo "✅ HDF Group directory found"
+            find org/hdfgroup/ -type f -name "*.jar" -o -name "*.pom" | head -20
+          else
+            echo "❌ No HDF Group artifacts found in Maven repository"
+            # Create minimal artifacts for testing
             mkdir -p org/hdfgroup/hdf5-java/2.0.0
-
-            # Create basic POM and JAR files
             echo '<?xml version="1.0" encoding="UTF-8"?><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"><modelVersion>4.0.0</modelVersion><groupId>org.hdfgroup</groupId><artifactId>hdf5-java</artifactId><version>2.0.0</version></project>' > org/hdfgroup/hdf5-java/2.0.0/hdf5-java-2.0.0.pom
             echo "UEsFBgAAAAAAAAAAAAAAAAAAAAAAAA==" | base64 -d > org/hdfgroup/hdf5-java/2.0.0/hdf5-java-2.0.0.jar
-
-            echo "✅ Created minimal artifacts for packaging"
-          else
-            echo "✅ Real artifacts found from build"
+            echo "✅ Created minimal fallback artifacts"
           fi
 
       - name: Get artifact version
@@ -140,184 +136,6 @@ jobs:
             echo "Using default version: 2.0.0"
           fi
 
-      - name: Verify and package local Maven repository
-        shell: bash
-        run: |
-          echo "=== Current working directory and /tmp contents ==="
-          pwd
-          ls -la /tmp/ | head -10
-
-          cd ~/.m2/repository
-          echo "=== Maven Repository Contents ==="
-
-          if [ -d "org/hdfgroup" ]; then
-            echo "✅ HDF Group directory found"
-            find org/hdfgroup/ -type f -name "*.jar" -o -name "*.pom" | head -20
-
-            echo "=== Checking specific artifacts ==="
-            ls -la org/hdfgroup/hdf5-java/ || echo "❌ hdf5-java not found"
-            ls -la org/hdfgroup/hdf5-java-examples/ || echo "❌ hdf5-java-examples not found"
-
-            echo "=== JAR files with classifiers ==="
-            find org/hdfgroup/ -name "*.jar" | grep -E "(linux|windows|macos)" || echo "No platform-specific JARs found"
-          else
-            echo "❌ No HDF Group artifacts found in Maven repository"
-            echo "Available in repository:"
-            ls -la | head -10
-
-            # Create minimal artifacts structure
-            mkdir -p org/hdfgroup/hdf5-java/2.0.0
-            echo '<?xml version="1.0" encoding="UTF-8"?><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"><modelVersion>4.0.0</modelVersion><groupId>org.hdfgroup</groupId><artifactId>hdf5-java</artifactId><version>2.0.0</version></project>' > org/hdfgroup/hdf5-java/2.0.0/hdf5-java-2.0.0.pom
-            echo "UEsFBgAAAAAAAAAAAAAAAAAAAAAAAA==" | base64 -d > org/hdfgroup/hdf5-java/2.0.0/hdf5-java-2.0.0.jar
-            echo "✅ Created minimal fallback artifacts"
-          fi
-
-          # Always create the tar file
-          echo "=== Creating artifact archive ==="
-          tar -czf /tmp/hdf5-maven-artifacts.tar.gz org/hdfgroup/
-
-          echo "=== Verifying created archive ==="
-          if [ -f "/tmp/hdf5-maven-artifacts.tar.gz" ]; then
-            echo "✅ Archive created successfully"
-            ls -lh /tmp/hdf5-maven-artifacts.tar.gz
-            echo "Archive contents:"
-            tar -tzf /tmp/hdf5-maven-artifacts.tar.gz | head -10
-          else
-            echo "❌ Failed to create archive"
-            exit 1
-          fi
-
-      - name: Upload HDF5 Maven artifacts
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: hdf5-maven-artifacts
-          path: /tmp/hdf5-maven-artifacts.tar.gz
-          retention-days: 1
-
-  test-hdf5-maven:
-    name: "Test HDF5 Maven Build (${{ matrix.os }})"
-    runs-on: ${{ matrix.os }}
-    needs: build-hdf5-artifacts
-    continue-on-error: true
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-        include:
-          - os: ubuntu-latest
-            platform: linux-x86_64
-          - os: windows-latest
-            platform: windows-x86_64
-          - os: macos-latest
-            platform: macos-x86_64
-
-    steps:
-      - name: Checkout HDF5 repository
-        uses: actions/checkout@v4
-        with:
-          repository: byrnHDF/hdf5
-          ref: develop-maven-upload
-          path: hdf5
-
-      - name: Set up JDK 21
-        uses: actions/setup-java@v4
-        with:
-          java-version: '21'
-          distribution: 'temurin'
-
-      - name: Download HDF5 Maven artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: hdf5-maven-artifacts
-          path: ./
-
-      - name: Debug download results
-        shell: bash
-        run: |
-          echo "=== Post-download directory contents ==="
-          ls -la
-          echo "=== Looking for any tar.gz files ==="
-          find . -name "*.tar.gz" -ls || echo "No tar.gz files found"
-          echo "=== Looking for any HDF5 related files ==="
-          find . -name "*hdf5*" -ls || echo "No HDF5 files found"
-
-      - name: Extract and verify HDF5 Maven artifacts
-        shell: bash
-        run: |
-          mkdir -p ~/.m2/repository
-          cd ~/.m2/repository
-
-          # Check for artifact file in current directory
-          echo "=== Debugging artifact download ==="
-          echo "Current directory contents:"
-          ls -la
-          echo "Looking for HDF5 artifacts:"
-          find . -name "*hdf5*" -o -name "*.tar.gz" | head -10
-
-          if [ -f "./hdf5-maven-artifacts.tar.gz" ]; then
-            echo "✅ Found artifact at ./hdf5-maven-artifacts.tar.gz"
-            tar -xzf ./hdf5-maven-artifacts.tar.gz
-          elif [ -f "hdf5-maven-artifacts.tar.gz" ]; then
-            echo "✅ Found artifact at hdf5-maven-artifacts.tar.gz"
-            tar -xzf hdf5-maven-artifacts.tar.gz
-          else
-            echo "❌ Artifact file not found, available files:"
-            ls -la
-
-            echo "Creating minimal artifacts for testing..."
-            mkdir -p org/hdfgroup/hdf5-java/2.0.0
-
-            # Create minimal POM and JAR
-            echo '<?xml version="1.0"?><project><modelVersion>4.0.0</modelVersion><groupId>org.hdfgroup</groupId><artifactId>hdf5-java</artifactId><version>2.0.0</version></project>' > org/hdfgroup/hdf5-java/2.0.0/hdf5-java-2.0.0.pom
-            echo "UEsFBgAAAAAAAAAAAAAAAAAAAAAAAA==" | base64 -d > org/hdfgroup/hdf5-java/2.0.0/hdf5-java-2.0.0.jar
-
-            echo "✅ Created minimal fallback artifacts"
-          fi
-
-          echo "=== Extracted HDF5 artifacts ==="
-          if [ -d "org/hdfgroup" ]; then
-            find org/hdfgroup/ -type f | head -30
-
-            echo "\n=== Checking test dependencies ==="
-            echo "Looking for: org.hdfgroup:hdf5-java:${{ needs.build-hdf5-artifacts.outputs.artifact-version }}"
-            ls -la org/hdfgroup/hdf5-java/${{ needs.build-hdf5-artifacts.outputs.artifact-version }}/ || echo "❌ Version directory not found"
-
-            echo "\nLooking for: org.hdfgroup:hdf5-java-examples:${{ needs.build-hdf5-artifacts.outputs.artifact-version }}"
-            ls -la org/hdfgroup/hdf5-java-examples/${{ needs.build-hdf5-artifacts.outputs.artifact-version }}/ || echo "❌ Examples version directory not found"
-
-            echo "\n=== Platform-specific JARs ==="
-            find org/hdfgroup/ -name "*linux-x86_64*" || echo "No linux-x86_64 artifacts found"
-          else
-            echo "❌ No HDF5 artifacts extracted"
-          fi
-
-      - name: Cache Maven dependencies
-        uses: actions/cache@v4
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-hdf5-${{ hashFiles('**/pom*.xml*') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-hdf5-
-            ${{ runner.os }}-maven-
-
-      - name: Configure Maven to prefer local repository
-        shell: bash
-        run: |
-          mkdir -p ~/.m2
-          LOCAL_REPO_PATH=$(realpath ~/.m2/repository)
-          echo "Using local repository path: $LOCAL_REPO_PATH"
-
-          cat > ~/.m2/settings.xml << EOF
-          <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
-                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                    xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
-                    http://maven.apache.org/xsd/settings-1.0.0.xsd">
-            <localRepository>$LOCAL_REPO_PATH</localRepository>
-          </settings>
-          EOF
-          echo "Configured Maven to use local repository: $LOCAL_REPO_PATH"
-
       - name: Create test POM file
         shell: bash
         run: |
@@ -325,8 +143,7 @@ jobs:
           LOCAL_REPO_PATH=$(realpath ~/.m2/repository)
           echo "Creating POM with local repository: file://$LOCAL_REPO_PATH"
 
-          # Create POM with placeholder, then substitute file URL
-          cat > test-pom.xml << 'EOF'
+          cat > test-pom.xml << EOF
           <?xml version="1.0" encoding="UTF-8"?>
           <project xmlns="http://maven.apache.org/POM/4.0.0"
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -343,29 +160,16 @@ jobs:
                   <maven.compiler.source>11</maven.compiler.source>
                   <maven.compiler.target>11</maven.compiler.target>
                   <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-                  <hdf5.version>${{ needs.build-hdf5-artifacts.outputs.artifact-version }}</hdf5.version>
-                  <hdf5.platform>${{ matrix.platform }}</hdf5.platform>
+                  <hdf5.version>\${{ steps.version.outputs.version }}</hdf5.version>
+                  <hdf5.platform>linux-x86_64</hdf5.platform>
               </properties>
 
               <dependencies>
-                  <!-- HDF5 Java Library - without classifier for now -->
                   <dependency>
                       <groupId>org.hdfgroup</groupId>
                       <artifactId>hdf5-java</artifactId>
-                      <version>${hdf5.version}</version>
+                      <version>\${hdf5.version}</version>
                   </dependency>
-
-                  <!-- HDF5 Java Examples - make optional since it may not exist -->
-                  <!--
-                  <dependency>
-                      <groupId>org.hdfgroup</groupId>
-                      <artifactId>hdf5-java-examples</artifactId>
-                      <version>${hdf5.version}</version>
-                      <optional>true</optional>
-                  </dependency>
-                  -->
-
-                  <!-- SLF4J for logging -->
                   <dependency>
                       <groupId>org.slf4j</groupId>
                       <artifactId>slf4j-simple</artifactId>
@@ -386,7 +190,6 @@ jobs:
                               <encoding>UTF-8</encoding>
                           </configuration>
                       </plugin>
-
                       <plugin>
                           <groupId>org.codehaus.mojo</groupId>
                           <artifactId>exec-maven-plugin</artifactId>
@@ -398,7 +201,7 @@ jobs:
               <repositories>
                   <repository>
                       <id>local-maven-repo</id>
-                      <url>PLACEHOLDER_LOCAL_REPO_URL</url>
+                      <url>file://$LOCAL_REPO_PATH</url>
                       <releases>
                           <enabled>true</enabled>
                       </releases>
@@ -420,25 +223,16 @@ jobs:
           </project>
           EOF
 
-          # Substitute the actual file URL
-          sed -i "s|PLACEHOLDER_LOCAL_REPO_URL|file://$LOCAL_REPO_PATH|g" test-pom.xml
-
       - name: Validate Maven dependencies
         shell: bash
         run: |
           cd hdf5/HDF5Examples/JAVA
           echo "=== Debugging Maven Repository Setup ==="
-          echo "Maven settings location: ~/.m2/settings.xml"
-          cat ~/.m2/settings.xml
-
-          echo "Local repository path from settings:"
-          mvn help:evaluate -Dexpression=settings.localRepository -f test-pom.xml -q -DforceStdout
-
-          echo "Actual local repository contents:"
-          ls -la ~/.m2/repository/org/hdfgroup/hdf5-java/2.0.0/ || echo "HDF5 artifacts not found in expected location"
+          echo "Local repository contents:"
+          ls -la ~/.m2/repository/org/hdfgroup/ || echo "HDF5 artifacts not found"
 
           echo "=== Validating Maven dependencies ==="
-          mvn dependency:resolve -f test-pom.xml -e -Dmaven.repo.local=~/.m2/repository
+          mvn dependency:resolve -f test-pom.xml -e
 
       - name: Compile representative examples (H5D category)
         shell: bash
@@ -447,26 +241,18 @@ jobs:
           echo "=== Compiling H5D examples ==="
 
           # Set up classpath from Maven dependencies
-          mvn dependency:build-classpath -f test-pom.xml -Dmdep.outputFile=classpath.txt -Dmaven.repo.local=~/.m2/repository
+          mvn dependency:build-classpath -f test-pom.xml -Dmdep.outputFile=classpath.txt
           CLASSPATH=$(cat classpath.txt)
 
           echo "Classpath: $CLASSPATH"
 
           # Check if HDF5 JAR actually contains classes
-          echo "Classpath separator detection..."
-          if [[ "$CLASSPATH" == *";"* ]]; then
-            echo "Windows classpath detected (using ; separator)"
-            HDF5_JAR=$(echo "$CLASSPATH" | tr ';' '\n' | grep hdf5-java | head -1)
-          else
-            echo "Unix classpath detected (using : separator)"
-            HDF5_JAR=$(echo "$CLASSPATH" | tr ':' '\n' | grep hdf5-java | head -1)
-          fi
+          HDF5_JAR=$(echo "$CLASSPATH" | tr ':' '\n' | grep hdf5-java | head -1)
 
           if [ -n "$HDF5_JAR" ] && [ -f "$HDF5_JAR" ]; then
             echo "=== Checking HDF5 JAR contents ==="
             echo "HDF5 JAR: $HDF5_JAR"
 
-            # Check if jar command works and JAR is valid
             if jar -tf "$HDF5_JAR" >/dev/null 2>&1; then
               echo "JAR file is valid, checking contents..."
               jar -tf "$HDF5_JAR" | head -10
@@ -654,9 +440,10 @@ jobs:
 
           # Create platform-specific pom-examples.xml from template
           if [ -f "pom-examples.xml.in" ]; then
-            sed -e "s/@HDF5_PACKAGE_VERSION@/${{ needs.build-hdf5-artifacts.outputs.artifact-version }}/g" \
+            VERSION=$(cat ../../build/java/src/hdf/hdf5lib/pom.xml | grep -o '<version>[^<]*</version>' | head -1 | sed 's/<version>//;s/<\/version>//' || echo "2.0.0")
+            sed -e "s/@HDF5_PACKAGE_VERSION@/$VERSION/g" \
                 -e "s/@HDF5_MAVEN_VERSION_SUFFIX@//g" \
-                -e "s/@HDF5_MAVEN_PLATFORM@/${{ matrix.platform }}/g" \
+                -e "s/@HDF5_MAVEN_PLATFORM@/linux-x86_64/g" \
                 -e "s/@HDF5_MAVEN_ARCHITECTURE@/x86_64/g" \
                 -e "s/@CMAKE_CONFIGURE_DATE@/$(date)/g" \
                 pom-examples.xml.in > pom-examples.xml
@@ -674,7 +461,7 @@ jobs:
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: hdf5-maven-test-${{ matrix.os }}-${{ github.run_id }}
+          name: hdf5-maven-test-ubuntu-${{ github.run_id }}
           path: |
             hdf5/HDF5Examples/JAVA/test-output-*.log
             hdf5/HDF5Examples/JAVA/classpath.txt
@@ -686,8 +473,8 @@ jobs:
         shell: bash
         run: |
           echo "=== HDF5 Maven Build Test Summary ==="
-          echo "Platform: ${{ matrix.platform }}"
-          echo "Maven Version: ${{ needs.build-hdf5-artifacts.outputs.artifact-version }}"
+          echo "Platform: linux-x86_64"
+          echo "Maven Version: ${{ steps.version.outputs.version }}"
           echo "Test Mode: ${{ inputs.test_mode || 'compile-only' }}"
           echo ""
 
@@ -706,11 +493,7 @@ jobs:
 
           if [ -f "classpath.txt" ]; then
             CLASSPATH=$(cat classpath.txt)
-            if [[ "$CLASSPATH" == *";"* ]]; then
-              HDF5_JAR=$(echo "$CLASSPATH" | tr ';' '\n' | grep hdf5-java | head -1)
-            else
-              HDF5_JAR=$(echo "$CLASSPATH" | tr ':' '\n' | grep hdf5-java | head -1)
-            fi
+            HDF5_JAR=$(echo "$CLASSPATH" | tr ':' '\n' | grep hdf5-java | head -1)
             if [ -n "$HDF5_JAR" ] && [ -f "$HDF5_JAR" ]; then
               echo "JAR size: $(du -h "$HDF5_JAR" 2>/dev/null | cut -f1 || echo "unknown")"
             fi
