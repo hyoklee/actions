@@ -32,7 +32,7 @@ permissions:
 jobs:
   hdf5-maven-test:
     name: "HDF5 Maven Build and Test"
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm64
 
     steps:
       - name: Checkout HDF5 repository
@@ -73,7 +73,7 @@ jobs:
             -DHDF5_ENABLE_MAVEN_DEPLOY=ON \
             -DHDF5_MAVEN_SNAPSHOT=OFF \
             -DCMAKE_BUILD_TYPE=Release \
-            -DHDF5_MAVEN_PLATFORM=linux-x86_64 \
+            -DHDF5_MAVEN_PLATFORM=linux-aarch64 \
             -DHDF5_BUILD_EXAMPLES=ON \
             -DHDF5_BUILD_TOOLS=ON
 
@@ -198,7 +198,7 @@ jobs:
                   <maven.compiler.target>11</maven.compiler.target>
                   <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
                   <hdf5.version>$HDF5_VERSION</hdf5.version>
-                  <hdf5.platform>linux-x86_64</hdf5.platform>
+                  <hdf5.platform>linux-aarch64</hdf5.platform>
               </properties>
 
               <dependencies>
@@ -480,8 +480,8 @@ jobs:
             VERSION=$(cat ../../build/java/src/hdf/hdf5lib/pom.xml | grep -o '<version>[^<]*</version>' | head -1 | sed 's/<version>//;s/<\/version>//' || echo "2.0.0")
             sed -e "s/@HDF5_PACKAGE_VERSION@/$VERSION/g" \
                 -e "s/@HDF5_MAVEN_VERSION_SUFFIX@//g" \
-                -e "s/@HDF5_MAVEN_PLATFORM@/linux-x86_64/g" \
-                -e "s/@HDF5_MAVEN_ARCHITECTURE@/x86_64/g" \
+                -e "s/@HDF5_MAVEN_PLATFORM@/linux-aarch64/g" \
+                -e "s/@HDF5_MAVEN_ARCHITECTURE@/aarch64/g" \
                 -e "s/@CMAKE_CONFIGURE_DATE@/$(date)/g" \
                 pom-examples.xml.in > pom-examples.xml
 
@@ -510,7 +510,7 @@ jobs:
         shell: bash
         run: |
           echo "=== HDF5 Maven Build Test Summary ==="
-          echo "Platform: linux-x86_64"
+          echo "Platform: linux-aarch64"
           echo "Maven Version: ${{ steps.version.outputs.version }}"
           echo "Test Mode: ${{ inputs.test_mode || 'compile-only' }}"
           echo ""
