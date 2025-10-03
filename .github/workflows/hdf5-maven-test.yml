@@ -24,7 +24,7 @@ on:
       - '.github/workflows/hdf5-maven-test.yml'
   schedule:
     # Run daily at 2 AM UTC to test against latest artifacts
-    - cron: '0 2 * * *'
+    # - cron: '0 2 * * *'
 
 permissions:
   contents: read

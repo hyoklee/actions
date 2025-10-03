@@ -4,7 +4,13 @@
       "Bash(git add:*)",
       "Bash(git commit:*)",
       "Bash(git push:*)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(git clone:*)",
+      "Bash(mvn:*)",
+      "Read(//c/Users/JoeLee/.m2/**)",
+      "Bash(echo:*)",
+      "WebFetch(domain:github.com)",
+      "Bash(gh run view:*)"
     ],
     "deny": [],
     "ask": []

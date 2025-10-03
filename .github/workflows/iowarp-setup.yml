@@ -105,7 +105,7 @@ jobs:
           jarvis ppl create test_omni
           ln -s /home/runner/work/actions/actions/iowarp/content-assimilation-engine/omni
           cd omni
-          echo "APPEND deom_job"
+          echo "APPEND demo_job"
           jarvis ppl append omni_parse omni_yaml=/home/runner/work/actions/actions/iowarp/content-assimilation-engine/omni/config/demo_job.yaml wrp_path=/home/runner/.scspkg/packages/content-assimilation-engine/bin/wrp
           sleep 5
           jarvis ppl print
