@@ -1,4 +1,4 @@
-name: ndk
+name: ndk-
 on:
   push:
     branches:

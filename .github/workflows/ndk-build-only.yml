@@ -2,7 +2,7 @@ name: ndk-build-only
 on:
   push:
     branches:
-      - main
+      - main-
 jobs:
   ndk-build:
     name: Android NDK ARM64 Build (No Tests)
