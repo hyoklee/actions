@@ -1,30 +1,32 @@
 name: HDF5 Java Maven Build Test
 
+# DISABLED - Uncomment triggers below to re-enable
 on:
-  workflow_dispatch:
-    inputs:
-      maven_version:
-        description: "HDF5 Maven artifacts version to test"
-        required: false
-        default: "2.0.0-3"
-        type: string
-      test_mode:
-        description: "Test mode: compile-only or full-test"
-        required: false
-        default: "compile-only"
-        type: choice
-        options:
-          - compile-only
-          - full-test
-  push:
-    paths:
-      - '.github/workflows/hdf5-maven-test.yml'
-  pull_request:
-    paths:
-      - '.github/workflows/hdf5-maven-test.yml'
-  schedule:
-    # Run daily at 2 AM UTC to test against latest artifacts
-    # - cron: '0 2 * * *'
+  workflow_call:  # Can only be triggered by other workflows (effectively disabled)
+  # workflow_dispatch:
+  #   inputs:
+  #     maven_version:
+  #       description: "HDF5 Maven artifacts version to test"
+  #       required: false
+  #       default: "2.0.0-3"
+  #       type: string
+  #     test_mode:
+  #       description: "Test mode: compile-only or full-test"
+  #       required: false
+  #       default: "compile-only"
+  #       type: choice
+  #       options:
+  #         - compile-only
+  #         - full-test
+  # push:
+  #   paths:
+  #     - '.github/workflows/hdf5-maven-test.yml'
+  # pull_request:
+  #   paths:
+  #     - '.github/workflows/hdf5-maven-test.yml'
+  # schedule:
+  #   # Run daily at 2 AM UTC to test against latest artifacts
+  #   # - cron: '0 2 * * *'
 
 permissions:
   contents: read
