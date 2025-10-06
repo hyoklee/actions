@@ -1,8 +1,8 @@
-name: ndk-
+name: ndk
 on:
   push:
     branches:
-      - main
+      - main-
 jobs:
   ndk:
     name: ndk
