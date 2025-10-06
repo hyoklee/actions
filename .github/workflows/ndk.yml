@@ -11,7 +11,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          repository: HDFGroup/hdf5
+          repository: hyoklee/hdf5
 
       - name: test
         run: |
@@ -22,7 +22,7 @@ jobs:
           -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK/build/cmake/android.toolchain.cmake \
           -DANDROID:BOOL=TRUE \
           -DANDROID_ABI=arm64-v8a \
-          -DBUILDNAME:STRING=ndk \
+          -DBUILDNAME:STRING="hk/ndk" \
           -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
           -DSITE:STRING=arm64-v8a \
           ..
