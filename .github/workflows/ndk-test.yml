@@ -13,6 +13,23 @@ jobs:
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
+
+      - name: Set up NDK
+        run: |
+          echo "$ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/linux-x86_64/bin" >> $GITHUB_PATH
+
+      - name: Build Hello World
+        run: |
+          cat > hello.c << 'EOF'
+          #include <stdio.h>
+          int main() {
+              printf("Hello from Android!\n");
+              return 0;
+          }
+          EOF
+          $ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android29-clang hello.c -o hello
+          file hello
+
       - name: Set up Android Emulator
         uses: ReactiveCircus/android-emulator-runner@v2
         with:
@@ -21,18 +38,13 @@ jobs:
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           script: |
             echo "Emulator started"
-            # Push test binaries to emulator
             adb devices
             adb shell "mkdir -p /data/local/tmp/hdf5-tests"
-            adb push /bin/ls /data/local/tmp/hdf5-tests/ls
-            adb shell "chmod +x /data/local/tmp/hdf5-tests/ls"
 
-            # Verify file exists and is executable
-            adb shell "ls -la /data/local/tmp/hdf5-tests/"
-            adb shell "file /data/local/tmp/hdf5-tests/ls" || true
-
-            # Run tests on emulator
-            adb shell "/data/local/tmp/hdf5-tests/ls"
+            # Push and run hello world
+            adb push hello /data/local/tmp/hdf5-tests/hello
+            adb shell "chmod +x /data/local/tmp/hdf5-tests/hello"
+            adb shell "/data/local/tmp/hdf5-tests/hello"
 
       - name: Upload Test Results
         if: always()
