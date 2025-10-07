@@ -5,24 +5,31 @@ on:
       - main
 jobs:
   ndk-build-arm64:
-    name: Android NDK arm64-v8a Build Only
+    name: Android NDK arm64-v8a HDF5 Build and Test
     runs-on: macos-26
     steps:
-      - name: Build Hello World for arm64-v8a
-        run: |
-          cat > hello.c << 'EOF'
-          #include <stdio.h>
-          int main() {
-              printf("Hello from Android arm64-v8a!\n");
-              return 0;
-          }
-          EOF
-          $ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/darwin-x86_64/bin/aarch64-linux-android29-clang hello.c -o hello-arm64
-          file hello-arm64
-          echo "✓ ARM64-v8a binary built successfully"
+      - name: Checkout HDF5
+        uses: actions/checkout@v4
+        with:
+          repository: hyoklee/hdf5
 
-      - name: Upload arm64 binary
+      - name: Build and Test HDF5 for arm64-v8a
+        run: |
+          mkdir build
+          cd build
+          cmake \
+            -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK_ROOT/build/cmake/android.toolchain.cmake \
+            -DANDROID:BOOL=TRUE \
+            -DANDROID_ABI=arm64-v8a \
+            -DBUILDNAME:STRING="hk/ndk-arm64" \
+            -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
+            -DSITE:STRING=arm64-v8a \
+            ..
+          ctest -D Experimental
+
+      - name: Upload Test Results
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: hello-arm64-v8a
-          path: hello-arm64
+          name: test-results-arm64-v8a
+          path: build/Testing/
