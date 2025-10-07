@@ -17,10 +17,7 @@ jobs:
         uses: ReactiveCircus/android-emulator-runner@v2
         with:
           api-level: 29
-           arch: x86-64
-#          arch: arm64-v8a
-#          ndk: 27.3.13750724
-#          profile: pixel_6
+          arch: x86-64
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           script: |
             echo "Emulator started"
