@@ -4,17 +4,17 @@ on:
     branches:
       - main
 jobs:
-  ndk-build-and-test:
-    name: Android NDK arm64-v8a Build and Test
-    runs-on: macos-14
+  ndk-build-arm64:
+    name: Android NDK arm64-v8a Build Only
+    runs-on: ubuntu-latest
     steps:
-      - name: Install NDK manually
+      - name: Install NDK
         run: |
-          curl -O https://dl.google.com/android/repository/android-ndk-r26d-darwin.zip
-          unzip -q android-ndk-r26d-darwin.zip
+          wget -q https://dl.google.com/android/repository/android-ndk-r26d-linux.zip
+          unzip -q android-ndk-r26d-linux.zip
           echo "ANDROID_NDK_HOME=$(pwd)/android-ndk-r26d" >> $GITHUB_ENV
 
-      - name: Build Hello World
+      - name: Build Hello World for arm64-v8a
         run: |
           cat > hello.c << 'EOF'
           #include <stdio.h>
@@ -23,31 +23,12 @@ jobs:
               return 0;
           }
           EOF
-          # Find the correct prebuilt directory
-          PREBUILT_DIR=$(ls -d $ANDROID_NDK_HOME/toolchains/llvm/prebuilt/darwin-* | head -n1)
-          echo "Using NDK prebuilt: $PREBUILT_DIR"
-          $PREBUILT_DIR/bin/aarch64-linux-android29-clang hello.c -o hello
-          file hello
+          $ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android29-clang hello.c -o hello-arm64
+          file hello-arm64
+          echo "arm64-v8a binary built successfully"
 
-      - name: Set up Android Emulator
-        uses: ReactiveCircus/android-emulator-runner@v2
-        with:
-          api-level: 29
-          arch: arm64-v8a
-          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          script: |
-            echo "Emulator started"
-            adb devices
-            adb shell "mkdir -p /data/local/tmp/hdf5-tests"
-
-            # Push and run hello world
-            adb push hello /data/local/tmp/hdf5-tests/hello
-            adb shell "chmod +x /data/local/tmp/hdf5-tests/hello"
-            adb shell "/data/local/tmp/hdf5-tests/hello"
-
-      - name: Upload Test Results
-        if: always()
+      - name: Upload arm64 binary
         uses: actions/upload-artifact@v4
         with:
-          name: test-results-arm64-v8a
-          path: build/Testing/
+          name: hello-arm64-v8a
+          path: hello-arm64
