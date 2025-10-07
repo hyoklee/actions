@@ -27,8 +27,12 @@ jobs:
             adb push /bin/ls /data/local/tmp/hdf5-tests/ls
             adb shell "chmod +x /data/local/tmp/hdf5-tests/ls"
 
+            # Verify file exists and is executable
+            adb shell "ls -la /data/local/tmp/hdf5-tests/"
+            adb shell "file /data/local/tmp/hdf5-tests/ls" || true
+
             # Run tests on emulator
-            adb shell "cd /data/local/tmp/hdf5-tests && ./ls"
+            adb shell "/data/local/tmp/hdf5-tests/ls"
 
       - name: Upload Test Results
         if: always()
