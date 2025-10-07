@@ -4,16 +4,10 @@ on:
     branches:
       - main
 jobs:
-  ndk-build-arm64:
-    name: Android NDK arm64-v8a Build Only
-    runs-on: ubuntu-latest
+  ndk-build-and-test:
+    name: Android NDK arm64-v8a Build and Test
+    runs-on: macos-26
     steps:
-      - name: Install NDK
-        run: |
-          wget -q https://dl.google.com/android/repository/android-ndk-r26d-linux.zip
-          unzip -q android-ndk-r26d-linux.zip
-          echo "ANDROID_NDK_HOME=$(pwd)/android-ndk-r26d" >> $GITHUB_ENV
-
       - name: Build Hello World for arm64-v8a
         run: |
           cat > hello.c << 'EOF'
@@ -23,12 +17,28 @@ jobs:
               return 0;
           }
           EOF
-          $ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android29-clang hello.c -o hello-arm64
-          file hello-arm64
-          echo "arm64-v8a binary built successfully"
+          $ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/darwin-x86_64/bin/aarch64-linux-android29-clang hello.c -o hello
+          file hello
 
-      - name: Upload arm64 binary
+      - name: Set up Android Emulator
+        uses: ReactiveCircus/android-emulator-runner@v2
+        with:
+          api-level: 29
+          arch: arm64-v8a
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          script: |
+            echo "Emulator started"
+            adb devices
+            adb shell "mkdir -p /data/local/tmp/hdf5-tests"
+
+            # Push and run hello world
+            adb push hello /data/local/tmp/hdf5-tests/hello
+            adb shell "chmod +x /data/local/tmp/hdf5-tests/hello"
+            adb shell "/data/local/tmp/hdf5-tests/hello"
+
+      - name: Upload Test Results
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: hello-arm64-v8a
-          path: hello-arm64
+          name: test-results-arm64-v8a
+          path: build/Testing/
