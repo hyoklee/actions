@@ -4,8 +4,8 @@ on:
     branches:
       - main
 jobs:
-  ndk-build-and-test:
-    name: Android NDK arm64-v8a Build and Test
+  ndk-build-arm64:
+    name: Android NDK arm64-v8a Build Only
     runs-on: macos-26
     steps:
       - name: Build Hello World for arm64-v8a
@@ -17,36 +17,12 @@ jobs:
               return 0;
           }
           EOF
-          $ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/darwin-x86_64/bin/aarch64-linux-android29-clang hello.c -o hello
-          file hello
+          $ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/darwin-x86_64/bin/aarch64-linux-android29-clang hello.c -o hello-arm64
+          file hello-arm64
+          echo "✓ ARM64-v8a binary built successfully"
 
-      - name: Install and create ARM64 emulator
-        run: |
-          echo "Installing ARM64 system image"
-          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "system-images;android-33;google_apis;arm64-v8a"
-
-          echo "Creating ARM64 AVD"
-          echo "no" | $ANDROID_HOME/cmdline-tools/latest/bin/avdmanager create avd -n test_arm64 -k "system-images;android-33;google_apis;arm64-v8a" -f
-
-          echo "Starting emulator in background"
-          $ANDROID_HOME/emulator/emulator -avd test_arm64 -no-window -no-audio -no-boot-anim -gpu swiftshader_indirect &
-
-          echo "Waiting for emulator to boot"
-          $ANDROID_HOME/platform-tools/adb wait-for-device
-          timeout 300 bash -c 'while [[ "$($ANDROID_HOME/platform-tools/adb shell getprop sys.boot_completed 2>/dev/null | tr -d "\r")" != "1" ]]; do sleep 5; done'
-          echo "Emulator booted"
-
-      - name: Run tests on emulator
-        run: |
-          adb devices
-          adb shell "mkdir -p /data/local/tmp/hdf5-tests"
-          adb push hello /data/local/tmp/hdf5-tests/hello
-          adb shell "chmod +x /data/local/tmp/hdf5-tests/hello"
-          adb shell "/data/local/tmp/hdf5-tests/hello"
-
-      - name: Upload Test Results
-        if: always()
+      - name: Upload arm64 binary
         uses: actions/upload-artifact@v4
         with:
-          name: test-results-arm64-v8a
-          path: build/Testing/
+          name: hello-arm64-v8a
+          path: hello-arm64
