@@ -1,0 +1,54 @@
+name: ndk-test-arm64
+on:
+  push:
+    branches:
+      - main
+jobs:
+  ndk-build-and-test:
+    name: Android NDK arm64-v8a Build and Test
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - name: Enable KVM group perms
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Set up NDK
+        run: |
+          echo "$ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/linux-x86_64/bin" >> $GITHUB_PATH
+
+      - name: Build Hello World
+        run: |
+          cat > hello.c << 'EOF'
+          #include <stdio.h>
+          int main() {
+              printf("Hello from Android arm64-v8a!\n");
+              return 0;
+          }
+          EOF
+          $ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android29-clang hello.c -o hello
+          file hello
+
+      - name: Set up Android Emulator
+        uses: ReactiveCircus/android-emulator-runner@v2
+        with:
+          api-level: 29
+          arch: arm64-v8a
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          script: |
+            echo "Emulator started"
+            adb devices
+            adb shell "mkdir -p /data/local/tmp/hdf5-tests"
+
+            # Push and run hello world
+            adb push hello /data/local/tmp/hdf5-tests/hello
+            adb shell "chmod +x /data/local/tmp/hdf5-tests/hello"
+            adb shell "/data/local/tmp/hdf5-tests/hello"
+
+      - name: Upload Test Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-arm64-v8a
+          path: build/Testing/
