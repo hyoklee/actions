@@ -16,9 +16,6 @@ jobs:
           - abi: x86_64
             arch: x86_64
             ndk_triple: x86_64-linux-android29
-          - abi: arm64-v8a
-            arch: arm64-v8a
-            ndk_triple: aarch64-linux-android29
     steps:
       - name: Enable KVM group perms
         run: |
