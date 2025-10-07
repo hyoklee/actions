@@ -23,7 +23,7 @@ jobs:
             echo "Emulator started"
             # Push test binaries to emulator
             adb devices
-            adb push /bin/ls /data/local/tmp/hdf5-tests/
+            adb push /bin/ls /data/local/tmp/hdf5-tests/ls
 
             # Run tests on emulator
             adb shell "cd /data/local/tmp/hdf5-tests && ./ls"
