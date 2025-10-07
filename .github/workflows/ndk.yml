@@ -2,16 +2,16 @@ name: ndk
 on:
   push:
     branches:
-      - main-
+      - main
 jobs:
   ndk:
     name: ndk
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          repository: hyoklee/hdf5
+          repository: HDFGroup/hdf5
 
       - name: test
         run: |
@@ -22,8 +22,8 @@ jobs:
           -DCMAKE_TOOLCHAIN_FILE=$ANDROID_NDK/build/cmake/android.toolchain.cmake \
           -DANDROID:BOOL=TRUE \
           -DANDROID_ABI=arm64-v8a \
-          -DBUILDNAME:STRING="hk/ndk" \
+          -DBUILDNAME:STRING="ndk-27.3" \
           -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
-          -DSITE:STRING=arm64-v8a \
+          -DSITE:STRING=ubu-24 \
           ..
           ctest -D Experimental
