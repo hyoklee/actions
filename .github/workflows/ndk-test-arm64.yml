@@ -9,8 +9,9 @@ jobs:
     runs-on: ubuntu-24.04-arm
     steps:
       - name: Set up NDK
-        run: |
-          echo "$ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/linux-x86_64/bin" >> $GITHUB_PATH
+        uses: nttld/setup-ndk@v1
+        with:
+          ndk-version: r26d
 
       - name: Build Hello World
         run: |
@@ -21,7 +22,7 @@ jobs:
               return 0;
           }
           EOF
-          $ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android29-clang hello.c -o hello
+          $ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android29-clang hello.c -o hello
           file hello
 
       - name: Set up Android Emulator
