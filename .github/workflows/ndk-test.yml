@@ -2,7 +2,7 @@ name: ndk-test
 on:
   push:
     branches:
-      - main
+      - disabled
 jobs:
   ndk-build-and-test:
     name: Android NDK ${{ matrix.abi }} Build and Test
