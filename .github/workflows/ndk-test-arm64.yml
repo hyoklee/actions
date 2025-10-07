@@ -20,8 +20,11 @@ jobs:
           $ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/darwin-x86_64/bin/aarch64-linux-android29-clang hello.c -o hello
           file hello
 
-      - name: Create and start ARM64 emulator
+      - name: Install and create ARM64 emulator
         run: |
+          echo "Installing ARM64 system image"
+          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "system-images;android-33;google_apis;arm64-v8a"
+
           echo "Creating ARM64 AVD"
           echo "no" | $ANDROID_HOME/cmdline-tools/latest/bin/avdmanager create avd -n test_arm64 -k "system-images;android-33;google_apis;arm64-v8a" -f
 
