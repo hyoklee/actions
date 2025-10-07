@@ -23,7 +23,10 @@ jobs:
               return 0;
           }
           EOF
-          $ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android29-clang hello.c -o hello
+          # Find the correct prebuilt directory (linux-x86_64 or linux-aarch64)
+          PREBUILT_DIR=$(ls -d $ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-* | head -n1)
+          echo "Using NDK prebuilt: $PREBUILT_DIR"
+          $PREBUILT_DIR/bin/aarch64-linux-android29-clang hello.c -o hello
           file hello
 
       - name: Set up Android Emulator
