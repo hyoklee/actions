@@ -26,7 +26,7 @@ jobs:
         run: |
           export CC=/opt/nvidia/hpc_sdk/Linux_x86_64/25.9/comm_libs/openmpi4/bin/mpicc
           ls /opt/nvidia/hpc_sdk/Linux_x86_64/25.9/cuda
-          export LD_LIBRARY_PATH=/opt/nvidia/hpc_sdk/Linux_x86_64/25.9/cuda/12.3/lib64:/opt/nvidia/hpc_sdk/Linux_x86_64/25.9/compilers/lib
+          export LD_LIBRARY_PATH=/opt/nvidia/hpc_sdk/Linux_x86_64/25.9/cuda/13.0/lib64:/opt/nvidia/hpc_sdk/Linux_x86_64/25.9/compilers/lib
           export NVHPCSDK=/opt/nvidia/hpc_sdk
           export PATH=/opt/nvidia/hpc_sdk/Linux_x86_64/25.9/comm_libs/openmpi4/bin:/opt/nvidia/hpc_sdk/Linux_x86_64/25.9/compilers/bin:$PATH
           git clone https://github.com/hyoklee/hdf5.git
