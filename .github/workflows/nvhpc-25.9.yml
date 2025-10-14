@@ -43,5 +43,6 @@ jobs:
             -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF \
             -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
             -DSITE:STRING=ubu-24 \
+            -DMPIEXEC_MAX_NUMPROCS:STRING=2 \
             ..
           ctest -D Experimental
