@@ -24,6 +24,7 @@ jobs:
         env:
           NPROCS: 2
         run: |
+          find /opt/nvidia/hpc_sdk/Linux_x86_64/25.9/
           export CC=/opt/nvidia/hpc_sdk/Linux_x86_64/25.9/comm_libs/openmpi4/bin/mpicc
           ls /opt/nvidia/hpc_sdk/Linux_x86_64/25.9/cuda
           export LD_LIBRARY_PATH=/opt/nvidia/hpc_sdk/Linux_x86_64/25.9/cuda/13.0/lib64:/opt/nvidia/hpc_sdk/Linux_x86_64/25.9/compilers/lib

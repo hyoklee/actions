@@ -2,7 +2,7 @@ name: ndk-test-arm64
 on:
   push:
     branches:
-      - main
+      - main-
 jobs:
   ndk-build-arm64:
     name: Android NDK arm64-v8a HDF5 Build and Test
