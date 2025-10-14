@@ -29,12 +29,12 @@ jobs:
           export LD_LIBRARY_PATH=/opt/nvidia/hpc_sdk/Linux_x86_64/25.9/cuda/13.0/lib64:/opt/nvidia/hpc_sdk/Linux_x86_64/25.9/compilers/lib
           export NVHPCSDK=/opt/nvidia/hpc_sdk
           export PATH=/opt/nvidia/hpc_sdk/Linux_x86_64/25.9/comm_libs/hpcx/bin:/opt/nvidia/hpc_sdk/Linux_x86_64/25.9/compilers/bin:$PATH
-          git clone https://github.com/hyoklee/hdf5.git
+          git clone https://github.com/HDFGroup/hdf5.git
           cd hdf5
           mkdir build
           cd build
           cmake \
-            -DBUILDNAME="hk/nvhpc-25.9" \
+            -DBUILDNAME="nvhpc-25.9" \
             -DCMAKE_BUILD_TYPE=Release \
             -DHDF5_BUILD_CPP_LIB:BOOL=OFF \
             -DHDF5_BUILD_FORTRAN:BOOL=OFF \
