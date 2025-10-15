@@ -1,0 +1,234 @@
+name: CGNS HDF5 Benchmark
+
+on:
+  push:
+    branches: main
+  workflow_dispatch:
+
+jobs:
+  benchmark-hdf5:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        repository: CGNS/GNS
+        submodules: recursive
+
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y \
+          python3-pip build-essential cmake \
+          zlib1g-dev libcurl4-openssl-dev \
+          autotools-dev autoconf automake libtool \
+          pkg-config gfortran
+
+    - name: Install Python dependencies
+      run: |
+        pip3 install numpy matplotlib pandas
+
+    - name: Checkout HDF5
+      uses: actions/checkout@v5
+      with:
+        repository: HDFGroup/hdf5
+        ref: develop
+        path: hdf5
+
+    - name: Build HDF5
+      run: |
+        cd hdf5
+        mkdir build
+        cd build
+        cmake .. \
+          -DCMAKE_INSTALL_PREFIX=$HOME/hdf5-install \
+          -DCMAKE_BUILD_TYPE=Release \
+          -DHDF5_ENABLE_PARALLEL=ON \
+          -DHDF5_ENABLE_SUBFILING_VFD=OFF \
+          -DHDF5_ENABLE_ZLIB_SUPPORT=ON \
+          -DHDF5_BUILD_TOOLS=OFF \
+          -DHDF5_BUILD_EXAMPLES=OFF \
+          -DHDF5_BUILD_TESTS=OFF
+        make -j$(nproc)
+        make install
+
+
+    - name: Configure CGNS
+      run: |
+        export HDF5_DIR=$HOME/hdf5-install
+        export CPPFLAGS="-I$HOME/hdf5-install/include"
+        export LDFLAGS="-L$HOME/hdf5-install/lib"
+        export LD_LIBRARY_PATH="$HOME/hdf5-install/lib:$LD_LIBRARY_PATH"
+        export PKG_CONFIG_PATH="$HOME/hdf5-install/lib/pkgconfig:$PKG_CONFIG_PATH"
+
+        # Debug: Check HDF5 installation
+        echo "=== HDF5 Installation Check ==="
+        ls -la $HOME/hdf5-install/lib/libhdf5* || echo "No HDF5 libraries found"
+        $HOME/hdf5-install/bin/h5cc -showconfig | grep -E "(Serial|Version)" || echo "No version info found"
+
+        mkdir build
+        cd build
+        cmake .. \
+          -DCMAKE_INSTALL_PREFIX=$HOME/cgns-install \
+          -DCMAKE_BUILD_TYPE=Release \
+          -DCGNS_ENABLE_HDF5=ON \
+          -DCGNS_ENABLE_PARALLEL=ON \
+          -DCGNS_ENABLE_TESTS=ON \
+          -DHDF5_DIR=$HOME/hdf5-install
+
+        # Debug: Check CMake configuration results
+        echo "=== CMake Configuration Results ==="
+        grep -E "(CGNS_ENABLE_|HDF5)" CMakeCache.txt || echo "No relevant config found"
+
+    - name: Build CGNS
+      run: |
+        export LD_LIBRARY_PATH="$HOME/hdf5-install/lib:$LD_LIBRARY_PATH"
+        cd build
+        make -j$(nproc)
+        make install
+
+    - name: Verify benchmark executable build
+      if: steps.check-hash.outputs.skip_tests != 'true'
+      run: |
+        echo "Checking if serial benchmark was built..."
+        ls -la build/src/tests/ || echo "tests directory not found"
+        if [ -f "build/src/tests/ser_benchmark_hdf5" ]; then
+          echo "✓ ser_benchmark_hdf5 executable found"
+          ldd build/src/tests/ser_benchmark_hdf5 | head -10
+        else
+          echo "✗ ser_benchmark_hdf5 executable not found"
+          echo "Available executables in tests:"
+          find build/src/tests/ -type f -executable 2>/dev/null || echo "No executables found"
+          echo "Available files in build/src/:"
+          ls -la build/src/ || echo "build/src/ not found"
+          exit 1
+        fi
+
+    - name: Create benchmark script
+      if: steps.check-hash.outputs.skip_tests != 'true'
+      run: |
+        cat > benchmark_script.sh << 'EOF'
+        #!/bin/bash
+        set -e
+
+        export HDF5_DIR=$HOME/hdf5-install
+        export CGNS_DIR=$HOME/cgns-install
+        export LD_LIBRARY_PATH="$HOME/hdf5-install/lib:$HOME/cgns-install/lib:$LD_LIBRARY_PATH"
+
+        # Find the benchmark executable
+        BENCHMARK_EXE="$(pwd)/build/src/tests/ser_benchmark_hdf5"
+        if [ ! -f "$BENCHMARK_EXE" ]; then
+          echo "Error: ser_benchmark_hdf5 executable not found at $BENCHMARK_EXE"
+          ls -la build/src/tests/ || echo "tests directory not found"
+          exit 1
+        fi
+
+        # Create test directory
+        mkdir -p benchmark_results
+        cd benchmark_results
+
+        echo "=== CGNS HDF5 Benchmark Results ===" | tee benchmark_output.txt
+        echo "Timestamp: $(date)" | tee -a benchmark_output.txt
+        echo "HDF5 Version: $(strings $HOME/hdf5-install/lib/libhdf5.so | grep "HDF5 library version" | head -1)" | tee -a benchmark_output.txt
+        echo "CGNS Version: $(strings $HOME/cgns-install/lib/libcgns.so | grep "CGNS library version" | head -1 || echo "Version info not available")" | tee -a benchmark_output.txt
+        echo "" | tee -a benchmark_output.txt
+
+        # Test 1: Small mesh test (32K elements, serial)
+        echo "=== Test 1: Small Mesh Test (32K elements, serial) ===" | tee -a benchmark_output.txt
+        "$BENCHMARK_EXE" -nelem 32768 | tee -a benchmark_output.txt
+        if [ -f "timing.dat" ]; then
+          echo "Timing data for 32K elements:" | tee -a benchmark_output.txt
+          cat timing.dat | tee -a benchmark_output.txt
+          cp timing.dat timing_32k.dat
+        fi
+        echo "" | tee -a benchmark_output.txt
+
+        # Test 2: Medium mesh test (128K elements, serial)
+        echo "=== Test 2: Medium Mesh Test (128K elements, serial) ===" | tee -a benchmark_output.txt
+        "$BENCHMARK_EXE" -nelem 131072 | tee -a benchmark_output.txt
+        if [ -f "timing.dat" ]; then
+          echo "Timing data for 128K elements:" | tee -a benchmark_output.txt
+          cat timing.dat | tee -a benchmark_output.txt
+          cp timing.dat timing_128k.dat
+        fi
+        echo "" | tee -a benchmark_output.txt
+
+        # Test 3: Large mesh test (512K elements, serial)
+        echo "=== Test 3: Large Mesh Test (512K elements, serial) ===" | tee -a benchmark_output.txt
+        "$BENCHMARK_EXE" -nelem 524288 | tee -a benchmark_output.txt
+        if [ -f "timing.dat" ]; then
+          echo "Timing data for 512K elements:" | tee -a benchmark_output.txt
+          cat timing.dat | tee -a benchmark_output.txt
+          cp timing.dat timing_512k.dat
+        fi
+        echo "" | tee -a benchmark_output.txt
+
+        # Test 4: Very large mesh test (1M elements, serial)
+        echo "=== Test 4: Very Large Mesh Test (1M elements, serial) ===" | tee -a benchmark_output.txt
+        "$BENCHMARK_EXE" -nelem 1048576 | tee -a benchmark_output.txt
+        if [ -f "timing.dat" ]; then
+          echo "Timing data for 1M elements:" | tee -a benchmark_output.txt
+          cat timing.dat | tee -a benchmark_output.txt
+          cp timing.dat timing_1m.dat
+        fi
+        echo "" | tee -a benchmark_output.txt
+
+        echo "=== Benchmark completed ===" | tee -a benchmark_output.txt
+        EOF
+
+        chmod +x benchmark_script.sh
+
+    - name: Run benchmarks
+      if: steps.check-hash.outputs.skip_tests != 'true'
+      run: ./benchmark_script.sh
+
+    - name: Parse benchmark results
+      if: steps.check-hash.outputs.skip_tests != 'true'
+      run: |
+        echo "=== Parsing benchmark results ===" | tee parse_debug.log
+        echo "Input file info:" | tee -a parse_debug.log
+        if [ -f "benchmark_results/benchmark_output.txt" ]; then
+          echo "  File exists: benchmark_results/benchmark_output.txt" | tee -a parse_debug.log
+          echo "  File size: $(wc -c < benchmark_results/benchmark_output.txt) bytes" | tee -a parse_debug.log
+          echo "  File lines: $(wc -l < benchmark_results/benchmark_output.txt) lines" | tee -a parse_debug.log
+          echo "  First 5 lines:" | tee -a parse_debug.log
+          head -5 benchmark_results/benchmark_output.txt | sed 's/^/    /' | tee -a parse_debug.log
+        else
+          echo "  File does not exist: benchmark_results/benchmark_output.txt" | tee -a parse_debug.log
+        fi
+        echo "" | tee -a parse_debug.log
+
+        echo "Running parser with verbose output:" | tee -a parse_debug.log
+        python3 scripts/parse_cgns_benchmark.py benchmark_results/benchmark_output.txt benchmark-results.json --verbose 2>&1 | tee -a parse_debug.log
+
+        echo "=== Parse completed ===" | tee -a parse_debug.log
+        if [ -f "benchmark-results.json" ]; then
+          echo "Output file created successfully" | tee -a parse_debug.log
+          echo "Output file size: $(wc -c < benchmark-results.json) bytes" | tee -a parse_debug.log
+        else
+          echo "ERROR: Output file not created" | tee -a parse_debug.log
+        fi
+
+    - name: Upload benchmark artifacts
+      uses: actions/upload-artifact@v4
+      if: steps.check-hash.outputs.skip_tests != 'true'
+      with:
+        name: benchmark-results
+        path: |
+          benchmark_results/benchmark_output.txt
+          benchmark-results.json
+          benchmark_results/*.cgns
+          benchmark_results/*.dat
+          benchmark_results/benchmark_script_local.sh
+          parse_debug.log
+
+
+    - name: Upload debug artifacts (on failure)
+      uses: actions/upload-artifact@v4
+      if: failure()
+      with:
+        name: debug-info-failure
+        path: |
+          benchmark_results/benchmark_output.txt
+          benchmark-results.json
+          parse_debug.log

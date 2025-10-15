@@ -10,7 +10,14 @@
       "Read(//c/Users/JoeLee/.m2/**)",
       "Bash(echo:*)",
       "WebFetch(domain:github.com)",
-      "Bash(gh run view:*)"
+      "Bash(gh run view:*)",
+      "Bash(sudo apt:*)",
+      "Bash(sudo apt install:*)",
+      "Bash(cmake:*)",
+      "Bash(dpkg:*)",
+      "Read(//etc/sudoers.d/**)",
+      "Bash(sudo -n whoami:*)",
+      "Bash(chmod +x /home/hyoklee/actions/.github/workflows/install-nvhpc-25.9.sh)"
     ],
     "deny": [],
     "ask": []
