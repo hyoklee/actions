@@ -12,7 +12,7 @@ jobs:
     steps:
     - uses: actions/checkout@v5
       with:
-        repository: CGNS/GNS
+        repository: CGNS/GGNS
         submodules: recursive
 
     - name: Install system dependencies
