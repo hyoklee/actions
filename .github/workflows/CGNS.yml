@@ -22,7 +22,7 @@ jobs:
           python3-pip build-essential cmake \
           zlib1g-dev libcurl4-openssl-dev \
           autotools-dev autoconf automake libtool \
-          pkg-config gfortran
+          pkg-config gfortran libopenmpi-dev
 
     - name: Install Python dependencies
       run: |
