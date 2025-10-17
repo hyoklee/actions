@@ -1,0 +1,166 @@
+name: HDF5 Cross-Compilation Issue 5921
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  reproduce-tf-gen-issue:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install cross-compilation toolchain and dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            gcc-aarch64-linux-gnu \
+            g++-aarch64-linux-gnu \
+            gfortran-aarch64-linux-gnu \
+            cmake \
+            ninja-build \
+            wget \
+            git
+
+      - name: Download HDF5 develop branch
+        run: |
+          git clone --depth 1 https://github.com/HDFGroup/hdf5.git
+          cd hdf5
+          git log -1 --oneline
+
+      - name: Create CMake toolchain file for cross-compilation
+        run: |
+          cat > toolchain-aarch64.cmake <<'EOF'
+          set(CMAKE_SYSTEM_NAME Linux)
+          set(CMAKE_SYSTEM_PROCESSOR aarch64)
+
+          set(CMAKE_C_COMPILER aarch64-linux-gnu-gcc)
+          set(CMAKE_CXX_COMPILER aarch64-linux-gnu-g++)
+          set(CMAKE_Fortran_COMPILER aarch64-linux-gnu-gfortran)
+
+          set(CMAKE_FIND_ROOT_PATH /usr/aarch64-linux-gnu)
+          set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
+          set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
+          set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
+
+          set(CMAKE_CROSSCOMPILING_EMULATOR /usr/bin/qemu-aarch64-static)
+          EOF
+
+      - name: Configure HDF5 with Fortran enabled and testing disabled
+        run: |
+          cd hdf5
+          mkdir build
+          cd build
+          cmake \
+            -DCMAKE_TOOLCHAIN_FILE=../../toolchain-aarch64.cmake \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DHDF5_BUILD_FORTRAN=ON \
+            -DBUILD_TESTING=OFF \
+            -DHDF5_BUILD_EXAMPLES=OFF \
+            -DHDF5_BUILD_TOOLS=ON \
+            -DCMAKE_INSTALL_PREFIX=/tmp/hdf5-aarch64 \
+            -GNinja \
+            ..
+
+      - name: Build HDF5 and capture tf_gen.F90 error
+        id: build
+        continue-on-error: true
+        run: |
+          cd hdf5/build
+          ninja -v 2>&1 | tee build.log
+
+      - name: Check for tf_gen.F90 issue
+        run: |
+          cd hdf5/build
+          echo "=== Checking for tf_gen.F90 generation issue ==="
+
+          if grep -i "tf_gen.F90" build.log; then
+            echo "Found reference to tf_gen.F90 in build log"
+          fi
+
+          if find . -name "tf_gen.F90" -o -name "H5_test_buildiface*"; then
+            echo "Found tf_gen.F90 or related files:"
+            find . -name "tf_gen.F90" -o -name "H5_test_buildiface*"
+          else
+            echo "tf_gen.F90 or generator not found"
+          fi
+
+          echo ""
+          echo "=== Build exit code: ${{ steps.build.outcome }} ==="
+
+      - name: Try native build with testing disabled for comparison
+        run: |
+          cd hdf5
+          mkdir build-native
+          cd build-native
+          cmake \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DHDF5_BUILD_FORTRAN=ON \
+            -DBUILD_TESTING=OFF \
+            -DHDF5_BUILD_EXAMPLES=OFF \
+            -DCMAKE_INSTALL_PREFIX=/tmp/hdf5-native \
+            -GNinja \
+            ..
+
+          echo "=== Native build with testing disabled ==="
+          ninja -v 2>&1 | tee build-native.log
+
+          echo "=== Checking for tf_gen.F90 in native build ==="
+          if find . -name "tf_gen.F90"; then
+            echo "Found tf_gen.F90 in native build"
+          else
+            echo "tf_gen.F90 not found in native build (expected)"
+          fi
+
+      - name: Try native build with testing enabled for comparison
+        run: |
+          cd hdf5
+          mkdir build-native-test
+          cd build-native-test
+          cmake \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DHDF5_BUILD_FORTRAN=ON \
+            -DBUILD_TESTING=ON \
+            -DHDF5_BUILD_EXAMPLES=OFF \
+            -DCMAKE_INSTALL_PREFIX=/tmp/hdf5-native-test \
+            -GNinja \
+            ..
+
+          echo "=== Native build with testing enabled ==="
+          ninja -v 2>&1 | tee build-native-test.log
+
+          echo "=== Checking for tf_gen.F90 in native build with tests ==="
+          if find . -name "tf_gen.F90"; then
+            echo "Found tf_gen.F90 in native build with testing enabled"
+          else
+            echo "tf_gen.F90 not found in native build with testing"
+          fi
+
+      - name: Upload build logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-logs
+          path: |
+            hdf5/build/build.log
+            hdf5/build-native/build-native.log
+            hdf5/build-native-test/build-native-test.log
+
+      - name: Summary of Issue Reproduction
+        if: always()
+        run: |
+          echo "=== ISSUE 5921 REPRODUCTION SUMMARY ==="
+          echo ""
+          echo "This workflow attempts to reproduce the inconsistency where:"
+          echo "1. Cross-compilation with Fortran enabled + testing disabled expects tf_gen.F90"
+          echo "2. Native compilation with Fortran enabled + testing disabled does not generate tf_gen.F90"
+          echo ""
+          echo "Expected behavior: Either tf_gen.F90 should not be needed when testing is disabled,"
+          echo "or it should be generated consistently in both native and cross-compilation scenarios."
+          echo ""
+          echo "Check the uploaded build logs for detailed information about tf_gen.F90 generation."
