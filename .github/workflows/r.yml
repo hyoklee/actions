@@ -2,7 +2,7 @@ name: r
 
 on:
   push:
-    branches: main-
+    branches: main
 
 jobs:
   test: # make sure the action works on a clean machine without building
@@ -20,7 +20,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          repository: HDFGroup/hdf5
+          repository: mattjala/hdf5
+          ref: qsort_fallback
 
       - name: ${{ matrix.os.name }}
         uses: cross-platform-actions/action@master
@@ -39,7 +40,7 @@ jobs:
             mkdir build
             cd build
             cmake \
-            -DBUILDNAME:STRING="r/cpp/+hl+ts-sz-zl" \
+            -DBUILDNAME:STRING="pr5931/r/cpp/+hl+ts-sz-zl" \
             -DCMAKE_BUILD_TYPE=Release \
             -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \
             -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
