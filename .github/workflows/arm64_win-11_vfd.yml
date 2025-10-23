@@ -1,0 +1,23 @@
+name: arm64 win-11 vfd
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-11-arm
+    steps:
+      - name: h5
+        uses: actions/checkout@v5
+        with:
+          repository: HDFGroup/hdf5
+      - name: test
+        shell: cmd
+        run: |
+          mkdir build
+          cd build
+          cmake -G Ninja -DBUILD_SHARED_LIBS:BOOL=OFF  -DHDF5_ENABLE_ZLIB_SUPPORT:BOOL=OFF -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF -DHDF5_TEST_API=ON -DHDF5_ENABLE_ALL_WARNINGS=ON -DHDF5_ENABLE_DEBUG_APIS:BOOL=ON -DHDF5_ENABLE_DEV_WARNINGS=ON -DHDF5_TEST_VFD:BOOL=ON -DCTEST_DROP_SITE_INIT=my.cdash.org -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" -DSITE="win-11.arm64" -DBUILDNAME="ninja/-sh/da+dw+tv" ..
+          ctest -D Experimental
+          
