@@ -22,7 +22,7 @@ jobs:
           release: "7.8"
           usesh: true
           run: |
-            sudo pkg_add cmake
+            doas pkg_add cmake
             mkdir build
             cd build
             cmake -DSITE:STRING="obsd-7.8" \
