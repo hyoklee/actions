@@ -3,7 +3,7 @@ name: arm64 win-11 vfd
 on:
   push:
     branches:
-      - main
+      - main-
 
 jobs:
   build:
