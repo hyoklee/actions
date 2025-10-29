@@ -11,18 +11,21 @@ jobs:
       - name: h5
         uses: actions/checkout@v5
         with:
-          repository: HDFGroup/hdf5
+          repository: fortnern/hdf5
+          ref: fortnern:def_ff_18
 
       - name: test
         run: |
           mkdir build
           cd build
           cmake \
-            -DBUILDNAME:STRING="d/cc/da/dw/tv" \
+            -DHDF5_DEFAULT_API_VERSION="v16" \
+            -DBUILDNAME:STRING="pr5949/d/f/cc/da/dw/tv/v16" \
             -DCMAKE_BUILD_TYPE=Debug \
             -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \
             -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
             -DHDF5_BUILD_HL_LIB:BOOL=OFF \
+            -DHDF5_BUILD_FORTRAN=ON \
             -DHDF5_ENABLE_CONCURRENCY:BOOL=ON \
             -DHDF5_ENABLE_THREADSAFE:BOOL=OFF \
             -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF \
