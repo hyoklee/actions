@@ -12,7 +12,7 @@ jobs:
         uses: actions/checkout@v5
         with:
           repository: fortnern/hdf5
-          ref: fortnern:def_ff_18
+          ref: def_ff_18
 
       - name: test
         run: |
