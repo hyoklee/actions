@@ -1,4 +1,4 @@
-name: lin pr5944 d f aw da dw tv v16
+name: lin pr5944 d cpp hl aw da dw tv v16
 
 on:
   push:
@@ -20,11 +20,12 @@ jobs:
           cd build
           cmake \
             -DHDF5_DEFAULT_API_VERSION="v16" \
-            -DBUILDNAME:STRING="pr5949/d/f/da/dw/tv/v16" \
+            -DBUILDNAME:STRING="pr5949/d/cpp/hl/da/dw/tv/v16" \
             -DCMAKE_BUILD_TYPE=Debug \
             -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \
             -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
-            -DHDF5_BUILD_HL_LIB:BOOL=OFF \
+            -DHDF5_BUILD_CPP_LIB:BOOL=ON \
+            -DHDF5_BUILD_HL_LIB:BOOL=ON \
             -DHDF5_BUILD_FORTRAN=ON \
             -DHDF5_ENABLE_CONCURRENCY:BOOL=OFF \
             -DHDF5_ENABLE_THREADSAFE:BOOL=OFF \
