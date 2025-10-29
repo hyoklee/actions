@@ -3,7 +3,7 @@ name: lin pr5944 d cpp hl aw da dw tv v16
 on:
   push:
     branches:
-      - main-
+      - main
 jobs:
   build:
     runs-on: ubuntu-24.04
@@ -34,4 +34,4 @@ jobs:
             -DSITE:STRING=ubu-24 \
             -DHDF5_TEST_API=ON -DHDF5_ENABLE_ALL_WARNINGS=ON -DHDF5_ENABLE_DEBUG_APIS:BOOL=ON -DHDF5_ENABLE_DEV_WARNINGS=ON -DHDF5_TEST_VFD:BOOL=ON \
             ..
-            ctest -D Experimental -C Release
+            ctest -D Experimental -C Debug
