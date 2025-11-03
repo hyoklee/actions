@@ -9,19 +9,23 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Install gcc-aarch64
+    - name: install
       run: |
         sudo apt-get update
         sudo apt-get install -y -q gcc-aarch64-linux-gnu
         sudo apt-get install -y -q binfmt-support qemu-system qemu-user-static
-    - name: Build and Test
+    - name: download
       run: |
         echo $PWD
         echo $PATH
         wget -q https://musl.cc/aarch64-linux-musl-cross.tgz
+    - name: musl
+      run: |
         tar -xzf aarch64-linux-musl-cross.tgz
         ./aarch64-linux-musl-cross/bin/aarch64-linux-musl-gcc --version
         sudo cp -r ./aarch64-linux-musl-cross/aarch64-linux-musl/lib/* /lib/
+    - name: h4map
+      run: |
         wget -q https://hdfeos.org/software/h4map/h4map.tar.gz
         tar -xzf h4map.tar.gz
         cd h4map/jpeg-6b
