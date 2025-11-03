@@ -3,7 +3,7 @@ name: lin pr5944 d cpp hl aw da dw tv v16
 on:
   push:
     branches:
-      - main
+      - main-
 jobs:
   build:
     runs-on: ubuntu-24.04

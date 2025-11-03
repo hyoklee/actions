@@ -3,7 +3,7 @@ name: lin auto gcc_arm64
 on:
   workflow_dispatch:
   push:
-    branches: [ main- ]
+    branches: [ main ]
 
 jobs:
   build:
@@ -13,7 +13,7 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y -q gcc-aarch64-linux-gnu
-        sudo apt-get install -y -q binfmt-support qemu qemu-user-static
+        sudo apt-get install -y -q binfmt-support qemu-system qemu-user-static
     - name: Build and Test
       run: |
         echo $PWD
