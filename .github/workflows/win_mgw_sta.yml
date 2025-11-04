@@ -6,9 +6,9 @@ name: Windows MinGW Static GCC Libs
 on:
   workflow_dispatch:
   push:
-    branches: [ main, feature/**, bugfix/** ]
+    branches: [ main-, feature/**, bugfix/** ]
   pull_request:
-    branches: [ main ]
+    branches: [ main- ]
 
 permissions:
   contents: read
