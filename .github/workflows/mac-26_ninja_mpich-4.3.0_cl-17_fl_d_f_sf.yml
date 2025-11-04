@@ -12,7 +12,10 @@ jobs:
 
     steps:
       - name: checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
+        with:
+          repository: HDFGroup/hdf5
+    
       - name: get
         run: |
           curl -O -L  https://github.com/macports/macports-base/releases/download/v2.11.5/MacPorts-2.11.5-26-Tahoe.pkg
