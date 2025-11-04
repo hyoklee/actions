@@ -40,8 +40,8 @@ jobs:
           mkdir build
           cd build
           cmake -G Ninja \
-            -DCMAKE_C_COMPILER=/opt/local/bin/mpicc-mpich-clang \
-            -DCMAKE_Fortran_COMPILER=/opt/local/bin/mpifort-mpich-clang \
+            -DCMAKE_C_COMPILER=/opt/local/bin/mpicc-mpich-clang17 \
+            -DCMAKE_Fortran_COMPILER=/opt/local/bin/mpifort-mpich-clang17 \
             -DBUILDNAME="ninja/mpich-4.3/clang-17/f/j/hl/aw/-ts/sf/np=3" \
             -DCTEST_DROP_SITE_INIT=my.cdash.org \
             -DHDF5_BUILD_JAVA:BOOL=ON \
