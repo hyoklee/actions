@@ -58,11 +58,9 @@ jobs:
             -DHDF5_BUILD_HL_LIB:BOOL=ON \
             -DHDF5_ENABLE_ZLIB_SUPPORT:BOOL=OFF \
             -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF \
-            -DZLIB_USE_LOCALCONTENT:BOOL=OFF \
-            -DLIBAEC_USE_LOCALCONTENT:BOOL=OFF \
             -DBUILDNAME:STRING="mw/cpp" \
             -DSITE:STRING="win-22" \
             -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
             -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" \
             ..
-          cmake -D Experimental
+          ctest -D Experimental
