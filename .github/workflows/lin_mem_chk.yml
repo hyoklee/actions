@@ -1,8 +1,5 @@
 name: lin mem chk
 
-# Test building with memory checker mode enabled
-# Tests: HDF5_ENABLE_USING_MEMCHECKER=ON
-
 on:
   workflow_dispatch:
   push:
@@ -46,8 +43,8 @@ jobs:
 
       - name: test
         run: |
-          mkdir "${{ runner.workspace }}/build"
-          cd "${{ runner.workspace }}/build"
+          mkdir build
+          cd build
           cmake -G Ninja \
             -DBUILDNAME:STRING="ninja/gcc-12/d/mc" \
             -DCMAKE_BUILD_TYPE=Debug \
@@ -66,4 +63,3 @@ jobs:
             -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" \
             ..
           ctest -D Experimental
-        shell: bash
