@@ -1,0 +1,68 @@
+name: Windows MinGW Static GCC Libs
+
+# Test building with MinGW and static GCC libraries
+# Tests: HDF5_MINGW_STATIC_GCC_LIBS=ON
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main, feature/**, bugfix/** ]
+  pull_request:
+    branches: [ main ]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref && github.ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  build_and_test:
+    name: "Windows MinGW Static GCC"
+    runs-on: windows-latest
+    if: "!contains(github.event.head_commit.message, 'skip-ci')"
+
+    defaults:
+      run:
+        shell: msys2 {0}
+
+    steps:
+      - name: Setup MSYS2
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: MINGW64
+          update: true
+          install: >-
+            mingw-w64-x86_64-gcc
+            mingw-w64-x86_64-cmake
+            mingw-w64-x86_64-ninja
+            make
+
+      - name: checkout
+        uses: actions/checkout@v5
+        with:
+          repository: HDFGroup/hdf5
+
+      - name: Configure CMake
+        run: |
+          mkdir -p build
+          cd build
+          cmake -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DHDF5_MINGW_STATIC_GCC_LIBS:BOOL=ON \
+            -DBUILD_SHARED_LIBS:BOOL=ON \
+            -DHDF5_BUILD_CPP_LIB:BOOL=ON \
+            -DHDF5_BUILD_FORTRAN:BOOL=OFF \
+            -DHDF5_BUILD_JAVA:BOOL=OFF \
+            -DHDF5_BUILD_HL_LIB:BOOL=ON \
+            -DHDF5_ENABLE_ZLIB_SUPPORT:BOOL=OFF \
+            -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF \
+            -DZLIB_USE_LOCALCONTENT:BOOL=OFF \
+            -DLIBAEC_USE_LOCALCONTENT:BOOL=OFF \
+            -DBUILDNAME:STRING="mw/cpp" \
+            -DSITE:STRING=win-22 \
+            -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
+            -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" \
+            ..
+         cmake -D Experimental
