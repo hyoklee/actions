@@ -1,42 +1,20 @@
-name: mac-26 ompi f j sz zl
+name: mac-26
 
 on:
-  workflow_dispatch:
   push:
-    branches: [ main- ]
+    branches: main-
 
 jobs:
   build:
-    name: mac-26 ompi f j sz zl
+    name: Test snapshot
     runs-on: macos-26
     steps:
-      - uses: actions/checkout@v4
-        with:
-          repository: HDFGroup/hdf5
-      - name: install
-        run: brew install libaec openmpi
       - name: test
         run: |
-          export OMPI_MCA_rmaps_base_oversubscribe=1
-          export OMPI_MCA_btl_vader_single_copy_mechanism=none
-          export OMPI_MCA_mpi_yield_when_idle=1
-          sudo ln -s /opt/homebrew/bin/gfortran-15 /opt/homebrew/bin/gfortran
+          curl -O -L https://support.hdfgroup.org/releases/hdf5/v1_14/v1_14_5/downloads/snapshot-1.14.5.tar.gz
+          tar zxvf snapshot-1.14.5.tar.gz
+          cd hdf5-1.14.5-2
           mkdir build
           cd build
-          cmake \
-          -DBUILDNAME:STRING=ompi/f/j/sz/zl \
-          -DMPI_C_COMPILER=mpicc=mpicc \
-          -DCMAKE_Fortran_COMPILER=mpifort \
-          -DCTEST_DROP_SITE_INIT=my.cdash.org \
-          -DHDF5_ALLOW_UNSUPPORTED=ON \
-          -DHDF5_BUILD_FORTRAN=ON \
-          -DHDF5_BUILD_JAVA=ON \
-          -DHDF5_ENABLE_PARALLEL=ON \
-          -DHDF5_ENABLE_SZIP_SUPPORT=ON \
-          -DHDF5_ENABLE_ZLIB_SUPPORT=ON \
-          -DMPI_C_COMPILER=mpicc \
-          -DMPIEXEC_MAX_NUMPROCS=2 \
-          -DMPIEXEC_PREFLAGS="--oversubscribe" \
-          -DSITE:STRING=mac-26 \
-          ..
-          ctest -C Release -D Experimental
+          cmake -DSITE:STRING="mac26" -DBUILDNAME:STRING="5/r" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" ..
+          ctest -D Experimental -C Release

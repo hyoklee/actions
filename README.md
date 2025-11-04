@@ -32,9 +32,9 @@ Actions speak louder than codes.
 
 | Test    | Status |
 | --------| ------ |
+| macOS 26  |[![mac-26](https://github.com/hyoklee/actions/actions/workflows/mac-26.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac-26.yml)|
 | macOS 14  |[![mac14](https://github.com/hyoklee/actions/actions/workflows/mac14.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac14.yml)|
 | macOS 13  |[![mac13](https://github.com/hyoklee/actions/actions/workflows/mac13.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac13.yml)|
-| macOS 12  |[![mac12](https://github.com/hyoklee/actions/actions/workflows/mac12.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac12.yml)|
 | visionOS |[![mac14 vos](https://github.com/hyoklee/actions/actions/workflows/mac14-vos.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac14-vos.yml) |
 
 ### Solaris
@@ -71,8 +71,8 @@ Actions speak louder than codes.
 
 | Test | Status |
 | -----| ------ |
+| AppleClang-17.0.0 |[![mac-26](https://github.com/hyoklee/actions/actions/workflows/mac-26.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac-26.yml)|
 | AppleClang-15.0.0 |[![mac13](https://github.com/hyoklee/actions/actions/workflows/mac13.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac13.yml) [![mac-14](https://github.com/hyoklee/actions/actions/workflows/mac14.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac14.yml)|
-| AppleClang-14.0.0 |[![mac12](https://github.com/hyoklee/actions/actions/workflows/mac12.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac12.yml)|
 | clang-16.0.6 | [![fbsd](https://github.com/hyoklee/actions/actions/workflows/fbsd.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/fbsd.yml) [![obsd](https://github.com/hyoklee/actions/actions/workflows/obsd.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/obsd.yml) |
 | icx 2024.1 |[![lin icx](https://github.com/hyoklee/actions/actions/workflows/lin-icx.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/lin-icx.yml) |
 | gcc-11.4.0 |[![lin](https://github.com/hyoklee/actions/actions/workflows/lin.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/lin.yml)|
@@ -103,7 +103,7 @@ Actions speak louder than codes.
 | Ubuntu 22.04 | Autotools | gcc |  [![lin auto d](https://github.com/hyoklee/actions/actions/workflows/lin-auto-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/lin-auto-d.yml)  |
 | Ubuntu 22.04 | CMake | icx |  [![lin icx d](https://github.com/hyoklee/actions/actions/workflows/lin-icx-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/lin-icx-d.yml)  |
 | Ubuntu 22.04 | Autotools | icx |  [![lin auto icx d](https://github.com/hyoklee/actions/actions/workflows/lin-auto-icx-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/lin-auto-icx-d.yml) |
-| Mac | CMake | AppleClang | [![mac14 d](https://github.com/hyoklee/actions/actions/workflows/mac14-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac14-d.yml) [![mac13 d](https://github.com/hyoklee/actions/actions/workflows/mac13-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac13-d.yml) [![mac12 d](https://github.com/hyoklee/actions/actions/workflows/mac12-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac12-d.yml) |
+| Mac | CMake | AppleClang | [![mac-26 d](https://github.com/hyoklee/actions/actions/workflows/mac-26-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac-26-d.yml) [![mac14 d](https://github.com/hyoklee/actions/actions/workflows/mac14-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac14-d.yml) [![mac13 d](https://github.com/hyoklee/actions/actions/workflows/mac13-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac13-d.yml) |
 | Windows | CMake | MSVC | [![win d](https://github.com/hyoklee/actions/actions/workflows/win-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/win-d.yml)  [![win19 d](https://github.com/hyoklee/actions/actions/workflows/win19-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/win19-d.yml)|
 
 ## Parallel
