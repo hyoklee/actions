@@ -1,0 +1,29 @@
+name: mac fr
+
+on:
+  push:
+    branches: main
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-13, macos-14, macos-15, macos-26]
+    steps:
+      - name: checkout
+        uses: actions/checkout@v5
+        with:
+          repository: HDFGroup/hdf5
+      - name: install
+        run: |
+          brew install ninja
+      - name: test
+        run: |
+          mkdir build
+          cd build
+          cmake -G Ninja \
+            -DHDF5_BUILD_FRAMEWORKS:BOOL=ON \
+            -DSITE:STRING="${{ matrix.os }}" -DBUILDNAME:STRING="fr" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5"            
+            ..
+          ctest -D Experimental

@@ -3,7 +3,7 @@ name: mac-26 mpich-4.3.0 clang-17 f j hl aw -ts sf np=3
 on:
   workflow_dispatch:
   push:
-    branches: main
+    branches: main-
 jobs:
   build:
     name: mac-26 mpich-4.3.0 cl-17 f j hl aw -ts sf np=3
