@@ -30,7 +30,7 @@ jobs:
           version: '${{ matrix.os.version }}'
           shell: bash
           run: |
-            pkgman install cmake
+            pkgman install -y cmake
             mkdir build
             cd build
             cmake -DCMAKE_BUILD_TYPE=Release \
