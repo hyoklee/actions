@@ -28,8 +28,9 @@ jobs:
           sudo apt-get install ninja-build graphviz
           sudo apt install gfortran
       - name: Checkout
-        uses: actions/checkout@v4
-
+        uses: actions/checkout@v5
+        with:
+          repository: HDFGroup/hdf5
       - name: Configure CMake
         run: |
           mkdir build
