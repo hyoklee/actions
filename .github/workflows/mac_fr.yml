@@ -2,7 +2,7 @@ name: mac fr
 
 on:
   push:
-    branches: main-
+    branches: main
 
 jobs:
   build:
@@ -24,6 +24,7 @@ jobs:
           cd build
           cmake -G Ninja \
             -DHDF5_BUILD_FRAMEWORKS:BOOL=ON \
-            -DSITE:STRING="${{ matrix.os }}" -DBUILDNAME:STRING="fr" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" \
+            -DHDF5_INSTALL_FWRK_DIR=/tmp \
+            -DSITE:STRING="${{ matrix.os }}" -DBUILDNAME:STRING="fr/fd=/tmp" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" \
             ..
           ctest -D Experimental
