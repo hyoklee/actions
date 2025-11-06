@@ -1,0 +1,40 @@
+name: haiku
+
+on:
+  push:
+    branches: main
+
+jobs:
+  test: # make sure the action works on a clean machine without building
+    name: haiku
+    runs-on: ${{ matrix.os.host }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - name: haiku
+            architecture: x86_64
+            version: 'r1beta5'
+            host: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          repository: HDFGroup/hdf5
+
+      - name: ${{ matrix.os.name }}
+        uses: cross-platform-actions/action@master
+        with:
+          operating_system: ${{ matrix.os.name }}
+          architecture: ${{ matrix.os.architecture }}
+          version: '${{ matrix.os.version }}'
+          shell: bash
+          run: |
+            pkgman install cmake
+            mkdir build
+            cd build
+            cmake -DCMAKE_BUILD_TYPE=Release \
+            -DBUILDNAME="r" \
+            -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF ..
+            ctest -T Build  -j
+            ctest -T Test  -j
