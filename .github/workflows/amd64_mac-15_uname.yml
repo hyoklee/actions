@@ -1,0 +1,12 @@
+name: amd64 mac-15 uname
+
+on:
+  push:
+    branches: main
+
+jobs:
+  build:
+    runs-on: macos-15-intel
+    steps:
+      - name: test
+        run: uname -a
