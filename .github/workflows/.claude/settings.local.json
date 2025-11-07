@@ -17,7 +17,8 @@
       "Bash(dpkg:*)",
       "Read(//etc/sudoers.d/**)",
       "Bash(sudo -n whoami:*)",
-      "Bash(chmod +x /home/hyoklee/actions/.github/workflows/install-nvhpc-25.9.sh)"
+      "Bash(chmod +x /home/hyoklee/actions/.github/workflows/install-nvhpc-25.9.sh)",
+      "Bash(c:/Users/JoeLee/anaconda3/python.exe:*)"
     ],
     "deny": [],
     "ask": []

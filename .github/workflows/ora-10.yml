@@ -16,7 +16,7 @@ jobs:
           repository: HDFGroup/hdf5
       - name: test
         run: |
-          dnf install -y gfortran
+          dnf install -y cmake gfortran
           mkdir build
           cd build
           cmake \
