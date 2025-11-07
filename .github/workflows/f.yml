@@ -6,6 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
+  test:
     name: f
     runs-on: ubuntu-latest
     strategy:
