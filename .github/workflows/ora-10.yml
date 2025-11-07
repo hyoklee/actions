@@ -10,13 +10,11 @@ jobs:
     container: "oracle:10"
     steps:
       - name: checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: HDFGroup/hdf5
       - name: install
-        run: |
-          sudo dnf update
-          sudo dnf install gfortran
+        run: sudo dnf install gfortran
       - name: test
         run: |
           mkdir build
