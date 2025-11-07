@@ -2,7 +2,8 @@ name: ora-10 hdf5
 
 on:
   push:
-    branches: main
+    branches:
+      - main
 
 jobs:
   test:
