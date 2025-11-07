@@ -16,7 +16,7 @@ jobs:
           repository: HDFGroup/hdf5
       - name: test
         run: |
-          dnf install -y cmake
+          dnf install -y cmake clang
           mkdir build
           cd build
           cmake \

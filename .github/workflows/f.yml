@@ -6,27 +6,21 @@ on:
   workflow_dispatch:
 
 jobs:
-    name: ${{ matrix.os.name }} ${{ matrix.os.architecture }} ${{ matrix.os.version }} on ${{ matrix.os.host }}
-    runs-on: ${{ matrix.os.host }}
+    name: f
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      matrix:
-        os:
-          - name: openbsd
-            architecture: x86-64
-            version: '7.8'
-            host: ubuntu-latest
     steps:
       - name: checkout
         uses: actions/checkout@v5
         with:
           repository: HDFGroup/hdf5
-      - name: ${{ matrix.os.name }}
+      - name: openbsd
         uses: cross-platform-actions/action@v0.29.0
         with:
-          operating_system: ${{ matrix.os.name }}
-          architecture: ${{ matrix.os.architecture }}
-          version: '${{ matrix.os.version }}'
+          operating_system: 'openbsd'
+          architecture: 'x86-64'
+          version: '7.8'
           shell: bash
           run: |
             uname -a
