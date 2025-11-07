@@ -30,16 +30,3 @@ jobs:
             ls -ahl
             whoami
             env | sort
-            sudo pkg_add git
-            sudo pkg_add cmake
-            sudo pkg_add g95-15.2.0p0
-            export FC=/usr/local/bin/egfortran
-            mkdir build
-            cd build
-            cmake \
-            -D BUILDNAME="f" \
-            -D CTEST_DROP_SITE_INIT="my.cdash.org" \
-            -D HDF5_BUILD_FORTRAN=ON \
-            -D SITE=obsd-7.8 \
-            ..
-            ctest -D Experimental
