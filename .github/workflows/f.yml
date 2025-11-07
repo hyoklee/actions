@@ -18,7 +18,11 @@ jobs:
           repository: HDFGroup/hdf5
       - name: openbsd
         uses: cross-platform-actions/action@v0.29.0
+        env:
+          FOO: A
+          BAR: B        
         with:
+          environment_variables: FOO BAR          
           operating_system: 'openbsd'
           architecture: 'x86-64'
           version: '7.8'
