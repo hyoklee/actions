@@ -1,8 +1,8 @@
-name: f
+name: gcc f
 
 on:
   push:
-    branches: main-
+    branches: main
 
 jobs:
   test: # make sure the action works on a clean machine without building
@@ -38,10 +38,11 @@ jobs:
             sudo pkg_add cmake
             sudo pkg_add g95-11.2.0p19
             export FC=/usr/local/bin/egfortran
+            export CC=/usr/local/bin/gcc
             mkdir build
             cd build
             cmake \
-            -D BUILDNAME="f" \
+            -D BUILDNAME="gcc/f" \
             -D CTEST_DROP_SITE_INIT="my.cdash.org" \
             -D HDF5_BUILD_FORTRAN=ON \
             -D SITE=obsd-7.8 \
