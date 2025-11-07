@@ -18,7 +18,6 @@ jobs:
           curl -O -L  https://github.com/macports/macports-base/releases/download/v2.11.5/MacPorts-2.11.5-14-Sonoma.pkg
       - name: install
         run: |
-          brew install flang
           sudo installer -pkg MacPorts-2.11.5-14-Sonoma.pkg -target /
       - name: update
         run: |

@@ -14,7 +14,7 @@ jobs:
         os:
           - name: openbsd
             architecture: x86-64
-            version: '7.7'
+            version: '7.8'
             host: ubuntu-latest
     steps:
       - name: Checkout
@@ -36,7 +36,7 @@ jobs:
           run: |
             sudo pkg_add git
             sudo pkg_add cmake
-            sudo pkg_add g95
+            sudo pkg_add g95-15.2.0p0
             export FC=/usr/local/bin/egfortran
             mkdir build
             cd build
