@@ -36,7 +36,7 @@ jobs:
             cmake -DCMAKE_BUILD_TYPE=Release \
             -DBUILDNAME="r" \
             -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF \
-            -DSITE:STRING="${{ matrix.os }}" \
+            -DSITE:STRING="haiku" \
             -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
             -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" \
             ..
