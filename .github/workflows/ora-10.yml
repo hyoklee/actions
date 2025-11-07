@@ -15,7 +15,7 @@ jobs:
         with:
           repository: HDFGroup/hdf5
       - name: install
-        run: sudo dnf install gfortran
+        run: dnf install -y gfortran
       - name: test
         run: |
           mkdir build
