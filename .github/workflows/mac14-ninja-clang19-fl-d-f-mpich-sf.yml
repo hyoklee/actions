@@ -2,7 +2,7 @@ name: mac-14 ninja mpich clang-19 fl d f sf
 
 on:
   push:
-    branches: [main]
+    branches: [main-]
 
 jobs:
   build:
@@ -10,7 +10,7 @@ jobs:
     runs-on: macos-14
     steps:
       - name: checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: HDFGroup/hdf5
       - name: get
