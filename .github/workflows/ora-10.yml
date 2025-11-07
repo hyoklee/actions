@@ -28,4 +28,4 @@ jobs:
             -DHDF5_BUILD_HL_LIB:BOOL=ON \
             -DHDF5_ENABLE_MAP_API:BOOL=ON \
             ..
-         ctest -D Experimental
+          ctest -D Experimental
