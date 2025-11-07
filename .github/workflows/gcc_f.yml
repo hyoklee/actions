@@ -38,7 +38,7 @@ jobs:
             sudo pkg_add cmake
             sudo pkg_add g95-11.2.0p19
             export FC=/usr/local/bin/egfortran
-            export CC=/usr/local/bin/gcc
+            export CC=/usr/local/bin/egcc
             mkdir build
             cd build
             cmake \
