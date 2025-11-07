@@ -3,34 +3,47 @@ name: f
 on:
   push:
     branches: main
-  workflow_dispatch:
 
 jobs:
-  test:
-    name: f
-    runs-on: ubuntu-latest
+  test: # make sure the action works on a clean machine without building
+    name: ${{ matrix.os.name }} ${{ matrix.os.architecture }} ${{ matrix.os.version }} on ${{ matrix.os.host }}
+    runs-on: ${{ matrix.os.host }}
     strategy:
       fail-fast: false
+      matrix:
+        os:
+          - name: openbsd
+            architecture: x86-64
+            version: '7.7'
+            host: ubuntu-latest
     steps:
-      - name: checkout
-        uses: actions/checkout@v5
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
           repository: HDFGroup/hdf5
-      - name: openbsd
-        uses: cross-platform-actions/action@v0.29.0
+
+      - name: ${{ matrix.os.name }}
+        uses: cross-platform-actions/action@master
         env:
           FOO: A
-          BAR: B        
+          BAR: B
         with:
-          environment_variables: FOO BAR          
-          operating_system: 'openbsd'
-          architecture: 'x86-64'
-          version: '7.8'
+          environment_variables: FOO BAR
+          operating_system: ${{ matrix.os.name }}
+          architecture: ${{ matrix.os.architecture }}
+          version: '${{ matrix.os.version }}'
           shell: bash
           run: |
-            uname -a
-            echo $SHELL
-            pwd
-            ls -ahl
-            whoami
-            env | sort
+            sudo pkg_add git
+            sudo pkg_add cmake
+            sudo pkg_add g95-15.2.0p0
+            export FC=/usr/local/bin/egfortran
+            mkdir build
+            cd build
+            cmake \
+            -D BUILDNAME="f" \
+            -D CTEST_DROP_SITE_INIT="my.cdash.org" \
+            -D HDF5_BUILD_FORTRAN=ON \
+            -D SITE=obsd-7.8 \
+            ..
+            ctest -D Experimental            
