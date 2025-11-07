@@ -20,7 +20,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          repository: HDFGroup/hdf5
+          repository: brtnfld/hdf5
+          ref: H5R
 
       - name: ${{ matrix.os.name }}
         uses: cross-platform-actions/action@master
@@ -42,7 +43,7 @@ jobs:
             mkdir build
             cd build
             cmake \
-            -D BUILDNAME="gcc/f" \
+            -D BUILDNAME="brtnfld/gcc/f" \
             -D CTEST_DROP_SITE_INIT="my.cdash.org" \
             -D HDF5_BUILD_FORTRAN=ON \
             -D SITE=obsd-7.8 \
