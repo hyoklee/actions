@@ -1,0 +1,36 @@
+name: vm gcc f
+
+on:
+  push:
+    branches: main
+
+defaults:
+  run:
+    shell: bash
+jobs:
+  build:
+    name: vm gcc f
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v5
+        with:
+          repository: brtnfld/hdf5
+          ref: H5R
+      - name: test
+        uses: vmactions/openbsd-vm@v1
+        with:
+          release: "7.8"
+          usesh: true
+          run: |
+            pkg_add cmake
+            pkg_add g95-11.2.0p19
+            mkdir build
+            cd build
+            cmake \
+            -D BUILDNAME="brtnfld/gcc/f" \
+            -D CTEST_DROP_SITE_INIT="my.cdash.org" \
+            -D HDF5_BUILD_FORTRAN=ON \
+            -D SITE=obsd-7.8 \
+            ..
+            ctest -D Experimental

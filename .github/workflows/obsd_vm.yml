@@ -1,22 +1,22 @@
-name: obsd vm
+name: obsd vm f
 
 on:
   push:
-    branches: main-
+    branches: main
 
 defaults:
   run:
     shell: bash
 jobs:
   build:
-    name: obsd vm
+    name: obsd vm f
     runs-on: ubuntu-latest
     steps:
       - name: checkout
         uses: actions/checkout@v5
         with:
-          repository: mattjala/hdf5
-          ref: qsort_fallback
+          repository: brtnfld/hdf5
+          ref: H5R
       - name: test
         uses: vmactions/openbsd-vm@v1
         with:
@@ -24,6 +24,7 @@ jobs:
           usesh: true
           run: |
             pkg_add cmake
+            pkg_add g95-11.2.0p19            
             mkdir build
             cd build
             cmake -DSITE:STRING="obsd-7.8" \
