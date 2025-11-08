@@ -2,9 +2,9 @@ name: vm gcc f
 
 on:
   push:
-    branches: main-
+    branches: main
 
-defaults:
+DEFAULTS:
   run:
     shell: bash
 jobs:
@@ -36,4 +36,4 @@ jobs:
             -D SITE="obsd-7.8" \
             ..
             ctest -T Build
-            ctest -T Test  -VV -R FORTRAN_testhdf5_fortran
+            ctest -VVV  --output-on-failure -T Test -R FORTRAN_testhdf5_fortran
