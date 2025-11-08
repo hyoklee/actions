@@ -25,6 +25,8 @@ jobs:
           run: |
             pkg_add cmake
             pkg_add g95-11.2.0p19
+            export FC=/usr/local/bin/egfortran
+            export CC=/usr/local/bin/egcc
             mkdir build
             cd build
             cmake \
