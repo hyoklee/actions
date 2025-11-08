@@ -28,7 +28,7 @@ jobs:
             mkdir build
             cd build
             cmake \
-            -D BUILDNAME="brtnfld/gcc/f" \
+            -D BUILDNAME="brtnfld/vm/gcc/f" \
             -D CTEST_DROP_SITE_INIT="my.cdash.org" \
             -D HDF5_BUILD_FORTRAN=ON \
             -D SITE=obsd-7.8 \
