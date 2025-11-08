@@ -49,6 +49,6 @@ jobs:
             -D SITE=obsd-7.8 \
             ..
             ctest -T Build
-            ctest -T Test -VV -R FORTRAN_testhdf5_fortran
+            ctest -T Test -VV --output-on-failure -R FORTRAN_testhdf5_fortran
             
 
