@@ -1,8 +1,9 @@
-name: gcc f
+name: fbsd f j
 
 on:
   push:
-    branches: main-
+    branches:
+      - main
 
 jobs:
   test: # make sure the action works on a clean machine without building
@@ -12,17 +13,16 @@ jobs:
       fail-fast: false
       matrix:
         os:
-          - name: openbsd
+          - name: freebsd
             architecture: x86-64
-            version: '7.8'
+            version: '14.3'
             host: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: brtnfld/hdf5
           ref: H5R
-
       - name: ${{ matrix.os.name }}
         uses: cross-platform-actions/action@master
         env:
@@ -35,20 +35,25 @@ jobs:
           version: '${{ matrix.os.version }}'
           shell: bash
           run: |
-            sudo pkg_add git
-            sudo pkg_add cmake
-            sudo pkg_add g95-11.2.0p19
-            export FC=/usr/local/bin/egfortran
-            export CC=/usr/local/bin/egcc
+            sudo pkg install -y git
+            sudo pkg install -y cmake
+            sudo pkg install -y jpeg-turbo
+            sudo pkg install -y openjdk24
+            sudo pkg install -y gcc13
+            pkg info -l openjdk24
+            export JAVA_HOME=/usr/local/openjdk24
+            export FC=gfortran13
+            export CC=gcc13
+            sudo mount -t fdescfs fdesc /dev/fd
+            sudo mount -t procfs proc /proc
             mkdir build
             cd build
             cmake \
-            -D BUILDNAME="brtnfld/gcc/f" \
-            -D CTEST_DROP_SITE_INIT="my.cdash.org" \
-            -D HDF5_BUILD_FORTRAN=ON \
-            -D SITE=obsd-7.8 \
-            ..
+            -DBUILDNAME:STRING="gcc-13/gfortran-13/jdk-24" \
+            -D HDF5_BUILD_FORTRAN:BOOL=ON \
+            -D HDF5_BUILD_JAVA:BOOL=ON \
+            -D CTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
+            -D SITE:STRING="fbsd-14.3" ..
             ctest -T Build
-            ctest -VV --output-on-failure -T Test -R FORTRAN_testhdf5_fortran
-            
-
+            ctest -VV --output-on-failure -T Test
+            ctest -D Experimental
