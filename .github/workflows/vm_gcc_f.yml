@@ -31,6 +31,7 @@ jobs:
             -D BUILDNAME="brtnfld/vm/gcc/f" \
             -D CTEST_DROP_SITE_INIT="my.cdash.org" \
             -D HDF5_BUILD_FORTRAN=ON \
-            -D SITE=obsd-7.8 \
+            -D SITE="obsd-7.8" \
             ..
-            ctest -D Experimental
+            ctest -T Build
+            ctest -T Test  -VV --output-on-error -R FORTRAN_testhdf5_fortran

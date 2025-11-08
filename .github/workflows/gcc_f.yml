@@ -2,7 +2,7 @@ name: gcc f
 
 on:
   push:
-    branches: main-
+    branches: main
 
 jobs:
   test: # make sure the action works on a clean machine without building
@@ -48,4 +48,7 @@ jobs:
             -D HDF5_BUILD_FORTRAN=ON \
             -D SITE=obsd-7.8 \
             ..
-            ctest -D Experimental            
+            ctest -T Build
+            ctest -T Test  -VV --output-on-error -R FORTRAN_testhdf5_fortran
+            
+
