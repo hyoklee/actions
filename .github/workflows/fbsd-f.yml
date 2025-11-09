@@ -40,7 +40,7 @@ jobs:
             mkdir build
             cd build
             cmake \
-            -DBUILDNAME:STRING="gcc-13/gfortran-13" \
+            -DBUILDNAME:STRING="gcc/gfortran" \
             -D HDF5_BUILD_FORTRAN:BOOL=ON \
             -D CTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
             -D SITE:STRING="fbsd-14.3" ..
