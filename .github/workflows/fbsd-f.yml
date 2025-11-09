@@ -32,7 +32,7 @@ jobs:
           run: |
             sudo pkg install -y git
             sudo pkg install -y cmake
-            sudo pkg install -y gcc16
+            sudo pkg install -y gcc16-devel
             sudo mount -t fdescfs fdesc /dev/fd
             sudo mount -t procfs proc /proc
             mkdir build
