@@ -1,4 +1,4 @@
-name: fbsd f
+name: fbsd fl
 
 on:
   push:
@@ -32,16 +32,13 @@ jobs:
           run: |
             sudo pkg install -y git
             sudo pkg install -y cmake
-            sudo pkg install -y gcc
-            export FC=gfortran
-            export CC=gcc
-            export LDFLAGS='-Wl,-rpath=/usr/local/lib/gcc13'
+            sudo pkg install -y flang
             sudo mount -t fdescfs fdesc /dev/fd
             sudo mount -t procfs proc /proc
             mkdir build
             cd build
             cmake \
-            -DBUILDNAME:STRING="gcc/gfortran" \
+            -DBUILDNAME:STRING="fl" \
             -D HDF5_BUILD_FORTRAN:BOOL=ON \
             -D CTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
             -D SITE:STRING="fbsd-14.3" ..
