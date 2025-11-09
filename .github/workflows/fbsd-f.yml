@@ -44,6 +44,8 @@ jobs:
             -D HDF5_BUILD_FORTRAN:BOOL=ON \
             -D CTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
             -D SITE:STRING="fbsd-14.3" ..
-            ctest -T Build
-            ctest -VV --output-on-failure -T Test
             ctest -D Experimental
+#             ctest -T Build
+#            ctest -VV --output-on-failure -T Test
+
+            
