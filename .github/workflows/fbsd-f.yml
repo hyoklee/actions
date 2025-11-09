@@ -35,6 +35,7 @@ jobs:
             sudo pkg install -y gcc
             export FC=gfortran
             export CC=gcc
+            export LDFLAGS='-Wl,-rpath=/usr/local/lib/gcc13'
             sudo mount -t fdescfs fdesc /dev/fd
             sudo mount -t procfs proc /proc
             mkdir build
