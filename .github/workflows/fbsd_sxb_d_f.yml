@@ -1,4 +1,4 @@
-name: fbsd d gf-16
+name: fbsd sxb d f
 
 on:
   push:
@@ -21,10 +21,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
         with:
-          repository: HDFGroup/hdf5
+          repository: brtnfld/hdf5
+          ref: H5R
       - name: ${{ matrix.os.name }}
         uses: cross-platform-actions/action@master
+        env:
+          FOO: A
+          BAR: B
         with:
+          environment_variables: FOO BAR
           operating_system: ${{ matrix.os.name }}
           architecture: ${{ matrix.os.architecture }}
           version: '${{ matrix.os.version }}'
@@ -32,15 +37,15 @@ jobs:
           run: |
             sudo pkg install -y git
             sudo pkg install -y cmake
-            sudo pkg install -y gcc16-devel
-            export FC=gfortran16
+            sudo pkg install -y gcc13
+            export FC=gfortran13
             sudo mount -t fdescfs fdesc /dev/fd
             sudo mount -t procfs proc /proc
             mkdir build
             cd build
             cmake \
-            -DCMAKE_BUILD_TYPE=Debug \
-            -DBUILDNAME:STRING="d/cl-19/gf-16" \
+            -DCMAKE_BUILD_TYPE=Debug \            
+            -DBUILDNAME:STRING="sxb/d/cl-19/gf-13" \
             -D HDF5_BUILD_FORTRAN:BOOL=ON \
             -D CTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
             -D SITE:STRING="fbsd-14.3" ..
