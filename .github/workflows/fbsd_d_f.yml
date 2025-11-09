@@ -1,9 +1,9 @@
-name: fbsd gf-16
+name: fbsd d gf-16
 
 on:
   push:
     branches:
-      - main-
+      - main
 
 jobs:
   test: # make sure the action works on a clean machine without building
@@ -40,10 +40,10 @@ jobs:
             cd build
             cmake \
             -DCMAKE_BUILD_TYPE=Debug \
-            -DBUILDNAME:STRING="cl-19/gf-16" \
+            -DBUILDNAME:STRING="d/cl-19/gf-16" \
             -D HDF5_BUILD_FORTRAN:BOOL=ON \
             -D CTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
             -D SITE:STRING="fbsd-14.3" ..
-            ctest -T Build
-            ctest -VV --output-on-failure -T Test
+            ctest -C Debug -T Build
+            ctest -C Debug -VV --output-on-failure -T Test
 #            ctest -D Experimental
