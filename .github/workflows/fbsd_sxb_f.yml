@@ -39,7 +39,6 @@ jobs:
             sudo pkg install -y cmake
             sudo pkg install -y gcc13
             export FC=gfortran13
-            export CC=gcc13
             sudo mount -t fdescfs fdesc /dev/fd
             sudo mount -t procfs proc /proc
             mkdir build
