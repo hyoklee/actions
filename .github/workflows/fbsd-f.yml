@@ -1,4 +1,4 @@
-name: fbsd fl
+name: fbsd gf-16
 
 on:
   push:
@@ -33,12 +33,13 @@ jobs:
             sudo pkg install -y git
             sudo pkg install -y cmake
             sudo pkg install -y gcc16-devel
+            export FC=gfortran
             sudo mount -t fdescfs fdesc /dev/fd
             sudo mount -t procfs proc /proc
             mkdir build
             cd build
             cmake \
-            -DBUILDNAME:STRING="fl" \
+            -DBUILDNAME:STRING="cl-19/gf-16" \
             -D HDF5_BUILD_FORTRAN:BOOL=ON \
             -D CTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
             -D SITE:STRING="fbsd-14.3" ..
