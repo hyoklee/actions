@@ -32,7 +32,7 @@ jobs:
           run: |
             sudo pkg install -y git
             sudo pkg install -y cmake
-            sudo pkg install -y flang
+            sudo pkg install -y gcc16
             sudo mount -t fdescfs fdesc /dev/fd
             sudo mount -t procfs proc /proc
             mkdir build
@@ -42,8 +42,7 @@ jobs:
             -D HDF5_BUILD_FORTRAN:BOOL=ON \
             -D CTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
             -D SITE:STRING="fbsd-14.3" ..
-            ctest -D Experimental
-#             ctest -T Build
-#            ctest -VV --output-on-failure -T Test
-
+            ctest -T Build
+            ctest -VV --output-on-failure -T Test
+#            ctest -D Experimental
             
