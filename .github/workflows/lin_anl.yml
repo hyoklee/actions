@@ -1,9 +1,9 @@
-name: lin anl fmt
+name: lin anl
 
 on:
   workflow_dispatch:
   push:
-    branches: main-
+    branches: main
 
 permissions:
   contents: read
@@ -35,7 +35,6 @@ jobs:
             -D BUILDNAME="anl/fmt" \
             -D CTEST_DROP_SITE_INIT="my.cdash.org" \
             -D HDF5_ENABLE_ANALYZER_TOOLS:BOOL=ON \
-            -D HDF5_ENABLE_FORMATTERS:BOOL=ON \
             -D SITE=ubu-24 \
             ..
           ctest -D Experimental
