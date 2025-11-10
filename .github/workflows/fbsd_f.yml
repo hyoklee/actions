@@ -39,7 +39,6 @@ jobs:
             mkdir build
             cd build
             cmake \
-            -DCMAKE_BUILD_TYPE=Debug \
             -DBUILDNAME:STRING="cl-19/gf-13" \
             -D HDF5_BUILD_FORTRAN:BOOL=ON \
             -D CTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
