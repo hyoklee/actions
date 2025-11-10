@@ -3,7 +3,7 @@ name: wsl suse-15.2
 on:
   push:
     branches:
-      - main-
+      - main
 
 jobs:
   build:
@@ -15,7 +15,7 @@ jobs:
         shell: wsl-bash {0}        
     runs-on: windows-latest
     steps:
-      - uses: Vampire/setup-wsl@v3
+      - uses: Vampire/setup-wsl@v6
         with:
           distribution: ${{ matrix.os }}
           additional-packages:
