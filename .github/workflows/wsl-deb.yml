@@ -18,7 +18,6 @@ jobs:
           repository: HDFGroup/hdf5
       - uses: Vampire/setup-wsl@v6
         with:
-          update: 'true'
           additional-packages:
             dos2unix
             patterns-devel-base-devel_basis
