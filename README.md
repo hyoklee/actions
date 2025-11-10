@@ -86,7 +86,7 @@ Actions speak louder than codes.
 
 | Test | Status |
 | -----| ------ |
-| g95| [![fbsd-14.3 g95-16](https://github.com/hyoklee/actions/actions/workflows/fbsd_gf-16.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/fbsd_gf-16.yml) [![fbsd-14.3 d g95-16](https://github.com/hyoklee/actions/actions/workflows/fbsd_d_gf-16.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/fbsd_d_gf-16.yml) [![obsd-7.8 g95-11.2](https://github.com/hyoklee/actions/actions/workflows/f.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/f.yml) [![obsd-7.8 d g95-11.2](https://github.com/hyoklee/actions/actions/workflows/d_f.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/d_f.yml) |
+| g95| [![fbsd-14.3 g95-13](https://github.com/hyoklee/actions/actions/workflows/fbsd_f.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/fbsd_f.yml)  [![fbsd-14.3 g95-16](https://github.com/hyoklee/actions/actions/workflows/fbsd_gf-16.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/fbsd_gf-16.yml) [![fbsd-14.3 d g95-16](https://github.com/hyoklee/actions/actions/workflows/fbsd_d_gf-16.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/fbsd_d_gf-16.yml) [![obsd-7.8 g95-11.2](https://github.com/hyoklee/actions/actions/workflows/f.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/f.yml) [![obsd-7.8 d g95-11.2](https://github.com/hyoklee/actions/actions/workflows/d_f.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/d_f.yml) |
 | ifx 2024.1 | [![lin auto icx ifx](https://github.com/hyoklee/actions/actions/workflows/lin-auto-icx-f.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/lin-auto-icx-f.yml) |
 
 ## Options

@@ -1,0 +1,34 @@
+name: wsl deb
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    defaults:
+      run:
+        shell: wsl-bash {0}
+    runs-on: windows-2025
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          repository: HDFGroup/hdf5
+      - uses: Vampire/setup-wsl@v6
+        with:
+          update: 'true'
+          additional-packages:
+            dos2unix
+            patterns-devel-base-devel_basis
+            curl
+
+      - name: Run the script
+        run: |
+          mkdir build
+          cd build
+          pwd
+          /mnt/d/a/actions/actions/bin/cmake -DSITE:STRING="deb/wsl-25" -DBUILDNAME:STRING="cmake" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" ..
+#          /mnt/d/a/actions/actions/bin/ctest -T Build
+#          /mnt/d/a/actions/actions/bin/ctest -T Test
