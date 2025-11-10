@@ -3,7 +3,7 @@ name: fbsd sxb d f
 on:
   push:
     branches:
-      - main
+      - main-
 
 jobs:
   test: # make sure the action works on a clean machine without building
