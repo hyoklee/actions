@@ -41,10 +41,10 @@ jobs:
             mkdir build
             cd build
             cmake \
-            -DCMAKE_BUILD_TYPE=Debug \            
+            -DCMAKE_BUILD_TYPE=Debug \
             -D BUILDNAME="d/f" \
             -D CTEST_DROP_SITE_INIT="my.cdash.org" \
             -D HDF5_BUILD_FORTRAN=ON \
             -D SITE=obsd-7.8 \
             ..
-            ctest -D Experimental            
+            ctest -D Experimental

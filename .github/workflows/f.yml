@@ -2,7 +2,7 @@ name: f
 
 on:
   push:
-    branches: main
+    branches: main-
 
 jobs:
   test: # make sure the action works on a clean machine without building
