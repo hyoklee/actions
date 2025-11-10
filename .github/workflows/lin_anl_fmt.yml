@@ -1,0 +1,39 @@
+name: lin anl fmt
+
+on:
+  workflow_dispatch:
+  push:
+    branches: main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref && github.ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  build_and_test:
+    name: lin anl fmt
+    runs-on: ubuntu-24.04
+    steps:
+      - name: install
+        run: |
+          sudo apt-get update
+          sudo apt-get install ninja-build clang-format clang-tidy
+
+      - name: checkout
+        uses: actions/checkout@v5
+
+      - name: test
+        run: |
+          mkdir build
+          cd build
+          cmake -G Ninja \
+            -D BUILDNAME="anl/fmt" \
+            -D CTEST_DROP_SITE_INIT="my.cdash.org" \
+            -D HDF5_ENABLE_ANALYZER_TOOLS:BOOL=ON \
+            -D HDF5_ENABLE_FORMATTERS:BOOL=ON \
+            -D SITE=ubu-24 \
+            ..
+          ctest -D Experimental
