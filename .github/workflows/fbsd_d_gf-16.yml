@@ -1,9 +1,9 @@
-name: fbsd gf-13
+name: fbsd d gf-16
 
 on:
   push:
     branches:
-      - main-
+      - main
 
 jobs:
   test: # make sure the action works on a clean machine without building
@@ -32,14 +32,15 @@ jobs:
           run: |
             sudo pkg install -y git
             sudo pkg install -y cmake
-            sudo pkg install -y gcc13
-            export FC=gfortran13
+            sudo pkg install -y gcc16-devel
+            export FC=gfortran16
             sudo mount -t fdescfs fdesc /dev/fd
             sudo mount -t procfs proc /proc
             mkdir build
             cd build
             cmake \
-            -DBUILDNAME:STRING="cl-19/gf-13" \
+            -DCMAKE_BUILD_TYPE=Debug \
+            -DBUILDNAME:STRING="d/cl-19/gf-16" \
             -D HDF5_BUILD_FORTRAN:BOOL=ON \
             -D CTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
             -D SITE:STRING="fbsd-14.3" ..
