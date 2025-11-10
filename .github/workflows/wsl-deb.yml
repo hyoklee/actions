@@ -29,6 +29,7 @@ jobs:
           mkdir build
           cd build
           pwd
-          /mnt/d/a/actions/actions/bin/cmake -DSITE:STRING="deb/wsl-25" -DBUILDNAME:STRING="cmake" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" ..
+          cmake -DSITE:STRING="deb/wsl-25" -DBUILDNAME:STRING="r" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" ..
+#          /mnt/d/a/actions/actions/bin/cmake -DSITE:STRING="deb/wsl-25" -DBUILDNAME:STRING="cmake" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" ..
 #          /mnt/d/a/actions/actions/bin/ctest -T Build
 #          /mnt/d/a/actions/actions/bin/ctest -T Test
