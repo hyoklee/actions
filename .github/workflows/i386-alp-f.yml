@@ -22,6 +22,7 @@ jobs:
             build-base
             libgit2-dev
             cmake
+            gfortran
       - name: run script
         run: |
           mkdir build
