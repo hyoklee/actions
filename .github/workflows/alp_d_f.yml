@@ -1,9 +1,9 @@
-name: i386 alp f
+name: alp d f
 
 on:
   push:
     branches:
-      - main-
+      - main
 
 jobs:
   build:
@@ -14,7 +14,7 @@ jobs:
         with:
           repository: HDFGroup/hdf5
 
-      - name: setup alpine
+      - name: alpine
         uses: jirutka/setup-alpine@v1
         with:
           arch: x86
@@ -23,15 +23,17 @@ jobs:
             libgit2-dev
             cmake
             gfortran
-      - name: run script
+      - name: test
         run: |
           mkdir build
           cd build
-          cmake -DSITE:STRING=alp.i386 \
-            -DBUILDNAME:STRING="r/f" \
+          cmake \
+            -DBUILDNAME:STRING="d/f" \
+            -DCMAKE_BUILD_TYPE=Debug \
             -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
             -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \
             -DHDF5_BUILD_FORTRAN=ON \
+            -DSITE:STRING=alp \
              ..
-          ctest -D Experimental -C Release
+          ctest -C Debug -D Experimental
         shell: alpine.sh --root {0}
