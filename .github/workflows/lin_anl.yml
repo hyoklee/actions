@@ -3,7 +3,7 @@ name: lin anl
 on:
   workflow_dispatch:
   push:
-    branches: main
+    branches: main-
 
 permissions:
   contents: read
@@ -32,7 +32,7 @@ jobs:
           mkdir build
           cd build
           cmake -G Ninja \
-            -D BUILDNAME="anl/fmt" \
+            -D BUILDNAME="anl" \
             -D CTEST_DROP_SITE_INIT="my.cdash.org" \
             -D HDF5_ENABLE_ANALYZER_TOOLS:BOOL=ON \
             -D SITE=ubu-24 \
