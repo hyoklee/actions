@@ -34,5 +34,5 @@ jobs:
             -DHDF5_BUILD_FORTRAN=ON \
             -DSITE:STRING=alp.i386 \
              ..
-          ctest -D Experimental
-        shell: bash
+          ctest -C Debug -D Experimental
+        shell: alpine.sh --root {0}

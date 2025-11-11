@@ -33,4 +33,4 @@ jobs:
             -DHDF5_BUILD_FORTRAN=ON \
              ..
           ctest -D Experimental -C Release
-        shell: bash
+        shell: alpine.sh --root {0}
