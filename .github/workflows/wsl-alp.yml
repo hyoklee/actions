@@ -1,4 +1,4 @@
-name: wsl kali
+name: wsl alp
 
 on:
   push:
@@ -9,7 +9,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [kali-linux]
+        os: [Alpine]
     defaults:
       run:
         shell: wsl-bash {0}        
@@ -22,7 +22,6 @@ jobs:
       - uses: Vampire/setup-wsl@v6
         with:
           distribution: ${{ matrix.os }}
-          update: 'true'
           additional-packages:
             cmake
       - name: Run the script
@@ -30,6 +29,6 @@ jobs:
           mkdir build
           cd build
           pwd
-          cmake -DSITE:STRING="kal/wsl" -DBUILDNAME:STRING="cmake-3.18" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" ..
+          cmake -DSITE:STRING="alp/wsl" -DBUILDNAME:STRING="r" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" ..
 #          /mnt/d/a/actions/actions/bin/ctest -T Build
 #          /mnt/d/a/actions/actions/bin/ctest -T Test

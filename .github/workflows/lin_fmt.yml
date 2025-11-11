@@ -3,7 +3,7 @@ name: lin fmt
 on:
   workflow_dispatch:
   push:
-    branches: main
+    branches: main-
 
 permissions:
   contents: read
@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   build_and_test:
-    name: lin anl fmt
+    name: lin fmt
     runs-on: ubuntu-24.04
     steps:
       - name: install
