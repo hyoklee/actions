@@ -3,7 +3,7 @@ name: wsl suse-15.2
 on:
   push:
     branches:
-      - main-
+      - main
 
 jobs:
   build:
@@ -22,6 +22,7 @@ jobs:
       - uses: Vampire/setup-wsl@v6
         with:
           distribution: ${{ matrix.os }}
+          update: 'true'          
           additional-packages:
             cmake
             curl
