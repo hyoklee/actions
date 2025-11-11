@@ -3,7 +3,7 @@ name: wsl suse-15.2
 on:
   push:
     branches:
-      - main
+      - main-
 
 jobs:
   build:
@@ -12,7 +12,7 @@ jobs:
         os: [openSUSE-Leap-15.2]
     defaults:
       run:
-        shell: wsl-bash {0}        
+        shell: wsl-bash {0}
     runs-on: windows-latest
     steps:
       - name: checkout

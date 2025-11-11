@@ -3,7 +3,7 @@ name: i386 alp d f
 on:
   push:
     branches:
-      - main
+      - main-
 
 jobs:
   build:

@@ -3,7 +3,7 @@ name: wsl alp
 on:
   push:
     branches:
-      - main
+      - main-
 
 jobs:
   build:
