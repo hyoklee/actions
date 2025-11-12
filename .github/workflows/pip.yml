@@ -10,6 +10,6 @@ jobs:
     steps:
       - name: test
         run: |
-          sudo apt install yaml-cpp
+          sudo apt install libyaml-cpp-dev
           pip install iowarp-core
           wrp_cae_omni
