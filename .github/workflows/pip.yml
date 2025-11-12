@@ -11,6 +11,6 @@ jobs:
       - name: test
         run: |
           sudo apt install libyaml-cpp-dev
-          pip install boost
+          sudo apt install libboost-all-dev
           pip install iowarp-core
           wrp_cae_omni
