@@ -11,6 +11,7 @@ jobs:
       - name: test
         run: |
           pip install iowarp
-          wrp_cae_omni
+          chimaera_start_runtime
 #          sudo apt install libyaml-cpp-dev
 #          pip install iowarp-core
+#          wrp_cae_omni
