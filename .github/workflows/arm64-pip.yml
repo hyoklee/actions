@@ -1,4 +1,4 @@
-name: pip
+name: arm64 pip
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main
 jobs:
   build:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-24.04-arm
     steps:
       - name: test
         run: |
@@ -23,4 +23,3 @@ jobs:
 #          sudo apt install libyaml-cpp-dev
 #          pip install iowarp-core
 #          wrp_cae_omni
-
