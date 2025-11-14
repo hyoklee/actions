@@ -21,12 +21,9 @@ jobs:
           python -m venv venv
           source venv/bin/activate
           export IOWARP_BUNDLE_BINARIES=ON
-          pip install iowarp-core
+          pip install iowarp
           which wrp_cae_omni
           ls -lh /home/runner/work/actions/actions/venv/bin/wrp_cae_omni
           wrp_cae_omni
 #          chimaera_start_runtime
-#          sudo apt install libyaml-cpp-dev
-#          pip install iowarp-core
-#          wrp_cae_omni
 
