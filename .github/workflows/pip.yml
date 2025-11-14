@@ -17,7 +17,7 @@ jobs:
             libhdf5-dev \
             libbz2-dev liblzo2-dev libzstd-dev liblz4-dev \
             zlib1g-dev liblzma-dev libbrotli-dev libsnappy-dev libblosc2-dev
-          pip install iowarp
+          pip -v install iowarp
           chimaera_start_runtime
 #          sudo apt install libyaml-cpp-dev
 #          pip install iowarp-core
