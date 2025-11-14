@@ -18,7 +18,9 @@ jobs:
             libbz2-dev liblzo2-dev libzstd-dev liblz4-dev \
             zlib1g-dev liblzma-dev libbrotli-dev libsnappy-dev libblosc2-dev \
             libmpich-dev
-          pip -v install iowarp
+          python -m venv venv
+          source venv/bin/activate            
+          pip install iowarp
           chimaera_start_runtime
 #          sudo apt install libyaml-cpp-dev
 #          pip install iowarp-core
