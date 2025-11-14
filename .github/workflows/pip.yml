@@ -10,8 +10,16 @@ jobs:
     steps:
       - name: test
         run: |
+          sudo apt-get install -y \
+            build-essential cmake pkg-config \
+            libboost-context-dev libboost-fiber-dev libboost-system-dev \
+            libelf-dev libzmq3-dev libyaml-cpp-dev \
+            libhdf5-dev \
+            libbz2-dev liblzo2-dev libzstd-dev liblz4-dev \
+            zlib1g-dev liblzma-dev libbrotli-dev libsnappy-dev libblosc2-dev
           pip install iowarp
           chimaera_start_runtime
 #          sudo apt install libyaml-cpp-dev
 #          pip install iowarp-core
 #          wrp_cae_omni
+
