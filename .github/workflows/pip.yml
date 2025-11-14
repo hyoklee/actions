@@ -20,7 +20,7 @@ jobs:
             libmpich-dev
           python -m venv venv
           source venv/bin/activate
-          pip install iowarp
+          pip install iowarp-core
           chimaera_start_runtime
 #          sudo apt install libyaml-cpp-dev
 #          pip install iowarp-core
