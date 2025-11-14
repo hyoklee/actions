@@ -22,6 +22,7 @@ jobs:
           source venv/bin/activate
           pip install iowarp-core
           which wrp_cae_omni
+          ls -lh /home/runner/work/actions/actions/venv/bin/wrp_cae_omni
           wrp_cae_omni
 #          chimaera_start_runtime
 #          sudo apt install libyaml-cpp-dev
