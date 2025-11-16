@@ -3,7 +3,7 @@ name: arm64 pip
 on:
   push:
     branches:
-      - main
+      - main-
 jobs:
   build:
     runs-on: ubuntu-24.04-arm
