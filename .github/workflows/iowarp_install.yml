@@ -21,3 +21,4 @@ jobs:
           python -m venv venv
           source venv/bin/activate
           curl -fsSL https://raw.githubusercontent.com/iowarp/iowarp-install/main/install.sh | bash
+          chimaera_start_runtime
