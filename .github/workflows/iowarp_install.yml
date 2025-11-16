@@ -8,6 +8,11 @@ jobs:
   build:
     runs-on: ubuntu-24.04
     steps:
+      - name: checkout
+        uses: actions/checkout@v5
+        with:
+          repository: iowarp/core
+          submodules: recursive
       - name: test
         run: |
           sudo apt-get install -y \
@@ -20,5 +25,5 @@ jobs:
             libmpich-dev
           python -m venv venv
           source venv/bin/activate
-          curl -fsSL https://raw.githubusercontent.com/iowarp/iowarp-install/main/install.sh | bash
-          chimaera_start_runtime
+#          curl -fsSL https://raw.githubusercontent.com/iowarp/iowarp-install/main/install.sh | bash
+#          chimaera_start_runtime
