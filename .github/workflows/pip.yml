@@ -3,7 +3,7 @@ name: pip
 on:
   push:
     branches:
-      - main-
+      - main
 jobs:
   build:
     runs-on: ubuntu-24.04
@@ -20,10 +20,9 @@ jobs:
             libmpich-dev
           python -m venv venv
           source venv/bin/activate
-          export IOWARP_BUNDLE_BINARIES=ON
           pip install iowarp
           which wrp_cae_omni
           ls -lh /home/runner/work/actions/actions/venv/bin/wrp_cae_omni
           wrp_cae_omni
 #          chimaera_start_runtime
-
+#          export IOWARP_BUNDLE_BINARIES=ON
