@@ -31,7 +31,7 @@ jobs:
           conda install -y conda-build
           conda install -y conda-verify
           conda install -y anaconda-client
-          export /usr/share/miniconda/bin:$PATH
+          export PATH=/usr/share/miniconda/bin:$PATH
           conda-build .
 #          conda install iowarp-core
 #          find /usr/share/miniconda
