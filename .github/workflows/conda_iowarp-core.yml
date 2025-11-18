@@ -3,7 +3,7 @@ name: conda iowarp-core
 on:
   push:
     branches:
-      - main-
+      - main
 
 jobs:
   install:
@@ -16,17 +16,32 @@ jobs:
       - name: miniconda
         uses: conda-incubator/setup-miniconda@v3
         with:
-          auto-update-conda: true
-          python-version: 3.12
-          channels: conda-forge,iowarp
+          channels: conda-forge,iowarp          
+#          auto-update-conda: true
+#          python-version: 3.12
+
+      - name: checkout
+        uses: actions/checkout@v5
+        with:
+          repository: iowarp/core
         
       - name: iowarp
         run: |
-          conda install iowarp-core
-          find /usr/share/miniconda
-          /usr/share/miniconda/bin/chimaera_start_runtime &
-          /usr/share/miniconda/bin/wrp_cae
-#           echo $CONDA_PREFIX
+          export CMAKE_PREFIX_PATH=$CONDA_PREFIX
+          conda install -y conda-build
+          conda install -y conda-verify
+          conda install -y anaconda-client
+          conda-build .
+#          conda install iowarp-core
+#          find /usr/share/miniconda
+#          /usr/share/miniconda/bin/chimaera_start_runtime &
+#          /usr/share/miniconda/bin/wrp_cae
+#          echo $CONDA_PREFIX
 #          which chimaera_start_runtime
 #          conda install -c conda-forge libgcc-ng
 #          conda install -y libgcc-ng=11.2.0
+     - name: upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: iowarp-0.1.0-py312_0.tar.bz2
+          path: /usr/share/miniconda/envs/test/conda-bld/linux-64/iowarp-0.1.0-py312_0.tar.bz2
