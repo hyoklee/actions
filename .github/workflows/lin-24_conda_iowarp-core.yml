@@ -22,6 +22,7 @@ jobs:
       - name: iowarp
         run: |
           conda install iowarp-core
+          find /usr/share/miniconda
           echo $CONDA_PREFIX
 #          conda install -c conda-forge libgcc-ng
 #          conda install -y libgcc-ng=11.2.0
