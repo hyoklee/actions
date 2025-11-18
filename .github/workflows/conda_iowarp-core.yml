@@ -45,5 +45,5 @@ jobs:
       - name: upload
         uses: actions/upload-artifact@v4
         with:
-          name: iowarp-0.1.0-py312_0.tar.bz2
-          path: /usr/share/miniconda/envs/test/conda-bld/linux-64/iowarp-0.1.0-py312_0.tar.bz2
+          name: iowarp-core-0.1.0-py313h3fd9d12_0.conda
+          path: /usr/share/miniconda/conda-bld/linux-64/iowarp-core-0.1.0-py313h3fd9d12_0.conda
