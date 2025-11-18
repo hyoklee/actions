@@ -23,7 +23,9 @@ jobs:
         run: |
           conda install iowarp-core
           find /usr/share/miniconda
-          /usr/share/miniconda/bin/chimaera_start_runtime
+          /usr/share/miniconda/bin/chimaera_start_runtime &
+          /usr/share/miniconda/bin/wrp_cae
+          /usr/share/miniconda/bin/chimaera_stop_runtime
 #          echo $CONDA_PREFIX
 #          conda install -c conda-forge libgcc-ng
 #          conda install -y libgcc-ng=11.2.0
