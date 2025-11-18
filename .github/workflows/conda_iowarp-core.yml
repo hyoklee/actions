@@ -17,12 +17,13 @@ jobs:
         uses: conda-incubator/setup-miniconda@v3
         with:
           auto-update-conda: true
-          python-version: 3.13
-          channels: conda-forge
+          python-version: 3.12
+          channels: conda-forge,iowarp
         
       - name: iowarp
         run: |
-          conda install -c iowarp -c conda-forge iowarp-core          
-          which chimaera_start_runtime
+          conda install iowarp-core
+          echo $CONDA_PREFIX         
+#          which chimaera_start_runtime
 #          conda install -c conda-forge libgcc-ng
 #          conda install -y libgcc-ng=11.2.0
