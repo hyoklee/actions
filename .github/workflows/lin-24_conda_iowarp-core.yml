@@ -3,7 +3,7 @@ name: lin-24 conda iowarp-core
 on:
   push:
     branches:
-      - main
+      - main-
 
 jobs:
   install:

@@ -16,7 +16,7 @@ jobs:
       - name: miniconda
         uses: conda-incubator/setup-miniconda@v3
         with:
-          channels: conda-forge,iowarp          
+          channels: conda-forge,iowarp
 #          auto-update-conda: true
 #          python-version: 3.12
 
@@ -24,7 +24,7 @@ jobs:
         uses: actions/checkout@v5
         with:
           repository: iowarp/core
-        
+
       - name: iowarp
         run: |
           export CMAKE_PREFIX_PATH=$CONDA_PREFIX
