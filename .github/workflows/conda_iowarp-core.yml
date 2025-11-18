@@ -1,0 +1,23 @@
+name: conda iowarp-core
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  install:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: apt
+        run: |
+          sudo apt update
+          sudo apt -y install libstdc++6
+      - name: miniconda
+        uses: conda-incubator/setup-miniconda@v3
+      - name: iowarp
+        run: |
+          conda install -c conda-forge libgcc-ng
+          conda install -y libgcc-ng=11.2.0
+          conda install -y iowarp::iowarp-core
+          which chimaera_start_runtime
