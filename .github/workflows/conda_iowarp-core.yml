@@ -16,7 +16,7 @@ jobs:
       - name: miniconda
         uses: conda-incubator/setup-miniconda@v3
         with:
-          channels: conda-forge,iowarp
+          channels: conda-forge, iowarp
 #          auto-update-conda: true
 #          python-version: 3.12
 
@@ -40,7 +40,7 @@ jobs:
 #          which chimaera_start_runtime
 #          conda install -c conda-forge libgcc-ng
 #          conda install -y libgcc-ng=11.2.0
-     - name: upload
+      - name: upload
         uses: actions/upload-artifact@v4
         with:
           name: iowarp-0.1.0-py312_0.tar.bz2
