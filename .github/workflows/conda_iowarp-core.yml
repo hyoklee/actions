@@ -19,6 +19,5 @@ jobs:
         run: |
           conda install -c conda-forge libgcc-ng
           conda install -y libgcc-ng=11.2.0
-          conda install -y conda-forge::cereal
-          conda install -y iowarp::iowarp-core
+          conda install -c iowarp -c conda-forge iowarp-core          
           which chimaera_start_runtime
