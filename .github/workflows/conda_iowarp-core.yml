@@ -48,3 +48,7 @@ jobs:
         with:
           name: iowarp-core-0.6.5-py313h3fd9d12_0.conda
           path: /usr/share/miniconda/conda-bld/linux-64/iowarp-core-0.6.5-py313h3fd9d12_0.conda
+      - name: release
+#        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          anaconda -t  "${{ secrets.ANACONDA_TOKEN }}" upload /usr/share/miniconda/conda-bld/linux-64/iowarp-core-0.6.5-py313h3fd9d12_0.conda
