@@ -33,6 +33,7 @@ jobs:
           conda install -y conda-verify
           conda install -y anaconda-client
           export PATH=/usr/share/miniconda/bin:$PATH
+          which anaconda
           git tag v0.6.5
           conda-build .
 #          conda install iowarp-core
@@ -51,4 +52,5 @@ jobs:
       - name: release
 #        if: startsWith(github.ref, 'refs/tags/v')
         run: |
+          export PATH=/usr/share/miniconda/bin:$PATH
           anaconda -t  "${{ secrets.ANACONDA_TOKEN }}" upload /usr/share/miniconda/conda-bld/linux-64/iowarp-core-0.6.5-py313h3fd9d12_0.conda
