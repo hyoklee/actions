@@ -24,7 +24,6 @@ jobs:
         uses: actions/checkout@v5
         with:
           repository: iowarp/core
-          ref: v0.6.4
           submodules: recursive
 
       - name: iowarp
@@ -34,6 +33,7 @@ jobs:
           conda install -y conda-verify
           conda install -y anaconda-client
           export PATH=/usr/share/miniconda/bin:$PATH
+          git tag v0.6.5
           conda-build .
 #          conda install iowarp-core
 #          find /usr/share/miniconda
@@ -46,5 +46,5 @@ jobs:
       - name: upload
         uses: actions/upload-artifact@v4
         with:
-          name: iowarp-core-0.6.4-py313h3fd9d12_0.conda
-          path: /usr/share/miniconda/conda-bld/linux-64/iowarp-core-0.6.4-py313h3fd9d12_0.conda
+          name: iowarp-core-0.6.5-py313h3fd9d12_0.conda
+          path: /usr/share/miniconda/conda-bld/linux-64/iowarp-core-0.6.5-py313h3fd9d12_0.conda
