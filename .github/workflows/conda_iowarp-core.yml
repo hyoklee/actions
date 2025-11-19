@@ -24,6 +24,7 @@ jobs:
         uses: actions/checkout@v5
         with:
           repository: iowarp/core
+          ref: "v0.6.4"
           submodules: recursive
 
       - name: iowarp
