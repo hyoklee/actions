@@ -51,6 +51,12 @@ jobs:
           path: /usr/share/miniconda/conda-bld/linux-64/iowarp-core-0.6.5-py313h3fd9d12_0.conda
       - name: release
 #        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          ANACONDA_TOKEN: ${{ secrets.ANACONDA_TOKEN }}
         run: |
           export PATH=/usr/share/miniconda/bin:$PATH
-          anaconda -t  "${{ secrets.ANACONDA_TOKEN }}" upload /usr/share/miniconda/conda-bld/linux-64/iowarp-core-0.6.5-py313h3fd9d12_0.conda
+          if [ -z "$ANACONDA_TOKEN" ]; then
+            echo "ANACONDA_TOKEN is not set. Skipping upload."
+            exit 0
+          fi
+          anaconda -t "$ANACONDA_TOKEN" upload /usr/share/miniconda/conda-bld/linux-64/iowarp-core-0.6.5-py313h3fd9d12_0.conda
