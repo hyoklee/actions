@@ -59,4 +59,4 @@ jobs:
             echo "ANACONDA_TOKEN is not set. Skipping upload."
             exit 0
           fi
-          anaconda -v -t "$ANACONDA_TOKEN" upload /usr/share/miniconda/conda-bld/linux-64/iowarp-core-0.6.5-py313h3fd9d12_0.conda
+          anaconda -v upload /usr/share/miniconda/conda-bld/linux-64/iowarp-core-0.6.5-py313h3fd9d12_0.conda
