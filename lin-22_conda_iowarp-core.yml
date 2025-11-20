@@ -3,7 +3,7 @@ name: conda iowarp-core
 on:
   push:
     branches:
-      - main
+      - main-
 
 jobs:
   install:
