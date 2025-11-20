@@ -26,9 +26,11 @@ jobs:
           mkdir build
           cd build
           cmake \
-            -DBUILDNAME:STRING="r" \
+            -DBUILDNAME:STRING="r/ui/ei" \
             -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \
             -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
+            -DCTEST_EXPERIMENTAL_INSTRUMENTATION=ec7aa2dc-b87f-45a3-8022-fe01c5f59984 \
+            -DCTEST_USE_INSTRUMENTATION=1 \
             -DSITE:STRING=ubu-24 \
             ..
             ctest -D Experimental -C Release
