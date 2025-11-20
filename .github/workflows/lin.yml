@@ -13,6 +13,11 @@ jobs:
         with:
           repository: HDFGroup/hdf5
 
+      - name: Get CMake
+        uses: lukka/get-cmake@latest
+        with:
+          cmakeVersion: latest
+
       - name: test
         env:
           CTEST_USE_INSTRUMENTATION: 1
