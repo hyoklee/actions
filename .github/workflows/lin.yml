@@ -1,9 +1,9 @@
-name: lin pr5944 d cpp hl aw da dw tv v16
+name: lin
 
 on:
   push:
     branches:
-      - main-
+      - main
 jobs:
   build:
     runs-on: ubuntu-24.04
@@ -11,27 +11,19 @@ jobs:
       - name: h5
         uses: actions/checkout@v5
         with:
-          repository: fortnern/hdf5
-          ref: def_ff_18
+          repository: HDFGroup/hdf5
 
       - name: test
+        env:
+          CTEST_USE_INSTRUMENTATION: 1
+          CTEST_EXPERIMENTAL_INSTRUMENTATION: ec7aa2dc-b87f-45a3-8022-fe01c5f59984
         run: |
           mkdir build
           cd build
           cmake \
-            -DHDF5_DEFAULT_API_VERSION="v16" \
-            -DBUILDNAME:STRING="pr5949/d/cpp/hl/da/dw/tv/v16" \
-            -DCMAKE_BUILD_TYPE=Debug \
+            -DBUILDNAME:STRING="r" \
             -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \
             -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
-            -DHDF5_BUILD_CPP_LIB:BOOL=ON \
-            -DHDF5_BUILD_HL_LIB:BOOL=ON \
-            -DHDF5_BUILD_FORTRAN=ON \
-            -DHDF5_ENABLE_CONCURRENCY:BOOL=OFF \
-            -DHDF5_ENABLE_THREADSAFE:BOOL=OFF \
-            -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF \
-            -DHDF5_ENABLE_ZLIB_SUPPORT:BOOL=OFF \
             -DSITE:STRING=ubu-24 \
-            -DHDF5_TEST_API=ON -DHDF5_ENABLE_ALL_WARNINGS=ON -DHDF5_ENABLE_DEBUG_APIS:BOOL=ON -DHDF5_ENABLE_DEV_WARNINGS=ON -DHDF5_TEST_VFD:BOOL=ON \
             ..
             ctest -D Experimental -C Release
