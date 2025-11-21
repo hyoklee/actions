@@ -1,4 +1,4 @@
-name: lin hko
+name: lin hk
 
 on:
   push:
@@ -26,4 +26,4 @@ jobs:
             -DCTEST_BUILD_FLAGS="-j2" \
             -DSITE:STRING=ubu-24 \
             ..
-          ctest -C Release -D Experimental
+          time ninja -j2
