@@ -31,14 +31,14 @@ jobs:
             -DCTEST_USE_INSTRUMENTATION=1 \
             -DCTEST_USE_VERBOSE_INSTRUMENTATION=1 \
             -DSITE:STRING=ubu-24 \
-    -DBUILD_SHARED_LIBS=ON \
-    -DBUILD_STATIC_LIBS=OFF \
-    -DBUILD_TESTING=OFF \
-    -DHDF5_BUILD_EXAMPLES=OFF \
-    -DHDF5_BUILD_TOOLS=OFF \
-    -DHDF5_BUILD_HL_LIB=OFF \
-    -DHDF5_BUILD_CPP_LIB=OFF \
-    -DHDF5_BUILD_FORTRAN=OFF \
-    -DHDF5_BUILD_JAVA=OFF \
+            -DBUILD_SHARED_LIBS=ON \
+            -DBUILD_STATIC_LIBS=OFF \
+            -DBUILD_TESTING=OFF \
+            -DHDF5_BUILD_EXAMPLES=OFF \
+            -DHDF5_BUILD_TOOLS=OFF \
+            -DHDF5_BUILD_HL_LIB=OFF \
+            -DHDF5_BUILD_CPP_LIB=OFF \
+            -DHDF5_BUILD_FORTRAN=OFF \
+            -DHDF5_BUILD_JAVA=OFF \
             ..
             ctest -D Experimental -C Release
