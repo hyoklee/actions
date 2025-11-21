@@ -41,4 +41,4 @@ jobs:
             -DHDF5_BUILD_FORTRAN=OFF \
             -DHDF5_BUILD_JAVA=OFF \
             ..
-            ctest -D Experimental -C Release
+            time make -j
