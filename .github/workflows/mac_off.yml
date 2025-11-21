@@ -3,7 +3,7 @@ name: mac off in
 on:
   push:
     branches:
-      - main
+      - main-
 jobs:
   build:
     runs-on: macos-26

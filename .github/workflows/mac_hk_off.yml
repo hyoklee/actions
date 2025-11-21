@@ -1,4 +1,4 @@
-name: mac hk off in
+name: mac hk off in j
 
 on:
   push:
@@ -24,7 +24,7 @@ jobs:
           mkdir build
           cd build
           cmake \
-            -DBUILDNAME:STRING="hk/r/off/ui/ei/vi/j3" \
+            -DBUILDNAME:STRING="hk/r/off/ui/ei/vi/j" \
             -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \
             -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
             -DSITE:STRING=mac-26 \
@@ -38,4 +38,4 @@ jobs:
             -DHDF5_BUILD_FORTRAN=OFF \
             -DHDF5_BUILD_JAVA=OFF \
             ..
-            ctest -C Release -D Experimental -j3
+            ctest -C Release -D Experimental -j
