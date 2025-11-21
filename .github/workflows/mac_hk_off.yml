@@ -1,4 +1,4 @@
-name: mac off in
+name: mac hk off in
 
 on:
   push:
@@ -24,7 +24,7 @@ jobs:
           mkdir build
           cd build
           cmake \
-            -DBUILDNAME:STRING="r/off/ui/ei/vi" \
+            -DBUILDNAME:STRING="hk/r/off/ui/ei/vi" \
             -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \
             -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
             -DSITE:STRING=mac-26 \
