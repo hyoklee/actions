@@ -14,7 +14,7 @@ jobs:
           repository: hyoklee/hdf5
 
       - name: test
-84
+
         run: |
           mkdir build
           cd build
@@ -26,4 +26,4 @@ jobs:
             -DCTEST_BUILD_FLAGS="-j2" \
             -DSITE:STRING=ubu-24 \
             ..
-          ninja
+          ctest -C Release -D Experimental
