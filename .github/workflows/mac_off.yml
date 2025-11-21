@@ -1,17 +1,17 @@
-name: lin hk off in
+name: mac off in
 
 on:
   push:
     branches:
-      - main-
+      - main
 jobs:
   build:
-    runs-on: ubuntu-24.04
+    runs-on: macos-26
     steps:
       - name: h5
         uses: actions/checkout@v5
         with:
-          repository: hyoklee/hdf5
+          repository: HDFGroup/hdf5
       - name: cmake-4.2
         uses: jwlawson/actions-setup-cmake@v2
         with:
@@ -24,10 +24,13 @@ jobs:
           mkdir build
           cd build
           cmake \
-            -DBUILDNAME:STRING="hk/r/off/ui/ei/vi" \
+            -DBUILDNAME:STRING="r/off/ui/ei/vi" \
             -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \
             -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
-            -DSITE:STRING=ubu-24 \
+            -DCTEST_EXPERIMENTAL_INSTRUMENTATION=ec7aa2dc-b87f-45a3-8022-fe01c5f59984 \
+            -DCTEST_USE_INSTRUMENTATION=1 \
+            -DCTEST_USE_VERBOSE_INSTRUMENTATION=1 \
+            -DSITE:STRING=mac-26 \
             -DBUILD_SHARED_LIBS=ON \
             -DBUILD_STATIC_LIBS=OFF \
             -DBUILD_TESTING=ON \
