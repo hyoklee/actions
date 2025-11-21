@@ -1,4 +1,4 @@
-name: lin
+name: lin hko
 
 on:
   push:
@@ -11,16 +11,16 @@ jobs:
       - name: h5
         uses: actions/checkout@v5
         with:
-          repository: HDFGroup/hdf5
+          repository: hyoklee/hdf5
 
       - name: test
-
+84
         run: |
           mkdir build
           cd build
           cmake \
             -G Ninja \
-            -DBUILDNAME:STRING="ninja/r" \
+            -DBUILDNAME:STRING="hk/ninja/r" \
             -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \
             -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
             -DCTEST_BUILD_FLAGS="-j2" \
