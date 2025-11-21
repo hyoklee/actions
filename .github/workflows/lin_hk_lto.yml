@@ -1,0 +1,29 @@
+name: lin hk lto
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: h5
+        uses: actions/checkout@v5
+        with:
+          repository: hyoklee/hdf5
+
+      - name: test
+        run: |
+          mkdir build
+          cd build
+          cmake \
+            -G Ninja \
+            -DBUILDNAME:STRING="hk/ninja/r/lto" \
+            -DCMAKE_C_FLAGS="-flto" \
+            -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \
+            -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
+            -DCTEST_BUILD_FLAGS="-j2" \
+            -DSITE:STRING=ubu-24 \
+            ..
+          time ninja -j2
