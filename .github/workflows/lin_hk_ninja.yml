@@ -1,4 +1,4 @@
-name: lin hk
+name: lin hk ninja
 
 on:
   push:
@@ -21,7 +21,8 @@ jobs:
           mkdir build
           cd build
           cmake \
-            -DBUILDNAME:STRING="hk/r" \
+            -G Ninja \
+            -DBUILDNAME:STRING="hk/ninja/r" \
             -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \
             -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
             -DSITE:STRING=ubu-24 \
