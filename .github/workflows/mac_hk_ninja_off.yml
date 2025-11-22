@@ -1,0 +1,42 @@
+name: mac hk ninja off in j
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: macos-26
+    steps:
+      - name: h5
+        uses: actions/checkout@v5
+        with:
+          repository: hyoklee/hdf5
+      - name: cmake-4.2
+        uses: jwlawson/actions-setup-cmake@v2
+        with:
+          cmakeVersion: latest
+      - name: test
+        env:
+          CTEST_USE_INSTRUMENTATION: 1
+          CTEST_EXPERIMENTAL_INSTRUMENTATION: ec7aa2dc-b87f-45a3-8022-fe01c5f59984
+        run: |
+          mkdir build
+          cd build
+          cmake \
+            -G Ninja \
+            -DBUILDNAME:STRING="hk/ninja/r/off/ui/ei/vi/j" \
+            -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \
+            -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
+            -DSITE:STRING=mac-26 \
+            -DBUILD_SHARED_LIBS=ON \
+            -DBUILD_STATIC_LIBS=OFF \
+            -DBUILD_TESTING=ON \
+            -DHDF5_BUILD_EXAMPLES=OFF \
+            -DHDF5_BUILD_TOOLS=OFF \
+            -DHDF5_BUILD_HL_LIB=OFF \
+            -DHDF5_BUILD_CPP_LIB=OFF \
+            -DHDF5_BUILD_FORTRAN=OFF \
+            -DHDF5_BUILD_JAVA=OFF \
+            ..
+            ctest -C Release -D Experimental -j
