@@ -1,9 +1,9 @@
-name: lin hk
+name: lin hk cmake-4.2 ninja
 
 on:
   push:
     branches:
-      - main-
+      - main
 jobs:
   build:
     runs-on: ubuntu-24.04
@@ -12,7 +12,10 @@ jobs:
         uses: actions/checkout@v5
         with:
           repository: hyoklee/hdf5
-
+      - name: cmake-4.2
+        uses: jwlawson/actions-setup-cmake@v2
+        with:
+          cmakeVersion: latest
       - name: test
         env:        
           CTEST_USE_INSTRUMENTATION: 1
@@ -21,7 +24,8 @@ jobs:
           mkdir build
           cd build
           cmake \
-            -DBUILDNAME:STRING="hk/r" \
+            -G Ninja \
+            -DBUILDNAME:STRING="hk/cmake-4.2/ninja/r" \
             -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \
             -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
             -DSITE:STRING=ubu-24 \

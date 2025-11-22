@@ -3,7 +3,7 @@ name: lin hk ninja
 on:
   push:
     branches:
-      - main
+      - main-
 jobs:
   build:
     runs-on: ubuntu-24.04

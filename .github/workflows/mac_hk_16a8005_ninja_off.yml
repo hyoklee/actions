@@ -3,7 +3,7 @@ name: mac hk 16a8005 ninja off in j
 on:
   push:
     branches:
-      - main
+      - main-
 jobs:
   build:
     runs-on: macos-26
