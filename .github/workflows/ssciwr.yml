@@ -1,0 +1,12 @@
+name: ssciwr
+on:
+  push:
+    branches: develop
+jobs:
+  build:    
+    runs-on: windows-latest
+    steps:
+      - name: Install Dependencies
+        uses: ssciwr/doxygen-install@v1
+        with:
+          version: "1.14.0"
