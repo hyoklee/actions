@@ -3,7 +3,7 @@ name: lin hk cmake-4.2 ninja off
 on:
   push:
     branches:
-      - main
+      - main-
 jobs:
   build:
     runs-on: ubuntu-24.04
