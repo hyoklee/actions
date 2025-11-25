@@ -14,10 +14,9 @@ jobs:
           - mingw32
           - ucrt64
           - clang64
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
         os: [windows-2022, windows-2025, windows-11-arm]
+    runs-on: ${{ matrix.os }}
+
     steps:
       - name: git
         run: git config --global core.autocrlf input
