@@ -46,6 +46,6 @@ jobs:
             -DBUILDNAME:STRING="hk/ninja" \
             -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \
             -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
-            -DSITE:STRING="msys2.${{ matrix.os }}" \
+            -DSITE:STRING="${{ matrix.sys }}.${{ matrix.os }}" \
             ..
           ctest -D Experimental -j
