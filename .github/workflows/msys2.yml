@@ -14,7 +14,7 @@ jobs:
 #          - mingw32
 #          - ucrt64
           - clang64
-         os: [windows-2025]
+         os: windows-2025
 #        os: [windows-2022, windows-2025, windows-11-arm]
     runs-on: ${{ matrix.os }}
 
