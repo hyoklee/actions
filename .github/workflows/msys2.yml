@@ -3,7 +3,7 @@ name: msys2
 on:
   push:
     branches:
-      - main-
+      - main
 
 jobs:
   build:
@@ -14,13 +14,16 @@ jobs:
           - mingw32
           - ucrt64
           - clang64
-    runs-on: windows-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-2022, windows-2025, windows-11-arm]
     steps:
       - name: git
         run: git config --global core.autocrlf input
 
       - name: get
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           repository: hyoklee/hdf5
           path: .
@@ -40,6 +43,10 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake  -DH5_HAVE_ALARM:INTERNAL=0 -DH5_HAVE_ASPRINTF:INTERNAL=0 -DH5_HAVE_VASPRINTF:INTERNAL=0 ..
-          ninja
-#          ninja test
+          cmake -G Ninja \
+            -DBUILDNAME:STRING="hk/ninja" \
+            -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \
+            -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
+            -DSITE:STRING="msys2.${{ matrix.os }}" \
+            ..
+          ctest -D Experimental -j
