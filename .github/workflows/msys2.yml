@@ -14,7 +14,7 @@ jobs:
 #          - mingw32
 #          - ucrt64
           - clang64
-        os: [windows-2025]
+        os: [windows-11-arm]
 #        os: [windows-2022, windows-2025, windows-11-arm]
     runs-on: ${{ matrix.os }}
 
@@ -49,4 +49,4 @@ jobs:
             -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
             -DSITE:STRING="${{ matrix.sys }}.${{ matrix.os }}" \
             ..
-          ctest -D Experimental -j -E "dt_arith"
+          ctest -D Experimental -E "dt_arith" -j 
