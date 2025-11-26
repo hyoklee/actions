@@ -10,12 +10,12 @@ jobs:
     strategy:
       matrix:
         sys:
-#          - mingw64
-#          - mingw32
-#          - ucrt64
+          - mingw64
+          - mingw32
+          - ucrt64
           - clang64
-        os: [windows-11-arm]
-#        os: [windows-2022, windows-2025, windows-11-arm]
+        os: [windows-2022, windows-2025, windows-11-arm]
+#        os: [windows-11-arm]        
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -45,9 +45,11 @@ jobs:
           cd build
           cmake -G Ninja \
             -DBUILDNAME:STRING="5975/ninja" \
+            -DHDF5_TEST_API=OFF \
             -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \
             -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
             -DSITE:STRING="${{ matrix.sys }}.${{ matrix.os }}" \
             ..
-          ctest -R "h5_api_test_object"
+           ctest -D Experimental -j
+#          ctest -R "h5_api_test_object"
 #          ctest -D Experimental -E "dt_arith" -j 
