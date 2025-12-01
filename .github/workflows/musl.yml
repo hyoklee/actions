@@ -1,0 +1,34 @@
+name: musl
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v6
+        with:
+          repository: HDFGroup/hdf5
+
+      - name: setup musl
+        uses: muslcc
+        with:
+          arch: x86_64
+          packages: >
+            build-base
+            cmake
+      - name: run script
+        run: |
+          mkdir build
+          cd build
+          cmake -DSITE:STRING=musl \
+            -DBUILDNAME:STRING="r" \
+            -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
+            -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \
+             ..
+          ctest -D Experimental -C Release
+
