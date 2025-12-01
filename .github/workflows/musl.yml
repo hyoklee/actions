@@ -8,21 +8,16 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    container: "muslcc/x86_64"    
     steps:
       - name: checkout
         uses: actions/checkout@v6
         with:
           repository: HDFGroup/hdf5
 
-      - name: setup musl
-        uses: muslcc
-        with:
-          arch: x86_64
-          packages: >
-            build-base
-            cmake
       - name: run script
         run: |
+          sudo apt install -y gfortran-14-riscv64-linux-gnu
           mkdir build
           cd build
           cmake -DSITE:STRING=musl \
