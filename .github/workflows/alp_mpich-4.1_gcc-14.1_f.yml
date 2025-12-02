@@ -23,6 +23,7 @@ jobs:
             build-base
             cmake
             flex
+            expat-dev
             gawk
             gfortran
             git
