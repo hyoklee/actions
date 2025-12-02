@@ -23,6 +23,7 @@ jobs:
             libgit2-dev
             cmake
             gfortran
+            gawk
             git
       - name: test
         run: |
