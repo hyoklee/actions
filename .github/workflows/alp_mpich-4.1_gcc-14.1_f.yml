@@ -23,9 +23,11 @@ jobs:
             build-base
             cmake
             flex
-            gfortran
             gawk
+            gfortran
             git
+            gmp-dev
+            mpfr-dev
             sudo
             texinfo
             wget
