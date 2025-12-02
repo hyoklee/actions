@@ -19,12 +19,14 @@ jobs:
         with:
           arch: x86
           packages: >
+            bison
             build-base
-            libgit2-dev
             cmake
+            flex
             gfortran
             gawk
             git
+            texinfo
       - name: test
         run: |
           git clone https://github.com/riscv-collab/riscv-gnu-toolchain
