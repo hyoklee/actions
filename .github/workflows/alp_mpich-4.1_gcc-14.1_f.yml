@@ -32,6 +32,7 @@ jobs:
             sudo
             texinfo
             wget
+            zlib-dev
       - name: test
         run: |
           echo $HOME
