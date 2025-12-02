@@ -10,20 +10,11 @@ jobs:
     runs-on: ubuntu-latest
     container: "muslcc/x86_64:x86_64-linux-musl"    
     steps:
-      - name: Use Node.js 20.x on Alpine
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20.x'
-          cache: 'npm'
-          check-latest: true      
-      - name: checkout
-        uses: actions/checkout@v6
-        with:
-          repository: HDFGroup/hdf5
-
-      - name: run script
+      - name: test
         run: |
-          sudo apt install -y gfortran-14-riscv64-linux-gnu
+          apk add cmake git build-base
+          git clone https://github.com/HDFGroup/hdf5
+          cd hdf5
           mkdir build
           cd build
           cmake -DSITE:STRING=musl \
