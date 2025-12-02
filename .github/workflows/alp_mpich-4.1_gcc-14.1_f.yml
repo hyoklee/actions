@@ -26,6 +26,7 @@ jobs:
             gfortran
             gawk
             git
+            sudo
             texinfo
             wget
       - name: test
