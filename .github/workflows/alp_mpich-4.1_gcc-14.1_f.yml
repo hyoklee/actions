@@ -23,6 +23,7 @@ jobs:
             libgit2-dev
             cmake
             gfortran
+            git
       - name: test
         run: |
           git clone https://github.com/riscv-collab/riscv-gnu-toolchain
