@@ -3,7 +3,7 @@ name: musl
 on:
   push:
     branches:
-      - main
+      - main-
 
 jobs:
   build:

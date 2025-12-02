@@ -1,0 +1,69 @@
+name: alp mpich-4.1 gcc-14.1 f
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: checkout
+        uses: actions/checkout@v5
+        with:
+          repository: HDFGroup/hdf5
+
+      - name: alpine
+        uses: jirutka/setup-alpine@v1
+        with:
+          arch: x86
+          packages: >
+            build-base
+            libgit2-dev
+            cmake
+            gfortran
+      - name: test
+        run: |
+          git clone https://github.com/riscv-collab/riscv-gnu-toolchain
+          cd riscv-gnu-toolchain
+          ./configure  --with-arch=rv64gcv --with-abi=lp64d--with-languages=c,c++,fortran
+          make -j musl
+          sudo make install
+          wget https://www.mpich.org/static/downloads/4.1/mpich-4.1.tar.gz
+          tar -xzf mpich-4.1.tar.gz
+          cd mpich-4.1
+          ./configure \
+            --prefix=/mpich-riscv64 \
+            --host=riscv64-linux-gnu \
+             CC=riscv64-linux-gnu-gcc-14 \
+             CXX=riscv64-linux-gnu-g++-14 \
+             FC=riscv64-linux-gnu-gfortran-14 \
+             F77=riscv64-linux-gnu-gfortran-14 \
+             --enable-fortran=all \
+             --enable-static --enable-shared \
+             CROSS_F77_SIZEOF_INTEGER=4 \
+             CROSS_F77_SIZEOF_REAL=4 \
+             CROSS_F77_SIZEOF_DOUBLE_PRECISION=8 \
+             CROSS_F90_ADDRESS_KIND=8 \
+             CROSS_F90_OFFSET_KIND=8 \
+             CROSS_F90_INTEGER_KIND=4 \
+             CROSS_F90_REAL_MODEL=15,307 \
+             CROSS_F90_DOUBLE_MODEL=15,307
+          make -j
+          sudo make install
+          cd ..
+          rm -rf mpich-4.1 mpich-4.1.tar.gz
+          mkdir build
+          cd build
+          cmake \
+            -DBUILDNAME:STRING="mpich-4.1/gcc-14.1/f" \
+            -DCMAKE_BUILD_TYPE=Debug \
+            -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
+            -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \
+            -DHDF5_BUILD_FORTRAN=ON \
+            -DHDF5_ENABLE_PARALLEL=ON \
+            -DSITE:STRING=alp \
+             ..
+          ctest -C Debug -D Experimental
+        shell: alpine.sh --root {0}
