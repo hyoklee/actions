@@ -52,6 +52,9 @@ jobs:
              CC=riscv64-unknown-linux-musl-gcc \
              CXX=riscv64-unknown-linux-musl-g++ \
              FC=riscv64-unknown-linux-musl-gfortran \
+             CROSS_F77_SIZEOF_INTEGER=4 \
+             CROSS_F77_SIZEOF_REAL=4 \
+             CROSS_F77_SIZEOF_DOUBLE_PRECISION=8 \
              CROSS_F90_ADDRESS_KIND=8 \
              CROSS_F90_OFFSET_KIND=8 \
              CROSS_F90_INTEGER_KIND=4 \
