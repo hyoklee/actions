@@ -27,6 +27,7 @@ jobs:
             gawk
             git
             texinfo
+            wget
       - name: test
         run: |
           git clone https://github.com/riscv-collab/riscv-gnu-toolchain
