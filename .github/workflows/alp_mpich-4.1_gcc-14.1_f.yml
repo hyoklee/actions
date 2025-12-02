@@ -51,19 +51,13 @@ jobs:
              CC=riscv64-linux-gnu-gcc-14 \
              CXX=riscv64-linux-gnu-g++-14 \
              FC=riscv64-linux-gnu-gfortran-14 \
-             F77=riscv64-linux-gnu-gfortran-14 \
-             --enable-fortran=all \
-             --enable-static --enable-shared \
-             CROSS_F77_SIZEOF_INTEGER=4 \
-             CROSS_F77_SIZEOF_REAL=4 \
-             CROSS_F77_SIZEOF_DOUBLE_PRECISION=8 \
              CROSS_F90_ADDRESS_KIND=8 \
              CROSS_F90_OFFSET_KIND=8 \
              CROSS_F90_INTEGER_KIND=4 \
              CROSS_F90_REAL_MODEL=15,307 \
              CROSS_F90_DOUBLE_MODEL=15,307
-          make -j
-          sudo make install
+          make
+          make install
           cd ..
           rm -rf mpich-4.1 mpich-4.1.tar.gz
           mkdir build
