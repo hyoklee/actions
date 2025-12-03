@@ -1,0 +1,13 @@
+name: win iowarp
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: windows-2025
+    steps:
+      - name: test
+        run: |
+          git clone https://github.com/iowarp/core
