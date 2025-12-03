@@ -3,7 +3,7 @@ name: alp mpich-4.1 gcc-14.1 f
 on:
   push:
     branches:
-      - main
+      - main-
 
 jobs:
   build:

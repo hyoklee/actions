@@ -1,0 +1,24 @@
+name: iowarp
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: test
+        run: |
+          sudo apt-get install -y \
+            build-essential cmake pkg-config \
+            libboost-context-dev libboost-fiber-dev libboost-system-dev \
+            libelf-dev libzmq3-dev libyaml-cpp-dev \
+            libhdf5-dev \
+            libbz2-dev liblzo2-dev libzstd-dev liblz4-dev \
+            zlib1g-dev liblzma-dev libbrotli-dev libsnappy-dev libblosc2-dev \
+            libmpich-dev
+          python -m venv venv
+          source venv/bin/activate
+          curl -fsSL https://raw.githubusercontent.com/iowarp/iowarp-install/main/install.sh | bash
+#          chimaera_start_runtime
