@@ -3,7 +3,7 @@ name: alp mpich-4.1 gcc-14.1 f
 on:
   push:
     branches:
-      - main-
+      - main
 
 jobs:
   build:
@@ -68,8 +68,11 @@ jobs:
           rm -rf mpich-4.1 mpich-4.1.tar.gz
           mkdir build
           cd build
+          export CC=/home/runner/.local/bin/mpicc
+          export FC=/home/runner/.local/bin/mpifort
+          export LD_LIBRARY_PATH=/home/runner/.local/:$LD_LIBRARY_PATH
           cmake \
-            -DBUILDNAME:STRING="mpich-4.1/gcc-14.1/f" \
+            -DBUILDNAME:STRING="x86_64.riscv/mpich-4.1/gcc-14.1/f" \
             -DCMAKE_BUILD_TYPE=Debug \
             -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
             -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \
