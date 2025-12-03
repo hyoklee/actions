@@ -29,6 +29,7 @@ jobs:
             git
             gmp-dev
             mpfr-dev
+            python3
             sudo
             texinfo
             wget
