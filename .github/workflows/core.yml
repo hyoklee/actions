@@ -1,0 +1,22 @@
+name: core
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [macos-15-intel, macos-15, windows-2022, windows-2025, windows-11-arm]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: get
+        uses: actions/checkout@v6
+        with:
+          repository: iowarp/core
+      - name: test
+        run: |
+          git clone https://github.com/iowarp/core
+          cd core
+          bash ./install.sh
