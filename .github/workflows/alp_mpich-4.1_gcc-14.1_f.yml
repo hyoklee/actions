@@ -71,6 +71,14 @@ jobs:
           export CC=/home/runner/.local/bin/mpicc
           export FC=/home/runner/.local/bin/mpifort
           export LD_LIBRARY_PATH=/home/runner/.local/:$LD_LIBRARY_PATH
+          export CROSS_F77_SIZEOF_INTEGER=4
+          export CROSS_F77_SIZEOF_REAL=4
+          export CROSS_F77_SIZEOF_DOUBLE_PRECISION=8
+          export CROSS_F90_ADDRESS_KIND=8
+          export CROSS_F90_OFFSET_KIND=8
+          export CROSS_F90_INTEGER_KIND=4
+          export CROSS_F90_REAL_MODEL=15,307
+          export CROSS_F90_DOUBLE_MODEL=15,307
           cmake \
             -DBUILDNAME:STRING="x86_64.riscv/mpich-4.1/gcc-14.1/f" \
             -DCMAKE_BUILD_TYPE=Debug \
