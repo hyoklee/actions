@@ -47,7 +47,7 @@ jobs:
             --disable-fortran \
             --host=riscv64-linux-musl \
              CC=riscv64-unknown-linux-musl-gcc \
-             CXX=riscv64-unknown-linux-musl-g++ \
+             CXX=riscv64-unknown-linux-musl-g++
           make -j2
           make install
           cd ..
