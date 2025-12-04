@@ -3,7 +3,7 @@ name: core
 on:
   push:
     branches:
-      - main
+      - main-
 jobs:
   build:
     strategy:
@@ -18,6 +18,4 @@ jobs:
           repository: iowarp/core
       - name: test
         run: |
-          git clone https://github.com/iowarp/core
-          cd core
-          bash ./install.sh
+          ./install.sh

@@ -68,9 +68,13 @@ jobs:
           rm -rf mpich-4.1 mpich-4.1.tar.gz
           mkdir build
           cd build
-          export CC=/home/runner/.local/bin/mpicc
-          export FC=/home/runner/.local/bin/mpifort
-          export LD_LIBRARY_PATH=/home/runner/.local/:$LD_LIBRARY_PATH
+          export CC=riscv64-unknown-linux-musl-gcc
+          export CXX=riscv64-unknown-linux-musl-g++
+          export FC=riscv64-unknown-linux-musl-gfortran
+          export LD_LIBRARY_PATH=/home/runner/.local/lib:$LD_LIBRARY_PATH
+          export MPI_C_COMPILER=/home/runner/.local/bin/mpicc
+          export MPI_CXX_COMPILER=/home/runner/.local/bin/mpicxx)
+          export MPI_Fortran_COMPILER=/home/runner/.local/bin/mpifort
           export CROSS_F77_SIZEOF_INTEGER=4
           export CROSS_F77_SIZEOF_REAL=4
           export CROSS_F77_SIZEOF_DOUBLE_PRECISION=8
@@ -79,7 +83,10 @@ jobs:
           export CROSS_F90_INTEGER_KIND=4
           export CROSS_F90_REAL_MODEL=15,307
           export CROSS_F90_DOUBLE_MODEL=15,307
+          export RISCV_ARCH_FLAGS="-march=rv64gc -mabi=lp64d"
           cmake \
+            -DCMAKE_CROSSCOMPILING=TRUE \
+            -DCMAKE_SYSTEM_PROCESSOR=riscv64 \
             -DBUILDNAME:STRING="x86_64.riscv/mpich-4.1/gcc-14.1/f" \
             -DCMAKE_BUILD_TYPE=Debug \
             -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
