@@ -73,7 +73,7 @@ jobs:
           export FC=riscv64-unknown-linux-musl-gfortran
           export LD_LIBRARY_PATH=/home/runner/.local/lib:$LD_LIBRARY_PATH
           export MPI_C_COMPILER=/home/runner/.local/bin/mpicc
-          export MPI_CXX_COMPILER=/home/runner/.local/bin/mpicxx)
+          export MPI_CXX_COMPILER=/home/runner/.local/bin/mpicxx
           export MPI_Fortran_COMPILER=/home/runner/.local/bin/mpifort
           export CROSS_F77_SIZEOF_INTEGER=4
           export CROSS_F77_SIZEOF_REAL=4
