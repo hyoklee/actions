@@ -55,7 +55,7 @@ jobs:
         if: always()
         with:
           name: config-log
-          path: /home/runner/actions/actions/mpich-4.1/config.log
+          path: /home/runner/work/actions/actions/mpich-4.1/config.log
           # make -j2
           # make install
           # cd ..
