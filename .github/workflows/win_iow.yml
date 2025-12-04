@@ -11,4 +11,5 @@ jobs:
       - name: test
         run: |
           git clone https://github.com/iowarp/core
+          cd core
           bash ./install.sh
