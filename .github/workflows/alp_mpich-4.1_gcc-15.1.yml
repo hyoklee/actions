@@ -44,7 +44,8 @@ jobs:
           echo $PATH
           export PATH=/home/runner/work/actions/actions/riscv/bin:$PATH
           which riscv64-unknown-linux-musl-gcc
-          /home/runner/work/actions/actions/riscv/bin/riscv64-unknown-linux-musl-gcc -v
+          file /home/runner/work/actions/actions/riscv/bin/riscv64-unknown-linux-musl-gcc
+          /home/runner/work/actions/actions/riscv/bin/riscv64-unknown-linux-musl-gcc
           wget -q  https://www.mpich.org/static/downloads/4.1/mpich-4.1.tar.gz
           tar -xzf mpich-4.1.tar.gz
           cd mpich-4.1
