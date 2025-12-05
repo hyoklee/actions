@@ -25,7 +25,6 @@ jobs:
             flex
             expat-dev
             gawk
-            gcompat
             gfortran
             git
             gmp-dev
