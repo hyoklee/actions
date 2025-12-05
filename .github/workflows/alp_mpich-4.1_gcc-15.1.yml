@@ -36,16 +36,19 @@ jobs:
             zlib-dev
       - name: test
         run: |
+          pwd
           wget -q  https://github.com/riscv-collab/riscv-gnu-toolchain/releases/download/2025.11.27/riscv64-musl-ubuntu-24.04-gcc.tar.xz
-          tar -xvf riscv64-musl-ubuntu-24.04-gcc.tar.xz
+          tar -xf riscv64-musl-ubuntu-24.04-gcc.tar.xz
           pwd
           ls -l /home/runner/work/actions/actions/riscv/bin
+          echo $PATH
+          export PATH=/home/runner/work/actions/actions/riscv/bin:$PATH
           ./riscv/bin/riscv64-unknown-linux-musl-gcc -v
           /home/runner/work/actions/actions/riscv/bin/riscv64-unknown-linux-musl-gcc -v
           wget -q  https://www.mpich.org/static/downloads/4.1/mpich-4.1.tar.gz
           tar -xzf mpich-4.1.tar.gz
           cd mpich-4.1
-          export PATH=/home/runner/work/actions/actions/riscv/bin:$PATH
+
           ./configure \
             --prefix=$HOME/.local \
             --disable-fortran \
