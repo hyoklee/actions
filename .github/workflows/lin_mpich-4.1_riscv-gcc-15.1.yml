@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           repository: HDFGroup/hdf5
       - name: test
@@ -36,50 +36,3 @@ jobs:
             --host=riscv64-linux-musl \
              CC=/home/runner/work/actions/actions/riscv/bin/riscv64-unknown-linux-musl-gcc \
              CXX=/home/runner/work/actions/actions/riscv/bin/riscv64-unknown-linux-musl-g++ || true
-        shell: alpine.sh --root {0}
-      - name: Upload config.log on failure
-        uses: actions/upload-artifact@v4
-        # This condition ensures the step runs even if 'Run Configure' failed.
-        if: always()
-        with:
-          name: config-log
-          path: /home/runner/work/actions/actions/mpich-4.1/config.log
-          # make -j2
-          # make install
-          # cd ..
-          # rm -rf mpich-4.1 mpich-4.1.tar.gz
-          # mkdir build
-          # cd build
-          # export CC=riscv64-unknown-linux-musl-gcc
-          # export CXX=riscv64-unknown-linux-musl-g++
-          # export FC=riscv64-unknown-linux-musl-gfortran
-          # export LD_LIBRARY_PATH=/home/runner/.local/lib:$LD_LIBRARY_PATH
-          # export MPI_C_COMPILER=/home/runner/.local/bin/mpicc
-          # export MPI_CXX_COMPILER=/home/runner/.local/bin/mpicxx
-          # export MPI_Fortran_COMPILER=/home/runner/.local/bin/mpifort
-          # export CROSS_F77_SIZEOF_INTEGER=4
-          # export CROSS_F77_SIZEOF_REAL=4
-          # export CROSS_F77_SIZEOF_DOUBLE_PRECISION=8
-          # export CROSS_F90_ADDRESS_KIND=8
-          # export CROSS_F90_OFFSET_KIND=8
-          # export CROSS_F90_INTEGER_KIND=4
-          # export CROSS_F90_REAL_MODEL=15,307
-          # export CROSS_F90_DOUBLE_MODEL=15,307
-          # export RISCV_ARCH_FLAGS="-march=rv64gc -mabi=lp64d"
-          # cmake \
-          #   -DCMAKE_INSTALL_PREFIX=$HOME/.local \
-          #   -DCMAKE_CROSSCOMPILING=TRUE \
-          #   -DCMAKE_SYSTEM_PROCESSOR=riscv64 \
-          #   -DBUILDNAME:STRING="x86_64.riscv/mpich-4.1/gcc-15.1" \
-          #   -DCMAKE_BUILD_TYPE=Debug \
-          #   -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
-          #   -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \
-          #   -DHDF5_BUILD_FORTRAN=OFF \
-          #   -DHDF5_ENABLE_PARALLEL=ON \
-          #   -DSITE:STRING="alp" \
-          #   ..
-          # make -j2
-          # make install
-          # ls $HOME/.local/lib/pkgconfig
-          # cat $HOME/.local/lib/pkgconfig/hdf5.pc
-
