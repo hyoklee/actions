@@ -3,7 +3,7 @@ name: lin  mpich-4.1 riscv-gcc-15.1
 on:
   push:
     branches:
-      - main
+      - main-
 
 jobs:
   build:
