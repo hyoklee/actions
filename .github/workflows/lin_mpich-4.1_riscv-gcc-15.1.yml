@@ -1,9 +1,9 @@
-name: alp mpich-4.1 gcc-15.1
+name: lin  mpich-4.1 riscv-gcc-15.1
 
 on:
   push:
     branches:
-      - main-
+      - main
 
 jobs:
   build:
@@ -13,28 +13,6 @@ jobs:
         uses: actions/checkout@v5
         with:
           repository: HDFGroup/hdf5
-
-      - name: alpine
-        uses: jirutka/setup-alpine@v1
-        with:
-          arch: x86_64
-          packages: >
-            bison
-            build-base
-            cmake
-            flex
-            expat-dev
-            gawk
-            gcomp
-            gfortran
-            git
-            gmp-dev
-            mpfr-dev
-            python3
-            sudo
-            texinfo
-            wget
-            zlib-dev
       - name: test
         run: |
           pwd
