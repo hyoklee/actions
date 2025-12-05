@@ -3,7 +3,7 @@ name: alp mpich-4.1 gcc-14.1 f
 on:
   push:
     branches:
-      - main-
+      - main
 
 jobs:
   build:
@@ -17,7 +17,7 @@ jobs:
       - name: alpine
         uses: jirutka/setup-alpine@v1
         with:
-          arch: x86
+          arch: x86_64
           packages: >
             bison
             build-base
@@ -87,11 +87,11 @@ jobs:
           cmake \
             -DCMAKE_CROSSCOMPILING=TRUE \
             -DCMAKE_SYSTEM_PROCESSOR=riscv64 \
-            -DBUILDNAME:STRING="x86_64.riscv/mpich-4.1/gcc-15.1" \
+            -DBUILDNAME:STRING="x86_64.riscv/mpich-4.1/gcc-15.1/f" \
             -DCMAKE_BUILD_TYPE=Debug \
             -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
             -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \
-            -DHDF5_BUILD_FORTRAN=OFF \
+            -DHDF5_BUILD_FORTRAN=ON \
             -DHDF5_ENABLE_PARALLEL=ON \
             -DSITE:STRING="alp" \
             ..

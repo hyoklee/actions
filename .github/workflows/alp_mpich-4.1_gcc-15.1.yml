@@ -48,13 +48,10 @@ jobs:
           file /home/runner/work/actions/actions/riscv/bin/riscv64-unknown-linux-musl-gcc
           ls /
           ls /lib
-          mkdir -p /lib64
-          ln -s /lib/ld-musl-x86_64.so.1 /lib64/ld-linux-x86-64.so.2
           /home/runner/work/actions/actions/riscv/bin/riscv64-unknown-linux-musl-gcc
           wget -q  https://www.mpich.org/static/downloads/4.1/mpich-4.1.tar.gz
           tar -xzf mpich-4.1.tar.gz
           cd mpich-4.1
-
           ./configure \
             --prefix=$HOME/.local \
             --disable-fortran \
