@@ -1,0 +1,17 @@
+name: win-11 llvm
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-11-arm
+    steps:
+      - name: ninja
+        uses: lukka/get-cmake@latest    
+      - name: llvm
+        uses: KyleMayes/install-llvm-action@v2
+        with:
+          version: "21.1.2"
