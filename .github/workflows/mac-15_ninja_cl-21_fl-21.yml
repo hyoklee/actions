@@ -1,13 +1,13 @@
-name: amd64 mac-15 ninja cl-21 fl-21
+name: mac-15 ninja cl-21 fl-21
 
 on:
   push:
     branches:
-      - main-
+      - main
 
 jobs:
   build:
-    runs-on: macos-15-intel
+    runs-on: macos-15
     steps:
       - name: checkout
         uses: actions/checkout@v5
@@ -21,10 +21,10 @@ jobs:
 
       - name: test
         run: |
-          ls /usr/local/bin/flang*
-          export FC=/usr/local/bin/flang-21
-          export CC=/usr/local/Cellar/llvm/21.1.7/bin/clang
-          export CXX=/usr/local/Cellar/llvm/21.1.7/bin/clang++
+          ls /opt/brew/bin/flang*
+          export FC=/opt/brew/bin/flang-21
+          export CC=/opt/brew/Cellar/llvm/21.1.7/bin/clang
+          export CXX=/opt/brew/Cellar/llvm/21.1.7/bin/clang++
           mkdir build
           cd build
           cmake -G Ninja \
