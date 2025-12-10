@@ -1,7 +1,8 @@
 name: amd64 mac-15 ninja cl-21 fl-21
 on:
   push:
-    branches: main
+    branches:
+      - main
 jobs:
   build:
     runs-on: macos-15-intel
