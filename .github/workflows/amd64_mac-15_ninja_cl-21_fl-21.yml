@@ -34,3 +34,4 @@ jobs:
             -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \
             -DHDF5_BUILD_FORTRAN=ON \
             ..
+          ctest -D Experimental
