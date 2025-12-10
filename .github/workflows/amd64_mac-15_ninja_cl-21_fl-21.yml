@@ -11,7 +11,7 @@ jobs:
           brew update
           brew install flang
       - name: checkout
-        uses: actions/checkout@v6.0.1
+        uses: actions/checkout@v6
         with:
           repository: HDFGroup/hdf5
       - name: test
