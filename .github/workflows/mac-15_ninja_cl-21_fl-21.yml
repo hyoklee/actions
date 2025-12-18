@@ -10,7 +10,7 @@ jobs:
     runs-on: macos-15
     steps:
       - name: checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           repository: HDFGroup/hdf5
 
@@ -21,10 +21,11 @@ jobs:
 
       - name: test
         run: |
-          ls /opt/homebrew/bin/flang*
+          ls -l /opt/homebrew/bin/flang*
+          ls -l /opt/homebrew/bin/clang*          
           export FC=/opt/homebrew/bin/flang-21
-          export CC=/opt/homebrew/Cellar/llvm/21.1.7/bin/clang
-          export CXX=/opt/homebrew/Cellar/llvm/21.1.7/bin/clang++
+          export CC=/opt/homebrew/Cellar/llvm/21.1.8/bin/clang
+          export CXX=/opt/homebrew/Cellar/llvm/21.1.8/bin/clang++
           mkdir build
           cd build
           cmake -G Ninja \
