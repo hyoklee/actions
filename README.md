@@ -105,7 +105,7 @@ Actions speak louder than codes.
 | Ubuntu 22.04 | CMake | icx |  [![lin icx d](https://github.com/hyoklee/actions/actions/workflows/lin-icx-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/lin-icx-d.yml)  |
 | Ubuntu 22.04 | Autotools | icx |  [![lin auto icx d](https://github.com/hyoklee/actions/actions/workflows/lin-auto-icx-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/lin-auto-icx-d.yml) |
 | Mac | CMake | AppleClang | [![mac-26 d](https://github.com/hyoklee/actions/actions/workflows/mac-26-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac-26-d.yml) [![mac14 d](https://github.com/hyoklee/actions/actions/workflows/mac14-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac14-d.yml) [![mac13 d](https://github.com/hyoklee/actions/actions/workflows/mac13-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac13-d.yml) |
-| Windows | CMake | MSVC | [![win d](https://github.com/hyoklee/actions/actions/workflows/win-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/win-d.yml)  [![win19 d](https://github.com/hyoklee/actions/actions/workflows/win19-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/win19-d.yml)|
+| Windows | CMake | MSVC | [![win d](https://github.com/hyoklee/actions/actions/workflows/win_d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/win_d.yml)  [![win19 d](https://github.com/hyoklee/actions/actions/workflows/win19-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/win19-d.yml)|
 
 ## Parallel
 
