@@ -1,9 +1,9 @@
-name: win gcf
+name: win tv gcf 
 
 on:
   push:
     branches:
-      - main-
+      - main
 jobs:
   build:
     runs-on: windows-2025
@@ -11,10 +11,10 @@ jobs:
       - name: get
         uses: actions/checkout@v6
         with:
-          repository: HDFGroup/hdf5    
+          repository: HDFGroup/hdf5
       - name: test
         run: |
           mkdir build
           cd build
-          cmake -DSITE:STRING=win-25 -DBUILDNAME:STRING="guard:cf" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5"  -DCMAKE_C_FLAGS="/guard:cf  /DWIN32 /D_WINDOWS" -DCMAKE_CXX_FLAGS="/guard:cf  /DWIN32 /D_WINDOWS" -DCMAKE_EXE_LINKER_FLAGS="/DYNAMICBASE /guard:cf" -DCMAKE_SHARED_LINKER_FLAGS="/DYNAMICBASE /guard:cf" ..
-          ctest -C Release -D Experimental 
+          cmake -DSITE:STRING="win-25" -DBUILDNAME:STRING="tv/guardcf" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5"  -DHDF5_TEST_VFD:BOOL=ON -DCMAKE_C_FLAGS="/guard:cf  /DWIN32 /D_WINDOWS"  -DCMAKE_CXX_FLAGS="/guard:cf  /DWIN32 /D_WINDOWS" -DCMAKE_EXE_LINKER_FLAGS="/DYNAMICBASE /guard:cf" -DCMAKE_SHARED_LINKER_FLAGS="/DYNAMICBASE /guard:cf" ..
+          ctest -C Release -D Experimental
