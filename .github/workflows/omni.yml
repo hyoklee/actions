@@ -35,6 +35,8 @@ jobs:
           psrinfo -v
           echo "::memstat" | mdb -k
           echo "OK"
+          cd work
+          ls
           mkdir build
           cd build
           cmake \
