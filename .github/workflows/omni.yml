@@ -35,7 +35,7 @@ jobs:
           psrinfo -v
           echo "::memstat" | mdb -k
           echo "OK"
-          cd work
+          cd work/actions/actions
           ls
           mkdir build
           cd build
