@@ -3,7 +3,7 @@ name: arm64 win-11 d tv gcf Gy
 on:
   push:
     branches:
-      - main
+      - main-
 jobs:
   build:
     runs-on: windows-11-arm

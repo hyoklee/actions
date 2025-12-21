@@ -6,19 +6,15 @@ jobs:
   test:
     runs-on: ubuntu-latest
     name: omni
-    env:
-      MYTOKEN : "value1"
-      MYTOKEN2: "value2"
     steps:
     - uses: actions/checkout@v6
     - name: Test in OmniOS
       id: test
       uses: vmactions/omnios-vm@v1
       with:
-        envs: 'MYTOKEN MYTOKEN2'
         usesh: true
         prepare: |
-          pkg  install socat
+          pkg install cmake socat
 
         run: |
           if [ -n "test" ]; then
