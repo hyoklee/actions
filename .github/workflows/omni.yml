@@ -8,6 +8,9 @@ jobs:
     name: omni
     steps:
     - uses: actions/checkout@v6
+      with:
+        repository: HDFGroup/hdf5
+
     - name: Test in OmniOS
       id: test
       uses: vmactions/omnios-vm@v1
@@ -32,3 +35,7 @@ jobs:
           psrinfo -v
           echo "::memstat" | mdb -k
           echo "OK"
+          mkdir build
+          cd build
+          cmake ..
+          ctest -D Experimental
