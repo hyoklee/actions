@@ -37,5 +37,11 @@ jobs:
           echo "OK"
           mkdir build
           cd build
-          cmake ..
-          ctest -D Experimental
+          cmake \
+          -DBUILDNAME:STRING="r" \
+          -DCMAKE_BUILD_TYPE=Release \
+          -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \
+          -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
+          -DSITE:STRING=omni \
+          ..
+          ctest -C Release -D Experimental
