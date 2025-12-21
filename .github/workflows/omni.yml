@@ -17,7 +17,7 @@ jobs:
       with:
         usesh: true
         prepare: |
-          pkg install cmake gcc socat
+          pkg install build-essential cmake socat
 
         run: |
           if [ -n "test" ]; then
