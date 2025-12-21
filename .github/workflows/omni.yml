@@ -17,7 +17,7 @@ jobs:
       with:
         usesh: true
         prepare: |
-          pkg install cmake socat
+          pkg install cmake gcc-14 socat
 
         run: |
           if [ -n "test" ]; then
