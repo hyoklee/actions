@@ -17,7 +17,7 @@ jobs:
       with:
         usesh: true
         prepare: |
-          pkg install build-essential cmake socat
+          pkg install build-essential cmake gfortran socat
 
         run: |
           if [ -n "test" ]; then
