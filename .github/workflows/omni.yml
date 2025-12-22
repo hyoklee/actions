@@ -40,10 +40,10 @@ jobs:
           mkdir build
           cd build
           cmake \
-          -DBUILDNAME:STRING="r" \
-          -DCMAKE_BUILD_TYPE=Release \
+          -DBUILDNAME:STRING="x86_64/gcc-14.3/d" \
+          -DCMAKE_BUILD_TYPE=Debug \
           -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \
           -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
-          -DSITE:STRING=omni \
+          -DSITE:STRING="omni-11" \
           ..
-          ctest -C Release -D Experimental
+          ctest -C Debug -D Experimental
