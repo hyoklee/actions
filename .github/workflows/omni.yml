@@ -1,4 +1,4 @@
-name: omni
+name: omni f
 
 on: [push]
 
@@ -17,7 +17,7 @@ jobs:
       with:
         usesh: true
         prepare: |
-          pkg install build-essential cmake gfortran socat
+          pkg install build-essential cmake socat
 
         run: |
           if [ -n "test" ]; then
@@ -40,10 +40,11 @@ jobs:
           mkdir build
           cd build
           cmake \
-          -DBUILDNAME:STRING="x86_64/gcc-14.3/d" \
-          -DCMAKE_BUILD_TYPE=Debug \
+          -DSITE:STRING="omni-11" \
+          -DBUILDNAME:STRING="x86_64/gcc-14.3/d/f" \
           -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \
           -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
-          -DSITE:STRING="omni-11" \
+          -DCMAKE_BUILD_TYPE=Debug \
+          -DHDF5_BUILD_FORTRAN=ON \
           ..
           ctest -C Debug -D Experimental
