@@ -87,7 +87,6 @@ Actions speak louder than codes.
 | Test | Status |
 | -----| ------ |
 | g95| [![fbsd-14.3 g95-13](https://github.com/hyoklee/actions/actions/workflows/fbsd_f.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/fbsd_f.yml)  [![fbsd-14.3 g95-16](https://github.com/hyoklee/actions/actions/workflows/fbsd_gf-16.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/fbsd_gf-16.yml) [![fbsd-14.3 d g95-16](https://github.com/hyoklee/actions/actions/workflows/fbsd_d_gf-16.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/fbsd_d_gf-16.yml) [![obsd-7.8 g95-11.2](https://github.com/hyoklee/actions/actions/workflows/f.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/f.yml) [![obsd-7.8 d g95-11.2](https://github.com/hyoklee/actions/actions/workflows/d_f.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/d_f.yml) |
-| ifx 2024.1 | [![lin auto icx ifx](https://github.com/hyoklee/actions/actions/workflows/lin-auto-icx-f.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/lin-auto-icx-f.yml) |
 
 ## Options
 
@@ -101,9 +100,7 @@ Actions speak louder than codes.
 | OpenBSD 7.5  | CMake | clang-16.0.6 | [![obsd d](https://github.com/hyoklee/actions/actions/workflows/obsd-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/obsd-d.yml)|
 | Ubuntu 22.04 | CMake | gcc | [![lin d](https://github.com/hyoklee/actions/actions/workflows/lin-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/lin-d.yml)|
 | Ubuntu 20.04 | CMake | gcc | [![lin20 d](https://github.com/hyoklee/actions/actions/workflows/lin-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/lin20-d.yml)|
-| Ubuntu 22.04 | Autotools | gcc |  [![lin auto d](https://github.com/hyoklee/actions/actions/workflows/lin-auto-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/lin-auto-d.yml)  |
 | Ubuntu 22.04 | CMake | icx |  [![lin icx d](https://github.com/hyoklee/actions/actions/workflows/lin-icx-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/lin-icx-d.yml)  |
-| Ubuntu 22.04 | Autotools | icx |  [![lin auto icx d](https://github.com/hyoklee/actions/actions/workflows/lin-auto-icx-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/lin-auto-icx-d.yml) |
 | Mac | CMake | AppleClang | [![mac-26 d](https://github.com/hyoklee/actions/actions/workflows/mac-26-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac-26-d.yml) [![mac14 d](https://github.com/hyoklee/actions/actions/workflows/mac14-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac14-d.yml) [![mac13 d](https://github.com/hyoklee/actions/actions/workflows/mac13-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/mac13-d.yml) |
 | Windows | CMake | MSVC | [![win d](https://github.com/hyoklee/actions/actions/workflows/win_d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/win_d.yml)  [![win19 d](https://github.com/hyoklee/actions/actions/workflows/win19-d.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/win19-d.yml)|
 
@@ -111,7 +108,6 @@ Actions speak louder than codes.
 
 | Test | Status |
 | -----| ------ |
-| Linux|[![lin auto icx ifx p](https://github.com/hyoklee/actions/actions/workflows/lin-auto-icx-f-p.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/lin-auto-icx-f-p.yml)|
 | Windows|[![win icx f p](https://github.com/hyoklee/actions/actions/workflows/win-icx-f-p.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/win-icx-f-p.yml)|
 
 ## Installation
