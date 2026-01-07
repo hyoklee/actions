@@ -1,8 +1,8 @@
-name: fbsd
+name:  obsd-7.8 ompi cpp
 
 on:
   push:
-    branches: main-
+    branches: main
 
 jobs:
   test:
@@ -12,14 +12,17 @@ jobs:
       fail-fast: false
       matrix:
         os:
-          - name: freebsd
+          - name: openbsd
             architecture: x86-64
-            version: '15.0'
+            version: '7.8'
             host: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - name: get
+        uses: actions/checkout@v6
         with:
-          repository: HDFGroup/hdf5
+          repository: dutkalex/hdf5
+          ref: patch-1
+          path: .
 
       - name: ${{ matrix.os.name }}
         uses: cross-platform-actions/action@v0.32.0
@@ -29,14 +32,18 @@ jobs:
           version: '${{ matrix.os.version }}'
           shell: bash
           run: |
-            sudo pkg install -y perl5
-            sudo pkg install -y cmake
+            sudo pkg_add cmake
+            sudo pkg_add openmpi
+            export NPROCS=2
+            export PMIX_MCA_gds=hash
+            export OMPI_MCA_btl=self,tcp
             mkdir build
             cd build
-            cmake \
-            -DSITE:STRING=fbsd-15.0 \
-            -DBUILDNAME:STRING="r" \
+            cmake -DBUILDNAME="pr6145/ompi/cpp" \
             -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
-            -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" \
+            -DHDF5_BUILD_CPP_LIB:BOOL=ON \
+            -DHDF5_ENABLE_PARALLEL:BOOL=ON \
+            -DMPIEXEC_PREFLAGS="-oversubscribe" \
+            -DSITE:STRING=obsd-7.8 \
             ..
-            ctest -D Experimental -C Release
+            ctest -D Experimental
