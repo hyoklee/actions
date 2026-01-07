@@ -1,6 +1,10 @@
 name: omni f
 
-on: [push]
+on:
+  push:
+    branches:
+      - main-
+
 
 jobs:
   test:
