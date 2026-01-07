@@ -2,7 +2,7 @@ name: fbsd
 
 on:
   push:
-    branches: main
+    branches: main-
 
 jobs:
   test:
@@ -14,15 +14,11 @@ jobs:
         os:
           - name: freebsd
             architecture: x86-64
-            version: '15.0'
+            version: '14.0'
             host: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-        with:
-          repository: HDFGroup/hdf5
-
       - name: ${{ matrix.os.name }}
-        uses: cross-platform-actions/action@v0.32.0
+        uses: cross-platform-actions/action@v0.25.0
         with:
           operating_system: ${{ matrix.os.name }}
           architecture: ${{ matrix.os.architecture }}
@@ -31,11 +27,14 @@ jobs:
           run: |
             sudo pkg install -y perl5
             sudo pkg install -y cmake
+            curl -O -L https://support.hdfgroup.org/releases/hdf5/v1_14/v1_14_5/downloads/snapshot-1.14.5.tar.gz
+            tar zxvf snapshot-1.14.5.tar.gz
+            cd hdf5-1.14.5-2
             mkdir build
             cd build
             cmake \
-            -DSITE:STRING=fbsd-15.0 \
-            -DBUILDNAME:STRING="r" \
+            -DSITE:STRING=fbsd14 \
+            -DBUILDNAME:STRING="5/r" \
             -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
             -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" \
             ..
