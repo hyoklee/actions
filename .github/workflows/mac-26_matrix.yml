@@ -164,9 +164,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v6
-        with:
-          repository: lrknox/hdf5
-          ref: fix-macos26-java
+      with:
+        repository: lrknox/hdf5
+        ref: fix-macos26-java
 
     - name: Install Dependencies
       run: |
