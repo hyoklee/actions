@@ -3,7 +3,7 @@ name: lin aocc-5.1.0 ompi-4.1.6
 on:
   push:
     branches:
-      - main
+      - main-
 jobs:
   build:
     runs-on: ubuntu-latest
