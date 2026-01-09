@@ -4,11 +4,6 @@ on:
   push:
     branches: main
 
-# Using concurrency to cancel any in-progress job or run
-concurrency:
-  group: ${{ github.workflow }}-${{ github.head_ref && github.ref || github.run_id }}
-  cancel-in-progress: true
-
 env:
   CTEST_OUTPUT_ON_FAILURE: 1
 
@@ -166,14 +161,13 @@ jobs:
 
     name: ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
-    if: "!contains(github.event.head_commit.message, 'skip-ci')"
 
     steps:
-      - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
         with:
           repository: lrknox/hdf5
           ref: fix-macos26-java
-      
+
     - name: Install Dependencies
       run: |
         # Install base dependencies
