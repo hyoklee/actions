@@ -32,8 +32,8 @@ jobs:
     steps:
     - name: checkout
       uses: actions/checkout@v6
-        with:
-          repository: HDFGroup/hdf5
+      with:
+        repository: HDFGroup/hdf5
 
     - name: get
       run: |
