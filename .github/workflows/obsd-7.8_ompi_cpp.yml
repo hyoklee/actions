@@ -2,7 +2,7 @@ name:  obsd-7.8 ompi cpp
 
 on:
   push:
-    branches: main
+    branches: main-
 
 jobs:
   test:
@@ -40,7 +40,7 @@ jobs:
             mkdir build
             cd build
             cmake \
-              -DBUILDNAME="pr6145/ompi/cpp" \
+              -DBUILDNAME="pr6145/ompi-4.1.6/clang-19.1.7/cpp" \
               -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
               -DHDF5_ALLOW_UNSUPPORTED=ON \
               -DHDF5_BUILD_CPP_LIB:BOOL=ON \
