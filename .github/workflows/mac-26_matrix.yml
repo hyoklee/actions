@@ -2,7 +2,7 @@ name: mac-26 matrix
 
 on:
   push:
-    branches: main
+    branches: main-
 
 env:
   CTEST_OUTPUT_ON_FAILURE: 1
