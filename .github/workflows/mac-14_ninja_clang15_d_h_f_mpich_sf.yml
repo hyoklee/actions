@@ -62,6 +62,7 @@ jobs:
     - name: install mpich
       run: |
         export PATH=/opt/local/bin:/opt/local/sbin:$PATH
+        brew install autotools
         cd mpich
         ./autogen.sh
         /configure --prefix=/opt/local/mpich --disable-cxx
