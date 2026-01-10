@@ -3,7 +3,7 @@ name: mac-14 ninja clang-15 f h d mpich sf
 on:
   push:
     branches:
-      - main-
+      - main
 
 jobs:
   build:
@@ -42,7 +42,7 @@ jobs:
     - name: install
       run: |
         sudo installer -pkg MacPorts-2.11.6-14-Sonoma.pkg -target /
-        brew install flang --build-from-source        
+
 
     - name: update
       run: |
@@ -53,13 +53,13 @@ jobs:
       run: |
         export PATH=/opt/local/bin:/opt/local/sbin:$PATH
         port version
+        sudo port install flang-21
         sudo port install mpich-clang
         sudo port select --set mpi mpich-clang-fortran
        
     - name: test
       run: |
-        export CC=$(brew --prefix llvm@15)/bin/clang
-        echo $CC
+        env
         mkdir build
         cd build
         cmake ${{ matrix.generator }} \
@@ -84,3 +84,5 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
+#         brew install flang --build-from-source        
+#         export CC=$(brew --prefix llvm@15)/bin/clang

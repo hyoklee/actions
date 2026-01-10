@@ -2,7 +2,7 @@ name: f-15.2
 
 on:
   push:
-    branches: main
+    branches: main-
 
 jobs:
   test:
