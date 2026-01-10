@@ -63,6 +63,7 @@ jobs:
       run: |
         export PATH=/opt/local/bin:/opt/local/sbin:$PATH
         cd mpich
+        ./autogen.sh
         /configure --prefix=/opt/local/mpich --disable-cxx
         make -j2
         sudo make install
