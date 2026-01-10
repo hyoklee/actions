@@ -1,0 +1,44 @@
+name: f-15.2
+
+on:
+  push:
+    branches: main
+
+jobs:
+  test:
+    name: f
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+      - name: checkout
+        uses: actions/checkout@v6
+        with:
+          repository: HDFGroup/hdf5
+      - name: openbsd
+        uses: cross-platform-actions/action@v0.32.0
+        with:
+          operating_system: openbsd
+          architecture: x86-64
+          version: '7.8'
+          shell: bash
+          run: |
+            uname -a
+            echo $SHELL
+            pwd
+            ls -ahl
+            whoami
+            env | sort
+            sudo pkg_add git
+            sudo pkg_add cmake
+            sudo pkg_add g95-15.2.0p0
+            export FC=/usr/local/bin/egfortran
+            mkdir build
+            cd build
+            cmake \
+            -D BUILDNAME="f" \
+            -D CTEST_DROP_SITE_INIT="my.cdash.org" \
+            -D HDF5_BUILD_FORTRAN=ON \
+            -D SITE=obsd-7.8 \
+            ..
+            ctest -D Experimental
