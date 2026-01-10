@@ -33,10 +33,14 @@ jobs:
             sudo pkg_add cmake
             sudo pkg_add g95-11.2.0p19
             export FC=/usr/local/bin/egfortran
+            export CFLAGS='-fPIC'
+            export FCLAGS='-fPIC'
+            export FFLAGS='-fPIC'
+            export CXXFLAGS='-fPIC'
             mkdir build
             cd build
             cmake \
-            -D BUILDNAME="f" \
+            -D BUILDNAME="cl-19.1.7/gf-11.2.0" \
             -D CTEST_DROP_SITE_INIT="my.cdash.org" \
             -D HDF5_BUILD_FORTRAN=ON \
             -D SITE=obsd-7.8 \
