@@ -9,7 +9,6 @@ jobs:
   build:
     strategy:
       matrix:
-        name: ["macOS Latest Clang"]
         include:
           - name: "macOS Latest Clang"
             artifact: "macOS.tar.xz"
@@ -24,21 +23,27 @@ jobs:
             toolchain: "config/toolchain/clang.cmake"
             generator: "-G Ninja"
 
-    name: ${{ matrix.name }}
+    name: mac-14 ninja clang-15 f h d mpich sf
     # The type of runner that the job will run on
     runs-on: ${{ matrix.os }}
     if: "!contains(github.event.head_commit.message, 'skip-ci')"
 
     steps:
-    - name: checkout
+    - name: checkout hdf5
       uses: actions/checkout@v6
       with:
         repository: HDFGroup/hdf5
 
+    - name: checkout mpich
+      uses: actions/checkout@v6
+      with:
+        repository: pmodels/mpich
+        path: mpich
+
     - name: get
       run: |
         curl -O -L  https://github.com/macports/macports-base/releases/download/v2.11.6/MacPorts-2.11.6-14-Sonoma.pkg
-          
+
     - name: install
       run: |
         sudo installer -pkg MacPorts-2.11.6-14-Sonoma.pkg -target /
@@ -49,14 +54,18 @@ jobs:
         export PATH=/opt/local/bin:/opt/local/sbin:$PATH
         sudo port selfupdate
 
-    - name: mpich
+    - name: flang-21
+      run: |
+        sudo port install flang-21
+
+    - name: install mpich
       run: |
         export PATH=/opt/local/bin:/opt/local/sbin:$PATH
-        port version
-        sudo port install flang-21
-        sudo port install mpich-clang
-        sudo port select --set mpi mpich-clang-fortran
-       
+        cd mpich
+        /configure --prefix=/opt/local/mpich --disable-cxx
+        make -j2
+        sudo make install
+
     - name: test
       run: |
         env
@@ -83,6 +92,5 @@ jobs:
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
-
-#         brew install flang --build-from-source        
+#         brew install flang --build-from-source
 #         export CC=$(brew --prefix llvm@15)/bin/clang
