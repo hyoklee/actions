@@ -31,7 +31,7 @@ jobs:
             env | sort
             sudo pkg_add git
             sudo pkg_add cmake
-            sudo pkg_add g95-15.2.0p0
+            sudo pkg_add g95-11.2.0p19
             export FC=/usr/local/bin/egfortran
             mkdir build
             cd build
