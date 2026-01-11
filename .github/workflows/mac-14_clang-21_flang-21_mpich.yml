@@ -13,6 +13,7 @@ jobs:
       uses: actions/checkout@v6
       with:
         repository: pmodels/mpich
+        submodules: recursive
     - name: install
       run: |
          brew install autoconf automake flang libtool lld
