@@ -39,6 +39,7 @@ jobs:
       with:
         repository: pmodels/mpich
         path: mpich
+        submodules: recursive
 
     - name: get
       run: |
