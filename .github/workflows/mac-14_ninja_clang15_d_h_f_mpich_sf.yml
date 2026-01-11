@@ -69,9 +69,9 @@ jobs:
         cd mpich
         ./autogen.sh
         export PATH=/opt/local/libexec/llvm-21/bin:$PATH
-        export LDFLAGS="-Wl,-ld_classic -isysroot $SDKROOT -L/opt/local/libexec/llvm-21/lib -L$(flang-new -print-resource-dir)/lib/darwin"
-
         export CFLAGS="-isysroot $SDKROOT -I/opt/local/libexec/llvm-21/include"
+        export LDFLAGS="-Wl,-ld_classic -isysroot $SDKROOT -L/opt/local/libexec/llvm-21/lib -lflang_rt.runtime -Wl,-ld_classic"
+        export LIBS="-lflang_rt.runtime -lFortranRuntime -lFortranDecimal"        
         ./configure \
           CC=/opt/local/libexec/llvm-21/bin/clang \
           FC=/opt/local/libexec/llvm-21/bin/flang \
