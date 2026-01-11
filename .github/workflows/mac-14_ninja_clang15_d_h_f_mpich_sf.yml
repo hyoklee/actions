@@ -71,13 +71,14 @@ jobs:
         export PATH=/opt/local/libexec/llvm-21/bin:$PATH
         export LDFLAGS="-isysroot $SDKROOT -L/opt/local/libexec/llvm-21/lib -lSystem"
         export CFLAGS="-isysroot $SDKROOT -I/opt/local/libexec/llvm-21/include"
+        export LIBS="-lFortranRuntime -lFortranDecimal"
         ./configure \
           CC=/opt/local/libexec/llvm-21/bin/clang \
           FC=/opt/local/libexec/llvm-21/bin/flang \
           --prefix=/opt/local/mpich --disable-cxx
       continue-on-error: true
 
-    - name: test
+    - name: cat
       run: cat mpich/config.log
 
     - name: test
