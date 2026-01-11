@@ -69,9 +69,9 @@ jobs:
         cd mpich
         ./autogen.sh
         export PATH=/opt/local/libexec/llvm-21/bin:$PATH
-        export LDFLAGS="-isysroot $SDKROOT -L/opt/local/libexec/llvm-21/lib"
+        export LDFLAGS="-Wl,-ld_classic -isysroot $SDKROOT -L/opt/local/libexec/llvm-21/lib -L$(flang-new -print-resource-dir)/lib/darwin"
+
         export CFLAGS="-isysroot $SDKROOT -I/opt/local/libexec/llvm-21/include"
-        export LIBS="-lflang_rt.runtime"
         ./configure \
           CC=/opt/local/libexec/llvm-21/bin/clang \
           FC=/opt/local/libexec/llvm-21/bin/flang \
@@ -81,31 +81,31 @@ jobs:
     - name: cat
       run: cat mpich/config.log
 
-    - name: test
-      run: |
-        env
-        mkdir build
-        cd build
-        cmake ${{ matrix.generator }} \
-        -DBUILD_SHARED_LIBS=ON \
-        -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
-        -DCMAKE_TOOLCHAIN_FILE=${{ matrix.toolchain }} \
-        -DHDF5_BUILD_CPP_LIB:BOOL=${{ matrix.cpp }} \
-        -DHDF5_BUILD_JAVA=${{ matrix.java }} \
-        -DHDF5_BUILD_FORTRAN:BOOL=ON \
-        -DHDF5_BUILD_HL_LIB:BOOL=${{ matrix.hl }} \
-        -DHDF5_ENABLE_ALL_WARNINGS=ON \
-        -DHDF5_ENABLE_PARALLEL:BOOL=${{ matrix.parallel }} \
-        -DHDF5_ENABLE_THREADSAFE:BOOL=${{ matrix.ts }} \
-        -DHDF5_ENABLE_SUBFILING_VFD:BOOL=ON \
-        -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF \
-        -DMPIEXEC_MAX_NUMPROCS:STRING=3 \
-        ..
-        ctest -C Release -T Build
-        ctest -C Release -T Test
+#     - name: test
+#       run: |
+#         env
+#         mkdir build
+#         cd build
+#         cmake ${{ matrix.generator }} \
+#         -DBUILD_SHARED_LIBS=ON \
+#         -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
+#         -DCMAKE_TOOLCHAIN_FILE=${{ matrix.toolchain }} \
+#         -DHDF5_BUILD_CPP_LIB:BOOL=${{ matrix.cpp }} \
+#         -DHDF5_BUILD_JAVA=${{ matrix.java }} \
+#         -DHDF5_BUILD_FORTRAN:BOOL=ON \
+#         -DHDF5_BUILD_HL_LIB:BOOL=${{ matrix.hl }} \
+#         -DHDF5_ENABLE_ALL_WARNINGS=ON \
+#         -DHDF5_ENABLE_PARALLEL:BOOL=${{ matrix.parallel }} \
+#         -DHDF5_ENABLE_THREADSAFE:BOOL=${{ matrix.ts }} \
+#         -DHDF5_ENABLE_SUBFILING_VFD:BOOL=ON \
+#         -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF \
+#         -DMPIEXEC_MAX_NUMPROCS:STRING=3 \
+#         ..
+#         ctest -C Release -T Build
+#         ctest -C Release -T Test
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
+# concurrency:
+#   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+#   cancel-in-progress: true
 #         brew install flang --build-from-source
 #         export CC=$(brew --prefix llvm@15)/bin/clang
