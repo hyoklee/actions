@@ -63,9 +63,13 @@ jobs:
     - name: install mpich
       run: |
         export PATH=/opt/local/bin:/opt/local/sbin:$PATH
+        find /opt/local/
         brew install autoconf automake libtool
         cd mpich
         ./autogen.sh
+        export PATH=/opt/local/opt/llvm/bin:$PATH
+        xport LDFLAGS="-L/opt/local/opt/llvm/lib"
+        export CPPFLAGS="-I/opt/local/opt/llvm/include"
         ./configure CC=clang-21 FC=flang-21 \
           --prefix=/opt/local/mpich --disable-cxx
         make -j2
