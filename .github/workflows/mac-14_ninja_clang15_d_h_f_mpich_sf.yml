@@ -10,7 +10,7 @@ jobs:
     strategy:
       matrix:
         include:
-          - name: "macOS Latest Clang"
+          - name: "mpich"
             artifact: "macOS.tar.xz"
             os: macos-14
             build_type: "Debug"
