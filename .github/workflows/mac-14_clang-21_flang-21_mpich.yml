@@ -25,7 +25,7 @@ jobs:
          export F77=/opt/homebrew/opt/llvm/bin/flang-new
          export LDFLAGS="-Wl,-ld_classic -L/opt/homebrew/opt/llvm/lib"
         ./autogen.sh
-         ./configure --prefix=$PWD/install \
+        ./configure --prefix=$PWD/install \
            --enable-fortran \
            --disable-weak-symbols \
            CC=$CC CXX=$CXX FC=$FC F77=$FC
