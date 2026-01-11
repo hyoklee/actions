@@ -17,15 +17,15 @@ jobs:
       run: |
          brew install autoconf automake flang libtool lld
     - name: configure
-       run: |
-         find /opt/homebrew/opt/llvm/
-         export CC=clang
-         export CXX=clang++
-         export FC=/opt/homebrew/opt/llvm/bin/flang-new
-         export F77=/opt/homebrew/opt/llvm/bin/flang-new
-         export LDFLAGS="-Wl,-ld_classic -L/opt/homebrew/opt/llvm/lib"
+      run: |
+        find /opt/homebrew/opt/llvm/
+        export CC=clang
+        export CXX=clang++
+        export FC=/opt/homebrew/opt/llvm/bin/flang-new
+        export F77=/opt/homebrew/opt/llvm/bin/flang-new
+        export LDFLAGS="-Wl,-ld_classic -L/opt/homebrew/opt/llvm/lib"
         ./autogen.sh
         ./configure --prefix=$PWD/install \
-           --enable-fortran \
-           --disable-weak-symbols \
-           CC=$CC CXX=$CXX FC=$FC F77=$FC
+          --enable-fortran \
+          --disable-weak-symbols \
+          CC=$CC CXX=$CXX FC=$FC F77=$FC
