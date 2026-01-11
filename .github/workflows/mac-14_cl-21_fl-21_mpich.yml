@@ -31,3 +31,6 @@ jobs:
           --enable-fortran \
           --disable-weak-symbols \
           CC=$CC CXX=$CXX FC=$FC F77=$FC
+      continue-on-error: true
+    - name: cat
+      run: cat mpich/config.log      
