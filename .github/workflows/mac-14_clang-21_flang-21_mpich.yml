@@ -19,11 +19,11 @@ jobs:
          brew install autoconf automake flang libtool lld
     - name: configure
       run: |
-        find /opt/homebrew/opt/llvm/
+        find /opt/homebrew/opt/
         export CC=clang
         export CXX=clang++
-        export FC=/opt/homebrew/opt/llvm/bin/flang-new
-        export F77=/opt/homebrew/opt/llvm/bin/flang-new
+        export FC=/opt/homebrew/opt/bin/flang-21
+        export F77=/opt/homebrew/opt/bin/flang-21
         export LDFLAGS="-Wl,-ld_classic -L/opt/homebrew/opt/llvm/lib"
         ./autogen.sh
         ./configure --prefix=$PWD/install \
