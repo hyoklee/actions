@@ -67,10 +67,10 @@ jobs:
         brew install autoconf automake libtool
         cd mpich
         ./autogen.sh
-        export PATH=/opt/local/opt/llvm/bin:$PATH
-        export LDFLAGS="-L/opt/local/opt/llvm/lib"
-        export CPPFLAGS="-I/opt/local/opt/llvm/include"
-        ./configure CC=clang-21 FC=flang-21 \
+        export PATH=/opt/local/libexec/llvm-21/bin:$PATH
+        export LDFLAGS="-L/opt/local/libexec/llvm-21/lib"
+        export CPPFLAGS="-I/opt/local/libexec/llvm-21/include"
+        ./configure CC=clang FC=flang \
           --prefix=/opt/local/mpich --disable-cxx
         make -j2
         sudo make install
