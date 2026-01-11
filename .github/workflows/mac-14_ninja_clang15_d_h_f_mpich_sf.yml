@@ -62,15 +62,18 @@ jobs:
 
     - name: install mpich
       run: |
+        export SDKROOT=$(xcrun --show-sdk-path)
         export PATH=/opt/local/bin:/opt/local/sbin:$PATH
         find /opt/local/
         brew install autoconf automake libtool
         cd mpich
         ./autogen.sh
         export PATH=/opt/local/libexec/llvm-21/bin:$PATH
-        export LDFLAGS="-L/opt/local/libexec/llvm-21/lib -lSystem"
-        export CPPFLAGS="-I/opt/local/libexec/llvm-21/include"
-        ./configure CC=/opt/local/libexec/llvm-21/bin/clang FC=/opt/local/libexec/llvm-21/bin/flang \
+        export LDFLAGS="-isysroot $SDKROOT -L/opt/local/libexec/llvm-21/lib -lSystem"
+        export CFLAGS="-isysroot $SDKROOT -I/opt/local/libexec/llvm-21/include"
+        ./configure \
+          CC=/opt/local/libexec/llvm-21/bin/clang \
+          FC=/opt/local/libexec/llvm-21/bin/flang \
           --prefix=/opt/local/mpich --disable-cxx
       continue-on-error: true
 
