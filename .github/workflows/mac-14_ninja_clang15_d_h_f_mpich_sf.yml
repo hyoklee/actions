@@ -68,7 +68,7 @@ jobs:
         cd mpich
         ./autogen.sh
         export PATH=/opt/local/opt/llvm/bin:$PATH
-        xport LDFLAGS="-L/opt/local/opt/llvm/lib"
+        export LDFLAGS="-L/opt/local/opt/llvm/lib"
         export CPPFLAGS="-I/opt/local/opt/llvm/include"
         ./configure CC=clang-21 FC=flang-21 \
           --prefix=/opt/local/mpich --disable-cxx
