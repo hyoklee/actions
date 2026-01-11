@@ -1,0 +1,31 @@
+name: mac-14 clang-21 flang-21 mpich-dev
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  test:
+    name: mac-14 clang-21 flang-21 mpich-dev
+    runs-on: macos-14
+    steps:    
+    - name: checkout mpich
+      uses: actions/checkout@v6
+      with:
+        repository: pmodels/mpich
+    - name: install
+      run: |
+         brew install autoconf automake flang libtool lld
+    - name: configure
+       run: |
+       find /opt/homebrew/opt/llvm/
+       export CC=clang
+       export CXX=clang++
+       export FC=/opt/homebrew/opt/llvm/bin/flang-new
+       export F77=/opt/homebrew/opt/llvm/bin/flang-new
+       export LDFLAGS="-Wl,-ld_classic -L/opt/homebrew/opt/llvm/lib"
+       ./autogen.sh
+       ./configure --prefix=$PWD/install \
+         --enable-fortran \
+         --disable-weak-symbols \
+         CC=$CC CXX=$CXX FC=$FC F77=$FC
