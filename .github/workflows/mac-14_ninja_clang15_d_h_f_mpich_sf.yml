@@ -70,8 +70,8 @@ jobs:
         ./autogen.sh
         export PATH=/opt/local/libexec/llvm-21/bin:$PATH
         export CFLAGS="-isysroot $SDKROOT -I/opt/local/libexec/llvm-21/include"
-        export LDFLAGS="-Wl,-ld_classic -isysroot $SDKROOT -L/opt/local/libexec/llvm-21/lib -lflang_rt.runtime -Wl,-ld_classic"
-        export LIBS="-lflang_rt.runtime -lFortranRuntime -lFortranDecimal"        
+        export LDFLAGS="-Wl,-ld_classic -isysroot $SDKROOT -L/opt/local/libexec/llvm-21/lib -Wl,-ld_classic"
+        export LIBS="-lFortranDecimal"        
         ./configure \
           CC=/opt/local/libexec/llvm-21/bin/clang \
           FC=/opt/local/libexec/llvm-21/bin/flang \
