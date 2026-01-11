@@ -1,9 +1,9 @@
-name: mac-15 ninja cl-21 fl-21
+name: mac-15 ninja cl-21 fl-21 h5
 
 on:
   push:
     branches:
-      - main-
+      - main
 
 jobs:
   build:
@@ -17,11 +17,10 @@ jobs:
       - name: install
         run: |
           brew update
-          brew install flang
+          brew install flang lld
 
       - name: test
         run: |
-          ls -l /opt/homebrew/bin/flang*
           export FC=/opt/homebrew/bin/flang-21
           export CC=/opt/homebrew/Cellar/llvm/21.1.8/bin/clang
           export CXX=/opt/homebrew/Cellar/llvm/21.1.8/bin/clang++

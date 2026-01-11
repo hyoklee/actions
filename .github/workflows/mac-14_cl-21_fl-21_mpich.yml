@@ -19,9 +19,9 @@ jobs:
          brew install autoconf automake flang libtool lld
     - name: configure
       run: |
-        find /opt/homebrew/opt/
-        export CC=clang
-        export CXX=clang++
+        find /opt/homebrew/
+        export CC=/opt/homebrew/opt/bin/clang-21
+        export CXX=/opt/homebrew/opt/bin/clang++-21
         export FC=/opt/homebrew/opt/bin/flang-21
         export F77=/opt/homebrew/opt/bin/flang-21
         export LDFLAGS="-Wl,-ld_classic -L/opt/homebrew/opt/llvm/lib"
