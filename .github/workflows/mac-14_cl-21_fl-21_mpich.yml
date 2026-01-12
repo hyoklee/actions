@@ -29,7 +29,9 @@ jobs:
         export LDFLAGS="-Wl, -L/opt/homebrew/Cellar/llvm/21.1.8/lib"
         export FLIBS="-L/opt/homebrew/Cellar/llvm/21.1.8/lib -lFortran_main -lFortranRuntime -lFortranDecimal"
         ./autogen.sh
-        ./configure --prefix=$PWD/install \
+        ./configure \
+          --without-hcoll \
+          --prefix=$PWD/install \
           --enable-fortran \
           --disable-weak-symbols \
           CC=$CC CXX=$CXX FC=$FC F77=$FC
