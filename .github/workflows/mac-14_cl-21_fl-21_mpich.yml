@@ -16,7 +16,7 @@ jobs:
         submodules: recursive
     - name: install
       run: |
-         brew install autoconf automake flang libtool lld
+         brew install autoconf automake flang hwloc libtool lld
     - name: configure
       run: |
         find /opt/homebrew/
