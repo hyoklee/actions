@@ -27,7 +27,7 @@ jobs:
         export CFLAGS="-fuse-ld=lld"
         export FFLAGS="-fuse-ld=lld"
         export LDFLAGS="-Wl, -L/opt/homebrew/Cellar/llvm/21.1.8/lib"
-        export FLIBS="-L/opt/homebrew/Cellar/llvm/21.1.8/lib -lFortran_main -lFortranRuntime -lFortranDecimal"
+        export FLIBS="-L/opt/homebrew/Cellar/llvm/21.1.8/lib -lFortran_main -lFortranRuntime -lFortranDecimal  -lFortranLower -lFortranSupport -lFortranEvaluate -lFortranSemantics -lFortranParser -lflangPasses -lflangFrontend -lflangFrontendTool -lflang_rt.runtime"
         ./autogen.sh
         ./configure \
           --without-hcoll \
