@@ -24,6 +24,8 @@ jobs:
         export CXX=/opt/homebrew/Cellar/llvm/21.1.8/bin/clang++
         export FC=/opt/homebrew//bin/flang-21
         export F77=/opt/homebrew/bin/flang-21
+        export CFLAGS="-fuse-ld=lld"
+        export FFLAGS="-fuse-ld=lld"
         export LDFLAGS="-Wl,-ld_classic -L/opt/homebrew/Cellar/llvm/21.1.8/lib"
         export FLIBS="-L/opt/homebrew/Cellar/llvm/21.1.8/lib -lFortran_main -lFortranRuntime -lFortranDecimal"
         ./autogen.sh
