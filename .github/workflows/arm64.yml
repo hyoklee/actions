@@ -2,7 +2,7 @@ name: arm64
 
 on:
   push:
-    branches: main-
+    branches: main
 
 jobs:
   test: # make sure the action works on a clean machine without building
@@ -14,14 +14,13 @@ jobs:
         os:
           - name: openbsd
             architecture: arm64
-            version: '7.6'
-            host: ubuntu-latest
+            version: '7.8'
+            host: ubuntu-24.04-arm
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
-          repository: byrnHDF/hdf5
-          ref: develop-rem-autotools
+          repository: HDFGroup/hdf5
       - name: ${{ matrix.os.name }}
         uses: cross-platform-actions/action@master
         env:
@@ -39,7 +38,7 @@ jobs:
             mkdir build
             cd build
             cmake \
-            -DBUILDNAME:STRING="pr5308/r" \
+            -DBUILDNAME:STRING="r" \
             -DCMAKE_BUILD_TYPE=Release \
             -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \
             -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \

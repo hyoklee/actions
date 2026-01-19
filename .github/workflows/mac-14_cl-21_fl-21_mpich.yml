@@ -3,7 +3,7 @@ name: mac-14 clang-21 flang-21 mpich-dev
 on:
   push:
     branches:
-      - main
+      - main-
 jobs:
   test:
     name: mac-14 clang-21 flang-21 mpich-dev
