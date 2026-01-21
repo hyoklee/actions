@@ -1,0 +1,36 @@
+#!/bin/bash
+
+REPO_URL="https://github.com/HDFGroup/hdf5"
+REPO_DIR="hdf5_repo"
+REV_FILE="rev.txt"
+
+# Clone the repo if it doesn't exist, otherwise navigate to it
+if [ ! -d "$REPO_DIR" ]; then
+    echo "Cloning repository..."
+    git clone $REPO_URL $REPO_DIR
+    cd $REPO_DIR
+else
+    echo "Navigating to existing repository..."
+    cd $REPO_DIR
+    git pull
+fi
+
+# Get the current commit hash
+CURRENT_HASH=$(git rev-parse HEAD)
+
+# Check if rev.txt exists and compare hashes
+if [ -f "../$REV_FILE" ]; then
+    OLD_HASH=$(cat ../$REV_FILE)
+    if [ "$OLD_HASH" == "$CURRENT_HASH" ]; then
+        echo "No changes. Current hash: $CURRENT_HASH"
+    else
+        echo "Repository has changed!"
+        echo "Old hash: $OLD_HASH"
+        echo "New hash: $CURRENT_HASH"
+        echo $CURRENT_HASH > ../$REV_FILE
+        echo "Updated $REV_FILE with new hash."
+    fi
+else
+    echo "rev.txt not found. Creating it with current hash: $CURRENT_HASH"
+    echo $CURRENT_HASH > ../$REV_FILE
+fi
