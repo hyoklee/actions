@@ -1,0 +1,33 @@
+name: ubu sl
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-slim
+    steps:
+      - name: h5
+        uses: actions/checkout@v6
+        with:
+          repository: HDFGroup/hdf5
+
+      - name: install
+        run: |
+          sudo apt update
+          sudo apt install -y cmake ninja
+
+      - name: test
+        run: |
+          mkdir build
+          cd build
+          cmake \
+            -G Ninja \
+            -DBUILDNAME:STRING="ninja/r" \
+            -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \
+            -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
+            -DCTEST_BUILD_FLAGS="-j2" \
+            -DSITE:STRING=ubu-sl \
+            ..
+          time ninja -j2
