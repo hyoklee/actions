@@ -16,15 +16,14 @@ jobs:
       - name: install
         run: |
           sudo apt update
-          sudo apt install -y cmake ninja
+          sudo apt install -y cmake
 
       - name: test
         run: |
           mkdir build
           cd build
           cmake \
-            -G Ninja \
-            -DBUILDNAME:STRING="ninja/r" \
+            -DBUILDNAME:STRING="r" \
             -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \
             -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
             -DCTEST_BUILD_FLAGS="-j2" \
