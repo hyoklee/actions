@@ -29,4 +29,4 @@ jobs:
             -DCTEST_BUILD_FLAGS="-j2" \
             -DSITE:STRING=ubu-sl \
             ..
-          time ninja -j2
+          ctest -D Experimental
