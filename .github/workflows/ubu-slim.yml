@@ -27,6 +27,7 @@ jobs:
             -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \
             -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
             -DCTEST_BUILD_FLAGS="-j2" \
+            -DHDF_TEST_EXPRESS=3 \
             -DSITE:STRING=ubu-sl \
             ..
           ctest -D Experimental
