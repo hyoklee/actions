@@ -37,14 +37,35 @@ jobs:
             zlib1g-dev \
             libaec-dev
 
-      - name: install gcc 15
+      - name: build gcc 15 from source
         run: |
-          sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
-          sudo apt-get update
-          sudo apt-get install -y gcc-15 g++-15 gfortran-15
-          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-15 100
-          sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-15 100
-          sudo update-alternatives --install /usr/bin/gfortran gfortran /usr/bin/gfortran-15 100
+          mkdir gccsrc
+          cd gccsrc
+          git clone --depth 1 --branch master git://gcc.gnu.org/git/gcc.git gcc-15
+          cd gcc-15
+          contrib/download_prerequisites
+          cd ..
+          mkdir build
+          cd build
+          ../gcc-15/configure -v \
+            --enable-checking=release \
+            --enable-shared \
+            --enable-threads=posix \
+            --enable-__cxa_atexit \
+            --enable-clocale=gnu \
+            --enable-languages=c,c++,fortran \
+            --disable-multilib \
+            --bindir=/usr/bin \
+            --prefix=/usr/local/gcc-15 \
+            --program-suffix=-15
+          make -j$(nproc)
+          sudo make install-strip
+          echo "/usr/local/gcc-15/lib64" | sudo tee /etc/ld.so.conf.d/gcc-15.conf
+          sudo ldconfig
+          sudo rm -f /usr/bin/gcc /usr/bin/g++ /usr/bin/gfortran
+          sudo ln -s /usr/bin/gcc-15 /usr/bin/gcc
+          sudo ln -s /usr/bin/g++-15 /usr/bin/g++
+          sudo ln -s /usr/bin/gfortran-15 /usr/bin/gfortran
           gcc --version
           gfortran --version
 
