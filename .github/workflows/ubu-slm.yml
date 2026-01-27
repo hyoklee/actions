@@ -1,9 +1,9 @@
-name: ubu sl
+name: ubu slm
 
 on:
   push:
     branches:
-      - main
+      - main-
 jobs:
   build:
     runs-on: ubuntu-slim
@@ -28,6 +28,6 @@ jobs:
             -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
             -DCTEST_BUILD_FLAGS="-j2" \
             -DHDF_TEST_EXPRESS=3 \
-            -DSITE:STRING=ubu-sl \
+            -DSITE:STRING=ubu-slm \
             ..
           ctest -D Experimental

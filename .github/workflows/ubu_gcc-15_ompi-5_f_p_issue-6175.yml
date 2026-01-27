@@ -1,0 +1,117 @@
+name: ubu gcc-15 ompi-5 f p issue-6175
+
+# Reproduces https://github.com/HDFGroup/hdf5/issues/6175
+# HDF5 2.0.0 fails to compile HDF5Examples/FORTRAN/H5PAR with:
+# Fatal Error: Cannot open module file 'mpi.mod' for reading
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: checkout hdf5
+        uses: actions/checkout@v4
+        with:
+          repository: HDFGroup/hdf5
+          ref: hdf5_2.0.0
+
+      - name: install deps
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential \
+            cmake \
+            ca-certificates \
+            git \
+            wget \
+            m4 \
+            flex \
+            bison \
+            libtool \
+            autoconf \
+            automake \
+            zlib1g-dev \
+            libaec-dev
+
+      - name: install gcc 15
+        run: |
+          sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+          sudo apt-get update
+          sudo apt-get install -y gcc-15 g++-15 gfortran-15
+          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-15 100
+          sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-15 100
+          sudo update-alternatives --install /usr/bin/gfortran gfortran /usr/bin/gfortran-15 100
+          gcc --version
+          gfortran --version
+
+      - name: build openmpi 5.0.9
+        run: |
+          wget -q https://download.open-mpi.org/release/open-mpi/v5.0/openmpi-5.0.9.tar.gz
+          tar -xzf openmpi-5.0.9.tar.gz
+          cd openmpi-5.0.9
+          ./configure \
+            --prefix=$HOME/.local \
+            CC=gcc \
+            CXX=g++ \
+            FC=gfortran
+          make -j$(nproc)
+          make install
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+          echo "LD_LIBRARY_PATH=$HOME/.local/lib:$LD_LIBRARY_PATH" >> $GITHUB_ENV
+
+      - name: verify mpi.mod exists
+        run: |
+          export PATH=$HOME/.local/bin:$PATH
+          export LD_LIBRARY_PATH=$HOME/.local/lib:$LD_LIBRARY_PATH
+          echo "Checking for mpi.mod..."
+          find $HOME/.local -name "mpi.mod" -o -name "MPI.mod" 2>/dev/null || echo "mpi.mod not found"
+          echo "OpenMPI include dir:"
+          ls -la $HOME/.local/include/ || true
+          echo "OpenMPI lib dir:"
+          ls -la $HOME/.local/lib/ || true
+          mpifort --version
+          mpifort --showme
+
+      - name: configure hdf5
+        run: |
+          export PATH=$HOME/.local/bin:$PATH
+          export LD_LIBRARY_PATH=$HOME/.local/lib:$LD_LIBRARY_PATH
+          mkdir build
+          cd build
+          cmake \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_INSTALL_PREFIX=$HOME/.local/hdf5 \
+            -DCMAKE_C_COMPILER=mpicc \
+            -DCMAKE_CXX_COMPILER=mpicxx \
+            -DCMAKE_Fortran_COMPILER=mpifort \
+            -DMPIEXEC_PREFLAGS="--allow-run-as-root" \
+            -DHDF5_BUILD_FORTRAN:BOOL=ON \
+            -DHDF5_BUILD_CPP_LIB:BOOL=OFF \
+            -DHDF5_BUILD_JAVA:BOOL=OFF \
+            -DHDF5_ENABLE_PARALLEL:BOOL=ON \
+            -DSITE:STRING="ubu" \
+            -DBUILDNAME:STRING="gcc-15/ompi-5/f/p/issue-6175" \
+            -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
+            -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \
+            ..
+
+      - name: build hdf5
+        run: |
+          export PATH=$HOME/.local/bin:$PATH
+          export LD_LIBRARY_PATH=$HOME/.local/lib:$LD_LIBRARY_PATH
+          cd build
+          make -j$(nproc) 2>&1 | tee build.log || true
+          echo "=== Checking for mpi.mod error ==="
+          grep -i "mpi.mod" build.log || echo "No mpi.mod errors found"
+          grep -i "Fatal Error" build.log || echo "No fatal errors found"
+
+      - name: upload build log
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: build-log
+          path: build/build.log
