@@ -41,7 +41,7 @@ jobs:
         run: |
           mkdir gccsrc
           cd gccsrc
-          git clone --depth 1 --branch master git://gcc.gnu.org/git/gcc.git gcc-15
+          git clone --depth 1 --branch releases/gcc-15.2.0 git://gcc.gnu.org/git/gcc.git gcc-15
           cd gcc-15
           contrib/download_prerequisites
           cd ..
