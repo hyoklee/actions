@@ -28,10 +28,10 @@ jobs:
           CFLAGS: -fPIC -lnvf -lnvomp -ldl -lnvhpcatm -latomic -lpthread -lnvcpumath -lnsnvc -lnvc -lrt -lm -Mbounds  -gopt   -O1
           FCFLAGS: -fPIC -lnvf -lnvomp -ldl -lnvhpcatm -latomic -lpthread -lnvcpumath -lnsnvc -lnvc -lrt -lm
         run: |
-          export CC=/opt/nvidia/hpc_sdk/Linux_x86_64/26.1/comm_libs/openmpi4/bin/mpicc
-          export LD_LIBRARY_PATH=/opt/nvidia/hpc_sdk/Linux_x86_64/26.1/cuda/13.1/lib64:/opt/nvidia/hpc_sdk/Linux_x86_64/26.1/compilers/lib
+          export CC=/opt/nvidia/hpc_sdk/Linux_x86_64/26.1/comm_libs/13.1/hpcx/hpcx-2.25.1/ompi/bin/mpicc
+          export LD_LIBRARY_PATH=/opt/nvidia/hpc_sdk/Linux_x86_64/26.1/comm_libs/13.1/hpcx/hpcx-2.25.1/ompi/lib:/opt/nvidia/hpc_sdk/Linux_x86_64/26.1/cuda/13.1/lib64:/opt/nvidia/hpc_sdk/Linux_x86_64/26.1/compilers/lib
           export NVHPCSDK=/opt/nvidia/hpc_sdk
-          export PATH=/opt/nvidia/hpc_sdk/Linux_x86_64/26.1/comm_libs/openmpi4/bin:/opt/nvidia/hpc_sdk/Linux_x86_64/26.1/compilers/bin:$PATH
+          export PATH=/opt/nvidia/hpc_sdk/Linux_x86_64/26.1/comm_libs/openmpi4/bin:/opt/nvidia/hpc_sdk/Linux_x86_64/26.1/compilers/bin:/opt/nvidia/hpc_sdk/Linux_x86_64/26.1/comm_libs/13.1/hpcx/hpcx-2.25.1/ompi/bin/:$PATH
           env
           git clone https://github.com/HDFGroup/hdf5.git
           cd hdf5
