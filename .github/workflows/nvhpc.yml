@@ -3,7 +3,7 @@ name: nvhpc 26.1
 on:
   push:
     branches:
-      - main
+      - main-
 
 jobs:
   build:
