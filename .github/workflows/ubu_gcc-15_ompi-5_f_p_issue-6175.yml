@@ -7,7 +7,7 @@ name: ubu gcc-15 ompi-5 f p issue-6175
 on:
   push:
     branches:
-      - main
+      - main-
 
 jobs:
   build:
