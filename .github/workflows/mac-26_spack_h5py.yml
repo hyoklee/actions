@@ -1,4 +1,4 @@
-name: mac spack h5py
+name: mac-26 spack h5py
 
 on:
   push:
@@ -7,16 +7,14 @@ on:
 
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: macos-26
 
     steps:
-
     - name: Checkout Spack
       uses: actions/checkout@v6
       with:
         repository: spack/spack
         path: ./spack
-
     - name: Run a multi-line script
       run: |
         . ./spack/share/spack/setup-env.sh
