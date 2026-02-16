@@ -2,7 +2,7 @@ name: AlmaLinux 8 Job
 on:
   push:
     branches:
-      - main-
+      - main
 
 jobs:
   build-and-test:
