@@ -32,8 +32,6 @@ jobs:
           mkdir build
           cd build
           cmake --log-level=VERBOSE --fresh \
-                -DBUILD_SHARED_LIBS:BOOL=ON \
-                -DHDF5_ENABLE_PARALLEL:BOOL=ON \
                 -DSITE:STRING=alm \
                 -DBUILDNAME:STRING="r" \
                 -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
