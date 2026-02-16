@@ -7,7 +7,7 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
-    
+
     container:
       image: almalinux:8
 
@@ -16,7 +16,7 @@ jobs:
         uses: actions/checkout@v6
         with:
           repository: HDFGroup/hdf5
-      
+
       - name: verify
         run: |
           cat /etc/redhat-release
@@ -26,4 +26,17 @@ jobs:
         run: |
           dnf -y update
           dnf -y install gcc make cmake
-          
+
+      - name: hdf5
+        run: |
+          mkdir build
+          cd build
+          cmake --log-level=VERBOSE --fresh \
+                -DBUILD_SHARED_LIBS:BOOL=ON \
+                -DHDF5_ENABLE_PARALLEL:BOOL=ON \
+                -DSITE:STRING=alm \
+                -DBUILDNAME:STRING="r" \
+                -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
+                -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \
+                ..
+          ctest -D Experimental -C Release
