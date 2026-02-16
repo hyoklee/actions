@@ -2,7 +2,7 @@ name: spack iowarp
 
 on:
   push:
-    branches: [ main- ]
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
@@ -23,5 +23,5 @@ jobs:
       run: |
         . ./spack/share/spack/setup-env.sh
         spack repo add iowarp/iowarp-spack
-        spack spec -I iowarp
-        spack install iowarp
+        spack spec -I iowarp+posix
+        spack install iowarp+posix
