@@ -1,24 +1,29 @@
 name: AlmaLinux 8 Job
-on: [push]
+on:
+  push:
+    branches:
+      - main-
 
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
     
-    # This instructs GitHub to run all steps inside this container
     container:
       image: almalinux:8
 
     steps:
-      - name: Verify OS Version
+      - name: checkout
+        uses: actions/checkout@v6
+        with:
+          repository: HDFGroup/hdf5
+      
+      - name: verify
         run: |
           cat /etc/redhat-release
           dnf --version
 
-      - name: Install Dependencies
+      - name: install
         run: |
           dnf -y update
-          dnf -y install gcc make
+          dnf -y install gcc make cmake
           
-      - name: Checkout Code
-        uses: actions/checkout@v4

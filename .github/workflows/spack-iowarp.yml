@@ -2,7 +2,7 @@ name: spack iowarp
 
 on:
   push:
-    branches: [ main- ]
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
@@ -10,12 +10,12 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
     - name: checkout spack
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
       with:
         repository: spack/spack
         path: ./spack
     - name: checkout iowarp
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
       with:
         repository: iowarp/iowarp-install
         path: ./iowarp
