@@ -3,7 +3,7 @@ name: mac-15 ninja cl-21 fl-21 h5
 on:
   push:
     branches:
-      - main-
+      - main
 
 jobs:
   build:
@@ -22,8 +22,8 @@ jobs:
       - name: test
         run: |
           export FC=/opt/homebrew/bin/flang-21
-          export CC=/opt/homebrew/Cellar/llvm/21.1.8/bin/clang
-          export CXX=/opt/homebrew/Cellar/llvm/21.1.8/bin/clang++
+          export CC=/opt/homebrew/Cellar/llvm/21.1.8_1/bin/clang
+          export CXX=/opt/homebrew/Cellar/llvm/21.1.8_1/bin/clang++
           mkdir build
           cd build
           cmake -G Ninja \
