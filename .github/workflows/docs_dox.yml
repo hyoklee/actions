@@ -1,7 +1,7 @@
 name: docs doxygen gh-pages
 on:
   push:
-    branches: [ main ]
+    branches: main-
   workflow_dispatch:
 
 jobs:
