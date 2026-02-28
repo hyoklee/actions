@@ -1,4 +1,4 @@
-name: doxygen gh-pages
+name: doxygen off gh-pages
 on:
   push:
     branches: [ main ]
@@ -35,3 +35,4 @@ jobs:
           publish_dir: ./build/hdf5lib_docs/html
           destination_dir: develop
           github_token: ${{ secrets.GITHUB_TOKEN }}
+
