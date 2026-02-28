@@ -1,4 +1,4 @@
-name: doxygen off gh-pages
+name: docs off
 on:
   push:
     branches: [ main ]
@@ -13,26 +13,9 @@ jobs:
         with:
           repository: brtnfld/hdf5
           ref: dox3
-
-      - name: apt
-        run: |
-          sudo apt update -y
-          sudo apt install -y libunwind-dev
-          sudo apt-get install -y graphviz
-          sudo apt-get install -y --no-install-recommends doxygen
-          sudo apt-get install -y cmake
-          
       - name: build
         run: |
           mkdir build
           cd build
           cmake -DHDF5_BUILD_DOC:BOOL=OFF ..
           make doxygen
-
-      - name: deploy
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          publish_dir: ./build/hdf5lib_docs/html
-          destination_dir: develop
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-

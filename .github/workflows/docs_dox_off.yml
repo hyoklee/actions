@@ -1,4 +1,4 @@
-name: docs
+name: docs doxygen off
 on:
   push:
     branches: [ main ]
@@ -14,9 +14,17 @@ jobs:
           repository: brtnfld/hdf5
           ref: dox3
 
+      - name: apt
+        run: |
+          sudo apt update -y
+          sudo apt install -y libunwind-dev
+          sudo apt-get install -y graphviz
+          sudo apt-get install -y --no-install-recommends doxygen
+          sudo apt-get install -y cmake
+          
       - name: build
         run: |
           mkdir build
           cd build
-          cmake -DHDF5_BUILD_DOC:BOOL=ON ..
+          cmake -DHDF5_BUILD_DOC:BOOL=OFF ..
           make doxygen
