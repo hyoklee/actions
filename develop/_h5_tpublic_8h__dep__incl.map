@@ -1,14 +1,28 @@
 <map id="src/H5Tpublic.h" name="src/H5Tpublic.h">
-<area shape="rect" id="node1" title=" " alt="" coords="356,5,479,32"/>
-<area shape="rect" id="node2" href="$_h5_apublic_8h.html" title=" " alt="" coords="27,80,150,107"/>
-<area shape="rect" id="node7" href="$_h5_lpublic_8h.html" title=" " alt="" coords="308,80,429,107"/>
-<area shape="rect" id="node11" href="$_h5_ppublic_8h.html" title=" " alt="" coords="538,155,660,181"/>
-<area shape="rect" id="node12" href="$_h5_tdevelop_8h.html" title=" " alt="" coords="505,80,640,107"/>
-<area shape="rect" id="node3" href="$_h5_v_lconnector_8h.html" title=" " alt="" coords="115,304,270,331"/>
-<area shape="rect" id="node6" href="$_h5_v_lnative_8h.html" title=" " alt="" coords="22,155,154,181"/>
-<area shape="rect" id="node4" href="$_h5_mpublic_8h.html" title=" " alt="" coords="30,379,157,405"/>
-<area shape="rect" id="node5" href="$_h5_v_lconnector__passthru_8h.html" title=" " alt="" coords="182,379,400,405"/>
-<area shape="rect" id="node8" href="$_h5_gpublic_8h.html" title=" " alt="" coords="230,155,354,181"/>
-<area shape="rect" id="node10" href="$_h5_ldevelop_8h.html" title=" " alt="" coords="378,155,513,181"/>
-<area shape="rect" id="node9" href="$_h5_rpublic_8h.html" title=" " alt="" coords="230,229,352,256"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="356,5,479,31"/>
+<area shape="rect" id="Node000002" href="$_h5_apublic_8h.html" title=" " alt="" coords="27,79,149,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="352,36,142,81,141,76,351,31"/>
+<area shape="rect" id="Node000007" href="$_h5_lpublic_8h.html" title=" " alt="" coords="307,79,429,104"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="404,44,378,80,374,77,399,41"/>
+<area shape="rect" id="Node000011" href="$_h5_ppublic_8h.html" title=" " alt="" coords="537,152,660,177"/>
+<area shape="poly" id="edge13_Node000001_Node000011" title=" " alt="" coords="436,40,462,71,495,102,536,129,574,149,572,154,533,134,492,106,459,75,432,43"/>
+<area shape="rect" id="Node000012" href="$_h5_tdevelop_8h.html" title=" " alt="" coords="505,79,639,104"/>
+<area shape="poly" id="edge14_Node000001_Node000012" title=" " alt="" coords="456,34,548,76,546,81,454,39"/>
+<area shape="rect" id="Node000003" href="$_h5_v_lconnector_8h.html" title=" " alt="" coords="115,299,269,324"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="53,113,33,126,18,141,9,158,12,176,26,198,43,218,83,253,126,279,163,296,161,301,123,283,80,257,39,222,21,201,7,178,4,157,13,138,30,122,50,108"/>
+<area shape="rect" id="Node000006" href="$_h5_v_lnative_8h.html" title=" " alt="" coords="22,152,154,177"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="91,118,91,152,85,152,85,118"/>
+<area shape="rect" id="Node000004" href="$_h5_mpublic_8h.html" title=" " alt="" coords="30,372,157,397"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="167,334,111,374,108,370,164,330"/>
+<area shape="rect" id="Node000005" href="$_h5_v_lconnector__passthru_8h.html" title=" " alt="" coords="181,372,400,397"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="220,330,276,370,273,374,217,334"/>
+<area shape="poly" id="edge12_Node000007_Node000003" title=" " alt="" coords="295,108,255,126,236,138,221,154,210,171,201,190,193,232,191,270,193,298,188,299,186,270,187,231,196,189,205,169,217,150,233,134,252,121,293,104"/>
+<area shape="rect" id="Node000008" href="$_h5_gpublic_8h.html" title=" " alt="" coords="230,152,354,177"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="348,115,306,154,303,150,344,111"/>
+<area shape="rect" id="Node000010" href="$_h5_ldevelop_8h.html" title=" " alt="" coords="378,152,513,177"/>
+<area shape="poly" id="edge10_Node000007_Node000010" title=" " alt="" coords="392,111,435,150,431,154,389,115"/>
+<area shape="poly" id="edge11_Node000007_Node000011" title=" " alt="" coords="419,106,562,149,561,154,418,111"/>
+<area shape="rect" id="Node000009" href="$_h5_rpublic_8h.html" title=" " alt="" coords="229,225,352,251"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="294,191,294,225,288,225,289,191"/>
+<area shape="poly" id="edge9_Node000009_Node000003" title=" " alt="" coords="266,261,210,301,207,296,263,256"/>
 </map>

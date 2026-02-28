@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['cookbook_2edox_6231',['Cookbook.dox',['../_cookbook_8dox.html',1,'']]]
+  ['branches_2dexplained_2edox_0',['branches-explained.dox',['../branches-explained_8dox.html',1,'']]]
 ];
