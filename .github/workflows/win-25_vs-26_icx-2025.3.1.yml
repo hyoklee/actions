@@ -1,0 +1,44 @@
+name: win-25 vs-26 icx-2025.3.1 -sh da dw tv
+
+on:
+  push:
+    branches: main
+
+env:
+  WINDOWS_BASEKIT_URL: https://registrationcenter-download.intel.com/akdlm/IRC_NAS/076e961b-2c29-48a8-9203-c96f00e7051b/intel-oneapi-base-toolkit-2025.3.1.35_offline.exe --output intel-oneapi-base-toolkit-2025.3.1.35_offline.exe
+  WINDOWS_HPCKIT_URL: https://registrationcenter-download.intel.com/akdlm/IRC_NAS/36f868e9-84b3-4b4f-90ef-ca84092cae6a/intel-oneapi-hpc-toolkit-2025.3.1.54_offline.exe --output intel-oneapi-hpc-toolkit-2025.3.1.54_offline.exe
+  WINDOWS_CPP_COMPONENTS: intel.oneapi.win.cpp-dpcpp-common
+  WINDOWS_DPCPP_COMPONENTS: intel.oneapi.win.cpp-dpcpp-common
+  CACHE_NUMBER: 11
+  SAMPLES_TAG: 2025.3.1
+  COMPILER_VERSION: 2025.3
+  TBB_VERSION: 2022.3
+  VS_VER: vs2026
+
+jobs:
+  test-msi:
+    runs-on: windows-2025-vs-2026
+
+    steps:
+      - name: h5
+        uses: actions/checkout@v6
+        with:
+          repository: brtnfld/hdf5          
+          ref: atomic          
+      - name: oneapi
+        run: |
+          git clone --depth=1 https://github.com/oneapi-src/oneapi-ci.git oneapi-ci
+          cd oneapi-ci
+          scripts/install_windows.bat ${{ env.WINDOWS_HPCKIT_URL }} ${{ env.WINDOWS_CPP_COMPONENTS }}:${{ env.WINDOWS_FORTRAN_COMPONENTS }}
+      - name: test
+        shell: cmd
+        env:
+          vc_arch: x64
+        run: |
+          call "C:\Program Files\Microsoft Visual Studio\2026\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" %vc_arch%
+          set SETVARS="%ProgramFiles(x86)%\Intel\oneAPI\setvars.bat"
+          call %SETVARS%
+          mkdir build
+          cd build
+          cmake -G Ninja -DCMAKE_C_COMPILER="C:/Program Files (x86)/Intel/oneAPI/compiler/latest/bin/icx.exe" -DCMAKE_CXX_COMPILER="C:/Program Files (x86)/Intel/oneAPI/compiler/latest/bin/icpx.exe"  -DBUILD_SHARED_LIBS:BOOL=OFF  -DHDF5_ENABLE_ZLIB_SUPPORT:BOOL=OFF -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF -DHDF5_TEST_API=ON -DHDF5_ENABLE_ALL_WARNINGS=ON -DHDF5_ENABLE_DEBUG_APIS:BOOL=ON -DHDF5_ENABLE_DEV_WARNINGS=ON -DHDF5_TEST_VFD:BOOL=ON -DCTEST_DROP_SITE_INIT=my.cdash.org -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" -DSITE="win-25" -DBUILDNAME="vs-26/ninja/icx-2025.3.1/-sh/da+dw+tv/pr6244" ..
+          ctest -D Experimental
