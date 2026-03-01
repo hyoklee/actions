@@ -35,7 +35,7 @@ jobs:
         env:
           vc_arch: x64
         run: |
-          call "C:\Program Files\Microsoft Visual Studio\2026\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" %vc_arch%
+          call "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" %vc_arch%
           set SETVARS="%ProgramFiles(x86)%\Intel\oneAPI\setvars.bat"
           call %SETVARS%
           mkdir build
