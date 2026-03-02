@@ -1,0 +1,22 @@
+name: win-25 vs-26 -sh zl
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: windows-2025-vs2026
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          repository: HDFGroup/hdf5          
+      - name: test
+        run: |
+          mkdir build
+          cd build
+          vcpkg install zlib
+          vcpkg integrate install
+          cmake -DCMAKE_TOOLCHAIN_FILE="C:/vcpkg/scripts/buildsystems/vcpkg.cmake" -DBUILD_SHARED_LIBS:BOOL=OFF -DHDF5_ENABLE_ZLIB_SUPPORT:BOOL=ON -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org"  -DSITE="win-25" -DBUILDNAME="vs2026/-sh/zl" ..
+          ctest -C Release -D Experimental 
