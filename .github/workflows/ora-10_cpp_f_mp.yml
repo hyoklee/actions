@@ -3,7 +3,7 @@ name: ora-10 cpp f mp
 on:
   push:
     branches:
-      - main
+      - main-
 
 jobs:
   test:
