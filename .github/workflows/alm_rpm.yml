@@ -17,9 +17,19 @@ jobs:
           cat /etc/redhat-release
           dnf --version
 
-      - name: hdf5
+      - name: install gh
         run: |
-          curl -s -L -O https://github.com/HDFGroup/hdf5/releases/download/untagged-2fb73adb9ccacf91b577/hdf5-2.1.0-ubuntu-2404_gcc.rpm
+          dnf install -y 'dnf-command(config-manager)'
+          dnf config-manager --add-repo https://cli.github.com/packages/rpm/gh-cli.repo
+          dnf install -y gh
+
+      - name: hdf5
+        env:
+          GH_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
+        run: |
+          gh release download untagged-2fb73adb9ccacf91b577 \
+            --repo HDFGroup/hdf5 \
+            --pattern "hdf5-2.1.0-ubuntu-2404_gcc.rpm"
           rpm -i hdf5-2.1.0-ubuntu-2404_gcc.rpm
           ls /HDF_Group/HDF5
           /HDF_Group/HDF5/2.1.0/bin/h5cc -v
