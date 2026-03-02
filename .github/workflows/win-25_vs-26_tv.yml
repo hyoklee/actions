@@ -3,7 +3,7 @@ name: win-25 vs-26 tv
 on:
   push:
     branches:
-      - main
+      - main-
 jobs:
   build:
     runs-on: windows-2025-vs2026

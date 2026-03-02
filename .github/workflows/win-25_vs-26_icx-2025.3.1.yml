@@ -2,7 +2,7 @@ name: win-25 vs-26 icx-2025.3.1 -sh da dw tv
 
 on:
   push:
-    branches: main-
+    branches: main
 
 env:
   WINDOWS_BASEKIT_URL: https://registrationcenter-download.intel.com/akdlm/IRC_NAS/076e961b-2c29-48a8-9203-c96f00e7051b/intel-oneapi-base-toolkit-2025.3.1.35_offline.exe --output intel-oneapi-base-toolkit-2025.3.1.35_offline.exe
@@ -16,9 +16,8 @@ env:
   VS_VER: vs2026
 
 jobs:
-  test-msi:
-    runs-on: windows-2025-vs-2026
-
+  build:
+    runs-on: windows-2025-vs2026
     steps:
       - name: h5
         uses: actions/checkout@v6
