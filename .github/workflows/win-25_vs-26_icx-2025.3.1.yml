@@ -5,8 +5,8 @@ on:
     branches: main
 
 env:
-  WINDOWS_BASEKIT_URL: https://registrationcenter-download.intel.com/akdlm/IRC_NAS/076e961b-2c29-48a8-9203-c96f00e7051b/intel-oneapi-base-toolkit-2025.3.1.35_offline.exe --output intel-oneapi-base-toolkit-2025.3.1.35_offline.exe
-  WINDOWS_HPCKIT_URL: https://registrationcenter-download.intel.com/akdlm/IRC_NAS/36f868e9-84b3-4b4f-90ef-ca84092cae6a/intel-oneapi-hpc-toolkit-2025.3.1.54_offline.exe --output intel-oneapi-hpc-toolkit-2025.3.1.54_offline.exe
+  WINDOWS_BASEKIT_URL: https://registrationcenter-download.intel.com/akdlm/IRC_NAS/076e961b-2c29-48a8-9203-c96f00e7051b/intel-oneapi-base-toolkit-2025.3.1.35_offline.exe
+  WINDOWS_HPCKIT_URL: https://registrationcenter-download.intel.com/akdlm/IRC_NAS/36f868e9-84b3-4b4f-90ef-ca84092cae6a/intel-oneapi-hpc-toolkit-2025.3.1.54_offline.exe
   WINDOWS_CPP_COMPONENTS: intel.oneapi.win.cpp-dpcpp-common
   WINDOWS_DPCPP_COMPONENTS: intel.oneapi.win.cpp-dpcpp-common
   CACHE_NUMBER: 11
