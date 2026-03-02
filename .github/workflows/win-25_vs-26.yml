@@ -3,7 +3,7 @@ name: win-25 vs-26
 on:
   push:
     branches:
-      - main
+      - main-
 jobs:
   build:
     runs-on: windows-2025-vs2026
@@ -11,11 +11,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
         with:
-          repository: brtnfld/hdf5          
-          ref: atomic
+          repository: HDFGroup/hdf5          
       - name: test
         run: |
           mkdir build
           cd build
-          cmake -DSITE:STRING="win-25" -DBUILDNAME:STRING="vs-26/pr6244" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" ..
+          cmake -DSITE:STRING="win-25" -DBUILDNAME:STRING="vs2026" -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" ..
           ctest -C Release -D Experimental 
