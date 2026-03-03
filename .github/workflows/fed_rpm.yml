@@ -2,7 +2,7 @@ name: fedora rpm
 
 on:
   push:
-    branches: main-
+    branches: main
 
 jobs:
   test:
@@ -22,7 +22,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
         run: |
-          gh release download untagged-2fb73adb9ccacf91b577 \
+          gh release download untagged-cd781e9606c9da613a08 \
             --repo HDFGroup/hdf5 \
             --pattern "hdf5-2.1.0-ubuntu-2404_gcc.rpm"
           rpm -i hdf5-2.1.0-ubuntu-2404_gcc.rpm
