@@ -15,7 +15,7 @@ var searchData=
   ['specific_20information_20for_20hdf5_201_2012_12',['Release Specific Information for HDF5 1.12',['../rel_spec_112.html',1,'']]],
   ['specific_20information_20for_20hdf5_201_2014_13',['Release Specific Information for HDF5 1.14',['../rel_spec_114.html',1,'']]],
   ['specific_20information_20for_20hdf5_201_208_14',['Release Specific Information for HDF5 1.8',['../rel_spec_18.html',1,'']]],
-  ['specific_20information_20for_20hdf5_202_200_15',['specific information for hdf5 2 0',['../rel_spec_20.html',1,'Release Specific Information for HDF5 2.0'],['../rel_spec_20_change.html',1,'Release Specific Information for HDF5 2.0']]],
+  ['specific_20information_20for_20hdf5_202_20x_15',['specific information for hdf5 2 x',['../rel_spec_2x.html',1,'Release Specific Information for HDF5 2.x'],['../rel_spec_2x_change.html',1,'Release Specific Information for HDF5 2.x']]],
   ['specification_20version_201_200_16',['specification version 1 0',['../_f_m_t1.html',1,'HDF5 File Format Specification Version 1.0'],['../_t_b_l_s_p_e_c.html',1,'HDF5 Table Specification Version 1.0']]],
   ['specification_20version_201_201_17',['HDF5 File Format Specification Version 1.1',['../_f_m_t11.html',1,'']]],
   ['specification_20version_201_202_18',['HDF5 Image and Palette Specification Version 1.2',['../_i_m_g.html',1,'']]],

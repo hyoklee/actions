@@ -22,7 +22,7 @@ var searchData=
   ['information_20for_20hdf5_201_2012_19',['Release Specific Information for HDF5 1.12',['../rel_spec_112.html',1,'']]],
   ['information_20for_20hdf5_201_2014_20',['Release Specific Information for HDF5 1.14',['../rel_spec_114.html',1,'']]],
   ['information_20for_20hdf5_201_208_21',['Release Specific Information for HDF5 1.8',['../rel_spec_18.html',1,'']]],
-  ['information_20for_20hdf5_202_200_22',['information for hdf5 2 0',['../rel_spec_20_change.html',1,'Release Specific Information for HDF5 2.0'],['../rel_spec_20.html',1,'Release Specific Information for HDF5 2.0']]],
+  ['information_20for_20hdf5_202_20x_22',['information for hdf5 2 x',['../rel_spec_2x_change.html',1,'Release Specific Information for HDF5 2.x'],['../rel_spec_2x.html',1,'Release Specific Information for HDF5 2.x']]],
   ['initialization_20and_20shutdown_23',['HDF5 Library initialization and shutdown',['../_init_shut.html',1,'']]],
   ['introduction_24',['C++ API Introduction',['../h5_cpp_intro.html',1,'']]],
   ['introduction_20to_20hdf5_25',['Introduction to HDF5',['../_intro_h_d_f5.html',1,'']]],
