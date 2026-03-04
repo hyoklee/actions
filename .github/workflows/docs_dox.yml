@@ -11,7 +11,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v6
         with:
-          repository: bmribler/hdf5
+          repository: bmribler/hdf5_bmr23
           ref: release_2.1.0
 
       - name: apt
