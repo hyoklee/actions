@@ -2,7 +2,7 @@ name: fedora rpm
 
 on:
   push:
-    branches: main
+    branches: main-
 
 jobs:
   test:
