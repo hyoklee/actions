@@ -8,7 +8,8 @@ on:
 jobs:
   build:
 #    runs-on: windows-2025-vs2026
-    runs-on: windows-2025
+#    runs-on: windows-2025
+    runs-on: ubuntu-latest
     steps:
       - name: checkout
         uses: actions/checkout@v6
