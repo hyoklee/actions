@@ -4,14 +4,15 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:      
 jobs:
   build:
     runs-on: windows-2025-vs2026
     steps:
-      - name: Checkout
+      - name: checkout
         uses: actions/checkout@v6
         with:
-          repository: clawbernetes/clawbernetes
+          repository: redclawsystems/clawbernetes
       - name: test
         run: |
           npm install -g openclaw@latest
