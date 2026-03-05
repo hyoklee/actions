@@ -7,9 +7,9 @@ on:
   workflow_dispatch:      
 jobs:
   build:
-#    runs-on: windows-2025-vs2026
+    runs-on: windows-2025-vs2026
 #    runs-on: windows-2025
-    runs-on: ubuntu-latest
+#    runs-on: ubuntu-latest
     steps:
       - name: checkout
         uses: actions/checkout@v6
@@ -20,4 +20,7 @@ jobs:
           npm install -g openclaw@latest
           openclaw onboard --install-daemon
           cargo install --path crates/clawnode
-
+          clawnode init-config \
+            --gateway ws://gateway-host:18789 \
+            --output ./clawnode-config.json
+          clawnode run --config ./clawnode-config.json
