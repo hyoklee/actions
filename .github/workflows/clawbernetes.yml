@@ -1,0 +1,20 @@
+name: clawbernetes
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: windows-2025-vs2026
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          repository: clawbernetes/clawbernetes
+      - name: test
+        run: |
+          npm install -g openclaw@latest
+          openclaw onboard --install-daemon
+          cargo install --path crates/clawnode
+
