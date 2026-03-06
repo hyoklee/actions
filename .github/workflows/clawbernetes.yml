@@ -3,7 +3,7 @@ name: clawbernetes
 on:
   push:
     branches:
-      - main
+      - main-
   workflow_dispatch:
 jobs:
   build:

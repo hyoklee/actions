@@ -3,7 +3,7 @@ name: msys2
 on:
   push:
     branches:
-      - main-
+      - main
 
 jobs:
   build:
@@ -14,8 +14,7 @@ jobs:
           - mingw32
           - ucrt64
           - clang64
-        os: [windows-2022, windows-2025, windows-11-arm]
-#        os: [windows-11-arm]        
+        os: [windows-2022, windows-2025, windows-11-arm, windows-2025-vs2026]
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -25,8 +24,8 @@ jobs:
       - name: get
         uses: actions/checkout@v6
         with:
-          repository: hyoklee/hdf5
-          ref: HDFGroup-hdf5-5975
+          repository: phfix/hdf5
+          ref: fix/windows-cache-api-rpt-fcn-compare
 
       - name: set
         uses: msys2/setup-msys2@v2
@@ -44,7 +43,7 @@ jobs:
           mkdir build
           cd build
           cmake -G Ninja \
-            -DBUILDNAME:STRING="5975/ninja" \
+            -DBUILDNAME:STRING="6274/ninja" \
             -DHDF5_TEST_API=OFF \
             -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \
             -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
