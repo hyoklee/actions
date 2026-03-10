@@ -11,12 +11,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
         with:
-          repository: HDFGroup/hdf5          
+          repository: HDFGroup/hdf5
+          ref: 2.0.0
       - name: test
         run: |
           mkdir build
           cd build
           vcpkg install zlib-ng
           vcpkg integrate install
-          cmake -DCMAKE_TOOLCHAIN_FILE="C:/vcpkg/scripts/buildsystems/vcpkg.cmake" -DBUILD_SHARED_LIBS:BOOL=OFF -DHDF5_ENABLE_ZLIB_SUPPORT:BOOL=ON -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org"  -DSITE="win-25" -DBUILDNAME="vs-26/zl-ng" ..
+          cmake -DCMAKE_TOOLCHAIN_FILE="C:/vcpkg/scripts/buildsystems/vcpkg.cmake" -DBUILD_SHARED_LIBS:BOOL=OFF -DHDF5_ENABLE_ZLIB_SUPPORT:BOOL=ON -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org"  -DSITE="win-25" -DBUILDNAME="vs-26/zl-ng/2.0.0" ..
           ctest -C Release -D Experimental 

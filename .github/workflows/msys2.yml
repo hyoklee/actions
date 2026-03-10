@@ -3,7 +3,7 @@ name: msys2
 on:
   push:
     branches:
-      - main
+      - main-
 
 jobs:
   build:
