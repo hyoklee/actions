@@ -1,0 +1,37 @@
+name: amd64 mac-15 ninja cl-21 fl-21
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: macos-15-intel
+    steps:
+      - name: checkout
+        uses: actions/checkout@v6
+        with:
+          repository: HDFGroup/hdf5
+
+      - name: install
+        run: |
+          brew update
+          brew install flang
+
+      - name: test
+        run: |
+          ls /usr/local/bin/flang*
+          export FC=/usr/local/bin/flang-22
+          export CC=/usr/local/Cellar/llvm/22.1.0/bin/clang
+          export CXX=/usr/local/Cellar/llvm/22.1.0/bin/clang++
+          mkdir build
+          cd build
+          cmake -G Ninja \
+            -DSITE:STRING=mac-15.x86_64 \
+            -DBUILDNAME:STRING="ninja/cl-22/fl-22" \
+            -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
+            -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \
+            -DHDF5_BUILD_FORTRAN=ON \
+            ..
+          ctest -D Experimental
