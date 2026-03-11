@@ -15,7 +15,7 @@ jobs:
 
       - name: test
         run: |
-          sudo apt install zlib-ng
+          vcpkg install zlib-ng
           mkdir build
           cd build
           cmake \
