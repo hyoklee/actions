@@ -1,9 +1,9 @@
-name: lin zln
+name: lin zln hk
 
 on:
   push:
     branches:
-      - main-
+      - main
 jobs:
   build:
     runs-on: ubuntu-24.04
@@ -11,7 +11,7 @@ jobs:
       - name: h5
         uses: actions/checkout@v6
         with:
-          repository: HDFGroup/hdf5
+          repository: hyoklee/hdf5
 
       - name: test
         run: |
@@ -20,7 +20,7 @@ jobs:
           cd build
           cmake \
             -G Ninja \
-            -DBUILDNAME:STRING="znl" \
+            -DBUILDNAME:STRING="znl/hk" \
             -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \
             -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
             -DCTEST_BUILD_FLAGS="-j2" \
