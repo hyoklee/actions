@@ -32,20 +32,24 @@ jobs:
           run: |
             sudo pkg_add git
             sudo pkg_add cmake
-            sudo pkg_add zlib-ng
+            git clone https://github.com/zlib-ng/zlib-ng
+            cd zlib-ng
+            cmake .
+            cmake --build . --config Release
+            ctest --verbose -C Release
+            sudo cmake --build . --target install
+            cd ..
             mkdir build
             cd build
             cmake \
-             -C ../config/cmake/cacheinit.cmake \
             -DBUILDNAME:STRING="hk/zln" \
             -DCMAKE_BUILD_TYPE=Release \
             -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \
             -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
-            -DHDF5_BUILD_HL_LIB:BOOL=ON \
+            -DHDF5_BUILD_HL_LIB:BOOL=OFF \
             -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF \
             -DHDF5_ENABLE_ZLIB_SUPPORT:BOOL=ON \
             -DHDF5_USE_ZLIB_NG:BOOL=ON \
-            -DZLIB_USE_LOCALCONTENT=OFF \
             -DSITE:STRING="obsd-7.8" \
             ..
             ctest -D Experimental -C Release
