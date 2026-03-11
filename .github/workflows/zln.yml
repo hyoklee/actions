@@ -36,6 +36,7 @@ jobs:
             mkdir build
             cd build
             cmake \
+             -C ../config/cmake/cacheinit.cmake \
             -DBUILDNAME:STRING="hk/zln" \
             -DCMAKE_BUILD_TYPE=Release \
             -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \
@@ -44,6 +45,7 @@ jobs:
             -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF \
             -DHDF5_ENABLE_ZLIB_SUPPORT:BOOL=ON \
             -DHDF5_USE_ZLIB_NG:BOOL=ON \
+            -DZLIB_USE_LOCALCONTENT=OFF \
             -DSITE:STRING="obsd-7.8" \
             ..
             ctest -D Experimental -C Release
