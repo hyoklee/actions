@@ -1,0 +1,31 @@
+name: lin zln
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: h5
+        uses: actions/checkout@v6
+        with:
+          repository: HDFGroup/hdf5
+
+      - name: test
+        run: |
+          sudo apt install zlib-ng
+          mkdir build
+          cd build
+          cmake \
+            -G Ninja \
+            -DBUILDNAME:STRING="znl" \
+            -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \
+            -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
+            -DCTEST_BUILD_FLAGS="-j2" \
+            -DSITE:STRING=ubu-24 \
+            -DHDF5_ENABLE_ZLIB_SUPPORT:BOOL=ON \
+            -DHDF5_USE_ZLIB_NG:BOOL=ON \
+            ..
+          time ninja -j2
