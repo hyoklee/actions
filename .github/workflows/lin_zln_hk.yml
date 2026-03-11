@@ -21,6 +21,7 @@ jobs:
           cd build
           cmake \
             -G Ninja \
+            -DCMAKE_TOOLCHAIN_FILE=/usr/local/share/vcpkg/scripts/buildsystems/vcpkg.cmak \
             -DBUILDNAME:STRING="znl/hk" \
             -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \
             -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
