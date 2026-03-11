@@ -16,6 +16,7 @@ jobs:
       - name: test
         run: |
           vcpkg install zlib-ng
+          vcpkg integrate install
           mkdir build
           cd build
           cmake \
