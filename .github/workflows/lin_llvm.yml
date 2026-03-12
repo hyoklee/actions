@@ -36,8 +36,6 @@ jobs:
       - name: install
          run: sudo apt install llvm-toolchain-22
 
-#  run: sudo apt install --no-install-recommends clang-${{ matrix.llvm-version }} flang-${{ matrix.llvm-version }}
-
       - name: test
         run: |
           export FC=flang-22
