@@ -34,7 +34,7 @@ jobs:
             apt search flang
 
       - name: install
-         run: sudo apt install llvm-toolchain-22
+        run: sudo apt install llvm-toolchain-22
 
       - name: test
         run: |
