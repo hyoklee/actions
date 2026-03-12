@@ -42,9 +42,6 @@ jobs:
 
       - name: test
         run: |
-          export FC=flang-22
-          export CC=clang
-          export CXX=clang++
           mkdir build
           cd build
           cmake \
