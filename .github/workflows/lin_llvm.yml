@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-
 jobs:
   linux-flang:
     runs-on: ubuntu-latest
@@ -20,18 +19,19 @@ jobs:
       FC: flang-${{ matrix.llvm-version }}
 
     steps:
-      - uses: actions/checkout
+      - name: checkout
+        uses: actions/checkout@v6
         with:
           repository: hyoklee/hdf5
 
-      - name: Apt LLVM
+      - name: apt
         run: |
             wget https://apt.llvm.org/llvm.sh
             chmod +x llvm.sh
             sudo ./llvm.sh ${{ matrix.llvm-version }}
             sudo apt-get update
 
-      - name: install Flang
+      - name: install
         run: sudo apt install --no-install-recommends clang-${{ matrix.llvm-version }} flang-${{ matrix.llvm-version }}
 
       - name: test
