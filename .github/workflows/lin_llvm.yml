@@ -42,6 +42,7 @@ jobs:
 
       - name: test
         run: |
+          export FCFLAGS="-fallow-intrinsic-name-collision"          
           cd hdf5
           mkdir build
           cd build

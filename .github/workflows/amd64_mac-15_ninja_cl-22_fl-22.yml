@@ -3,7 +3,7 @@ name: amd64 mac-15 ninja cl-22 fl-22
 on:
   push:
     branches:
-      - main-
+      - main
 
 jobs:
   build:
@@ -25,6 +25,7 @@ jobs:
           export FC=/usr/local/bin/flang-22
           export CC=/usr/local/Cellar/llvm/22.1.0/bin/clang
           export CXX=/usr/local/Cellar/llvm/22.1.0/bin/clang++
+          export FCFLAGS="-fallow-intrinsic-name-collision"
           mkdir build
           cd build
           cmake -G Ninja \
