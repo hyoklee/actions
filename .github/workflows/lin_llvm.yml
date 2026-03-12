@@ -1,0 +1,51 @@
+name: lin llvm
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  linux-flang:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    strategy:
+      matrix:
+        llvm-version: [22]
+
+    env:
+      CC: clang-${{ matrix.llvm-version }}
+      CXX: clang++-${{ matrix.llvm-version }}
+      FC: flang-${{ matrix.llvm-version }}
+
+    steps:
+      - uses: actions/checkout
+        with:
+          repository: hyoklee/hdf5
+
+      - name: Apt LLVM
+        run: |
+            wget https://apt.llvm.org/llvm.sh
+            chmod +x llvm.sh
+            sudo ./llvm.sh ${{ matrix.llvm-version }}
+            sudo apt-get update
+
+      - name: install Flang
+        run: sudo apt install --no-install-recommends clang-${{ matrix.llvm-version }} flang-${{ matrix.llvm-version }}
+
+      - name: test
+        run: |
+          export FC=flang-22
+          export CC=clang
+          export CXX=clang++
+          mkdir build
+          cd build
+          cmake \
+            -DSITE:STRING=ubu-24 \
+            -DBUILDNAME:STRING="cl-22/fl-22" \
+            -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
+            -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \
+            -DHDF5_BUILD_FORTRAN=ON \
+            ..
+          ctest -D Experimental
