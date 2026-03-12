@@ -22,13 +22,17 @@ jobs:
       - name: checkout
         uses: actions/checkout@v6
         with:
+          path: tmp
+      
+      - name: checkout
+        uses: actions/checkout@v6
+        with:
           repository: hyoklee/hdf5
-
+        
       - name: apt
         run: |
-            wget https://apt.llvm.org/llvm.sh
-            chmod +x llvm.sh
-            sudo ./llvm.sh ${{ matrix.llvm-version }}
+            chmod +x ./tmp/llvm.sh
+            sudo ./tmp/llvm.sh ${{ matrix.llvm-version }}
             sudo apt-get update
             apt search llvm
             apt search flang
