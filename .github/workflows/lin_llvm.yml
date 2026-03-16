@@ -3,7 +3,7 @@ name: lin llvm
 on:
   push:
     branches:
-      - main
+      - main-
 jobs:
   linux-flang:
     runs-on: ubuntu-latest
