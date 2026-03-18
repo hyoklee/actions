@@ -41,7 +41,6 @@ jobs:
             -DHDF5_USE_ZLIB_NG=ON \
             -DHDF5_ENABLE_ZLIB_SUPPORT=ON \
             -DHDF5_ENABLE_SZIP_SUPPORT=ON \
-            -DHDF5_ENABLE_LIBAEC=ON \
             -DCMAKE_PREFIX_PATH=$HOME/.local
 
       - name: Build h5fortran
