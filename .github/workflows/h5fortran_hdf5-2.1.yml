@@ -1,0 +1,51 @@
+name: h5fortran HDF5-2.1
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout h5fortran
+        uses: actions/checkout@v4
+        with:
+          repository: scivision/h5fortran
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake gfortran libaec-dev
+
+      - name: Build and install zlib-ng from source
+        run: |
+          git clone --depth 1 https://github.com/zlib-ng/zlib-ng.git
+          cmake -S zlib-ng -B zlib-ng/build \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DZLIB_COMPAT=ON \
+            -DCMAKE_INSTALL_PREFIX=$HOME/.local
+          cmake --build zlib-ng/build
+          cmake --install zlib-ng/build
+
+      - name: Configure h5fortran with HDF5 2.1.0
+        run: |
+          cmake -S . -B build \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_INSTALL_PREFIX=$HOME/h5fortran \
+            -Dhdf5_req=2.1 \
+            -DHDF5_USE_ZLIB_NG=ON \
+            -DHDF5_ENABLE_ZLIB_SUPPORT=ON \
+            -DHDF5_ENABLE_SZIP_SUPPORT=ON \
+            -DHDF5_ENABLE_LIBAEC=ON \
+            -DCMAKE_PREFIX_PATH=$HOME/.local
+
+      - name: Build h5fortran
+        run: cmake --build build
+
+      - name: Install h5fortran
+        run: cmake --install build
