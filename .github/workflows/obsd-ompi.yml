@@ -2,7 +2,7 @@ name: obsd ompi
 
 on:
   push:
-    branches: [main-]
+    branches: [main]
 
 jobs:
   test:
@@ -14,7 +14,7 @@ jobs:
         os:
           - name: openbsd
             architecture: x86-64
-            version: '7.5'
+            version: '7.8'
             host: ubuntu-latest
     steps:
       - name: get
@@ -38,10 +38,10 @@ jobs:
             export OMPI_MCA_btl=self,tcp
             mkdir build
             cd build
-            cmake -DBUILDNAME:STRING="ompi=self,tcp+pmix=hash" \
+            cmake -DBUILDNAME:STRING="ompi-4.1.6/romio321" \
             -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
             -DHDF5_ENABLE_PARALLEL:BOOL=ON \
-            -DMPIEXEC_PREFLAGS="-oversubscribe" \
+            -DMPIEXEC_PREFLAGS="--oversubscribe;--mca;io;romio321" \
             -DSITE:STRING=obsd \
             ..
             ctest -D Experimental
