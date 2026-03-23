@@ -1,0 +1,81 @@
+#!/usr/bin/env bash
+# Launch QEMU amd64 OpenBSD 7.8 VM
+# SSH access: ssh -p 2222 user@localhost
+
+set -euo pipefail
+
+OPENBSD_VERSION="7.8"
+ARCH="amd64"
+DISK_IMG="openbsd-${OPENBSD_VERSION}-${ARCH}.qcow2"
+DISK_SIZE="20G"
+MEMORY="8G"
+CPUS="4"
+SSH_PORT="2222"
+ISO="install${OPENBSD_VERSION//./}${ARCH}.iso"
+MIRROR="https://cdn.openbsd.org/pub/OpenBSD/${OPENBSD_VERSION}/${ARCH}"
+
+# Check for QEMU
+if ! command -v qemu-system-x86_64 &>/dev/null; then
+    echo "Error: qemu-system-x86_64 not found. Install QEMU first." >&2
+    exit 1
+fi
+
+# Create disk image if it doesn't exist
+if [[ ! -f "$DISK_IMG" ]]; then
+    echo "Creating ${DISK_SIZE} disk image: ${DISK_IMG}"
+    qemu-img create -f qcow2 "$DISK_IMG" "$DISK_SIZE"
+fi
+
+# Select acceleration and CPU model
+if [[ -w /dev/kvm ]]; then
+    ACCEL="kvm"
+    CPU_MODEL="host"
+else
+    echo "Warning: /dev/kvm not accessible, falling back to TCG (slow)." >&2
+    ACCEL="tcg"
+    CPU_MODEL="qemu64"
+fi
+
+# Build QEMU arguments
+QEMU_ARGS=(
+    -machine "q35,accel=${ACCEL}"
+    -cpu "$CPU_MODEL"
+    -smp "$CPUS"
+    -m "$MEMORY"
+    -drive "file=${DISK_IMG},if=virtio,cache=writeback,discard=unmap,format=qcow2"
+    -netdev "user,id=net0,hostfwd=tcp::${SSH_PORT}-:22"
+    -device virtio-net-pci,netdev=net0
+    -device virtio-rng-pci
+    -rtc base=utc
+    -nographic
+)
+
+# If ISO exists (first install), boot from it
+if [[ -f "$ISO" ]]; then
+    echo "ISO found: ${ISO} — booting installer."
+    echo "After installation, remove or rename the ISO file and re-run this script."
+    QEMU_ARGS+=(
+        -drive "file=${ISO},media=cdrom,readonly=on"
+        -boot order=dc
+    )
+else
+    # Check if ISO should be downloaded
+    if [[ ! -f "${DISK_IMG}" ]] || [[ "$(qemu-img info --output=json "$DISK_IMG" | python3 -c 'import sys,json; d=json.load(sys.stdin); print(d["actual-size"])')" -lt $((1024*1024)) ]]; then
+        echo "Disk image appears empty and no ISO found."
+        echo "Download the installer with:"
+        echo "  wget ${MIRROR}/${ISO}"
+        echo "Then re-run this script."
+        exit 1
+    fi
+    QEMU_ARGS+=(-boot order=c)
+fi
+
+
+echo "Starting OpenBSD ${OPENBSD_VERSION} ${ARCH}"
+echo "  CPUs  : ${CPUS}"
+echo "  Memory: ${MEMORY}"
+echo "  Disk  : ${DISK_IMG} (${DISK_SIZE})"
+echo "  SSH   : ssh -p ${SSH_PORT} user@localhost"
+echo ""
+
+exec qemu-system-x86_64 "${QEMU_ARGS[@]}"
