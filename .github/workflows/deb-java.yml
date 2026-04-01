@@ -62,6 +62,10 @@ jobs:
 
       - name: Checkout HDF5
         uses: actions/checkout@v4
+        with:
+          repository: mattjala/hdf5
+	  ref:jar_path_cache
+	
 
       - name: Configure (bundled JARs)
         if: "!matrix.use_system_jars"
