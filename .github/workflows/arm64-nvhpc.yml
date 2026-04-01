@@ -25,8 +25,8 @@ jobs:
       - name: hdf5
         env:
           NPROCS: 2
-          CFLAGS: -fPIC -lnvf -lnvomp -ldl -lnvhpcatm -latomic -lpthread -lnvcpumath -lnsnvc -lnvc -lrt -lm -Mbounds  -gopt   -O1
-          FCFLAGS: -fPIC -lnvf -lnvomp -ldl -lnvhpcatm -latomic -lpthread -lnvcpumath -lnsnvc -lnvc -lrt -lm
+          CFLAGS: -fPIC -lnvf -lnvomp -ldl -lnvhpcatm -latomic -lpthread -lnvcpumath -lnvc -lrt -lm -Mbounds  -gopt   -O1
+          FCFLAGS: -fPIC -lnvf -lnvomp -ldl -lnvhpcatm -latomic -lpthread -lnvcpumath -lnvc -lrt -lm
         run: |
           export CC=/opt/nvidia/hpc_sdk/Linux_aarch64/26.3/comm_libs/13.1/hpcx/hpcx-2.25.1/ompi/bin/mpicc
           export LD_LIBRARY_PATH=/opt/nvidia/hpc_sdk/Linux_aarch64/26.3/comm_libs/13.1/hpcx/hpcx-2.25.1/ompi/lib:/opt/nvidia/hpc_sdk/Linux_aarch64/26.3/cuda/13.1/lib64:/opt/nvidia/hpc_sdk/Linux_aarch64/26.3/compilers/lib
