@@ -1,11 +1,9 @@
 name: Test Debian Java JAR overrides
 
 on:
-  pull_request:
-    paths:
-      - 'java/**'
-      - 'CMakeLists.txt'
-      - 'config/cmake/**'
+  push:
+    branches:
+      - main
 
 jobs:
   debian-system-jars:
