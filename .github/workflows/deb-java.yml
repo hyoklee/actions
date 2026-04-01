@@ -10,7 +10,7 @@ jobs:
     name: Build with Debian system JARs
     runs-on: ubuntu-latest
     container:
-      image: debian:bookworm-slim
+      image: debian:trixie
 
     strategy:
       fail-fast: false
