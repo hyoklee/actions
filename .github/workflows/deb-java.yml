@@ -1,0 +1,122 @@
+name: Test Debian Java JAR overrides
+
+on:
+  pull_request:
+    paths:
+      - 'java/**'
+      - 'CMakeLists.txt'
+      - 'config/cmake/**'
+
+jobs:
+  debian-system-jars:
+    name: Build with Debian system JARs
+    runs-on: ubuntu-latest
+    container:
+      image: debian:bookworm-slim
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Baseline: use bundled JARs (default behavior, should always pass)
+          - name: bundled-jars
+            use_system_jars: false
+
+          # Test: use Debian system JARs via -D overrides
+          - name: system-jars
+            use_system_jars: true
+
+    steps:
+      - name: Install base build dependencies
+        run: |
+          apt-get update -y
+          apt-get install -y --no-install-recommends \
+            cmake \
+            ninja-build \
+            gcc \
+            g++ \
+            make \
+            git \
+            default-jdk \
+            libsl4j-java \
+            junit4 \
+            libhamcrest-java
+
+      - name: Verify Debian JAR paths exist
+        if: matrix.use_system_jars
+        run: |
+          # Fail early with clear diagnostics if expected paths are wrong
+          check_jar() {
+            if [ ! -f "$1" ]; then
+              echo "ERROR: Expected JAR not found: $1"
+              echo "Available files in $(dirname $1):"
+              ls "$(dirname $1)" 2>/dev/null || echo "  (directory not found)"
+              exit 1
+            else
+              echo "OK: $1"
+            fi
+          }
+          check_jar /usr/share/java/slf4j-api.jar
+          check_jar /usr/share/java/slf4j-nop.jar
+          check_jar /usr/share/java/slf4j-simple.jar
+          check_jar /usr/share/java/junit4.jar
+          check_jar /usr/share/java/hamcrest-core.jar
+
+      - name: Checkout HDF5
+        uses: actions/checkout@v4
+
+      - name: Configure (bundled JARs)
+        if: "!matrix.use_system_jars"
+        run: |
+          cmake -B build -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DHDF5_BUILD_JAVA=ON \
+            -DBUILD_TESTING=ON
+
+      - name: Configure (Debian system JARs)
+        if: matrix.use_system_jars
+        run: |
+          cmake -B build -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DHDF5_BUILD_JAVA=ON \
+            -DBUILD_TESTING=ON \
+            -DHDF5_JAVA_LOGGING_JAR=/usr/share/java/slf4j-api.jar \
+            -DHDF5_JAVA_LOGGING_NOP_JAR=/usr/share/java/slf4j-nop.jar \
+            -DHDF5_JAVA_LOGGING_SIMPLE_JAR=/usr/share/java/slf4j-simple.jar \
+            -DHDF5_JAVA_JUNIT_JAR=/usr/share/java/junit4.jar \
+            -DHDF5_JAVA_HAMCREST_JAR=/usr/share/java/hamcrest-core.jar
+
+      - name: Verify JAR cache variables in CMakeCache
+        if: matrix.use_system_jars
+        run: |
+          # Confirm the overrides actually landed in the cache
+          check_cache() {
+            val=$(grep -E "^$1:FILEPATH=" build/CMakeCache.txt | cut -d= -f2)
+            if [ "$val" != "$2" ]; then
+              echo "ERROR: $1 expected '$2', got '$val'"
+              exit 1
+            else
+              echo "OK: $1=$val"
+            fi
+          }
+          check_cache HDF5_JAVA_LOGGING_JAR     /usr/share/java/slf4j-api.jar
+          check_cache HDF5_JAVA_LOGGING_NOP_JAR  /usr/share/java/slf4j-nop.jar
+          check_cache HDF5_JAVA_LOGGING_SIMPLE_JAR /usr/share/java/slf4j-simple.jar
+          check_cache HDF5_JAVA_JUNIT_JAR        /usr/share/java/junit4.jar
+          check_cache HDF5_JAVA_HAMCREST_JAR     /usr/share/java/hamcrest-core.jar
+
+      - name: Build
+        run: cmake --build build --parallel $(nproc)
+
+      - name: Run Java tests
+        run: ctest --test-dir build --output-on-failure -R "Java|java|HDF5_JAVA"
+
+      - name: Upload test logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-logs-${{ matrix.name }}
+          path: |
+            build/Testing/Temporary/LastTest.log
+            build/CMakeCache.txt
+          retention-days: 7
