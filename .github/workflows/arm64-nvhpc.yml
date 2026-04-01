@@ -1,13 +1,13 @@
-name: nvhpc 26.3
+name: arm64 nvhpc 26.3
 
 on:
   push:
     branches:
-      - main-
+      - main
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
 
     steps:
       - name: apt
