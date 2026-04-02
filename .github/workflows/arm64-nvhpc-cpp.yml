@@ -1,0 +1,49 @@
+name: arm64 nvhpc-26.3 cpp
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04-arm
+
+    steps:
+      - name: apt
+        run: |
+          sudo apt update
+          sudo apt install -y cmake libzip-dev ninja-build
+      - name: nvhpc
+        run: |
+          curl https://developer.download.nvidia.com/hpc-sdk/ubuntu/DEB-GPG-KEY-NVIDIA-HPC-SDK | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-hpcsdk-archive-keyring.gpg
+          echo 'deb [signed-by=/usr/share/keyrings/nvidia-hpcsdk-archive-keyring.gpg] https://developer.download.nvidia.com/hpc-sdk/ubuntu/arm64 /' | sudo tee /etc/apt/sources.list.d/nvhpc.list
+          sudo apt-get update -y
+          sudo apt-get install -y nvhpc-26-3
+          env
+          find /opt/nvidia/hpc_sdk/
+      - name: hdf5
+        env:
+          NPROCS: 2
+          CFLAGS: -fPIC -lnvf -lnvomp -ldl -lnvhpcatm -latomic -lpthread -lnvcpumath -lnvc -lrt -lm -Mbounds  -gopt   -O0
+          CPPFLAGS: -std=c++26
+        run: |
+          export CC=/opt/nvidia/hpc_sdk/Linux_aarch64/26.3/comm_libs/13.1/hpcx/hpcx-2.25.1/ompi/bin/mpicc
+          export LD_LIBRARY_PATH=/opt/nvidia/hpc_sdk/Linux_aarch64/26.3/comm_libs/13.1/hpcx/hpcx-2.25.1/ompi/lib:/opt/nvidia/hpc_sdk/Linux_aarch64/26.3/cuda/13.1/lib64:/opt/nvidia/hpc_sdk/Linux_aarch64/26.3/compilers/lib
+          export NVHPCSDK=/opt/nvidia/hpc_sdk
+          export PATH=/opt/nvidia/hpc_sdk/Linux_aarch64/26.3/comm_libs/openmpi4/bin:/opt/nvidia/hpc_sdk/Linux_aarch64/26.3/compilers/bin:/opt/nvidia/hpc_sdk/Linux_aarch64/26.3/comm_libs/13.1/hpcx/hpcx-2.25.1/ompi/bin/:$PATH
+          env
+          git clone https://github.com/HDFGroup/hdf5.git
+          cd hdf5
+          mkdir build
+          cd build
+          cmake \
+            -DCMAKE_BUILD_TYPE=Debug \
+            -DHDF5_BUILD_CPP_LIB:BOOL=ON \
+            -DHDF5_BUILD_FORTRAN:BOOL=OFF \
+            -DHDF5_BUILD_JAVA:BOOL=OFF \
+            -DHDF5_ENABLE_PARALLEL:BOOL=OFF \
+            -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF \
+            ..
+          ctest -T Build
+          ctest -T Test

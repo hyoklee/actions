@@ -3,7 +3,7 @@ name: Test Debian Java JAR overrides
 on:
   push:
     branches:
-      - main
+      - main-
 
 jobs:
   debian-system-jars:
