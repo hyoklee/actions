@@ -1,0 +1,167 @@
+name: Test Fedora JNI library install location
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  fedora-jni:
+    name: Build and verify JNI install (${{ matrix.name }})
+    runs-on: ubuntu-latest
+    container:
+      image: fedora:41
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Baseline: default JNI install location, no HDF5_INSTALL_JNI_LIB_DIR
+          - name: default-jni-dir
+            custom_jni_dir: false
+
+          # Fedora packaging: JNI .so must go in %{_libdir}/%{name} per guidelines
+          - name: custom-jni-dir
+            custom_jni_dir: true
+            jni_lib_dir: /usr/lib64/hdf5
+
+    steps:
+      - name: Install build dependencies
+        run: |
+          dnf install -y \
+            cmake \
+            ninja-build \
+            gcc \
+            gcc-c++ \
+            git \
+            java-latest-openjdk-devel \
+            slf4j \
+            junit \
+            hamcrest
+
+      - name: Checkout HDF5 PR 6344
+        uses: actions/checkout@v4
+        with:
+          repository: HDFGroup/hdf5
+          ref: refs/pull/6344/head
+
+      - name: Find system JAR paths
+        run: |
+          find /usr/share/java -name "slf4j-api*.jar" | head -3
+          find /usr/share/java -name "slf4j-nop*.jar" | head -3
+          find /usr/share/java -name "slf4j-simple*.jar" | head -3
+          find /usr/share/java -name "junit*.jar" | head -3
+          find /usr/share/java -name "hamcrest*.jar" | head -3
+
+      - name: Set JAR path variables
+        id: jars
+        run: |
+          SLF4J_API=$(find /usr/share/java -name "slf4j-api*.jar" | head -1)
+          SLF4J_NOP=$(find /usr/share/java -name "slf4j-nop*.jar" | head -1)
+          SLF4J_SIMPLE=$(find /usr/share/java -name "slf4j-simple*.jar" | head -1)
+          JUNIT=$(find /usr/share/java -name "junit*.jar" | grep -v "javadoc\|sources" | head -1)
+          HAMCREST=$(find /usr/share/java -name "hamcrest*.jar" | grep -v "javadoc\|sources" | head -1)
+          echo "slf4j_api=$SLF4J_API" >> $GITHUB_OUTPUT
+          echo "slf4j_nop=$SLF4J_NOP" >> $GITHUB_OUTPUT
+          echo "slf4j_simple=$SLF4J_SIMPLE" >> $GITHUB_OUTPUT
+          echo "junit=$JUNIT" >> $GITHUB_OUTPUT
+          echo "hamcrest=$HAMCREST" >> $GITHUB_OUTPUT
+          echo "slf4j-api: $SLF4J_API"
+          echo "slf4j-nop: $SLF4J_NOP"
+          echo "slf4j-simple: $SLF4J_SIMPLE"
+          echo "junit: $JUNIT"
+          echo "hamcrest: $HAMCREST"
+
+      - name: Configure (default JNI dir)
+        if: "!matrix.custom_jni_dir"
+        run: |
+          cmake -B build -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DHDF5_BUILD_JAVA=ON \
+            -DBUILD_TESTING=ON \
+            -DHDF5_JAVA_LOGGING_JAR=${{ steps.jars.outputs.slf4j_api }} \
+            -DHDF5_JAVA_LOGGING_NOP_JAR=${{ steps.jars.outputs.slf4j_nop }} \
+            -DHDF5_JAVA_LOGGING_SIMPLE_JAR=${{ steps.jars.outputs.slf4j_simple }} \
+            -DHDF5_JAVA_JUNIT_JAR=${{ steps.jars.outputs.junit }} \
+            -DHDF5_JAVA_HAMCREST_JAR=${{ steps.jars.outputs.hamcrest }}
+
+      - name: Configure (custom JNI dir)
+        if: matrix.custom_jni_dir
+        run: |
+          cmake -B build -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DHDF5_BUILD_JAVA=ON \
+            -DBUILD_TESTING=ON \
+            -DHDF5_INSTALL_JNI_LIB_DIR=${{ matrix.jni_lib_dir }} \
+            -DHDF5_JAVA_LOGGING_JAR=${{ steps.jars.outputs.slf4j_api }} \
+            -DHDF5_JAVA_LOGGING_NOP_JAR=${{ steps.jars.outputs.slf4j_nop }} \
+            -DHDF5_JAVA_LOGGING_SIMPLE_JAR=${{ steps.jars.outputs.slf4j_simple }} \
+            -DHDF5_JAVA_JUNIT_JAR=${{ steps.jars.outputs.junit }} \
+            -DHDF5_JAVA_HAMCREST_JAR=${{ steps.jars.outputs.hamcrest }}
+
+      - name: Verify HDF5_INSTALL_JNI_LIB_DIR in CMakeCache
+        if: matrix.custom_jni_dir
+        run: |
+          val=$(grep -E "^HDF5_INSTALL_JNI_LIB_DIR" build/CMakeCache.txt | cut -d= -f2)
+          if [ "$val" != "${{ matrix.jni_lib_dir }}" ]; then
+            echo "ERROR: HDF5_INSTALL_JNI_LIB_DIR expected '${{ matrix.jni_lib_dir }}', got '$val'"
+            exit 1
+          fi
+          echo "OK: HDF5_INSTALL_JNI_LIB_DIR=$val"
+
+      - name: Build
+        run: cmake --build build --parallel $(nproc)
+
+      - name: Run Java tests
+        run: ctest --test-dir build --output-on-failure -R "Java|java|HDF5_JAVA"
+
+      - name: Install
+        run: cmake --install build --prefix /tmp/hdf5-install
+
+      - name: Verify JNI library has no version suffix (default dir)
+        if: "!matrix.custom_jni_dir"
+        run: |
+          JNI_LIB=$(find /tmp/hdf5-install -name "libhdf5_java.so" | head -1)
+          if [ -z "$JNI_LIB" ]; then
+            echo "ERROR: libhdf5_java.so not found under /tmp/hdf5-install"
+            find /tmp/hdf5-install -name "*java*"
+            exit 1
+          fi
+          echo "OK: JNI library found at $JNI_LIB"
+          # Verify no versioned symlinks like libhdf5_java.so.1.0.0
+          VERSIONED=$(find /tmp/hdf5-install -name "libhdf5_java.so.*" | head -1)
+          if [ -n "$VERSIONED" ]; then
+            echo "ERROR: versioned JNI library found: $VERSIONED (versioning should be removed)"
+            exit 1
+          fi
+          echo "OK: no versioned JNI library found"
+
+      - name: Verify JNI library installed in custom dir without version suffix
+        if: matrix.custom_jni_dir
+        run: |
+          EXPECTED_DIR="/tmp/hdf5-install${{ matrix.jni_lib_dir }}"
+          JNI_LIB="$EXPECTED_DIR/libhdf5_java.so"
+          if [ ! -f "$JNI_LIB" ]; then
+            echo "ERROR: libhdf5_java.so not found at expected path: $JNI_LIB"
+            echo "Searching for JNI library..."
+            find /tmp/hdf5-install -name "*java*"
+            exit 1
+          fi
+          echo "OK: JNI library found at $JNI_LIB"
+          # Verify no versioned symlinks
+          VERSIONED=$(find "$EXPECTED_DIR" -name "libhdf5_java.so.*" | head -1)
+          if [ -n "$VERSIONED" ]; then
+            echo "ERROR: versioned JNI library found: $VERSIONED (versioning should be removed)"
+            exit 1
+          fi
+          echo "OK: no versioned JNI library found"
+
+      - name: Upload test logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-logs-${{ matrix.name }}
+          path: |
+            build/Testing/Temporary/LastTest.log
+            build/CMakeCache.txt
+          retention-days: 7

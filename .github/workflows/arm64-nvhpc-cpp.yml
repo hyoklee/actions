@@ -3,7 +3,7 @@ name: arm64 nvhpc-26.3 cpp
 on:
   push:
     branches:
-      - main
+      - main-
 
 jobs:
   build:
