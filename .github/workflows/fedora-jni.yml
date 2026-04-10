@@ -3,7 +3,7 @@ name: Test Fedora JNI library install location
 on:
   push:
     branches:
-      - main
+      - main-
 
 jobs:
   fedora-jni:

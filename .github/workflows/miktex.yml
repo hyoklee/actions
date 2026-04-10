@@ -25,4 +25,4 @@ jobs:
           sudo apt install -y cmake
           sudo apt install -y miktex
           sudo miktexsetup --shared=yes finish
-          sudo initexmf --update-db
+          sudo initexmf --admin --update-fndb
