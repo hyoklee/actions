@@ -29,9 +29,9 @@ jobs:
           sudo initexmf --admin --update-fndb
           sudo initexmf --admin --mklinks --force
           sudo initexmf --admin --set-config-value [MPM]AutoInstall=1
-          sudo miktex-pdftex --set-config-value [Core]MaxInMemoryFontSize=1000000000
           sudo mpm --admin --update-db
           sudo mpm --admin --update
+          sudo miktex-pdftex --set-config-value [Core]MaxInMemoryFontSize=1000000000
 
       - name: Build Develop Documentation
         run: |
