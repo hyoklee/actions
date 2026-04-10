@@ -31,7 +31,8 @@ jobs:
           sudo initexmf --admin --set-config-value [MPM]AutoInstall=1
           sudo mpm --admin --update-db
           sudo mpm --admin --update
-
+          sudo mpm --admin --install xkeyval
+          sudo mpm --admin --install adjustbox
       - name: Build Develop Documentation
         run: |
           mkdir build
