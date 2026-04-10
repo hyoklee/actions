@@ -13,7 +13,8 @@ jobs:
     steps:
       - name: Get Sources
         uses: actions/checkout@v6
-
+        with:
+          repository: HDFGroup/hdf5
       - name: Install Dependencies
         run: |
           curl -fsSL https://miktex.org/download/key | sudo tee /usr/share/keyrings/miktex-keyring.asc > /dev/null
@@ -26,3 +27,23 @@ jobs:
           sudo apt install -y miktex
           sudo miktexsetup --shared=yes finish
           sudo initexmf --admin --update-fndb
+      - name: Build Develop Documentation
+        run: |
+          mkdir build
+          cd build
+          cmake -DHDF5_BUILD_DOC:BOOL=ON ..
+          make doxygen
+          pwd
+          ls -l hdf5lib_docs
+
+          # Fix doxygen.sty (replace unmaintained tabu/longtabu with ltablex)
+          # and remove blank lines inside tabular environments in generated .tex files.
+          # Both fixes are required for successful LaTeX compilation with MiKTeX.
+          python3 ${GITHUB_WORKSPACE}/docs/doxygen/fix_latex_for_miktex.py hdf5lib_docs/latex
+
+          cd hdf5lib_docs/html
+          touch .nojekyll
+          cd ../latex
+          # Use lualatex: dynamic memory allocation avoids the fixed 5MB limit
+          # of pdflatex which is insufficient for this 4000+ page document.
+          make LATEX_CMD=lualatex
