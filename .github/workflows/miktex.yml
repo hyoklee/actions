@@ -27,6 +27,10 @@ jobs:
           sudo apt install -y miktex
           sudo miktexsetup --shared=yes finish
           sudo initexmf --admin --update-fndb
+          sudo initexmf --admin --mklinks --force
+          mpm --admin --update-db
+          mpm --admin --update
+
       - name: Build Develop Documentation
         run: |
           mkdir build
