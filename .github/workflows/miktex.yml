@@ -50,4 +50,4 @@ jobs:
           cd ../latex
           # Use lualatex: dynamic memory allocation avoids the fixed 5MB limit
           # of pdflatex which is insufficient for this 4000+ page document.
-          make LATEX_CMD=lualatex
+          make LATEX_CMD=lualatex  || (cat ~/.miktex/texmfs/data/miktex/log/lualatex.log && exit 1)
