@@ -1,0 +1,28 @@
+name: miktex
+
+on:
+  workflow_dispatch:
+  push:
+    branches: main
+
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get Sources
+        uses: actions/checkout@v6
+
+      - name: Install Dependencies
+        run: |
+          curl -fsSL https://miktex.org/download/key | sudo tee /usr/share/keyrings/miktex-keyring.asc > /dev/null
+          echo "deb [signed-by=/usr/share/keyrings/miktex-keyring.asc] https://miktex.org/download/ubuntu noble universe" | sudo tee /etc/apt/sources.list.d/miktex.list
+          sudo apt update -y
+          sudo apt install -y libunwind-dev
+          sudo apt install -y graphviz
+          sudo apt install -y --no-install-recommends doxygen
+          sudo apt install -y cmake
+          sudo apt install -y miktex
+          sudo miktexsetup --shared=yes finish
+          sudo initexmf --update-db
