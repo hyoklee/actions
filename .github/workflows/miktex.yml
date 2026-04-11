@@ -156,4 +156,7 @@ jobs:
           initexmf --set-config-value "[MPM]LastUserUpdateDb=${TS_BUILD}"
           # Use lualatex: dynamic memory allocation avoids the fixed 5MB limit
           # of pdflatex which is insufficient for this 4000+ page document.
-          make LATEX_CMD=lualatex  || (echo "=== refman.log (last 100 lines) ===" && tail -100 refman.log 2>/dev/null; echo "=== MiKTeX lualatex.log ===" && cat ~/.miktex/texmfs/data/miktex/log/lualatex.log; exit 1)
+          echo "=== array.sty version ===" && grep "ProvidesPackage\|fileversion\|filedate" $(kpsewhich array.sty) 2>/dev/null | head -5 || true
+          echo "=== longtable.sty version ===" && grep "ProvidesPackage\|fileversion\|filedate" $(kpsewhich longtable.sty) 2>/dev/null | head -5 || true
+          echo "=== insert@pcolumn in array.sty ===" && grep -n "insert@pcolumn" $(kpsewhich array.sty) 2>/dev/null || echo "not found"
+          make LATEX_CMD=lualatex  || (echo "=== refman.log (last 200 lines) ===" && tail -200 refman.log 2>/dev/null; echo "=== MiKTeX lualatex.log ===" && cat ~/.miktex/texmfs/data/miktex/log/lualatex.log; exit 1)
