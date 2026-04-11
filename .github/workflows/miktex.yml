@@ -45,7 +45,6 @@ jobs:
           # auto-install calls during compilation (which trigger the update-check nag).
           mpm --install xkeyval
           mpm --install adjustbox
-          mpm --install ltablex
           mpm --install luaotfload
           mpm --install lualibs
           mpm --install courier
