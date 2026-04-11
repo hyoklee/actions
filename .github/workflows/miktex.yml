@@ -46,6 +46,11 @@ jobs:
           initexmf --set-config-value [MPM]AutoInstall=1
           mpm --update-db
           mpm --update
+          # Explicitly stamp the update-check timestamps that lualatex requires.
+          # mpm --update silently skips writing LastUserUpdateCheck when there is
+          # nothing to update (fresh shared install), so we set it by hand.
+          initexmf --set-config-value "[MPM]LastUserUpdateCheck=$(date +%s)"
+          initexmf --set-config-value "[MPM]LastUserUpdateDb=$(date +%s)"
       - name: Build Develop Documentation
         run: |
           mkdir build
