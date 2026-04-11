@@ -39,18 +39,17 @@ jobs:
           sudo mpm --admin --install courier
           sudo mpm --admin --install wasy
           # User-level MiKTeX setup: lualatex runs as runner (non-admin) and
-          # requires a user-level update check before it will compile documents.
-          miktexsetup finish
+          # requires LastUserUpdateCheck to be set before it will compile documents.
+          # miktexsetup finish may timeout connecting to the MiKTeX API; allow failure.
+          miktexsetup finish || true
           initexmf --update-fndb
           initexmf --mklinks --force
           initexmf --set-config-value [MPM]AutoInstall=1
-          mpm --update-db
-          mpm --update
-          # Explicitly stamp the update-check timestamps that lualatex requires.
-          # mpm --update silently skips writing LastUserUpdateCheck when there is
-          # nothing to update (fresh shared install), so we set it by hand.
-          initexmf --set-config-value "[MPM]LastUserUpdateCheck=$(date +%s)"
-          initexmf --set-config-value "[MPM]LastUserUpdateDb=$(date +%s)"
+          # 'miktex packages check-update' is what actually sets LastUserUpdateCheck.
+          # The old 'mpm --update' does not reliably set this key on a fresh install.
+          miktex packages update-package-database || true
+          miktex packages check-update || true
+          miktex packages update || true
       - name: Build Develop Documentation
         run: |
           mkdir build
