@@ -25,70 +25,68 @@ jobs:
           sudo apt install -y --no-install-recommends doxygen
           sudo apt install -y cmake
           sudo apt install -y miktex
+          # Admin-level MiKTeX setup (shared mode)
           sudo miktexsetup --shared=yes finish
           sudo initexmf --admin --mklinks --force
           sudo initexmf --admin --set-config-value [MPM]AutoInstall=1
           sudo mpm --admin --update-db
           sudo mpm --admin --update
-          # Install all packages required for doxygen-generated lualatex compilation.
-          # xkeyval must be installed BEFORE adjustbox (adjustbox depends on it).
-          sudo mpm --admin --install xkeyval
-          sudo mpm --admin --install adjustbox
-          sudo mpm --admin --install ltablex
-          sudo mpm --admin --install luaotfload
-          sudo mpm --admin --install lualibs
-          sudo mpm --admin --install courier
-          sudo mpm --admin --install wasy
-          # Packages observed being auto-installed during lualatex in CI
-          # (admin-installed so lualatex finds them via FNDB instead of downloading)
-          sudo mpm --admin --install latex-tools
-          sudo mpm --admin --install infwarerr
-          sudo mpm --admin --install float
-          sudo mpm --admin --install xcolor
-          sudo mpm --admin --install graphics-cfg
-          sudo mpm --admin --install graphics-def
-          sudo mpm --admin --install graphics
-          sudo mpm --admin --install colortbl
-          sudo mpm --admin --install multirow
-          sudo mpm --admin --install hanging
-          sudo mpm --admin --install iftex
-          sudo mpm --admin --install fancyvrb
-          # Additional packages commonly required by doxygen output
-          sudo mpm --admin --install caption
-          sudo mpm --admin --install fancyhdr
-          sudo mpm --admin --install geometry
-          sudo mpm --admin --install hyperref
-          sudo mpm --admin --install lmodern
-          sudo mpm --admin --install makeidx
-          sudo mpm --admin --install needspace
-          sudo mpm --admin --install setspace
-          sudo mpm --admin --install stmaryrd
-          sudo mpm --admin --install tocloft
-          sudo mpm --admin --install wasysym
-          sudo mpm --admin --install url
-          sudo mpm --admin --install etoolbox
-          sudo mpm --admin --install amsmath
-          sudo mpm --admin --install oberdiek
-          # CRITICAL: update FNDB *after* all package installations so lualatex
-          # can find admin-installed packages and does not re-download them.
           sudo initexmf --admin --update-fndb
-          # User-level MiKTeX setup: lualatex runs as runner (non-admin) and
-          # requires LastUserUpdateCheck to be set before it will compile documents.
+          # User-level MiKTeX setup: lualatex runs as runner (non-admin).
           # miktexsetup finish may timeout connecting to the MiKTeX API; allow failure.
           miktexsetup finish || true
           initexmf --update-fndb
           initexmf --mklinks --force
-          # 'miktex packages check-update' is what actually sets LastUserUpdateCheck.
+          # 'miktex packages check-update' sets LastUserUpdateCheck.
           miktex packages update-package-database || true
           miktex packages check-update || true
           miktex packages update || true
-          # Stamp update-check timestamps: check-update may not set them if the
-          # MiKTeX API auth times out in CI. Use initexmf as a reliable fallback.
+          # Stamp update-check timestamps as reliable fallback if check-update timed out.
           TS=$(date +%s)
           initexmf --set-config-value "[MPM]AutoInstall=1"
           initexmf --set-config-value "[MPM]LastUserUpdateCheck=${TS}"
           initexmf --set-config-value "[MPM]LastUserUpdateDb=${TS}"
           initexmf --set-config-value "[MPM]LastUserUpdate=${TS}"
+          # Install all packages required for doxygen lualatex to the USER tree.
+          # lualatex (running as runner) searches the user tree; admin-installed
+          # packages are not visible to it, so we pre-install here to prevent
+          # auto-install calls during compilation (which trigger the update-check nag).
+          mpm --install xkeyval
+          mpm --install adjustbox
+          mpm --install ltablex
+          mpm --install luaotfload
+          mpm --install lualibs
+          mpm --install courier
+          mpm --install wasy
+          mpm --install latex-tools
+          mpm --install infwarerr
+          mpm --install float
+          mpm --install xcolor
+          mpm --install graphics-cfg
+          mpm --install graphics-def
+          mpm --install graphics
+          mpm --install colortbl
+          mpm --install multirow
+          mpm --install hanging
+          mpm --install iftex
+          mpm --install fancyvrb
+          mpm --install caption
+          mpm --install fancyhdr
+          mpm --install geometry
+          mpm --install hyperref
+          mpm --install lmodern
+          mpm --install makeidx
+          mpm --install needspace
+          mpm --install setspace
+          mpm --install stmaryrd
+          mpm --install tocloft
+          mpm --install wasysym
+          mpm --install url
+          mpm --install etoolbox
+          mpm --install amsmath
+          mpm --install oberdiek
+          # Update user FNDB after all user-level package installations
+          initexmf --update-fndb
           echo "=== miktex.ini after user setup ===" && cat ~/.miktex/texmfs/config/miktex/config/miktex.ini 2>/dev/null || echo "Config not found"
       - name: Build Develop Documentation
         run: |
