@@ -85,6 +85,14 @@ jobs:
           mpm --install etoolbox
           mpm --install amsmath
           mpm --install oberdiek
+          # Adjustbox dependencies observed being auto-installed during lualatex
+          mpm --install collectbox
+          mpm --install ifoddpage
+          mpm --install varwidth
+          mpm --install stackengine
+          mpm --install listofitems
+          mpm --install amsfonts
+          mpm --install enumitem
           # Update user FNDB after all user-level package installations
           initexmf --update-fndb
           echo "=== miktex.ini after user setup ===" && cat ~/.miktex/texmfs/config/miktex/config/miktex.ini 2>/dev/null || echo "Config not found"
