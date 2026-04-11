@@ -93,13 +93,36 @@ jobs:
           mpm --install mptopdf
           mpm --install epstopdf-pkg
           mpm --install miktex-latex
+          # More packages observed being auto-installed during lualatex compilation
+          mpm --install alphalph
+          mpm --install bigintcalc
+          mpm --install bitset
+          mpm --install changepage
+          mpm --install etoc
+          mpm --install gettitlestring
+          mpm --install helvetic
+          mpm --install hycolor
+          mpm --install intcalc
+          mpm --install kvdefinekeys
+          mpm --install kvoptions
+          mpm --install kvsetkeys
+          mpm --install ltxcmds
+          mpm --install natbib
+          mpm --install newunicodechar
+          mpm --install pdfescape
+          mpm --install pdftexcmds
+          mpm --install psnfss
+          mpm --install refcount
+          mpm --install rerunfilecheck
+          mpm --install stringenc
+          mpm --install ulem
+          mpm --install uniquecounter
           # Update user FNDB after all user-level package installations
           initexmf --update-fndb
-          # Stamp update-check timestamps AFTER all installs so that
-          # LastUserUpdateCheck >= any value set by mpm --install.
-          # This prevents lualatex from triggering the update-check nag
-          # if any remaining auto-install occurs during compilation.
-          TS=$(date +%s)
+          # Set LastUserUpdateCheck to 24 hours in the future so that any
+          # remaining auto-installs during lualatex cannot set a newer
+          # LastUserUpdateDb and trigger the "not checked for updates" nag.
+          TS=$(($(date +%s) + 86400))
           initexmf --set-config-value "[MPM]AutoInstall=1"
           initexmf --set-config-value "[MPM]LastUserUpdateCheck=${TS}"
           initexmf --set-config-value "[MPM]LastUserUpdateDb=${TS}"
@@ -124,6 +147,13 @@ jobs:
           touch .nojekyll
           cd ../latex
           echo "=== miktex.ini before lualatex ===" && cat ~/.miktex/texmfs/config/miktex/config/miktex.ini 2>/dev/null || echo "NOT FOUND"
+          # Re-stamp LastUserUpdateCheck to 24 hours in the future right before
+          # lualatex runs. Each auto-install during compilation updates LastUserUpdateDb
+          # to the current time; keeping LastUserUpdateCheck ahead prevents the
+          # "not checked for MiKTeX updates" nag from firing during compilation.
+          TS_BUILD=$(($(date +%s) + 86400))
+          initexmf --set-config-value "[MPM]LastUserUpdateCheck=${TS_BUILD}"
+          initexmf --set-config-value "[MPM]LastUserUpdateDb=${TS_BUILD}"
           # Use lualatex: dynamic memory allocation avoids the fixed 5MB limit
           # of pdflatex which is insufficient for this 4000+ page document.
           make LATEX_CMD=lualatex  || (echo "=== refman.log (last 100 lines) ===" && tail -100 refman.log 2>/dev/null; echo "=== MiKTeX lualatex.log ===" && cat ~/.miktex/texmfs/data/miktex/log/lualatex.log; exit 1)
