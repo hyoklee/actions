@@ -26,11 +26,12 @@ jobs:
           sudo apt install -y cmake
           sudo apt install -y miktex
           sudo miktexsetup --shared=yes finish
-          sudo initexmf --admin --update-fndb
           sudo initexmf --admin --mklinks --force
           sudo initexmf --admin --set-config-value [MPM]AutoInstall=1
           sudo mpm --admin --update-db
           sudo mpm --admin --update
+          # Install all packages required for doxygen-generated lualatex compilation.
+          # xkeyval must be installed BEFORE adjustbox (adjustbox depends on it).
           sudo mpm --admin --install xkeyval
           sudo mpm --admin --install adjustbox
           sudo mpm --admin --install ltablex
@@ -38,6 +39,39 @@ jobs:
           sudo mpm --admin --install lualibs
           sudo mpm --admin --install courier
           sudo mpm --admin --install wasy
+          # Packages observed being auto-installed during lualatex in CI
+          # (admin-installed so lualatex finds them via FNDB instead of downloading)
+          sudo mpm --admin --install latex-tools
+          sudo mpm --admin --install infwarerr
+          sudo mpm --admin --install float
+          sudo mpm --admin --install xcolor
+          sudo mpm --admin --install graphics-cfg
+          sudo mpm --admin --install graphics-def
+          sudo mpm --admin --install graphics
+          sudo mpm --admin --install colortbl
+          sudo mpm --admin --install multirow
+          sudo mpm --admin --install hanging
+          sudo mpm --admin --install iftex
+          sudo mpm --admin --install fancyvrb
+          # Additional packages commonly required by doxygen output
+          sudo mpm --admin --install caption
+          sudo mpm --admin --install fancyhdr
+          sudo mpm --admin --install geometry
+          sudo mpm --admin --install hyperref
+          sudo mpm --admin --install lmodern
+          sudo mpm --admin --install makeidx
+          sudo mpm --admin --install needspace
+          sudo mpm --admin --install setspace
+          sudo mpm --admin --install stmaryrd
+          sudo mpm --admin --install tocloft
+          sudo mpm --admin --install wasysym
+          sudo mpm --admin --install url
+          sudo mpm --admin --install etoolbox
+          sudo mpm --admin --install amsmath
+          sudo mpm --admin --install oberdiek
+          # CRITICAL: update FNDB *after* all package installations so lualatex
+          # can find admin-installed packages and does not re-download them.
+          sudo initexmf --admin --update-fndb
           # User-level MiKTeX setup: lualatex runs as runner (non-admin) and
           # requires LastUserUpdateCheck to be set before it will compile documents.
           # miktexsetup finish may timeout connecting to the MiKTeX API; allow failure.
