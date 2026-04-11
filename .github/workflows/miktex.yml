@@ -61,6 +61,7 @@ jobs:
           mpm --install hanging
           mpm --install iftex
           mpm --install fancyvrb
+          mpm --install ltablex
           mpm --install caption
           mpm --install fancyhdr
           mpm --install geometry
