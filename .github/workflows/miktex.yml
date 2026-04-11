@@ -37,16 +37,8 @@ jobs:
           miktexsetup finish || true
           initexmf --update-fndb
           initexmf --mklinks --force
-          # 'miktex packages check-update' sets LastUserUpdateCheck.
           miktex packages update-package-database || true
-          miktex packages check-update || true
           miktex packages update || true
-          # Stamp update-check timestamps as reliable fallback if check-update timed out.
-          TS=$(date +%s)
-          initexmf --set-config-value "[MPM]AutoInstall=1"
-          initexmf --set-config-value "[MPM]LastUserUpdateCheck=${TS}"
-          initexmf --set-config-value "[MPM]LastUserUpdateDb=${TS}"
-          initexmf --set-config-value "[MPM]LastUserUpdate=${TS}"
           # Install all packages required for doxygen lualatex to the USER tree.
           # lualatex (running as runner) searches the user tree; admin-installed
           # packages are not visible to it, so we pre-install here to prevent
@@ -93,8 +85,26 @@ jobs:
           mpm --install listofitems
           mpm --install amsfonts
           mpm --install enumitem
+          # LaTeX3 backend and standard packages observed being auto-installed
+          mpm --install l3backend
+          mpm --install l3backend-dev
+          mpm --install l3kernel
+          mpm --install l3packages
+          mpm --install mptopdf
+          mpm --install epstopdf-pkg
+          mpm --install miktex-latex
           # Update user FNDB after all user-level package installations
           initexmf --update-fndb
+          # Stamp update-check timestamps AFTER all installs so that
+          # LastUserUpdateCheck >= any value set by mpm --install.
+          # This prevents lualatex from triggering the update-check nag
+          # if any remaining auto-install occurs during compilation.
+          TS=$(date +%s)
+          initexmf --set-config-value "[MPM]AutoInstall=1"
+          initexmf --set-config-value "[MPM]LastUserUpdateCheck=${TS}"
+          initexmf --set-config-value "[MPM]LastUserUpdateDb=${TS}"
+          initexmf --set-config-value "[MPM]LastUserUpdate=${TS}"
+          miktex packages check-update || true
           echo "=== miktex.ini after user setup ===" && cat ~/.miktex/texmfs/config/miktex/config/miktex.ini 2>/dev/null || echo "Config not found"
       - name: Build Develop Documentation
         run: |
@@ -116,4 +126,4 @@ jobs:
           echo "=== miktex.ini before lualatex ===" && cat ~/.miktex/texmfs/config/miktex/config/miktex.ini 2>/dev/null || echo "NOT FOUND"
           # Use lualatex: dynamic memory allocation avoids the fixed 5MB limit
           # of pdflatex which is insufficient for this 4000+ page document.
-          make LATEX_CMD=lualatex  || (cat ~/.miktex/texmfs/data/miktex/log/lualatex.log && exit 1)
+          make LATEX_CMD=lualatex  || (echo "=== refman.log (last 100 lines) ===" && tail -100 refman.log 2>/dev/null; echo "=== MiKTeX lualatex.log ===" && cat ~/.miktex/texmfs/data/miktex/log/lualatex.log; exit 1)
