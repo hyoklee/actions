@@ -35,7 +35,7 @@ jobs:
             cmake \
             -D CTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
             -D SITE:STRING=s390x \
-            -DHDF5_BUILD_FORTRAN:BOOL=ON \	    
+            -DHDF5_BUILD_FORTRAN:BOOL=ON \
             -DBUILDNAME:STRING="hk/f" \
             ..
             ctest -C Release -D Experimental
