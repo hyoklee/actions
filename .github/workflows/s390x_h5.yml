@@ -2,7 +2,7 @@ name: s390x h5
 
 on:
   push:
-    branches: main-
+    branches: main
 
 jobs:
   aarch64_job:
@@ -12,8 +12,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          repository: byrnHDF/hdf5
-          ref: develop-big-endian
+          repository: hyoklee/hdf5
+#          ref: develop-big-endian
 
       - uses: uraimo/run-on-arch-action@v3
         name: Run commands
@@ -36,7 +36,7 @@ jobs:
             cmake \
             -D CTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
             -D SITE:STRING=s390x \
-            -DBUILDNAME:STRING="pr-5866" \
+            -DBUILDNAME:STRING="hk" \
             ..
             ctest -C Release -D Experimental
 

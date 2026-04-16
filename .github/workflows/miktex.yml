@@ -3,7 +3,7 @@ name: miktex
 on:
   workflow_dispatch:
   push:
-    branches: main
+    branches: main-
 
 jobs:
   # This workflow contains a single job called "build"
