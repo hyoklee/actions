@@ -1,8 +1,8 @@
-name: s390x h5 f
+name: s390x h5 f -sh
 
 on:
   push:
-    branches: main-
+    branches: main
 
 jobs:
   aarch64_job:
@@ -36,6 +36,7 @@ jobs:
             -D CTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
             -D SITE:STRING=s390x \
             -DHDF5_BUILD_FORTRAN:BOOL=ON \
+            -DBUILD_SHARED_LIBS:BOOL=OFF \
             -DBUILDNAME:STRING="hk/f" \
             ..
             ctest -C Release -D Experimental
