@@ -37,7 +37,7 @@ jobs:
             -D SITE:STRING=s390x \
             -DHDF5_BUILD_FORTRAN:BOOL=ON \
             -DBUILD_SHARED_LIBS:BOOL=OFF \
-            -DBUILDNAME:STRING="hk/f" \
+            -DBUILDNAME:STRING="hk/f/-sh" \
             ..
             ctest -C Release -D Experimental
 

@@ -2,7 +2,7 @@ name: s390x h5 f
 
 on:
   push:
-    branches: main-
+    branches: main
 
 jobs:
   aarch64_job:
