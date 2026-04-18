@@ -15,7 +15,7 @@ jobs:
           - name: openbsd
             architecture: arm64
             version: '7.8'
-            host: ubuntu-24.04-arm # ubuntu-latest
+            host: ubuntu-latest # ubuntu-24.04-arm
     steps:
       - name: checkout
         uses: actions/checkout@v6
