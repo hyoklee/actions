@@ -66,6 +66,7 @@ jobs:
             cd plugins-build
             cmake \
               -DCMAKE_BUILD_TYPE=Release \
+              -DCMAKE_DL_LIBS:STRING="" \
               -DHDF5_ROOT:PATH=../hdf5-install \
               -DH5PL_BUILD_TESTING:BOOL=ON \
               -DH5PL_ALLOW_EXTERNAL_SUPPORT:STRING="GIT" \
