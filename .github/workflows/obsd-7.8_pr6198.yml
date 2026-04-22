@@ -2,7 +2,7 @@ name: obsd-7.8 pr6198
 
 on:
   push:
-    branches: main-
+    branches: main
 
 jobs:
   test:
