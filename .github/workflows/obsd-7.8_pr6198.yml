@@ -1,0 +1,43 @@
+name: obsd-7.8 pr6198
+
+on:
+  push:
+    branches: main-
+
+jobs:
+  test:
+    name: ${{ matrix.os.name }} ${{ matrix.os.architecture }} ${{ matrix.os.version }} on ${{ matrix.os.host }}
+    runs-on: ${{ matrix.os.host }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - name: openbsd
+            architecture: x86-64
+            version: '7.8'
+            host: ubuntu-latest
+    steps:
+      - name: get
+        uses: actions/checkout@v6
+        with:
+          repository: HDFGroup/hdf5
+          ref: feature/dig_sig_ver
+          path: .
+
+      - name: ${{ matrix.os.name }}
+        uses: cross-platform-actions/action@v0.32.0
+        with:
+          operating_system: ${{ matrix.os.name }}
+          architecture: ${{ matrix.os.architecture }}
+          version: '${{ matrix.os.version }}'
+          shell: bash
+          run: |
+            sudo pkg_add cmake
+            mkdir build
+            cd build
+            cmake \
+              -DBUILDNAME="pr6198/clang/obsd-7.8" \
+              -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
+              -DSITE:STRING="obsd-7.8" \
+            ..
+            ctest -D Experimental
