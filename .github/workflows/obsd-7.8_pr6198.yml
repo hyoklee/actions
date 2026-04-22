@@ -17,12 +17,18 @@ jobs:
             version: '7.8'
             host: ubuntu-latest
     steps:
-      - name: get
+      - name: get hdf5
         uses: actions/checkout@v6
         with:
           repository: HDFGroup/hdf5
           ref: feature/dig_sig_ver
-          path: .
+          path: hdf5
+
+      - name: get plugins
+        uses: actions/checkout@v6
+        with:
+          repository: HDFGroup/hdf5_plugins
+          path: hdf5_plugins
 
       - name: ${{ matrix.os.name }}
         uses: cross-platform-actions/action@v0.32.0
@@ -32,19 +38,65 @@ jobs:
           version: '${{ matrix.os.version }}'
           shell: bash
           run: |
-            sudo pkg_add cmake
-            mkdir ci-keystore
-            openssl genrsa -out ci-test-private.pem 2048
-            openssl rsa -in ci-test-private.pem -pubout -out ci-test-public.pem
+            sudo pkg_add cmake binutils git bzip2 lz4 zstd jpeg
+
+            # Generate RSA key pair for plugin signing
+            openssl genrsa -out ci-private.pem 2048
+            openssl rsa -in ci-private.pem -pubout -out ci-public.pem
             mkdir -p ci-keystore
-            cp ci-test-public.pem ci-keystore/
-            mkdir build
-            cd build
+            cp ci-public.pem ci-keystore/
+
+            # Build HDF5 with plugin signing enabled, then install for plugins
+            mkdir hdf5-build
+            cd hdf5-build
             cmake \
+              -DCMAKE_INSTALL_PREFIX:PATH=../hdf5-install \
               -DBUILDNAME="pr6198/../keystore" \
               -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
               -DSITE:STRING="obsd-7.8" \
               -DHDF5_REQUIRE_SIGNED_PLUGINS:BOOL=ON \
-              -DHDF5_PLUGIN_KEYSTORE_DIR="../ci-keystore" \
-            ..
+              -DHDF5_PLUGIN_KEYSTORE_DIR:PATH=../ci-keystore \
+              ../hdf5
             ctest -D Experimental
+            cmake --install .
+            cd ..
+
+            # Build all available hdf5_plugins against installed HDF5
+            mkdir plugins-build
+            cd plugins-build
+            cmake \
+              -DCMAKE_BUILD_TYPE=Release \
+              -DHDF5_ROOT:PATH=../hdf5-install \
+              -DH5PL_BUILD_TESTING:BOOL=ON \
+              -DH5PL_ALLOW_EXTERNAL_SUPPORT:STRING="GIT" \
+              ../hdf5_plugins
+            cmake --build . --parallel
+            cd ..
+
+            # Sign each built plugin: create detached signature and embed
+            # it into a new .sig ELF section using gobjcopy (GNU binutils)
+            mkdir -p signed-plugins
+            for plugin in $(find plugins-build -name "*.so" -type f); do
+              name=$(basename "$plugin")
+              openssl dgst -sha256 -sign ci-private.pem \
+                -out "${name}.sig" "$plugin"
+              cp "$plugin" "signed-plugins/${name}"
+              gobjcopy --add-section ".sig=${name}.sig" \
+                "signed-plugins/${name}"
+              echo "Signed: ${name}"
+            done
+
+            # Run hdf5_plugins tests with signed plugins in the plugin path
+            export HDF5_PLUGIN_PATH="$(pwd)/signed-plugins"
+            export LD_LIBRARY_PATH="$(pwd)/hdf5-install/lib:${LD_LIBRARY_PATH}"
+            cd plugins-build
+            ctest --output-on-failure
+            cd ..
+
+            # Verify each signed plugin via h5ls and h5dump
+            for h5file in $(find plugins-build -name "*.h5" -type f | sort); do
+              echo "=== h5ls: $(basename "$h5file") ==="
+              ./hdf5-install/bin/h5ls -v "$h5file" || true
+              echo "=== h5dump: $(basename "$h5file") ==="
+              ./hdf5-install/bin/h5dump -H "$h5file" || true
+            done
