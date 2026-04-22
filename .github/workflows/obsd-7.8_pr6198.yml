@@ -70,7 +70,7 @@ jobs:
               -DH5PL_BUILD_TESTING:BOOL=ON \
               -DH5PL_ALLOW_EXTERNAL_SUPPORT:STRING="GIT" \
               ../hdf5_plugins
-            cmake --build . --parallel
+            cmake --build . --parallel $(sysctl -n hw.ncpu)
             cd ..
 
             # Sign each built plugin: create detached signature and embed
