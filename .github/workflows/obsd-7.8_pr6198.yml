@@ -33,12 +33,18 @@ jobs:
           shell: bash
           run: |
             sudo pkg_add cmake
+            mkdir ci-keystore
+            openssl genrsa -out ci-test-private.pem 2048
+            openssl rsa -in ci-test-private.pem -pubout -out ci-test-public.pem
+            mkdir -p ci-keystore
+            cp ci-test-public.pem ci-keystore/
             mkdir build
             cd build
             cmake \
-              -DBUILDNAME="pr6198" \
+              -DBUILDNAME="pr6198/keystore" \
               -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
               -DSITE:STRING="obsd-7.8" \
               -DHDF5_REQUIRE_SIGNED_PLUGINS:BOOL=ON \
+              -DHDF5_PLUGIN_KEYSTORE_DIR="${PWD}/ci-keystore" \
             ..
             ctest -D Experimental
