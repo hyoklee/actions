@@ -41,10 +41,10 @@ jobs:
             mkdir build
             cd build
             cmake \
-              -DBUILDNAME="pr6198/keystore" \
+              -DBUILDNAME="pr6198/../keystore" \
               -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
               -DSITE:STRING="obsd-7.8" \
               -DHDF5_REQUIRE_SIGNED_PLUGINS:BOOL=ON \
-              -DHDF5_PLUGIN_KEYSTORE_DIR="${PWD}/ci-keystore" \
+              -DHDF5_PLUGIN_KEYSTORE_DIR="../ci-keystore" \
             ..
             ctest -D Experimental
