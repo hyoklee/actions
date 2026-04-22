@@ -36,8 +36,9 @@ jobs:
             mkdir build
             cd build
             cmake \
-              -DBUILDNAME="pr6198/clang/obsd-7.8" \
+              -DBUILDNAME="pr6198" \
               -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
               -DSITE:STRING="obsd-7.8" \
+              -DHDF5_REQUIRE_SIGNED_PLUGINS:BOOL=ON \
             ..
             ctest -D Experimental
