@@ -30,18 +30,15 @@ jobs:
         NAG_LICENSE: ${{ secrets.NAG_LICENSE }}
       run: |
         curl -fsSL "$NAG_DMG_URL" -o nagfor.dmg
-        MOUNT_POINT=$(hdiutil attach nagfor.dmg -nobrowse -noverify -plist | python3 -c "import plistlib,sys; print([e['mount-point'] for e in plistlib.load(sys.stdin.buffer)['system-entities'] if 'mount-point' in e][-1])")
-        echo "Mounted at: $MOUNT_POINT"
-        find "$MOUNT_POINT" -maxdepth 2 -ls
-        PKG=$(find "$MOUNT_POINT" -name "*.pkg" | head -1)
-        if [ -n "$PKG" ]; then
-          sudo installer -pkg "$PKG" -target /
-        elif [ -f "$MOUNT_POINT/install.command" ]; then
-          sudo bash "$MOUNT_POINT/install.command" < /dev/null
-        else
-          echo "ERROR: No installer found in $MOUNT_POINT" && exit 1
-        fi
-        hdiutil detach "$MOUNT_POINT"
+        hdiutil attach nagfor.dmg -nobrowse -noverify
+        cd /Volumes/NAG_Fortran-macarm64
+        sudo sh -c "INSTALL_TO_BINDIR=/usr/local/bin && \
+          export INSTALL_TO_BINDIR && \
+          INSTALL_TO_LIBDIR=/usr/local/lib/NAG_Fortran && \
+          export INSTALL_TO_LIBDIR && \
+          sh INSTALLU.sh"
+        cd -
+        hdiutil detach /Volumes/NAG_Fortran-macarm64
         echo "$NAG_LICENSE" > "$HOME/nag.license"
         echo "NAG_KUSARI_FILE=$HOME/nag.license" >> "$GITHUB_ENV"
         echo "/usr/local/lib/NAG_Fortran/bin" >> "$GITHUB_PATH"
