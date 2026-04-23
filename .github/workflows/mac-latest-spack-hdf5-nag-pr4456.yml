@@ -26,7 +26,7 @@ jobs:
 
     - name: Install NAG Fortran
       env:
-        NAG_DMG_URL: ${{ secrets.NAG_DMG_URL }}
+        NAG_DMG_URL: https://support.nag.com/downloads/impl/npma872na_macarm64.dmg
         NAG_LICENSE: ${{ secrets.NAG_LICENSE }}
       run: |
         curl -fsSL "$NAG_DMG_URL" -o nagfor.dmg
