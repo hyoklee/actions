@@ -31,7 +31,7 @@ jobs:
       run: |
         curl -fsSL "$NAG_DMG_URL" -o nagfor.dmg
         hdiutil attach nagfor.dmg -mountpoint /Volumes/NAGFortran -nobrowse -noverify
-        sudo /Volumes/NAGFortran/install.command < /dev/null
+        sudo bash /Volumes/NAGFortran/install.command < /dev/null
         hdiutil detach /Volumes/NAGFortran
         echo "$NAG_LICENSE" > "$HOME/nag.license"
         echo "NAG_KUSARI_FILE=$HOME/nag.license" >> "$GITHUB_ENV"
