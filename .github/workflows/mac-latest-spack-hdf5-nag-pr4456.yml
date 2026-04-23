@@ -30,9 +30,18 @@ jobs:
         NAG_LICENSE: ${{ secrets.NAG_LICENSE }}
       run: |
         curl -fsSL "$NAG_DMG_URL" -o nagfor.dmg
-        hdiutil attach nagfor.dmg -mountpoint /Volumes/NAGFortran -nobrowse -noverify
-        sudo bash /Volumes/NAGFortran/install.command < /dev/null
-        hdiutil detach /Volumes/NAGFortran
+        MOUNT_POINT=$(hdiutil attach nagfor.dmg -nobrowse -noverify | grep -oE '/Volumes/[^\t]+' | tail -1 | sed 's/[[:space:]]*$//')
+        echo "Mounted at: $MOUNT_POINT"
+        find "$MOUNT_POINT" -maxdepth 2 -ls
+        PKG=$(find "$MOUNT_POINT" -name "*.pkg" | head -1)
+        if [ -n "$PKG" ]; then
+          sudo installer -pkg "$PKG" -target /
+        elif [ -f "$MOUNT_POINT/install.command" ]; then
+          sudo bash "$MOUNT_POINT/install.command" < /dev/null
+        else
+          echo "ERROR: No installer found in $MOUNT_POINT" && exit 1
+        fi
+        hdiutil detach "$MOUNT_POINT"
         echo "$NAG_LICENSE" > "$HOME/nag.license"
         echo "NAG_KUSARI_FILE=$HOME/nag.license" >> "$GITHUB_ENV"
         echo "/usr/local/lib/NAG_Fortran/bin" >> "$GITHUB_PATH"
