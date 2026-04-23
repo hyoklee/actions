@@ -30,7 +30,7 @@ jobs:
         NAG_LICENSE: ${{ secrets.NAG_LICENSE }}
       run: |
         curl -fsSL "$NAG_DMG_URL" -o nagfor.dmg
-        MOUNT_POINT=$(hdiutil attach nagfor.dmg -nobrowse -noverify | grep -oE '/Volumes/[^\t]+' | tail -1 | sed 's/[[:space:]]*$//')
+        MOUNT_POINT=$(hdiutil attach nagfor.dmg -nobrowse -noverify -plist | python3 -c "import plistlib,sys; print([e['mount-point'] for e in plistlib.load(sys.stdin.buffer)['system-entities'] if 'mount-point' in e][-1])")
         echo "Mounted at: $MOUNT_POINT"
         find "$MOUNT_POINT" -maxdepth 2 -ls
         PKG=$(find "$MOUNT_POINT" -name "*.pkg" | head -1)
