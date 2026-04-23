@@ -1,0 +1,54 @@
+name: macos-latest spack hdf5 nag pr-4456
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+
+    - name: Checkout Spack
+      uses: actions/checkout@v6
+      with:
+        repository: spack/spack
+        path: ./spack
+
+    - name: Checkout spack-packages PR 4456
+      uses: actions/checkout@v6
+      with:
+        repository: spack/spack-packages
+        ref: refs/pull/4456/head
+        path: ./spack-packages
+
+    - name: Install NAG Fortran
+      env:
+        NAG_DMG_URL: ${{ secrets.NAG_DMG_URL }}
+        NAG_LICENSE: ${{ secrets.NAG_LICENSE }}
+      run: |
+        curl -fsSL "$NAG_DMG_URL" -o nagfor.dmg
+        hdiutil attach nagfor.dmg -mountpoint /Volumes/NAGFortran -nobrowse -noverify
+        sudo /Volumes/NAGFortran/install.command < /dev/null
+        hdiutil detach /Volumes/NAGFortran
+        echo "$NAG_LICENSE" > "$HOME/nag.license"
+        echo "NAG_KUSARI_FILE=$HOME/nag.license" >> "$GITHUB_ENV"
+        echo "/usr/local/lib/NAG_Fortran/bin" >> "$GITHUB_PATH"
+
+    - name: Verify NAG Fortran
+      run: nagfor -V
+
+    - name: Test hdf5 1.12 and 1.14 with spack-packages PR 4456
+      run: |
+        . ./spack/share/spack/setup-env.sh
+        spack spec hdf5~mpi
+        HDF5_PKG=$(echo ~/.spack/package_repos/*/repos/spack_repo/builtin/packages/hdf5)
+        cp ./spack-packages/repos/spack_repo/builtin/packages/hdf5/package.py "$HDF5_PKG/"
+        cp ./spack-packages/repos/spack_repo/builtin/packages/hdf5/nag_macos_linker.patch "$HDF5_PKG/"
+        spack compiler find
+        spack spec hdf5@1.12~mpi %nag
+        spack install hdf5@1.12~mpi %nag
+        spack spec hdf5@1.14~mpi %nag
+        spack install hdf5@1.14~mpi %nag
