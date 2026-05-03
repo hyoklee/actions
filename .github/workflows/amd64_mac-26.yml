@@ -13,13 +13,13 @@ jobs:
         uses: actions/checkout@v6
         with:
           repository: HDFGroup/hdf5
-    
+
       - name: test
         run: |
           mkdir build
           cd build
           cmake -DSITE:STRING="mac26.amd64" -DBUILDNAME:STRING="r" \
-	  -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
-	  -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" \
-	  ..
+            -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
+            -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" \
+            ..
           ctest -D Experimental -C Release
