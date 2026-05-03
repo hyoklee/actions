@@ -2,7 +2,7 @@ name: macos-latest spack hdf5 nag pr-4456
 
 on:
   push:
-    branches: [ main ]
+    branches: main-
   workflow_dispatch:
 
 jobs:
