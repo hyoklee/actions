@@ -2,7 +2,7 @@ name: obsd-7.8 pr6198
 
 on:
   push:
-    branches: main-
+    branches: main
 
 jobs:
   test:
@@ -27,7 +27,8 @@ jobs:
       - name: get plugins
         uses: actions/checkout@v6
         with:
-          repository: HDFGroup/hdf5_plugins
+          repository: brtnfld/hdf5_plugins
+	  ref: fix/cmake-dl-libs-openbsd
           path: hdf5_plugins
 
       - name: ${{ matrix.os.name }}

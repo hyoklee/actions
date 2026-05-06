@@ -2,7 +2,7 @@ name: amd64 mac-26
 
 on:
   push:
-    branches: main
+    branches: main-
 
 jobs:
   build:
