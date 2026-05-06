@@ -28,7 +28,7 @@ jobs:
         uses: actions/checkout@v6
         with:
           repository: brtnfld/hdf5_plugins
-	  ref: fix/cmake-dl-libs-openbsd
+          ref: fix/cmake-dl-libs-openbsd
           path: hdf5_plugins
 
       - name: ${{ matrix.os.name }}
