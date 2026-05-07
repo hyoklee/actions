@@ -2,7 +2,7 @@ name: mingw zl-ng issue-5730
 
 on:
   push:
-    branches: main-
+    branches: main
 
 jobs:
   build:
@@ -25,7 +25,7 @@ jobs:
       - name: Checkout HDF5
         uses: actions/checkout@v6
         with:
-          repository: HDFGroup/hdf5
+          repository: hyoklee/hdf5
 
       - name: Build HDF5 with zlib-ng
         run: |
@@ -39,7 +39,7 @@ jobs:
             -DHDF5_ENABLE_ALL_WARNINGS:BOOL=ON \
             -DHDF5_ENABLE_DEV_WARNINGS:BOOL=ON \
             -DBUILD_SHARED_LIBS:BOOL=OFF \
-            -DBUILDNAME:STRING="mgw/zl-ng/issue-5730" \
+            -DBUILDNAME:STRING="hk/mgw/zl-ng/issue-5730" \
             -DSITE:STRING="win-latest" \
             -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
             -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" \
