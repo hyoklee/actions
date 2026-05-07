@@ -2,7 +2,7 @@ name: mingw zl-ng issue-5730
 
 on:
   push:
-    branches: main
+    branches: main-
 
 jobs:
   build:
