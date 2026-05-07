@@ -1,0 +1,48 @@
+name: mingw zl-ng issue-5730
+
+on:
+  push:
+    branches: main
+
+jobs:
+  build:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: msys2 {0}
+    steps:
+      - name: Setup MSYS2
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: MINGW64
+          update: true
+          install: >-
+            mingw-w64-x86_64-gcc
+            mingw-w64-x86_64-cmake
+            mingw-w64-x86_64-ninja
+            mingw-w64-x86_64-zlib-ng
+
+      - name: Checkout HDF5
+        uses: actions/checkout@v6
+        with:
+          repository: HDFGroup/hdf5
+
+      - name: Build HDF5 with zlib-ng
+        run: |
+          mkdir -p build
+          cd build
+          cmake -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DHDF5_ENABLE_ZLIB_SUPPORT:BOOL=ON \
+            -DHDF5_USE_ZLIB_NG:BOOL=ON \
+            -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF \
+            -DHDF5_ENABLE_ALL_WARNINGS:BOOL=ON \
+            -DHDF5_ENABLE_DEV_WARNINGS:BOOL=ON \
+            -DBUILD_SHARED_LIBS:BOOL=OFF \
+            -DBUILDNAME:STRING="mgw/zl-ng/issue-5730" \
+            -DSITE:STRING="win-latest" \
+            -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
+            -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" \
+            ..
+          cmake --build . 2>&1 | tee build.log
+          grep -i "H5Zdeflate\|z_dst_nbytes\|conversion\|truncat\|mismatch" build.log || true

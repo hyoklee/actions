@@ -32,7 +32,7 @@ jobs:
           run: |
             sudo pkg_add git
             sudo pkg_add cmake
-            set MALLOC_OPTIONS="SCFGJRU"
+            export MALLOC_OPTIONS="SCFGJRU"
             mkdir build
             cd build
             cmake \
