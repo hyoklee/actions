@@ -19,13 +19,12 @@ jobs:
           arch: arm64
       - name: test
         shell: cmd
-        env:
-          CL: /Gy
         run: |
+          SET CL=/Gy
           vcpkg install libaec
           vcpkg install zlib
           vcpkg integrate install
           mkdir build
           cd build
-          cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE="C:/vcpkg/scripts/buildsystems/vcpkg.cmake" -DHDF5_ENABLE_ZLIB_SUPPORT:BOOL=ON -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=ON -DHDF5_TEST_API=ON  -DCTEST_DROP_SITE_INIT=my.cdash.org -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" -DSITE="win-11.arm64" -DBUILDNAME="ninja/ae/zl" ..
+          cmake -G Ninja -DCMAKE_TOOLCHAIN_FILE="C:/vcpkg/scripts/buildsystems/vcpkg.cmake" -DCMAKE_C_FLAGS="/Gy" -DCMAKE_CXX_FLAGS="/Gy" -DHDF5_ENABLE_ZLIB_SUPPORT:BOOL=ON -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=ON -DHDF5_TEST_API=ON  -DCTEST_DROP_SITE_INIT=my.cdash.org -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" -DSITE="win-11.arm64" -DBUILDNAME="ninja/ae/zl" ..
           ctest -D Experimental
