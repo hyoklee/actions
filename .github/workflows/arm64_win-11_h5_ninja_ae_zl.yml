@@ -3,7 +3,7 @@ name: arm64 win-11 ninja ae zl
 on:
   push:
     branches:
-      - main
+      - main-
 
 jobs:
   build:
