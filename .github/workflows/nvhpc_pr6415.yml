@@ -41,7 +41,7 @@ jobs:
           mkdir build
           cd build
           cmake \
-            -C $GITHUB_WORKSPACE/config/cmake/cacheinit.cmake -G Ninja \
+            -C ../config/cmake/cacheinit.cmake -G Ninja \
             -DBUILDNAME:STRING="pr6415" \
             -DCMAKE_BUILD_TYPE=Debug \
             -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \	    
