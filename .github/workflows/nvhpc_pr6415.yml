@@ -28,10 +28,10 @@ jobs:
           env
           find /opt/nvidia/hpc_sdk/
       - name: hdf5
-        env:
-          NPROCS: 2
-          CFLAGS: -fPIC -lnvf -lnvomp -ldl -lnvhpcatm -latomic -lpthread -lnvcpumath -lnsnvc -lnvc -lrt -lm -Mbounds  -gopt   -O1
-          FCFLAGS: -fPIC -lnvf -lnvomp -ldl -lnvhpcatm -latomic -lpthread -lnvcpumath -lnsnvc -lnvc -lrt -lm
+#        env:
+#          NPROCS: 2
+#          CFLAGS: -fPIC -lnvf -lnvomp -ldl -lnvhpcatm -latomic -lpthread -lnvcpumath -lnsnvc -lnvc -lrt -lm -Mbounds  -gopt -O1
+#          FCFLAGS: -fPIC -lnvf -lnvomp -ldl -lnvhpcatm -latomic -lpthread -lnvcpumath -lnsnvc -lnvc -lrt -lm
         run: |
           export CC=/opt/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/13.1/hpcx/hpcx-2.25.1/ompi/bin/mpicc
           export LD_LIBRARY_PATH=/opt/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/13.1/hpcx/hpcx-2.25.1/ompi/lib:/opt/nvidia/hpc_sdk/Linux_x86_64/26.3/cuda/13.1/lib64:/opt/nvidia/hpc_sdk/Linux_x86_64/26.3/compilers/lib
@@ -41,12 +41,15 @@ jobs:
           mkdir build
           cd build
           cmake \
+            -C $GITHUB_WORKSPACE/config/cmake/cacheinit.cmake -G Ninja \
+            -DBUILDNAME:STRING="pr6415" \
             -DCMAKE_BUILD_TYPE=Debug \
+            -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \	    
             -DHDF5_BUILD_CPP_LIB:BOOL=OFF \
             -DHDF5_BUILD_FORTRAN:BOOL=OFF \
             -DHDF5_BUILD_JAVA:BOOL=OFF \
             -DHDF5_ENABLE_PARALLEL:BOOL=OFF \
             -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF \
+            -DSITE:STRING="ubu-24" \	    
             ..
-          ctest -T Build
-          ctest -T Test
+          ctest -D Experimental
