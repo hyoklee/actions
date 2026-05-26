@@ -41,15 +41,15 @@ jobs:
           mkdir build
           cd build
           cmake \
-            -C ../config/cmake/cacheinit.cmake -G Ninja \
+            -C $GITHUB_WORKSPACE/config/cmake/cacheinit.cmake -G Ninja \
             -DBUILDNAME:STRING="pr6415" \
             -DCMAKE_BUILD_TYPE=Debug \
-            -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \	    
+            -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \
             -DHDF5_BUILD_CPP_LIB:BOOL=OFF \
             -DHDF5_BUILD_FORTRAN:BOOL=OFF \
             -DHDF5_BUILD_JAVA:BOOL=OFF \
             -DHDF5_ENABLE_PARALLEL:BOOL=OFF \
             -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF \
-            -DSITE:STRING="ubu-24" \	    
+            -DSITE:STRING="ubu-24" \
             ..
           ctest -D Experimental
