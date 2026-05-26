@@ -45,6 +45,7 @@ jobs:
             -DBUILDNAME:STRING="pr6415" \
             -DCMAKE_BUILD_TYPE=Debug \
             -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \
+            -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
             -DHDF5_BUILD_CPP_LIB:BOOL=OFF \
             -DHDF5_BUILD_FORTRAN:BOOL=OFF \
             -DHDF5_BUILD_JAVA:BOOL=OFF \
