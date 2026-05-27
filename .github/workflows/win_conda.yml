@@ -24,5 +24,5 @@ jobs:
           conda install -y zeromq
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -DBUILDNAME="r/cnd" -DSITE="win-2025"..
+          cmake -DCMAKE_BUILD_TYPE=Release -DBUILDNAME="r/cnd" -DSITE="win-2025" ..
           ctest -D Experimental
