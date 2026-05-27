@@ -25,3 +25,4 @@ jobs:
           mkdir build
           cd build
           cmake ..
+          ctest -D Experimental
