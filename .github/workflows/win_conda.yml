@@ -9,11 +9,9 @@ jobs:
   install:
     runs-on: windows-latest
     steps:
-    steps:
       - uses: actions/checkout@v6
         with:
           repository: iowarp/clio-core
-
       - name: miniconda
         uses: conda-incubator/setup-miniconda@v4
       - name: iowarp
