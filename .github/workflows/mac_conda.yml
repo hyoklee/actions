@@ -7,7 +7,7 @@ on:
 
 jobs:
   install:
-    runs-on: macos-15-intel
+    runs-on: macos-26-intel
     steps:
       - uses: actions/checkout@v6
         with:
@@ -28,7 +28,7 @@ jobs:
           export CONDA_PREFIX=/Users/runner/miniconda3
           cmake -DCMAKE_BUILD_TYPE=Release \
            -DBUILDNAME="r/cnd" \
-           -DSITE="mac-15" \
+           -DSITE="mac-26.amd64" \
            -DCLIO_CORE_ENABLE_TESTS=ON \
            -DCLIO_CORE_ENABLE_CONDA=ON \
            ..
