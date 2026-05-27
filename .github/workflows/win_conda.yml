@@ -20,7 +20,7 @@ jobs:
           conda config --add channels conda-forge
           conda config --set channel_priority strict
           conda install -y cereal
-          conda install -y msgpack-python
+          conda install -y msgpack-c
           mkdir build
           cd build
           cmake ..
