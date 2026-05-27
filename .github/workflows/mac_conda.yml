@@ -25,5 +25,10 @@ jobs:
           conda install -y catch2
           mkdir build
           cd build
-          cmake -DCMAKE_BUILD_TYPE=Release -DBUILDNAME="r/cnd" -DSITE="mac-15" -DCLIO_CORE_ENABLE_TESTS=ON ..
+          cmake -DCMAKE_BUILD_TYPE=Release \
+           -DBUILDNAME="r/cnd" \
+           -DSITE="mac-15" \
+           -DCLIO_CORE_ENABLE_TESTS=ON \
+           -DCLIO_CORE_ENABLE_CONDA=ON \
+           ..
           ctest -C Release -D Experimental
