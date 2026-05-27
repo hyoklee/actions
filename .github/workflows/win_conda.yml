@@ -21,6 +21,7 @@ jobs:
           conda config --set channel_priority strict
           conda install -y cereal
           conda install -y msgpack-c
+          conda install -y zeromq
           mkdir build
           cd build
           cmake ..
