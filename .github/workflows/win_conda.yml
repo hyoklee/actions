@@ -1,0 +1,25 @@
+name: win conda
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  install:
+    runs-on: windows-latest
+    steps:
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          repository: iowarp/clio-core
+
+      - name: miniconda
+        uses: conda-incubator/setup-miniconda@v4
+      - name: iowarp
+        run: |
+          conda install -y yaml-cpp
+          conda install -y cereal
+          mkdir build
+          cd build
+          cmake ..
