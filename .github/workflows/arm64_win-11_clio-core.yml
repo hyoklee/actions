@@ -14,7 +14,7 @@ jobs:
           repository: iowarp/clio-core
       - name: iowarp
         run: |
-          cmake --preset=windows-debug
+          cmake -DCMAKE_TOOLCHAIN_FILE="$env:VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake" ` --preset=windows-debug 
           cmake --build build --config Debug
 #          mkdir build
 #          cd build
