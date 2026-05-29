@@ -1,0 +1,22 @@
+name: arm64 win-11 clio-core
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  install:
+    runs-on: windows-11-arm
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          repository: iowarp/clio-core
+      - name: iowarp
+        run: |
+   	  cmake --preset=windows-debug
+          cmake --build build --config Debug
+#          mkdir build
+#          cd build
+#          cmake -DCMAKE_BUILD_TYPE=Release -DBUILDNAME="r/cnd" -DSITE="win-11.arm" -DCLIO_CORE_ENABLE_TESTS=ON ..
+#          ctest -C Release -D Experimental
