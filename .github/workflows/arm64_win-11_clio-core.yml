@@ -16,6 +16,10 @@ jobs:
         run: |
           vcpkg install yaml-cpp
           vcpkg install cereal
+          vcpkg install zeromq
+          vcpkg install msgpack-c
+          vpckg install catch2
+          vcpkg install hdf5
           mkdir build
           cd build
           cmake -DCMAKE_TOOLCHAIN_FILE="$env:VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake" ..
