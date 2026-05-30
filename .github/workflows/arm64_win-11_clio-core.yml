@@ -14,6 +14,7 @@ jobs:
           repository: iowarp/clio-core
       - name: iowarp
         run: |
+          vcpkg install yaml-cpp
           mkdir build
           cd build
           cmake -DCMAKE_TOOLCHAIN_FILE="$env:VCPKG_INSTALLATION_ROOT/scripts/buildsystems/vcpkg.cmake" ..
