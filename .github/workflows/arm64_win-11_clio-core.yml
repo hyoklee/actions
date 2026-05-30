@@ -18,7 +18,7 @@ jobs:
           vcpkg install cereal
           vcpkg install zeromq
           vcpkg install msgpack-c
-          vpckg install catch2
+          vcpkg install catch2
           vcpkg install hdf5
           mkdir build
           cd build
