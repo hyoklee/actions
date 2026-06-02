@@ -3,7 +3,7 @@ name: arm64 win-11 clio-core
 on:
   push:
     branches:
-      - main
+      - main-
 
 jobs:
   install:

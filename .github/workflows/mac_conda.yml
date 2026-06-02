@@ -3,7 +3,7 @@ name: mac conda
 on:
   push:
     branches:
-      - main
+      - main-
 
 jobs:
   install:
