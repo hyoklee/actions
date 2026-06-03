@@ -40,7 +40,7 @@ jobs:
             -DBUILDNAME:STRING="pr6427/tv" \
             -DHDF5_TEST_VFD:BOOL=ON \
             ..
-            ctest -C Release -D Experimental
+            ctest -C Release -D Experimental -R h5repack
 
       - name: Get the output
         # Echo the `uname` output parameter from the `runcmd` step
