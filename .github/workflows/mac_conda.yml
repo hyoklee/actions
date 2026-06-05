@@ -12,6 +12,7 @@ jobs:
       - uses: actions/checkout@v6
         with:
           repository: iowarp/clio-core
+          ref: fix/macos-issues-482-483-485-486
       - name: miniconda
         uses: conda-incubator/setup-miniconda@v4
       - name: iowarp
@@ -27,7 +28,7 @@ jobs:
           cd build
           export CONDA_PREFIX=/Users/runner/miniconda3
           cmake -DCMAKE_BUILD_TYPE=Release \
-           -DBUILDNAME="r/cnd" \
+           -DBUILDNAME="pr490/cnd" \
            -DSITE="mac-15" \
            -DCLIO_CORE_ENABLE_TESTS=ON \
            -DCLIO_CORE_ENABLE_CONDA=ON \
