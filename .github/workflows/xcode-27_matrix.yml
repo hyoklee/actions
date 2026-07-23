@@ -221,7 +221,7 @@ jobs:
         if [[ "${{ matrix.java }}" == "ON" ]]; then
           export JAVA_HOME=$(/usr/libexec/java_home)
           CMAKE_OPTS="$CMAKE_OPTS -DJAVA_HOME=$JAVA_HOME"
-	  CMAKE_OPTS="$CMAKE_OPTS -DCMAKE_Java_COMPILER=$JAVA_HOME/bin/javac"
+          CMAKE_OPTS="$CMAKE_OPTS -DCMAKE_Java_COMPILER=$JAVA_HOME/bin/javac"
         fi
 
         # Set Fortran compiler if needed
