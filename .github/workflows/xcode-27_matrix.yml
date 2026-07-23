@@ -254,5 +254,8 @@ jobs:
       shell: bash
 
     - name: Build
-      run: ctest -D Experimental -C Release
+      run: |
+        cd "${{ runner.workspace }}/build"
+        ctest -D Experimental -C Release
       working-directory: ${{ runner.workspace }}/build
+      shell: bash
