@@ -166,8 +166,8 @@ jobs:
     - name: Get Sources
       uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
       with:
-        repository: HDFGroup/hdf5
-        ref: hdf5_2_2_0
+        repository: hyoklee/hdf5
+        ref: fix-java-toolchain-jdk-mismatch
 
     - name: Install Dependencies
       run: |
@@ -247,7 +247,7 @@ jobs:
         # unquoted "$CMAKE_OPTS" expansion below is not word-split.
         BUILDNAME="${{ matrix.name }}"
         BUILDNAME="${BUILDNAME// //}"
-        CMAKE_OPTS="$CMAKE_OPTS -DBUILDNAME:STRING=2.2.0/$BUILDNAME"
+        CMAKE_OPTS="$CMAKE_OPTS -DBUILDNAME:STRING=hk/$BUILDNAME"
         echo "Configuration options: $CMAKE_OPTS"
         cmake $CMAKE_OPTS "$GITHUB_WORKSPACE"
       shell: bash
