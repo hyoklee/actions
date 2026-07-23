@@ -3,7 +3,7 @@ name: xcode-27 sz zl
 on:
   workflow_dispatch:
   push:
-    branches: [ main- ]
+    branches: [ main ]
 
 jobs:
   build:
