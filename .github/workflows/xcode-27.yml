@@ -1,0 +1,31 @@
+name: xcode-27 sz zl
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main- ]
+
+jobs:
+  build:
+    name: xcode-27
+    runs-on: xcode-27
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: HDFGroup/hdf5
+
+      - name: install
+        run: brew install libaec
+
+      - name: xcode
+        run: |
+          mkdir build
+          cd build
+          cmake -G Xcode \
+          -DBUILDNAME:STRING="xcode-27/r/sz/zl" \
+          -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
+          -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=ON \
+          -DHDF5_ENABLE_ZLIB_SUPPORT:BOOL=ON \
+          -DSITE:STRING="xcode-27" \
+          ..
+          ctest -C Release -D Experimental
