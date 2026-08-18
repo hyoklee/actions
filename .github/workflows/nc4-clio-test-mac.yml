@@ -1,0 +1,305 @@
+name: netCDF-C CLIO test suite (macOS)
+
+# The macOS counterpart of nc4-clio-test.yml: the whole netCDF-C test suite --
+# unit tests, tool tests and the nc_perf performance tests -- run once per HDF5
+# storage stack (stock, clio-core VFD, clio-core VOL) on Apple silicon. Results
+# go to the wiki page NetCDF-C-CLIO-Tests-macOS and to this platform's row of
+# NetCDF-C-CLIO-Tests.
+#
+# Two things differ from the Linux workflow and neither is incidental:
+#
+#   * No container. macOS runners cannot run one, so clio-core's dependency set
+#     (thallium/mercury/argobots/cereal/yaml-cpp ...) comes from the conda env
+#     that clio-core's own CI/ci-deps.sh builds -- the same route its ci-macos.yml
+#     and ci-adapters.yml take.
+#   * clio-core's HDF5 VOL does not compile on Darwin as of clio-core dev
+#     a19a0356: the coherence-stamp code reads st.st_mtim, which Darwin spells
+#     st_mtimespec (fix submitted as clio-core PR #971). The driver is given
+#     --allow-adapter-build-failure so that variant drops itself and the other
+#     two still get tested; the report says "adapter not built on this platform"
+#     rather than showing an empty result that reads like a crash.
+
+on:
+  schedule:
+    # 15:00 UTC, two hours after the Linux run: all three platforms push the
+    # same wiki and the index page has one row each.
+    - cron: '0 15 * * *'
+  workflow_dispatch:
+    inputs:
+      force:
+        description: 'Run even when no upstream repo changed'
+        type: boolean
+        default: false
+      variants:
+        description: 'Comma list: baseline,clio_vfd,clio_vol'
+        type: string
+        default: 'baseline,clio_vfd,clio_vol'
+      test_timeout:
+        description: 'ctest --timeout, seconds per test'
+        type: string
+        default: '300'
+      run_timeout:
+        description: 'Wall clock per variant'
+        type: string
+        default: '60m'
+      ctest_jobs:
+        description: 'ctest -j (the same for every variant, for comparability)'
+        type: string
+        default: '4'
+
+concurrency:
+  group: nc4-clio-test-macos
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  # Runs on Linux: it only resolves remote HEADs and reads the published wiki
+  # page, and a macOS runner costs 10x per minute for the same `git ls-remote`.
+  check:
+    runs-on: ubuntu-latest
+    outputs:
+      should_run: ${{ steps.decide.outputs.should_run }}
+      hdf5_sha:   ${{ steps.heads.outputs.hdf5_sha }}
+      netcdf_sha: ${{ steps.heads.outputs.netcdf_sha }}
+      clio_sha:   ${{ steps.heads.outputs.clio_sha }}
+      reason:     ${{ steps.decide.outputs.reason }}
+    steps:
+      - name: Resolve upstream HEADs
+        id: heads
+        run: |
+          set -euo pipefail
+          resolve() {
+            local sha
+            sha=$(git ls-remote "$1" "refs/heads/$2" | awk '{print $1}')
+            if [ -z "$sha" ]; then
+              echo "::error::could not resolve $1 $2" >&2
+              exit 1
+            fi
+            echo "$sha"
+          }
+          {
+            echo "hdf5_sha=$(resolve https://github.com/HDFGroup/hdf5.git develop)"
+            echo "netcdf_sha=$(resolve https://github.com/Unidata/netcdf-c.git main)"
+            echo "clio_sha=$(resolve https://github.com/iowarp/clio-core.git dev)"
+          } >> "$GITHUB_OUTPUT"
+          cat "$GITHUB_OUTPUT"
+
+      - name: Decide whether to test
+        id: decide
+        run: |
+          set -euo pipefail
+          git clone --depth 1 "https://github.com/${GITHUB_REPOSITORY}.wiki.git" wiki || true
+          PAGE=wiki/NetCDF-C-CLIO-Tests-macOS.md
+          SHOULD_RUN=true
+          REASON="no previous run recorded"
+
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.force }}" = "true" ]; then
+            REASON="forced via workflow_dispatch"
+          elif [ -f "$PAGE" ]; then
+            STAMP=$(grep -o '<!-- nc4-clio-stamp: .* -->' "$PAGE" | tail -1 \
+                    | sed 's/^<!-- nc4-clio-stamp: //; s/ -->$//') || true
+            if [ -n "$STAMP" ]; then
+              prev() { printf '%s' "$STAMP" | python3 -c "import json,sys;print(json.load(sys.stdin).get(sys.argv[1],''))" "$1"; }
+              CHANGED=""
+              [ "$(prev hdf5_sha)"   = "${{ steps.heads.outputs.hdf5_sha }}"   ] || CHANGED="$CHANGED hdf5"
+              [ "$(prev netcdf_sha)" = "${{ steps.heads.outputs.netcdf_sha }}" ] || CHANGED="$CHANGED netcdf-c"
+              [ "$(prev clio_sha)"   = "${{ steps.heads.outputs.clio_sha }}"   ] || CHANGED="$CHANGED clio-core"
+              if [ -z "$CHANGED" ]; then
+                SHOULD_RUN=false
+                REASON="no change in clio-core, hdf5, or netcdf-c since the last run"
+              else
+                REASON="changed:$CHANGED"
+              fi
+            fi
+          fi
+
+          echo "should_run=$SHOULD_RUN" >> "$GITHUB_OUTPUT"
+          echo "reason=$REASON" >> "$GITHUB_OUTPUT"
+          {
+            echo "### netCDF-C CLIO test suite (macOS): \`should_run=$SHOULD_RUN\`"
+            echo "$REASON"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  test:
+    needs: check
+    if: needs.check.outputs.should_run == 'true'
+    runs-on: macos-latest
+    timeout-minutes: 350
+    steps:
+      - name: Checkout actions
+        uses: actions/checkout@v4
+
+      # gtimeout. The driver falls back to a shell watchdog without it, but
+      # coreutils' timeout(1) is the better-tested path and is a 10 s install.
+      - name: Install coreutils
+        run: brew install coreutils
+
+      - name: Cache HDF5 develop build
+        uses: actions/cache@v4
+        with:
+          path: |
+            nc4-clio-work/hdf5-build
+            nc4-clio-work/hdf5-install
+          key: nc4clio-test-mac-hdf5-${{ needs.check.outputs.hdf5_sha }}-macos-latest
+
+      - name: Cache clio-core build
+        uses: actions/cache@v4
+        with:
+          path: nc4-clio-work/clio-build
+          key: nc4clio-test-mac-clio-${{ needs.check.outputs.clio_sha }}-${{ needs.check.outputs.hdf5_sha }}-macos-latest
+
+      # Cloned here rather than by the driver because CI/ci-deps.sh lives in this
+      # checkout and has to run before anything is configured. The driver is then
+      # pointed at it with --clio-src and clones only the other two.
+      - name: Clone clio-core
+        run: |
+          set -euo pipefail
+          mkdir -p nc4-clio-work
+          if [ ! -d nc4-clio-work/clio-src/.git ]; then
+            git clone --depth 1 --branch dev --recurse-submodules \
+              https://github.com/iowarp/clio-core.git nc4-clio-work/clio-src
+          fi
+          git -C nc4-clio-work/clio-src rev-parse HEAD
+
+      # clio-core PR #973 added `{{ stdlib("c") }}` to the conda recipe but
+      # defined c_stdlib for Linux only, so on macOS it renders as the
+      # nonexistent package `c_osx-arm64` and ci-deps.sh's `conda install` fails
+      # every retry. The script supplies the macOS half of that mapping and is a
+      # self-announcing no-op once upstream defines it.
+      - name: Patch clio-core's conda variants for macOS
+        run: |
+          set -euo pipefail
+          chmod +x .github/scripts/patch_clio_conda_variants.sh
+          .github/scripts/patch_clio_conda_variants.sh "$GITHUB_WORKSPACE/nc4-clio-work/clio-src"
+
+      # ci-deps.sh installs Miniconda if absent and creates the `iowarp` env
+      # holding clio-core's dependency set. It is not cached: the env is several
+      # GB, and this job only runs when an upstream repo actually moved.
+      - name: Install clio-core dependencies (conda)
+        run: |
+          set -euo pipefail
+          cd nc4-clio-work/clio-src
+          chmod +x CI/ci-deps.sh
+          ./CI/ci-deps.sh --only-deps release
+
+      - name: Build the three stacks and run the full netCDF-C test suite
+        run: |
+          # Deliberately no `set -u` yet: conda's own activation hooks are not
+          # nounset-clean (activate_cctools_osx-arm64.sh reads $AR before setting
+          # it, which aborts the step). It is turned on right after.
+          set -eo pipefail
+          if [ -f "$HOME/miniconda3/etc/profile.d/conda.sh" ]; then
+            source "$HOME/miniconda3/etc/profile.d/conda.sh"
+          elif [ -f "$HOME/anaconda3/etc/profile.d/conda.sh" ]; then
+            source "$HOME/anaconda3/etc/profile.d/conda.sh"
+          elif command -v conda >/dev/null 2>&1; then
+            eval "$(conda shell.bash hook)"
+          fi
+          conda activate iowarp
+          set -u
+          # ':'-separated: this is the environment form of the variable. The
+          # driver converts it to a ';' CMake list when it folds our own HDF5 in
+          # front of it -- the conda env ships its own libhdf5 and must not win,
+          # and the driver's otool ABI gate fails the build if it somehow does.
+          export CMAKE_PREFIX_PATH="${CONDA_PREFIX}${CMAKE_PREFIX_PATH:+:$CMAKE_PREFIX_PATH}"
+          export PKG_CONFIG_PATH="${CONDA_PREFIX}/lib/pkgconfig:${CONDA_PREFIX}/share/pkgconfig${PKG_CONFIG_PATH:+:$PKG_CONFIG_PATH}"
+
+          bash .github/scripts/nc4_clio_test.sh \
+            --clone \
+            --clio-src "$GITHUB_WORKSPACE/nc4-clio-work/clio-src" \
+            --work-dir "$GITHUB_WORKSPACE/nc4-clio-work" \
+            --results-dir "$GITHUB_WORKSPACE/test-results" \
+            --hdf5-ref develop \
+            --netcdf-ref main \
+            --variants "${{ inputs.variants || 'baseline,clio_vfd,clio_vol' }}" \
+            --ctest-jobs "${{ inputs.ctest_jobs || '4' }}" \
+            --test-timeout "${{ inputs.test_timeout || '300' }}" \
+            --run-timeout "${{ inputs.run_timeout || '60m' }}" \
+            --allow-adapter-build-failure \
+            --allow-partial-netcdf-build \
+            --jobs "$(sysctl -n hw.ncpu)"
+
+      # Guard the wiki update on there being something to publish. A run that
+      # died in the build produces no results, and republishing an empty report
+      # over the last good one would destroy the only record of what the suite
+      # last did.
+      - name: Check that the run produced results
+        if: always()
+        id: results
+        run: |
+          if [ -s test-results/variant_status.tsv ]; then
+            echo "have=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "have=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::no test results were produced; leaving the wiki page as it is"
+            echo "No test results were produced; the wiki page was left as it is." \
+              >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Clone the wiki
+        if: always() && steps.results.outputs.have == 'true'
+        run: |
+          set -euo pipefail
+          git clone "https://x-access-token:${WIKI_TOKEN}@github.com/${GITHUB_REPOSITORY}.wiki.git" wiki
+        env:
+          WIKI_TOKEN: ${{ secrets.WIKI_TOKEN || secrets.GITHUB_TOKEN }}
+
+      - name: Write the markdown report
+        if: always() && steps.results.outputs.have == 'true'
+        run: |
+          set -euo pipefail
+          python3 .github/scripts/nc4_clio_report.py \
+            --results-dir "$GITHUB_WORKSPACE/test-results" \
+            --platform macos \
+            --platform-label "macOS (macos-latest)" \
+            --page NetCDF-C-CLIO-Tests-macOS \
+            --out-dir wiki \
+            --index wiki/NetCDF-C-CLIO-Tests.md \
+            --runner macos-latest \
+            --run-url "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" \
+            --run-number "${GITHUB_RUN_NUMBER}" \
+            --run-id "${GITHUB_RUN_ID}"
+          cat wiki/summary.md >> "$GITHUB_STEP_SUMMARY"
+          rm -f wiki/summary.md
+
+      - name: Commit the wiki page
+        if: always() && steps.results.outputs.have == 'true'
+        run: |
+          set -euo pipefail
+          cd wiki
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add NetCDF-C-CLIO-Tests.md NetCDF-C-CLIO-Tests-macOS.md
+          if git diff --staged --quiet; then
+            echo "No changes to publish"
+            exit 0
+          fi
+          git commit -m "netCDF-C CLIO tests (macOS): run ${GITHUB_RUN_NUMBER}"
+          for attempt in 1 2 3 4 5; do
+            # `A && B` as a bare statement would abort the step under `set -e`
+            # when B (the push) fails, and the retry would never happen.
+            if git pull --rebase origin master && git push origin HEAD:master; then
+              exit 0
+            fi
+            echo "wiki push attempt $attempt failed; retrying"
+            sleep $((attempt * 5))
+          done
+          echo "::error::could not push the wiki page after 5 attempts"
+          exit 1
+
+      - name: Upload detailed results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nc4-clio-test-results-macos-${{ github.run_number }}
+          path: |
+            test-results/
+            nc4-clio-work/clio_run.log
+          retention-days: 90
+          if-no-files-found: warn

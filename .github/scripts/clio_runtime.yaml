@@ -1,0 +1,57 @@
+# Self-contained clio_run compose config for the NetCDF-4/CLIO benchmark.
+#
+# Both the CLIO VFD and the CLIO VOL connector need a reachable clio_run
+# runtime with a CTE core pool. `clio_run start` otherwise falls back to
+# ~/.clio/clio.yaml, which does not exist on a CI runner, so it would compose
+# only the built-in admin pool and never report readiness.
+#
+# Capacities are bounded so the runtime fits a constrained /dev/shm (a GitHub
+# runner gives ~half of RAM, a container defaults to 64 MB unless
+# --shm-size is raised). Keep these in sync with the benchmark dimensions in
+# nc4_clio_bench.sh: the CTE tier only has to hold the working set that the
+# adapters mirror, not the whole netCDF file.
+networking:
+  port: 9413
+  neighborhood_size: 32
+memory:
+  main_segment_size: 512MB
+  client_data_segment_size: 512MB
+  runtime_data_segment_size: 512MB
+runtime:
+  num_threads: 4
+  queue_depth: 1024
+  local_sched: "default"
+compose:
+  - mod_name: clio_bdev
+    pool_name: "ram::chi_default_bdev"
+    pool_query: local
+    pool_id: "301.0"
+    bdev_type: ram
+    capacity: "512MB"
+  - mod_name: clio_cte_core
+    pool_name: clio_cte_core
+    pool_query: local
+    pool_id: "512.0"
+    storage:
+      - path: "ram::cte_ram_tier1"
+        bdev_type: "ram"
+        capacity_limit: "512MB"
+        score: 1.0
+    dpe:
+      dpe_type: "max_bw"
+    targets:
+      neighborhood: 1
+      default_target_timeout_ms: 30000
+      poll_period_ms: 5000
+  # The CLIO VFD does its I/O through the context-filesystem (CFS) chimod, not
+  # through the CTE core pool directly. Without this pool the VFD's very first
+  # H5Fcreate blocks forever: the client's get-or-create fails with "ChiMod
+  # 'clio_cte_filesystem' not found" and then waits on a container that is
+  # never created. next_pool_id points CFS at the CTE core pool above (512.0).
+  - mod_name: clio_cte_filesystem
+    pool_name: clio_cte_filesystem
+    pool_query: local
+    pool_id: "560.0"
+    next_pool_id: "512.0"
+    targets:
+      neighborhood: 1

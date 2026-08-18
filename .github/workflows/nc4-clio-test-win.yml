@@ -1,0 +1,314 @@
+name: netCDF-C CLIO test suite (Windows)
+
+# The Windows counterpart of nc4-clio-test.yml, publishing to the wiki page
+# NetCDF-C-CLIO-Tests-Windows. Three things are true of Windows that are not
+# true of the other two runners, and all three change what can be tested:
+#
+#   * netCDF-C's nc_perf suite is POSIX-only. Its timing macros are built on
+#     getrusage(2), which MSVC does not have, and no nc_perf source carries a
+#     _WIN32 guard. .github/scripts/apply_win_nc_perf_shims.py supplies
+#     getrusage on top of GetProcessTimes for tst_chunks3 and tst_utils.c; the
+#     rest of nc_perf (bm_file, tst_ar4*, tst_wrf_reads ...) is equally
+#     unportable and does not compile, so the driver runs with
+#     --allow-partial-netcdf-build and ctest reports those tests as "Not Run".
+#     The report names the partial build so nobody reads it as a CLIO failure.
+#
+#   * There is no CLIO VFD. clio-core gates add_subdirectory(vfd) behind
+#     `if(UNIX AND CLIO_CTE_ENABLE_VFD)`, so on Windows the target does not
+#     exist at all -- the port (PR #950) is on the fs-descriptor-windows branch,
+#     not on dev. The variant drops itself and says why.
+#
+#   * The CLIO VOL does not compile with MSVC either (st_mtim / clock_gettime;
+#     clio-core PR #971), so it drops too. Both are reported as "adapter not
+#     built on this platform" rather than as an empty result.
+#
+# clio-core's dependencies come from vcpkg (its ci-windows.yml route), which also
+# installs an hdf5 of its own. Windows binds DLL imports by bare filename with no
+# soversion, so the first hdf5.dll loaded wins for the whole process: the driver
+# puts our HDF5 first on PATH and refuses to run without it.
+
+on:
+  schedule:
+    # 17:00 UTC: after Linux (13:00) and macOS (15:00), so the three do not
+    # contend for the wiki.
+    - cron: '0 17 * * *'
+  workflow_dispatch:
+    inputs:
+      force:
+        description: 'Run even when no upstream repo changed'
+        type: boolean
+        default: false
+      variants:
+        description: 'Comma list: baseline,clio_vfd,clio_vol'
+        type: string
+        default: 'baseline,clio_vfd,clio_vol'
+      test_timeout:
+        description: 'ctest --timeout, seconds per test'
+        type: string
+        default: '300'
+      run_timeout:
+        description: 'Wall clock per variant'
+        type: string
+        default: '60m'
+      ctest_jobs:
+        description: 'ctest -j (the same for every variant, for comparability)'
+        type: string
+        default: '4'
+
+concurrency:
+  group: nc4-clio-test-windows
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  # Runs on Linux: it only resolves remote HEADs and reads the published wiki
+  # page, and a Windows runner costs twice as much per minute for the same work.
+  check:
+    runs-on: ubuntu-latest
+    outputs:
+      should_run: ${{ steps.decide.outputs.should_run }}
+      hdf5_sha:   ${{ steps.heads.outputs.hdf5_sha }}
+      netcdf_sha: ${{ steps.heads.outputs.netcdf_sha }}
+      clio_sha:   ${{ steps.heads.outputs.clio_sha }}
+      reason:     ${{ steps.decide.outputs.reason }}
+    steps:
+      - name: Resolve upstream HEADs
+        id: heads
+        run: |
+          set -euo pipefail
+          resolve() {
+            local sha
+            sha=$(git ls-remote "$1" "refs/heads/$2" | awk '{print $1}')
+            if [ -z "$sha" ]; then
+              echo "::error::could not resolve $1 $2" >&2
+              exit 1
+            fi
+            echo "$sha"
+          }
+          {
+            echo "hdf5_sha=$(resolve https://github.com/HDFGroup/hdf5.git develop)"
+            echo "netcdf_sha=$(resolve https://github.com/Unidata/netcdf-c.git main)"
+            echo "clio_sha=$(resolve https://github.com/iowarp/clio-core.git dev)"
+          } >> "$GITHUB_OUTPUT"
+          cat "$GITHUB_OUTPUT"
+
+      - name: Decide whether to test
+        id: decide
+        run: |
+          set -euo pipefail
+          git clone --depth 1 "https://github.com/${GITHUB_REPOSITORY}.wiki.git" wiki || true
+          PAGE=wiki/NetCDF-C-CLIO-Tests-Windows.md
+          SHOULD_RUN=true
+          REASON="no previous run recorded"
+
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.force }}" = "true" ]; then
+            REASON="forced via workflow_dispatch"
+          elif [ -f "$PAGE" ]; then
+            STAMP=$(grep -o '<!-- nc4-clio-stamp: .* -->' "$PAGE" | tail -1 \
+                    | sed 's/^<!-- nc4-clio-stamp: //; s/ -->$//') || true
+            if [ -n "$STAMP" ]; then
+              prev() { printf '%s' "$STAMP" | python3 -c "import json,sys;print(json.load(sys.stdin).get(sys.argv[1],''))" "$1"; }
+              CHANGED=""
+              [ "$(prev hdf5_sha)"   = "${{ steps.heads.outputs.hdf5_sha }}"   ] || CHANGED="$CHANGED hdf5"
+              [ "$(prev netcdf_sha)" = "${{ steps.heads.outputs.netcdf_sha }}" ] || CHANGED="$CHANGED netcdf-c"
+              [ "$(prev clio_sha)"   = "${{ steps.heads.outputs.clio_sha }}"   ] || CHANGED="$CHANGED clio-core"
+              if [ -z "$CHANGED" ]; then
+                SHOULD_RUN=false
+                REASON="no change in clio-core, hdf5, or netcdf-c since the last run"
+              else
+                REASON="changed:$CHANGED"
+              fi
+            fi
+          fi
+
+          echo "should_run=$SHOULD_RUN" >> "$GITHUB_OUTPUT"
+          echo "reason=$REASON" >> "$GITHUB_OUTPUT"
+          {
+            echo "### netCDF-C CLIO test suite (Windows): \`should_run=$SHOULD_RUN\`"
+            echo "$REASON"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  test:
+    needs: check
+    if: needs.check.outputs.should_run == 'true'
+    runs-on: windows-latest
+    # vcpkg builds clio's dependency set from source on the first run, then
+    # three MSVC builds and the suite itself. Generous, but the change gate
+    # keeps runs rare.
+    timeout-minutes: 360
+    env:
+      VCPKG_DEFAULT_TRIPLET: x64-windows
+    steps:
+      - name: Checkout actions
+        uses: actions/checkout@v4
+
+      # From clio-core's ci-windows.yml: MSVC link steps intermittently fail with
+      # "Access is denied" when Defender's real-time scanner opens a freshly
+      # linked binary. Best-effort -- if the call is refused the build proceeds
+      # exactly as before.
+      - name: Exclude workspace from Defender (link-flake mitigation)
+        shell: pwsh
+        continue-on-error: true
+        run: |
+          Add-MpPreference -ExclusionPath "${{ github.workspace }}" -ErrorAction SilentlyContinue
+          Add-MpPreference -ExclusionProcess "link.exe","cl.exe","mspdbsrv.exe","vcpkg.exe","MSBuild.exe" -ErrorAction SilentlyContinue
+          if ($env:VCPKG_INSTALLATION_ROOT) {
+            Add-MpPreference -ExclusionPath "$env:VCPKG_INSTALLATION_ROOT" -ErrorAction SilentlyContinue
+          }
+
+      # Windows has no system zlib, and both HDF5's deflate filter and netCDF-C
+      # require one -- several dozen tests write deflated data. Classic-mode
+      # install, kept apart from the manifest tree clio-core builds against.
+      - name: Bootstrap vcpkg and install zlib
+        shell: pwsh
+        run: |
+          cd $env:VCPKG_INSTALLATION_ROOT
+          git pull
+          .\bootstrap-vcpkg.bat
+          .\vcpkg.exe install zlib:x64-windows
+
+      # netCDF-C generates libsrc/attr.c and friends from .m4 sources and refuses
+      # to configure without m4, which no stock Windows toolchain has. The path
+      # is handed to the driver rather than added to PATH: MSYS2's bin directory
+      # carries a link.exe that would shadow MSVC's linker.
+      - name: Locate or install m4
+        shell: pwsh
+        run: |
+          $m4 = (Get-Command m4 -ErrorAction SilentlyContinue).Source
+          if (-not $m4) {
+            $cand = "C:\msys64\usr\bin\m4.exe"
+            if (-not (Test-Path $cand) -and (Test-Path "C:\msys64\usr\bin\pacman.exe")) {
+              & C:\msys64\usr\bin\pacman.exe -S --noconfirm --needed m4
+            }
+            if (Test-Path $cand) { $m4 = $cand }
+          }
+          if (-not $m4) {
+            choco install m4 -y --no-progress | Out-Null
+            $m4 = (Get-Command m4 -ErrorAction SilentlyContinue).Source
+          }
+          if (-not $m4) { throw "m4 not found; netCDF-C cannot generate attr.c without it" }
+          $m4 = $m4 -replace '\\','/'
+          Write-Host "m4: $m4"
+          "NC_M4=$m4" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+
+      - name: Cache HDF5 develop build
+        uses: actions/cache@v4
+        with:
+          path: |
+            nc4-clio-work/hdf5-build
+            nc4-clio-work/hdf5-install
+          key: nc4clio-test-win-hdf5-${{ needs.check.outputs.hdf5_sha }}-windows-latest
+
+      # Holds vcpkg_installed/ too, so clio's dependency set is only built from
+      # source when clio-core itself moves.
+      - name: Cache clio-core build
+        uses: actions/cache@v4
+        with:
+          path: nc4-clio-work/clio-build
+          key: nc4clio-test-win-clio-${{ needs.check.outputs.clio_sha }}-${{ needs.check.outputs.hdf5_sha }}-windows-latest
+
+      - name: Build the stacks and run the full netCDF-C test suite
+        run: |
+          set -euo pipefail
+          # $(pwd) not $GITHUB_WORKSPACE: the latter is a backslash path, which
+          # bash would read as escapes. The driver converts to D:/... itself for
+          # the MSVC toolchain.
+          bash .github/scripts/nc4_clio_test.sh \
+            --clone \
+            --work-dir "$(pwd)/nc4-clio-work" \
+            --results-dir "$(pwd)/test-results" \
+            --hdf5-ref develop \
+            --netcdf-ref main \
+            --clio-ref dev \
+            --variants "${{ inputs.variants || 'baseline,clio_vfd,clio_vol' }}" \
+            --ctest-jobs "${{ inputs.ctest_jobs || '4' }}" \
+            --test-timeout "${{ inputs.test_timeout || '300' }}" \
+            --run-timeout "${{ inputs.run_timeout || '60m' }}" \
+            --allow-adapter-build-failure \
+            --allow-partial-netcdf-build \
+            --jobs "${NUMBER_OF_PROCESSORS:-4}"
+
+      # Guard the wiki update on there being something to publish. A run that
+      # died in the build produces no results, and republishing an empty report
+      # over the last good one would destroy the only record of what the suite
+      # last did.
+      - name: Check that the run produced results
+        if: always()
+        id: results
+        run: |
+          if [ -s test-results/variant_status.tsv ]; then
+            echo "have=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "have=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::no test results were produced; leaving the wiki page as it is"
+            echo "No test results were produced; the wiki page was left as it is." \
+              >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Clone the wiki
+        if: always() && steps.results.outputs.have == 'true'
+        run: |
+          set -euo pipefail
+          git clone "https://x-access-token:${WIKI_TOKEN}@github.com/${GITHUB_REPOSITORY}.wiki.git" wiki
+        env:
+          WIKI_TOKEN: ${{ secrets.WIKI_TOKEN || secrets.GITHUB_TOKEN }}
+
+      - name: Write the markdown report
+        if: always() && steps.results.outputs.have == 'true'
+        run: |
+          set -euo pipefail
+          python .github/scripts/nc4_clio_report.py \
+            --results-dir "$(pwd)/test-results" \
+            --platform windows \
+            --platform-label "Windows (windows-latest)" \
+            --page NetCDF-C-CLIO-Tests-Windows \
+            --out-dir wiki \
+            --index wiki/NetCDF-C-CLIO-Tests.md \
+            --runner windows-latest \
+            --run-url "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" \
+            --run-number "${GITHUB_RUN_NUMBER}" \
+            --run-id "${GITHUB_RUN_ID}"
+          cat wiki/summary.md >> "$GITHUB_STEP_SUMMARY"
+          rm -f wiki/summary.md
+
+      - name: Commit the wiki page
+        if: always() && steps.results.outputs.have == 'true'
+        run: |
+          set -euo pipefail
+          cd wiki
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add NetCDF-C-CLIO-Tests.md NetCDF-C-CLIO-Tests-Windows.md
+          if git diff --staged --quiet; then
+            echo "No changes to publish"
+            exit 0
+          fi
+          git commit -m "netCDF-C CLIO tests (Windows): run ${GITHUB_RUN_NUMBER}"
+          for attempt in 1 2 3 4 5; do
+            # `A && B` as a bare statement would abort the step under `set -e`
+            # when B (the push) fails, and the retry would never happen.
+            if git pull --rebase origin master && git push origin HEAD:master; then
+              exit 0
+            fi
+            echo "wiki push attempt $attempt failed; retrying"
+            sleep $((attempt * 5))
+          done
+          echo "::error::could not push the wiki page after 5 attempts"
+          exit 1
+
+      - name: Upload detailed results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nc4-clio-test-results-windows-${{ github.run_number }}
+          path: |
+            test-results/
+            nc4-clio-work/clio_run.log
+          retention-days: 90
+          if-no-files-found: warn

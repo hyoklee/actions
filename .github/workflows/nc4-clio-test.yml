@@ -1,0 +1,291 @@
+name: netCDF-C CLIO test suite (Linux)
+
+# Runs the WHOLE netCDF-C test suite -- unit tests, the ncdump/ncgen/nccopy tool
+# tests and the nc_perf performance tests -- three times over, once per HDF5
+# storage stack, all against the same netCDF-C and HDF5 build:
+#
+#   1. netCDF-4 / HDF5 develop                       (sec2 VFD, native VOL)
+#   2. netCDF-4 / HDF5 develop + clio-core dev VFD   (HDF5_DRIVER=clio_vfd)
+#   3. netCDF-4 / HDF5 develop + clio-core dev VOL   (HDF5_VOL_CONNECTOR=clio)
+#
+# A failing test is the result being collected, not an error: every variant runs
+# to completion and the failures are written up as markdown on the wiki page
+# NetCDF-C-CLIO-Tests-Linux, with the index page NetCDF-C-CLIO-Tests carrying one
+# row per platform.
+#
+# Modelled on hpf's nc4-clio-benchmark.yml, which measures tst_chunks3 instead of
+# running the suite. Same three trees, same change gate, same clio runtime; the
+# driver is .github/scripts/nc4_clio_test.sh.
+
+on:
+  schedule:
+    # 13:00 UTC. Keep the three platforms apart -- they all push the same wiki.
+    - cron: '0 13 * * *'
+  workflow_dispatch:
+    inputs:
+      force:
+        description: 'Run even when no upstream repo changed'
+        type: boolean
+        default: false
+      variants:
+        description: 'Comma list: baseline,clio_vfd,clio_vol'
+        type: string
+        default: 'baseline,clio_vfd,clio_vol'
+      test_timeout:
+        description: 'ctest --timeout, seconds per test'
+        type: string
+        default: '300'
+      run_timeout:
+        description: 'Wall clock per variant'
+        type: string
+        default: '60m'
+      ctest_jobs:
+        description: 'ctest -j (the same for every variant, for comparability)'
+        type: string
+        default: '4'
+
+concurrency:
+  # The wiki is pushed to by this workflow; serialize so two runs cannot race on
+  # the same page.
+  group: nc4-clio-test-linux
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+# The test job runs in a container, where the runner does not default to bash --
+# it falls back to `sh -e {0}`, and dash rejects `set -o pipefail`. Ask for bash
+# explicitly so every `run:` block below really is a bash block.
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  # --------------------------------------------------------------------------
+  # Change gate. The suite only says something new when one of the three
+  # upstream sources moved, so resolve their HEADs and compare against the stamp
+  # the last published wiki page carries. Cache-hit heuristics were rejected: a
+  # cache eviction is not a source change, and it would trigger a multi-hour
+  # rebuild for an identical result.
+  # --------------------------------------------------------------------------
+  check:
+    runs-on: ubuntu-latest
+    outputs:
+      should_run: ${{ steps.decide.outputs.should_run }}
+      hdf5_sha:   ${{ steps.heads.outputs.hdf5_sha }}
+      netcdf_sha: ${{ steps.heads.outputs.netcdf_sha }}
+      clio_sha:   ${{ steps.heads.outputs.clio_sha }}
+      reason:     ${{ steps.decide.outputs.reason }}
+    steps:
+      - name: Resolve upstream HEADs
+        id: heads
+        run: |
+          set -euo pipefail
+          resolve() {
+            local sha
+            sha=$(git ls-remote "$1" "refs/heads/$2" | awk '{print $1}')
+            if [ -z "$sha" ]; then
+              echo "::error::could not resolve $1 $2" >&2
+              exit 1
+            fi
+            echo "$sha"
+          }
+          {
+            echo "hdf5_sha=$(resolve https://github.com/HDFGroup/hdf5.git develop)"
+            echo "netcdf_sha=$(resolve https://github.com/Unidata/netcdf-c.git main)"
+            echo "clio_sha=$(resolve https://github.com/iowarp/clio-core.git dev)"
+          } >> "$GITHUB_OUTPUT"
+          cat "$GITHUB_OUTPUT"
+
+      - name: Decide whether to test
+        id: decide
+        run: |
+          set -euo pipefail
+          # The wiki is public, so the gate needs no token to read it. A wiki
+          # that does not exist yet simply means "no previous run".
+          git clone --depth 1 "https://github.com/${GITHUB_REPOSITORY}.wiki.git" wiki || true
+          PAGE=wiki/NetCDF-C-CLIO-Tests-Linux.md
+          SHOULD_RUN=true
+          REASON="no previous run recorded"
+
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.force }}" = "true" ]; then
+            REASON="forced via workflow_dispatch"
+          elif [ -f "$PAGE" ]; then
+            STAMP=$(grep -o '<!-- nc4-clio-stamp: .* -->' "$PAGE" | tail -1 \
+                    | sed 's/^<!-- nc4-clio-stamp: //; s/ -->$//') || true
+            if [ -n "$STAMP" ]; then
+              prev() { printf '%s' "$STAMP" | python3 -c "import json,sys;print(json.load(sys.stdin).get(sys.argv[1],''))" "$1"; }
+              CHANGED=""
+              [ "$(prev hdf5_sha)"   = "${{ steps.heads.outputs.hdf5_sha }}"   ] || CHANGED="$CHANGED hdf5"
+              [ "$(prev netcdf_sha)" = "${{ steps.heads.outputs.netcdf_sha }}" ] || CHANGED="$CHANGED netcdf-c"
+              [ "$(prev clio_sha)"   = "${{ steps.heads.outputs.clio_sha }}"   ] || CHANGED="$CHANGED clio-core"
+              if [ -z "$CHANGED" ]; then
+                SHOULD_RUN=false
+                REASON="no change in clio-core, hdf5, or netcdf-c since the last run"
+              else
+                REASON="changed:$CHANGED"
+              fi
+            fi
+          fi
+
+          echo "should_run=$SHOULD_RUN" >> "$GITHUB_OUTPUT"
+          echo "reason=$REASON" >> "$GITHUB_OUTPUT"
+          {
+            echo "### netCDF-C CLIO test suite (Linux): \`should_run=$SHOULD_RUN\`"
+            echo "$REASON"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  # --------------------------------------------------------------------------
+  # Build + test. Runs inside iowarp/deps-cpu, the image clio-core's own CI uses:
+  # clio-core's dependency set (thallium/mercury/argobots/cereal/yaml-cpp and
+  # friends) is impractical to install ad hoc on a bare runner.
+  # --------------------------------------------------------------------------
+  test:
+    needs: check
+    if: needs.check.outputs.should_run == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    container:
+      image: iowarp/deps-cpu:latest
+      # The clio runtime maps GB-scale shared-memory segments; the container
+      # default of 64 MB makes `clio_run start` fail to reach readiness.
+      options: --shm-size=2g --user 0
+    steps:
+      # Before checkout on purpose: actions/checkout silently falls back to a
+      # REST tarball when the image has no git, and the wiki push below needs a
+      # real git.
+      - name: Install build prerequisites
+        run: |
+          set -eux
+          apt-get update -qq
+          apt-get install -y -qq \
+            build-essential cmake git pkg-config m4 bison flex \
+            libcurl4-openssl-dev zlib1g-dev libelf-dev \
+            python3 python3-pip procps diffutils
+          git config --global --add safe.directory '*'
+
+      - name: Checkout actions
+        uses: actions/checkout@v4
+
+      # Each component is cached against the SHAs it was built from, so a run
+      # triggered by (say) a clio-core commit reuses the HDF5 tree instead of
+      # rebuilding it. The netCDF-C tree is deliberately NOT cached: it is the
+      # thing under test, its build tree carries every test's scratch state, and
+      # a stale one would make a green run meaningless.
+      - name: Cache HDF5 develop build
+        uses: actions/cache@v4
+        with:
+          path: |
+            nc4-clio-work/hdf5-build
+            nc4-clio-work/hdf5-install
+          key: nc4clio-test-hdf5-${{ needs.check.outputs.hdf5_sha }}-depscpu
+
+      - name: Cache clio-core build
+        uses: actions/cache@v4
+        with:
+          path: nc4-clio-work/clio-build
+          key: nc4clio-test-clio-${{ needs.check.outputs.clio_sha }}-${{ needs.check.outputs.hdf5_sha }}-depscpu
+
+      # deps-cpu ships its own HDF5 under /usr/local, which stays on the loader
+      # path because clio-core's dependencies live there too. The driver
+      # prepends its own HDF5 prefix, and its ldd gate fails the build if a
+      # plugin resolved the wrong libhdf5 anyway -- that is the real protection.
+      - name: Build the three stacks and run the full netCDF-C test suite
+        run: |
+          bash .github/scripts/nc4_clio_test.sh \
+            --clone \
+            --work-dir "$GITHUB_WORKSPACE/nc4-clio-work" \
+            --results-dir "$GITHUB_WORKSPACE/test-results" \
+            --hdf5-ref develop \
+            --netcdf-ref main \
+            --clio-ref dev \
+            --variants "${{ inputs.variants || 'baseline,clio_vfd,clio_vol' }}" \
+            --ctest-jobs "${{ inputs.ctest_jobs || '4' }}" \
+            --test-timeout "${{ inputs.test_timeout || '300' }}" \
+            --run-timeout "${{ inputs.run_timeout || '60m' }}" \
+            --allow-adapter-build-failure \
+            --jobs "$(nproc)"
+
+      # Guard the wiki update on there being something to publish. A run that
+      # died in the build produces no results, and republishing an empty report
+      # over the last good one would destroy the only record of what the suite
+      # last did.
+      - name: Check that the run produced results
+        if: always()
+        id: results
+        run: |
+          if [ -s test-results/variant_status.tsv ]; then
+            echo "have=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "have=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::no test results were produced; leaving the wiki page as it is"
+            echo "No test results were produced; the wiki page was left as it is." \
+              >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      # Cloned rather than actions/checkout'd: a wiki is a separate git
+      # repository with no REST tarball behind it.
+      - name: Clone the wiki
+        if: always() && steps.results.outputs.have == 'true'
+        run: |
+          set -euo pipefail
+          git clone "https://x-access-token:${WIKI_TOKEN}@github.com/${GITHUB_REPOSITORY}.wiki.git" wiki
+        env:
+          WIKI_TOKEN: ${{ secrets.WIKI_TOKEN || secrets.GITHUB_TOKEN }}
+
+      - name: Write the markdown report
+        if: always() && steps.results.outputs.have == 'true'
+        run: |
+          set -euo pipefail
+          python3 .github/scripts/nc4_clio_report.py \
+            --results-dir "$GITHUB_WORKSPACE/test-results" \
+            --platform linux \
+            --platform-label "Linux (ubuntu-latest)" \
+            --page NetCDF-C-CLIO-Tests-Linux \
+            --out-dir wiki \
+            --index wiki/NetCDF-C-CLIO-Tests.md \
+            --runner ubuntu-latest \
+            --run-url "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}" \
+            --run-number "${GITHUB_RUN_NUMBER}" \
+            --run-id "${GITHUB_RUN_ID}"
+          cat wiki/summary.md >> "$GITHUB_STEP_SUMMARY"
+          rm -f wiki/summary.md
+
+      - name: Commit the wiki page
+        if: always() && steps.results.outputs.have == 'true'
+        run: |
+          set -euo pipefail
+          cd wiki
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add NetCDF-C-CLIO-Tests.md NetCDF-C-CLIO-Tests-Linux.md
+          if git diff --staged --quiet; then
+            echo "No changes to publish"
+            exit 0
+          fi
+          git commit -m "netCDF-C CLIO tests (Linux): run ${GITHUB_RUN_NUMBER}"
+          # The other two platforms push the same wiki, and the index page has a
+          # row per platform: rebase rather than force, so a concurrent macOS or
+          # Windows run does not lose its row.
+          for attempt in 1 2 3 4 5; do
+            # `A && B` as a bare statement would abort the step under `set -e`
+            # when B (the push) fails, and the retry would never happen.
+            if git pull --rebase origin master && git push origin HEAD:master; then
+              exit 0
+            fi
+            echo "wiki push attempt $attempt failed; retrying"
+            sleep $((attempt * 5))
+          done
+          echo "::error::could not push the wiki page after 5 attempts"
+          exit 1
+
+      - name: Upload detailed results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nc4-clio-test-results-linux-${{ github.run_number }}
+          path: |
+            test-results/
+            nc4-clio-work/clio_run.log
+          retention-days: 90
+          if-no-files-found: warn
