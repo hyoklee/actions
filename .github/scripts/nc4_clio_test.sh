@@ -596,6 +596,15 @@ resolve_clio_bin
 [ -d "$NETCDF_BUILD" ] || { echo "no netCDF-C build tree at $NETCDF_BUILD" >&2; exit 1; }
 
 export LD_LIBRARY_PATH="$HDF5_INSTALL/lib:$NETCDF_INSTALL/lib:$CLIO_BIN${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+# Some tests shell out to HDF5's own tools and resolve them through PATH --
+# nc_test4/run_zero_len_att_test.sh runs `h5dump` and parses its output.
+# Whatever HDF5 already sits on PATH (deps-cpu's under /usr/local, a conda env
+# on a developer machine) is a DIFFERENT release from the one under test, and
+# under a CLIO variant it inherits HDF5_VOL_CONNECTOR/HDF5_DRIVER pointing at a
+# plugin built against an HDF5 it cannot load. The tool then fails and prints
+# nothing, and the test reports a data mismatch that has nothing to do with
+# CLIO. Our HDF5 goes first so the tools match the library.
+export PATH="$HDF5_INSTALL/bin:$NETCDF_INSTALL/bin:$PATH"
 # macOS: SIP strips DYLD_* from the environment of protected binaries, so this
 # is belt-and-braces only. What actually resolves the libraries there is the
 # install RPATH that all three projects bake in.
