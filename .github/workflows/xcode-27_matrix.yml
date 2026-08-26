@@ -2,7 +2,7 @@ name: xcode-27 matrix
 
 on:
   push:
-    branches: main
+    branches: main-
 
 env:
   CTEST_OUTPUT_ON_FAILURE: 1
