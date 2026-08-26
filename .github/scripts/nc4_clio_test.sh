@@ -150,7 +150,10 @@ VARIANTS="baseline,clio_vfd,clio_vol"
 STAGES="build,run"
 JOBS="$NCPU"
 CTEST_JOBS=4
-TEST_TIMEOUT=600          # per test, seconds -- ctest --timeout
+TEST_TIMEOUT=1200         # per test, seconds -- ctest --timeout. Large enough
+                          # that the CLIO VOL, which runs write-heavy tests up to
+                          # ~14x slower than the baseline, is reported as slow
+                          # rather than killed; --run-timeout is what bounds a hang.
 RUN_TIMEOUT="120m"        # per variant, wall clock
 ALLOW_ADAPTER_BUILD_FAILURE=0
 ALLOW_PARTIAL_NETCDF_BUILD=0
@@ -170,7 +173,7 @@ Options:
   --stages LIST              comma list of build,run
   --jobs N                   compile parallelism
   --ctest-jobs N             ctest -j (same for every variant, for comparability)
-  --test-timeout SECS        ctest --timeout, per test (default 600)
+  --test-timeout SECS        ctest --timeout, per test (default 1200)
   --run-timeout DURATION     wall clock per variant (default 120m)
   --allow-adapter-build-failure   drop a CLIO variant whose adapter will not build
   --allow-partial-netcdf-build    keep going when some netCDF-C test targets fail to compile
@@ -344,6 +347,50 @@ if [ "$WIN" = 1 ]; then
             warn "nc_perf will not compile on Windows without the getrusage shim." ;;
     esac
 fi
+
+# nc_perf is not parallel-safe and its CMakeLists does not say so. tst_create_files
+# writes tst_<type>2_<n>D.nc, tst_elena_int_3D.nc and tst_simple.nc into the build
+# directory, and run_bm_test1 / run_bm_test2 / run_bm_elena then read exactly those
+# files -- but nothing declares the dependency, so under `ctest -j` the reader and
+# the writer are free to run at the same time.
+#
+# They did, in run 32976716550: ctest started nc_perf_run_bm_test1 one slot before
+# nc_perf_tst_create_files, bm_file read the 1D-4D files (leftovers from the
+# preceding variant, still intact), reached tst_floats2_5D.nc while it was being
+# rewritten and returned the netCDF error silently -- bm_file's `return ret` prints
+# nothing, which is why the log ends mid-table with no message. That is a harness
+# race, not a CLIO regression: the same suite passed under baseline in the same job,
+# purely because ctest happened to schedule the two the other way round.
+#
+# ctest's DEPENDS is the ordering primitive, so declare what the shell scripts have
+# always assumed. Appended rather than patched in place: it needs no anchor line,
+# and `if(TEST ...)` keeps it correct when NETCDF_BUILD_UTILITIES is off and the
+# run_bm_* tests do not exist. Only ever applied to a checkout this script cloned.
+NC_PERF_ORDER_MARKER="NC4_CLIO_NC_PERF_TEST_ORDER"
+apply_nc_perf_test_order() {
+    local cml="$NETCDF_SRC/nc_perf/CMakeLists.txt"
+    [ -f "$cml" ] || { warn "no nc_perf/CMakeLists.txt; skipping the test-order patch"; return 0; }
+    if grep -q "$NC_PERF_ORDER_MARKER" "$cml"; then
+        return 0
+    fi
+    cat >>"$cml" <<'CMAKE'
+
+# NC4_CLIO_NC_PERF_TEST_ORDER -- added by hyoklee/actions .github/scripts/nc4_clio_test.sh.
+# These three shell tests read the files nc_perf_tst_create_files writes. Without
+# DEPENDS, `ctest -j` may run them while that test is still writing.
+foreach(_nc4_clio_reader nc_perf_run_bm_test1 nc_perf_run_bm_test2 nc_perf_run_bm_elena)
+  if(TEST ${_nc4_clio_reader})
+    set_tests_properties(${_nc4_clio_reader} PROPERTIES DEPENDS nc_perf_tst_create_files)
+  endif()
+endforeach()
+CMAKE
+    log "netcdf-c: nc_perf tests ordered after tst_create_files"
+}
+
+case "$NETCDF_SRC" in
+    "$WORK_DIR"/*) apply_nc_perf_test_order ;;
+    *) warn "netcdf-c checkout was not cloned by this script; leaving its nc_perf test order alone." ;;
+esac
 
 log "Building netCDF-C ($NETCDF_REF) with its full test suite against HDF5 $HDF5_REF"
 # ENABLE_TESTS + BUILD_UTILITIES + ENABLE_BENCHMARKS is the whole point of this

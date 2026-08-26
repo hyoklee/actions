@@ -145,10 +145,38 @@ that leaves an HDF5 file open at `exit()` blocks forever in `H5_term_library` --
 clio's atexit handler tears its client down first, and the connector then waits
 on a reply that can never arrive (see hpf's `NC4_CLIO_BENCHMARK.md` for the
 stack). Under ctest that shows up as a wall of `Timeout` results rather than a
-single hang, which is why `--test-timeout` (300 s in CI) and `--run-timeout`
+single hang, which is why `--test-timeout` (1200 s in CI) and `--run-timeout`
 (60 m) both matter: without them one variant would consume the whole job.
+
+The per-test timeout was 300 s until run 32976716550, where it reported
+`nc_perf_tst_files3` as a `clio_vol` failure that was nothing of the sort -- the
+test was still running. The VOL is 9-14x slower than the baseline on the
+write-heavy tests that do finish (`ncdump_tst_ncgen4`, `nc_test`,
+`nc_test4_tst_files4`), and `nc_perf_tst_files3` takes 40 s on the baseline, so
+300 s cut it off well short of where it would have landed. The two guards have
+different jobs and only the second one bounds a hang: `--run-timeout` caps what a
+wedged variant can cost, and `--test-timeout` should therefore be loose enough
+that a slow-but-correct adapter is reported as slow rather than as broken.
 
 **ctest `-j` is the same for every variant on purpose.** A test that only fails
 under load then fails the same way in all three, and the comparison stays
 honest. It also means the wall-clock column is a rough figure, not a benchmark --
 for numbers, use hpf's benchmark workflows.
+
+**`nc_perf` is not parallel-safe, and its `CMakeLists.txt` does not say so.**
+`nc_perf_tst_create_files` writes `tst_<type>2_<n>D.nc`, `tst_elena_int_3D.nc`
+and `tst_simple.nc` into the build directory; `run_bm_test1`, `run_bm_test2` and
+`run_bm_elena` read exactly those files, and no `DEPENDS` connects them. Under
+`ctest -j` the reader can therefore start while the writer is still writing --
+which is what run 32976716550 did, reporting `nc_perf_run_bm_test1` as a
+`clio_vfd` regression when the same suite had passed under `baseline` minutes
+earlier purely because ctest scheduled the two the other way round. `bm_file`
+returns the netCDF error without printing anything, so the only symptom is a
+result table that stops mid-way.
+
+The driver appends the missing `DEPENDS` to `nc_perf/CMakeLists.txt` before
+configuring (`apply_nc_perf_test_order`, marker `NC4_CLIO_NC_PERF_TEST_ORDER`),
+and only ever to a checkout it cloned itself. If a variant ever reports a
+`nc_perf` failure that another variant in the same job does not, check the
+`Start`/result interleaving in `ctest_<variant>.log` before blaming CLIO: two
+`nc_perf` tests running at once is a harness bug, not an adapter bug.

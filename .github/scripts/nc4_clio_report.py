@@ -34,6 +34,7 @@ Usage:
 """
 
 import argparse
+import codecs
 import html
 import json
 import re
@@ -70,6 +71,37 @@ MAX_LISTED_TESTS = 400     # per variant, in the failure table
 CTEST_LINE = re.compile(
     r"^\s*\d+/\d+\s+Test\s+#(\d+):\s+(\S+)\s+\.*\s*(?:\*\*\*)?(.*?)\s+([\d.]+)\s+sec\s*$"
 )
+
+
+def _cp1252_fallback(err):
+    """Decode the bytes UTF-8 choked on as cp1252, one run of bytes at a time."""
+    return err.object[err.start:err.end].decode("cp1252", errors="replace"), err.end
+
+
+codecs.register_error("cp1252_fallback", _cp1252_fallback)
+
+
+def read_text_lenient(path):
+    """Read a file as UTF-8, rescuing stray cp1252 bytes, never raising.
+
+    Every file this script reads is decoded through here, and every file it
+    writes is written encoding="utf-8", because Path.read_text/write_text
+    without an encoding use the *locale's* encoding and the three workflows do
+    not share one. The Windows runner writes the wiki index in cp1252, so its
+    "·" separator lands as a bare 0xb7 -- which the Linux run then cannot
+    decode at all, and the whole report step dies on a byte in a row it does not
+    even own (run 32976716550).
+
+    The fallback is per-byte-run rather than a whole-file second pass, because
+    the index is genuinely mixed: the Linux and macOS rows hold a correct UTF-8
+    "·" (c2 b7) and only the Windows row holds the bare 0xb7, so decoding the
+    whole file as cp1252 would rescue that one row by mojibaking the other two.
+    Since the page is rewritten encoding="utf-8", one run through here heals it.
+
+    ctest logs get the same treatment for a different reason -- a test that
+    prints raw bytes is not a reporting error.
+    """
+    return path.read_bytes().decode("utf-8", errors="cp1252_fallback")
 
 
 def normalize_status(text):
@@ -130,7 +162,7 @@ def parse_ctest_log(path):
     if not path.is_file():
         return []
     tests = []
-    for line in path.read_text(errors="replace").splitlines():
+    for line in read_text_lenient(path).splitlines():
         m = CTEST_LINE.match(line)
         if m:
             tests.append((m.group(2), normalize_status(m.group(3)), float(m.group(4)), ""))
@@ -152,7 +184,7 @@ def failure_output_from_log(path, names):
     out = {}
     if not path.is_file() or not names:
         return out
-    text = path.read_text(errors="replace")
+    text = read_text_lenient(path)
     # "N/M Test #N: name .....***Failed" is followed by the output block in
     # serial runs; in parallel runs ctest emits a labelled banner first.
     for name in names:
@@ -173,7 +205,7 @@ def read_status(results):
     st = {}
     tsv = results / "variant_status.tsv"
     if tsv.is_file():
-        for line in tsv.read_text(errors="replace").splitlines():
+        for line in read_text_lenient(tsv).splitlines():
             parts = line.split("\t")
             if len(parts) >= 2:
                 st[parts[0]] = (parts[1], parts[2] if len(parts) > 2 else "")
@@ -197,7 +229,7 @@ def collect(results):
         dpath = results / f"duration_{v}.txt"
         if dpath.is_file():
             try:
-                dur = int(dpath.read_text().strip() or 0)
+                dur = int(read_text_lenient(dpath).strip() or 0)
             except ValueError:
                 dur = 0
         by = {}
@@ -493,7 +525,7 @@ def update_index(path, args, data):
            f"{verdict(data['baseline'])} | {verdict(data['clio_vfd'])} | "
            f"{verdict(data['clio_vol'])} | [details]({args.page}) | {marker}")
 
-    text = path.read_text() if path.is_file() else INDEX_TEMPLATE
+    text = read_text_lenient(path) if path.is_file() else INDEX_TEMPLATE
     lines = text.splitlines()
 
     for i, line in enumerate(lines):
@@ -509,7 +541,7 @@ def update_index(path, args, data):
             last = next((i for i, l in enumerate(lines) if re.match(r"^\|\s*---", l)), len(lines) - 1)
         lines.insert(last + 1, row)
 
-    path.write_text("\n".join(lines) + "\n")
+    path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
 def main():
@@ -534,15 +566,16 @@ def main():
     sj = results / "sources.json"
     if sj.is_file():
         try:
-            sources = json.loads(sj.read_text())
+            sources = json.loads(read_text_lenient(sj))
         except json.JSONDecodeError:
             pass
     note_path = results / "netcdf_build_note.txt"
-    build_note = note_path.read_text().strip() if note_path.is_file() else ""
+    build_note = read_text_lenient(note_path).strip() if note_path.is_file() else ""
 
     data = collect(results)
-    (out_dir / f"{args.page}.md").write_text(render(args, data, sources, build_note))
-    (out_dir / "summary.md").write_text(render_summary(args, data))
+    (out_dir / f"{args.page}.md").write_text(render(args, data, sources, build_note),
+                                             encoding="utf-8")
+    (out_dir / "summary.md").write_text(render_summary(args, data), encoding="utf-8")
     if args.index:
         update_index(Path(args.index), args, data)
 

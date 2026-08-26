@@ -45,7 +45,7 @@ on:
       test_timeout:
         description: 'ctest --timeout, seconds per test'
         type: string
-        default: '300'
+        default: '1200'
       run_timeout:
         description: 'Wall clock per variant'
         type: string
@@ -228,7 +228,7 @@ jobs:
             --clio-ref dev \
             --variants "${{ inputs.variants || 'baseline,clio_vfd,clio_vol' }}" \
             --ctest-jobs "${{ inputs.ctest_jobs || '4' }}" \
-            --test-timeout "${{ inputs.test_timeout || '300' }}" \
+            --test-timeout "${{ inputs.test_timeout || '1200' }}" \
             --run-timeout "${{ inputs.run_timeout || '60m' }}" \
             --allow-adapter-build-failure \
             --allow-partial-netcdf-build \
