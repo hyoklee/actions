@@ -4,18 +4,25 @@
 """
 Make netCDF-C's tst_chunks3 compile with MSVC.
 
-nc_perf is POSIX-only and not one of its sources carries a _WIN32 guard, so the
-workload the NetCDF-4/CLIO benchmark measures cannot be built on Windows as it
-stands. Two files stand between MSVC and the tst_chunks3 target:
+nc_perf does not build with MSVC -- 19 of its 23 sources fail -- so the workload
+the NetCDF-4/CLIO benchmark measures cannot be built on Windows as it stands.
+Two files stand between MSVC and the tst_chunks3 target:
 
   nc_perf/tst_chunks3.c  timing macros built on getrusage(2), which MSVC has
                          no equivalent of -- supply the part they use
   nc_perf/tst_utils.c    includes <sys/time.h> unguarded for struct timeval,
                          which on Windows comes from <winsock2.h>
 
-The rest of nc_perf (bm_file, tst_ar4*, ...) is equally unportable and is left
-alone: the driver builds the `tst_chunks3` target specifically rather than the
-whole directory, so those never compile.
+The rest of nc_perf is left alone. That is deliberate for the benchmark, which
+builds the `tst_chunks3` target specifically rather than the whole directory --
+but nc4_clio_test.sh builds all of it, so under that driver the other 17 sources
+still fail and the build stays partial. Three more causes are involved there:
+bigmeta.c's GNU getopt_long_only(), getopt/optarg/optind unresolved at link time
+in bm_file.c and tst_ar4*.c, and strtok_r/sbrk.
+
+OBSOLETE ONCE Unidata/netcdf-c#3446 LANDS. That PR fixes all four causes
+upstream, at which point this script and its caller in nc4_clio_test.sh can both
+be deleted, along with --allow-partial-netcdf-build in nc4-clio-test-win.yml.
 
 Why this is a script and not a .patch
 -------------------------------------

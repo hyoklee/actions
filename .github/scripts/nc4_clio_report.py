@@ -484,17 +484,29 @@ A cell can also say something other than a pass/fail count:
 
 | cell | meaning |
 | --- | --- |
-| :no_entry_sign: adapter not built on this platform | the target does not exist or does not compile there — a platform gap, not a crash |
+| :no_entry_sign: adapter not built on this platform | the target failed to build — a regression, since both adapters build everywhere |
 | :warning: never ran | `clio_run` would not become ready, so the variant was skipped |
 | :hourglass: | the variant was killed at its wall-clock limit; the counts are partial |
 
-Known platform gaps as of clio-core `dev` @ `a19a0356`: the HDF5 **VFD** target
-is gated on `if(UNIX AND ...)` and so does not exist on Windows (the port,
-[PR #950](https://github.com/iowarp/clio-core/pull/950), is on the
-`fs-descriptor-windows` branch), and the **VOL** does not compile on macOS or
-Windows — it reads `st.st_mtim`, which Darwin spells `st_mtimespec` and MSVC does
-not have at all ([PR #971](https://github.com/iowarp/clio-core/pull/971)). Both
-are reported as *adapter not built* rather than as an empty result.
+There are no platform gaps left. Both adapters build on all three platforms as of
+clio-core `dev` @ `d68f4f2b`: the VFD is gated on `CLIO_CTE_ENABLE_VFD` alone
+(it used to be `if(UNIX AND ...)`, which is why earlier revisions of this page
+said the Windows port was still on the `fs-descriptor-windows` branch), and the
+`st_mtim` and `clock_gettime` problems that kept the VOL off macOS and Windows
+are fixed. A run that still reports *adapter not built* is reporting a real
+build failure, not a known gap.
+
+## Root-cause pages
+
+Every failure on the macOS and Windows rows has been reproduced locally and
+traced to a specific defect, with patches:
+
+* [Why the five macOS CLIO regressions time out — and the fixes](NetCDF-C-CLIO-Tests-macOS-Fixes)
+* [Why every Windows failure happens — and the fixes](NetCDF-C-CLIO-Tests-Windows-Fixes)
+
+Neither platform's failures were CLIO correctness bugs. The Windows page also
+explains why the baseline row is not green — `nc_perf` does not compile with
+MSVC, which costs 11 of the 204 tests in *every* variant.
 
 ## How the runs are triggered
 

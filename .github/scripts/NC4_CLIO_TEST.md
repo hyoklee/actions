@@ -32,7 +32,7 @@ for the whole suite.
 | `nc4_clio_test.sh` | builds the three stacks and runs ctest per variant |
 | `nc4_clio_report.py` | ctest logs + JUnit XML -> the wiki page and the index row |
 | `clio_runtime.yaml` | `clio_run` compose config used by both CLIO variants |
-| `apply_win_nc_perf_shims.py` | supplies `getrusage` so `tst_chunks3` compiles with MSVC |
+| `apply_win_nc_perf_shims.py` | supplies `getrusage` so `tst_chunks3` compiles with MSVC (obsolete once [netcdf-c#3446](https://github.com/Unidata/netcdf-c/pull/3446) lands) |
 | `patch_clio_conda_variants.sh` | macOS `c_stdlib` for clio-core's conda recipe |
 
 The last two are copies of hpf's; keep them in sync.
@@ -132,13 +132,22 @@ config string the driver cannot parse fails the open, and netCDF-C reports **any
 `H5Fcreate` failure as `Permission denied`, so a mistyped knob here shows up as
 hundreds of unexplained test failures.
 
-**Windows cannot build all of `nc_perf`.** The suite's timing macros are built on
-`getrusage(2)`; `apply_win_nc_perf_shims.py` supplies it for `tst_chunks3` and
-`tst_utils.c`, but `bm_file`, `tst_ar4*`, `tst_wrf_reads` and the rest include
-`<sys/time.h>`/`<unistd.h>` unguarded and do not compile. The Windows workflow
-therefore passes `--allow-partial-netcdf-build`: ctest reports the affected tests
-as *Not Run* in every variant alike, and the report prints a warning naming the
-partial build so it does not read as a CLIO failure.
+**Windows cannot build all of `nc_perf`, and it costs 11 tests in every variant.**
+19 of the 23 sources fail with MSVC, from four separate causes: `<sys/time.h>`
+and `<unistd.h>` included unguarded, `bigmeta.c`'s GNU `getopt_long_only()`,
+`getopt`/`optarg`/`optind` unresolved at link time in `bm_file.c` and
+`tst_ar4*.c`, and `strtok_r`/`sbrk`. `apply_win_nc_perf_shims.py` covers only the
+first, for `tst_chunks3` and `tst_utils.c`. The Windows workflow therefore passes
+`--allow-partial-netcdf-build`: ctest reports seven tests as *Not Run* and four
+shell tests as failed, **in every variant including the baseline**, and the report
+prints a warning naming the partial build so it does not read as a CLIO failure.
+
+[Unidata/netcdf-c#3446](https://github.com/Unidata/netcdf-c/pull/3446) fixes all
+four upstream and takes the baseline to 204/204. When it lands in `main`, drop
+`--allow-partial-netcdf-build` from `nc4-clio-test-win.yml` and delete
+`apply_win_nc_perf_shims.py` along with the block that calls it. Full analysis on
+the wiki page
+[NetCDF-C-CLIO-Tests-Windows-Fixes](https://github.com/hyoklee/actions/wiki/NetCDF-C-CLIO-Tests-Windows-Fixes).
 
 **The CLIO VOL currently cannot exit.** With the connector selected a process
 that leaves an HDF5 file open at `exit()` blocks forever in `H5_term_library` --

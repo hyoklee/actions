@@ -12,12 +12,13 @@ name: netCDF-C CLIO test suite (macOS)
 #     (thallium/mercury/argobots/cereal/yaml-cpp ...) comes from the conda env
 #     that clio-core's own CI/ci-deps.sh builds -- the same route its ci-macos.yml
 #     and ci-adapters.yml take.
-#   * clio-core's HDF5 VOL does not compile on Darwin as of clio-core dev
-#     a19a0356: the coherence-stamp code reads st.st_mtim, which Darwin spells
-#     st_mtimespec (fix submitted as clio-core PR #971). The driver is given
-#     --allow-adapter-build-failure so that variant drops itself and the other
-#     two still get tested; the report says "adapter not built on this platform"
-#     rather than showing an empty result that reads like a crash.
+#   * clio-core's HDF5 VOL once did not compile on Darwin -- the coherence-stamp
+#     code read st.st_mtim, which Darwin spells st_mtimespec (clio-core PR #971).
+#     That is fixed on dev and both adapters build here now, so
+#     --allow-adapter-build-failure is kept as a guard against a regression, not
+#     because either variant is expected to drop. If one does, the report says
+#     "adapter not built on this platform" rather than showing an empty result
+#     that reads like a crash.
 
 on:
   schedule:

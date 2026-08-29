@@ -1,31 +1,36 @@
 name: netCDF-C CLIO test suite (Windows)
 
 # The Windows counterpart of nc4-clio-test.yml, publishing to the wiki page
-# NetCDF-C-CLIO-Tests-Windows. Three things are true of Windows that are not
-# true of the other two runners, and all three change what can be tested:
+# NetCDF-C-CLIO-Tests-Windows. Two things are true of Windows that are not true
+# of the other two runners:
 #
-#   * netCDF-C's nc_perf suite is POSIX-only. Its timing macros are built on
-#     getrusage(2), which MSVC does not have, and no nc_perf source carries a
-#     _WIN32 guard. .github/scripts/apply_win_nc_perf_shims.py supplies
-#     getrusage on top of GetProcessTimes for tst_chunks3 and tst_utils.c; the
-#     rest of nc_perf (bm_file, tst_ar4*, tst_wrf_reads ...) is equally
-#     unportable and does not compile, so the driver runs with
-#     --allow-partial-netcdf-build and ctest reports those tests as "Not Run".
-#     The report names the partial build so nobody reads it as a CLIO failure.
+#   * netCDF-C's nc_perf suite does not compile with MSVC. 19 of its 23 sources
+#     fail, from four separate causes: <sys/time.h> and <unistd.h> included
+#     unguarded, bigmeta.c's GNU getopt_long_only(), getopt/optarg/optind
+#     unresolved at link time in bm_file.c and tst_ar4*.c, and strtok_r/sbrk.
+#     .github/scripts/apply_win_nc_perf_shims.py covers only the first cause for
+#     tst_chunks3.c and tst_utils.c, so the rest still does not build: the driver
+#     runs with --allow-partial-netcdf-build, ctest reports the tests needing a
+#     missing binary as "Not Run", and the report names the partial build so
+#     nobody reads it as a CLIO failure. That costs 11 of 204 tests in EVERY
+#     variant, the baseline included.
 #
-#   * There is no CLIO VFD. clio-core gates add_subdirectory(vfd) behind
-#     `if(UNIX AND CLIO_CTE_ENABLE_VFD)`, so on Windows the target does not
-#     exist at all -- the port (PR #950) is on the fs-descriptor-windows branch,
-#     not on dev. The variant drops itself and says why.
+#     Unidata/netcdf-c#3446 fixes all four upstream. Once it lands in main, this
+#     workflow can drop --allow-partial-netcdf-build and the shim script, and the
+#     baseline should go to 204/204. See the wiki page
+#     NetCDF-C-CLIO-Tests-Windows-Fixes.
 #
-#   * The CLIO VOL does not compile with MSVC either (st_mtim / clock_gettime;
-#     clio-core PR #971), so it drops too. Both are reported as "adapter not
-#     built on this platform" rather than as an empty result.
+#   * clio-core's dependencies come from vcpkg (its ci-windows.yml route), which
+#     also installs an hdf5 of its own. Windows binds DLL imports by bare
+#     filename with no soversion, so the first hdf5.dll loaded wins for the whole
+#     process: the driver puts our HDF5 first on PATH and refuses to run without
+#     it.
 #
-# clio-core's dependencies come from vcpkg (its ci-windows.yml route), which also
-# installs an hdf5 of its own. Windows binds DLL imports by bare filename with no
-# soversion, so the first hdf5.dll loaded wins for the whole process: the driver
-# puts our HDF5 first on PATH and refuses to run without it.
+# Both CLIO adapters DO build here. clio-core once gated add_subdirectory(vfd)
+# behind `if(UNIX AND CLIO_CTE_ENABLE_VFD)` and the VOL did not compile with MSVC
+# (st_mtim / clock_gettime); neither is true on dev any more, and run #10 built
+# and ran all three variants. --allow-adapter-build-failure is kept as a guard
+# against a future regression, not because either adapter is expected to drop.
 
 on:
   schedule:

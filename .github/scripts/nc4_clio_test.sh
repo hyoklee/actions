@@ -230,7 +230,8 @@ has_variant() { case ",$VARIANTS," in *",$1,"*) return 0 ;; *) return 1 ;; esac;
 # status is one of:
 #   ran            ctest ran the suite to completion (with or without failures)
 #   ran_timeout    ctest was killed at --run-timeout; results are partial
-#   not_built      the adapter does not exist / does not compile on this platform
+#   not_built      the adapter failed to build (a regression -- both build on
+#                  every platform as of clio-core d68f4f2b)
 #   no_result      the variant never ran (clio runtime would not start)
 #   not_requested  excluded via --variants
 STATUS_FILE="$RESULTS_DIR/variant_status.tsv"
@@ -332,19 +333,28 @@ cmake --build "$(native_path "$WORK_DIR/hdf5-build")" -j "$JOBS" $CMAKE_BUILD_OP
 # shellcheck disable=SC2086
 cmake --install "$(native_path "$WORK_DIR/hdf5-build")" $CMAKE_BUILD_OPTS >/dev/null
 
-# netCDF-C's nc_perf suite is POSIX-only: its timing macros are built on
-# getrusage(2), which MSVC does not have, and not one of the 23 sources carries
-# a _WIN32 guard. The performance tests are part of what this workflow is asked
-# to run, so supply the shim rather than dropping them. Only ever applied to a
-# checkout this script cloned itself -- silently rewriting a developer's tree
-# would be a nasty surprise.
+# netCDF-C's nc_perf suite does not compile with MSVC: 19 of its 23 sources
+# fail, from four separate causes (unguarded <sys/time.h>/<unistd.h>,
+# bigmeta.c's GNU getopt_long_only(), getopt/optarg/optind unresolved in
+# bm_file.c and tst_ar4*.c, and strtok_r/sbrk). The performance tests are part
+# of what this workflow is asked to run, so shim what can be shimmed from here
+# rather than dropping them wholesale -- but the shim only covers the first
+# cause, for tst_chunks3.c and tst_utils.c, so the build stays partial and
+# --allow-partial-netcdf-build is still required.
+#
+# Unidata/netcdf-c#3446 fixes all four upstream. When it lands in main this
+# block and apply_win_nc_perf_shims.py can both go, along with
+# --allow-partial-netcdf-build in nc4-clio-test-win.yml.
+#
+# Only ever applied to a checkout this script cloned itself -- silently
+# rewriting a developer's tree would be a nasty surprise.
 if [ "$WIN" = 1 ]; then
     case "$NETCDF_SRC" in
         "$WORK_DIR"/*)
             PY=python3; command -v python3 >/dev/null 2>&1 || PY=python
             "$PY" "$SCRIPT_DIR/apply_win_nc_perf_shims.py" "$NETCDF_SRC" ;;
         *)  warn "netcdf-c checkout was not cloned by this script; leaving it alone."
-            warn "nc_perf will not compile on Windows without the getrusage shim." ;;
+            warn "nc_perf needs the getrusage shim (or netcdf-c#3446) to compile on Windows." ;;
     esac
 fi
 
@@ -463,10 +473,12 @@ if has_variant clio_vfd || has_variant clio_vol; then
     fi
 
     # CLIO_CORE_ENABLE_ELF does pkg_check_modules(libelf REQUIRED libelf) and is
-    # Linux-only. It no longer gates the VFD -- clio-core df614075 (PR #938)
-    # moved add_subdirectory(vfd) to `if(UNIX AND CLIO_CTE_ENABLE_VFD)`, since
-    # the VFD is a plugin HDF5 dlopen's and never touches real_api.h. So macOS
-    # builds the VFD and Windows does not have the target at all.
+    # Linux-only. It does not gate the VFD -- clio-core df614075 (PR #938) moved
+    # add_subdirectory(vfd) out from behind it, since the VFD is a plugin HDF5
+    # dlopen's and never touches real_api.h. The gate is now CLIO_CTE_ENABLE_VFD
+    # alone (it was `if(UNIX AND ...)` for a while, which is why older revisions
+    # of this file said Windows had no VFD target), so all three platforms build
+    # both adapters.
     if [ "$WIN" = 1 ]; then
         CLIO_PLATFORM_OPTS="-DCLIO_CORE_ENABLE_ELF=OFF -DCLIO_CORE_ENABLE_CONDA=OFF"
         CLIO_PLATFORM_OPTS="$CLIO_PLATFORM_OPTS -DCLIO_CORE_ENABLE_RPATH=OFF"
@@ -519,6 +531,11 @@ if has_variant clio_vfd || has_variant clio_vol; then
 
     # One target at a time, so an adapter that does not compile on this platform
     # drops on its own and leaves the other variants testable.
+    #
+    # Both adapters build on all three platforms as of clio-core d68f4f2b, so a
+    # drop here is a REGRESSION, not a known platform gap -- there is nothing
+    # left to special-case per OS, and the note says so rather than naming a
+    # reason it cannot know.
     build_adapter() {
         # build_adapter <variant> <cmake-target>
         local variant="$1" target="$2" note
@@ -534,10 +551,8 @@ if has_variant clio_vfd || has_variant clio_vol; then
         warn "target $target failed to build; dropping the $variant variant"
         VARIANTS="$(echo ",$VARIANTS," | sed "s/,$variant,/,/" | sed 's/^,//; s/,$//')"
         UNBUILDABLE="$UNBUILDABLE $variant"
-        note="target $target did not build on $OS"
-        if [ "$WIN" = 1 ] && [ "$variant" = clio_vfd ]; then
-            note="$note: clio-core gates the VFD on UNIX, and the Windows port (PR #950) is on the fs-descriptor-windows branch, not on $CLIO_REF"
-        fi
+        note="target $target failed to build on $OS against clio-core $CLIO_REF"
+        note="$note -- it is expected to build on every platform, so this is a regression; see the build log"
         set_variant_status "$variant" not_built "$note"
     }
     build_adapter clio_vfd clio_vfd
