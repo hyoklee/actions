@@ -13,15 +13,13 @@ name: netCDF-C CLIO test suite (Windows)
 #     whole suite compiles: no --allow-partial-netcdf-build, and no shim script
 #     (the driver skips it by itself once nc_perf/nc_perf_compat.h is present).
 #
-#     What that is worth, measured against run #12, the last partial-build run:
-#     the baseline was 193 passed / 4 failed / 7 skipped of 204. All four
-#     failures were nc_perf tests whose binary had not been built --
-#     nc_perf_perftest, nc_perf_run_bm_elena, nc_perf_run_bm_test1,
-#     nc_perf_run_bm_test2 -- so those four are what a complete build should
-#     recover: 197 passed / 0 failed / 7 skipped. NOT 204/204. The 7 skips are
-#     ctest SKIPs present in every variant and have nothing to do with the
-#     partial build; an earlier version of this comment lumped them in with the
-#     4 and claimed 11 tests were lost to it.
+#     What that was worth, measured: run #12 (partial build) had a baseline of
+#     193 passed / 4 failed / 7 skipped of 204; run #14 (complete build, forks)
+#     has 204 passed / 0 failed / 0 skipped. So the partial build really did
+#     cost all 11 -- the 4 nc_perf tests whose binary was missing failed, and
+#     the other 7 skipped themselves for the same reason rather than being
+#     independent ctest SKIPs. Do not "fix" this back to 197/0/7; that was a
+#     guess, and run #14 disproved it.
 #
 #     Pointing NETCDF_REPO back at Unidata/netcdf-c restores the old behaviour --
 #     the driver reapplies the shim and the build goes partial again, which is
