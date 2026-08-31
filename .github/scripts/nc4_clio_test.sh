@@ -150,6 +150,7 @@ VARIANTS="baseline,clio_vfd,clio_vol"
 STAGES="build,run"
 JOBS="$NCPU"
 CTEST_JOBS=4
+CTEST_INCLUDE=""          # ctest -R regex; empty means the whole suite
 TEST_TIMEOUT=1200         # per test, seconds -- ctest --timeout. Large enough
                           # that the CLIO VOL, which runs write-heavy tests up to
                           # ~14x slower than the baseline, is reported as slow
@@ -175,6 +176,7 @@ Options:
   --stages LIST              comma list of build,run
   --jobs N                   compile parallelism
   --ctest-jobs N             ctest -j (same for every variant, for comparability)
+  --ctest-include REGEX      ctest -R: run only matching tests (debugging only)
   --test-timeout SECS        ctest --timeout, per test (default 1200)
   --run-timeout DURATION     wall clock per variant (default 120m)
   --allow-adapter-build-failure   drop a CLIO variant whose adapter will not build
@@ -200,6 +202,7 @@ while [ $# -gt 0 ]; do
         --stages)        STAGES="$2"; shift 2 ;;
         --jobs)          JOBS="$2"; shift 2 ;;
         --ctest-jobs)    CTEST_JOBS="$2"; shift 2 ;;
+        --ctest-include) CTEST_INCLUDE="$2"; shift 2 ;;
         --test-timeout)  TEST_TIMEOUT="$2"; shift 2 ;;
         --run-timeout)   RUN_TIMEOUT="$2"; shift 2 ;;
         --allow-adapter-build-failure) ALLOW_ADAPTER_BUILD_FAILURE=1; shift ;;
@@ -829,12 +832,22 @@ run_suite() {
     # test's output in the log, which is what the report quotes when a JUnit XML
     # never gets written (a killed ctest writes none).
     # shellcheck disable=SC2086  # CTEST_CONFIG_OPTS is a deliberate word-split
+    # --ctest-include narrows the run to one test or a handful, for bisecting a
+    # single failure without paying for the whole suite. A filtered run is not
+    # something to publish -- its totals are not comparable with anything -- so
+    # use it from an experiment branch with the wiki steps off.
+    CTEST_INCLUDE_OPT=""
+    if [ -n "$CTEST_INCLUDE" ]; then
+        CTEST_INCLUDE_OPT="-R $CTEST_INCLUDE"
+    fi
+    # shellcheck disable=SC2086  # CTEST_INCLUDE_OPT is a deliberate word-split
     run_with_timeout "$RUN_TIMEOUT" \
         ctest --test-dir "$(native_path "$NETCDF_BUILD")" $CTEST_CONFIG_OPTS \
               -j "$CTEST_JOBS" \
               --timeout "$TEST_TIMEOUT" \
               --output-on-failure \
               --no-tests=error \
+              $CTEST_INCLUDE_OPT \
               --output-junit "$(native_path "$xml")" \
         >"$logfile" 2>&1 || rc=$?
     ended="$(date -u +%s)"
