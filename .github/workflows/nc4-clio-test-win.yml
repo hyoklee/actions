@@ -10,9 +10,18 @@ name: netCDF-C CLIO test suite (Windows)
 #     getopt/optarg/optind unresolved at link time in bm_file.c and tst_ar4*.c,
 #     and strtok_r/sbrk. Unidata/netcdf-c#3446 fixes all four, and this workflow
 #     now builds the fork branch that carries it (see NETCDF_REPO below), so the
-#     whole suite compiles: no --allow-partial-netcdf-build, no shim script (the
-#     driver skips it by itself once nc_perf/nc_perf_compat.h is present), and
-#     the baseline is expected at 204/204 rather than 193/204.
+#     whole suite compiles: no --allow-partial-netcdf-build, and no shim script
+#     (the driver skips it by itself once nc_perf/nc_perf_compat.h is present).
+#
+#     What that is worth, measured against run #12, the last partial-build run:
+#     the baseline was 193 passed / 4 failed / 7 skipped of 204. All four
+#     failures were nc_perf tests whose binary had not been built --
+#     nc_perf_perftest, nc_perf_run_bm_elena, nc_perf_run_bm_test1,
+#     nc_perf_run_bm_test2 -- so those four are what a complete build should
+#     recover: 197 passed / 0 failed / 7 skipped. NOT 204/204. The 7 skips are
+#     ctest SKIPs present in every variant and have nothing to do with the
+#     partial build; an earlier version of this comment lumped them in with the
+#     4 and claimed 11 tests were lost to it.
 #
 #     Pointing NETCDF_REPO back at Unidata/netcdf-c restores the old behaviour --
 #     the driver reapplies the shim and the build goes partial again, which is
