@@ -167,6 +167,8 @@ Options:
   --clone                    fetch the three sources into --work-dir
   --hdf5-src/--netcdf-src/--clio-src DIR  use an existing checkout
   --hdf5-ref/--netcdf-ref/--clio-ref REF  branch to clone (default develop/main/dev)
+  --hdf5-repo/--netcdf-repo/--clio-repo URL  clone from a fork instead of
+                             HDFGroup/hdf5, Unidata/netcdf-c, iowarp/clio-core
   --work-dir DIR             build trees and clones (default ./nc4-clio-work)
   --results-dir DIR          ctest logs, JUnit XML, variant_status.tsv
   --variants LIST            comma list of baseline,clio_vfd,clio_vol
@@ -189,6 +191,9 @@ while [ $# -gt 0 ]; do
         --hdf5-ref)      HDF5_REF="$2"; shift 2 ;;
         --netcdf-ref)    NETCDF_REF="$2"; shift 2 ;;
         --clio-ref)      CLIO_REF="$2"; shift 2 ;;
+        --hdf5-repo)     HDF5_REPO="$2"; shift 2 ;;
+        --netcdf-repo)   NETCDF_REPO="$2"; shift 2 ;;
+        --clio-repo)     CLIO_REPO="$2"; shift 2 ;;
         --work-dir)      WORK_DIR="$2"; shift 2 ;;
         --results-dir)   RESULTS_DIR="$2"; shift 2 ;;
         --variants)      VARIANTS="$2"; shift 2 ;;
@@ -342,20 +347,30 @@ cmake --install "$(native_path "$WORK_DIR/hdf5-build")" $CMAKE_BUILD_OPTS >/dev/
 # cause, for tst_chunks3.c and tst_utils.c, so the build stays partial and
 # --allow-partial-netcdf-build is still required.
 #
-# Unidata/netcdf-c#3446 fixes all four upstream. When it lands in main this
-# block and apply_win_nc_perf_shims.py can both go, along with
-# --allow-partial-netcdf-build in nc4-clio-test-win.yml.
+# Unidata/netcdf-c#3446 fixes all four upstream by adding nc_perf/nc_perf_compat.h
+# and routing every source through it. A checkout that already carries that
+# header needs no shim -- and must not get one, because the shim's getrusage
+# and struct timeval would collide with the header's. So key off the header
+# rather than off which repo it was cloned from: this stays right whether the
+# branch under test is upstream main, a fork that carries #3446, or upstream
+# main after #3446 lands (at which point this block and
+# apply_win_nc_perf_shims.py can both go, along with
+# --allow-partial-netcdf-build in nc4-clio-test-win.yml).
 #
 # Only ever applied to a checkout this script cloned itself -- silently
 # rewriting a developer's tree would be a nasty surprise.
 if [ "$WIN" = 1 ]; then
-    case "$NETCDF_SRC" in
-        "$WORK_DIR"/*)
-            PY=python3; command -v python3 >/dev/null 2>&1 || PY=python
-            "$PY" "$SCRIPT_DIR/apply_win_nc_perf_shims.py" "$NETCDF_SRC" ;;
-        *)  warn "netcdf-c checkout was not cloned by this script; leaving it alone."
-            warn "nc_perf needs the getrusage shim (or netcdf-c#3446) to compile on Windows." ;;
-    esac
+    if [ -f "$NETCDF_SRC/nc_perf/nc_perf_compat.h" ]; then
+        log "netcdf-c carries nc_perf/nc_perf_compat.h (netcdf-c#3446); no shim needed"
+    else
+        case "$NETCDF_SRC" in
+            "$WORK_DIR"/*)
+                PY=python3; command -v python3 >/dev/null 2>&1 || PY=python
+                "$PY" "$SCRIPT_DIR/apply_win_nc_perf_shims.py" "$NETCDF_SRC" ;;
+            *)  warn "netcdf-c checkout was not cloned by this script; leaving it alone."
+                warn "nc_perf needs the getrusage shim (or netcdf-c#3446) to compile on Windows." ;;
+        esac
+    fi
 fi
 
 # nc_perf is not parallel-safe and its CMakeLists does not say so. tst_create_files

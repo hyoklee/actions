@@ -55,6 +55,18 @@ concurrency:
 permissions:
   contents: write
 
+# The three sources under test: the maintainer's forks rather than the upstreams,
+# because the fixes this suite exists to exercise land there first. Each fork is
+# kept a superset of its upstream -- upstream plus the patches in flight, never a
+# stale snapshot. Note the clio-core fork is named `core`, not `clio-core`. Set
+# these back to HDFGroup/hdf5, Unidata/netcdf-c and iowarp/clio-core to test the
+# upstreams alone; the check job, the clio-core clone step and the driver all
+# read them, so one edit moves the whole workflow.
+env:
+  HDF5_REPO:   https://github.com/hyoklee/hdf5.git
+  NETCDF_REPO: https://github.com/hyoklee/netcdf-c.git
+  CLIO_REPO:   https://github.com/hyoklee/core.git
+
 defaults:
   run:
     shell: bash
@@ -85,9 +97,9 @@ jobs:
             echo "$sha"
           }
           {
-            echo "hdf5_sha=$(resolve https://github.com/HDFGroup/hdf5.git develop)"
-            echo "netcdf_sha=$(resolve https://github.com/Unidata/netcdf-c.git main)"
-            echo "clio_sha=$(resolve https://github.com/iowarp/clio-core.git dev)"
+            echo "hdf5_sha=$(resolve "$HDF5_REPO" develop)"
+            echo "netcdf_sha=$(resolve "$NETCDF_REPO" main)"
+            echo "clio_sha=$(resolve "$CLIO_REPO" dev)"
           } >> "$GITHUB_OUTPUT"
           cat "$GITHUB_OUTPUT"
 
@@ -164,7 +176,7 @@ jobs:
           mkdir -p nc4-clio-work
           if [ ! -d nc4-clio-work/clio-src/.git ]; then
             git clone --depth 1 --branch dev --recurse-submodules \
-              https://github.com/iowarp/clio-core.git nc4-clio-work/clio-src
+              "$CLIO_REPO" nc4-clio-work/clio-src
           fi
           git -C nc4-clio-work/clio-src rev-parse HEAD
 
@@ -216,8 +228,8 @@ jobs:
             --clio-src "$GITHUB_WORKSPACE/nc4-clio-work/clio-src" \
             --work-dir "$GITHUB_WORKSPACE/nc4-clio-work" \
             --results-dir "$GITHUB_WORKSPACE/test-results" \
-            --hdf5-ref develop \
-            --netcdf-ref main \
+            --hdf5-repo "$HDF5_REPO"     --hdf5-ref develop \
+            --netcdf-repo "$NETCDF_REPO" --netcdf-ref main \
             --variants "${{ inputs.variants || 'baseline,clio_vfd,clio_vol' }}" \
             --ctest-jobs "${{ inputs.ctest_jobs || '4' }}" \
             --test-timeout "${{ inputs.test_timeout || '1200' }}" \

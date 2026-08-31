@@ -4,21 +4,20 @@ name: netCDF-C CLIO test suite (Windows)
 # NetCDF-C-CLIO-Tests-Windows. Two things are true of Windows that are not true
 # of the other two runners:
 #
-#   * netCDF-C's nc_perf suite does not compile with MSVC. 19 of its 23 sources
-#     fail, from four separate causes: <sys/time.h> and <unistd.h> included
-#     unguarded, bigmeta.c's GNU getopt_long_only(), getopt/optarg/optind
-#     unresolved at link time in bm_file.c and tst_ar4*.c, and strtok_r/sbrk.
-#     .github/scripts/apply_win_nc_perf_shims.py covers only the first cause for
-#     tst_chunks3.c and tst_utils.c, so the rest still does not build: the driver
-#     runs with --allow-partial-netcdf-build, ctest reports the tests needing a
-#     missing binary as "Not Run", and the report names the partial build so
-#     nobody reads it as a CLIO failure. That costs 11 of 204 tests in EVERY
-#     variant, the baseline included.
+#   * netCDF-C's nc_perf suite does not compile with MSVC as upstream main has
+#     it. 19 of its 23 sources fail, from four separate causes: <sys/time.h> and
+#     <unistd.h> included unguarded, bigmeta.c's GNU getopt_long_only(),
+#     getopt/optarg/optind unresolved at link time in bm_file.c and tst_ar4*.c,
+#     and strtok_r/sbrk. Unidata/netcdf-c#3446 fixes all four, and this workflow
+#     now builds the fork branch that carries it (see NETCDF_REPO below), so the
+#     whole suite compiles: no --allow-partial-netcdf-build, no shim script (the
+#     driver skips it by itself once nc_perf/nc_perf_compat.h is present), and
+#     the baseline is expected at 204/204 rather than 193/204.
 #
-#     Unidata/netcdf-c#3446 fixes all four upstream. Once it lands in main, this
-#     workflow can drop --allow-partial-netcdf-build and the shim script, and the
-#     baseline should go to 204/204. See the wiki page
-#     NetCDF-C-CLIO-Tests-Windows-Fixes.
+#     Pointing NETCDF_REPO back at Unidata/netcdf-c restores the old behaviour --
+#     the driver reapplies the shim and the build goes partial again, which is
+#     why neither the shim nor the flag has been deleted outright. See the wiki
+#     page NetCDF-C-CLIO-Tests-Windows-Fixes.
 #
 #   * clio-core's dependencies come from vcpkg (its ci-windows.yml route), which
 #     also installs an hdf5 of its own. Windows binds DLL imports by bare
@@ -67,6 +66,24 @@ concurrency:
 permissions:
   contents: write
 
+# The three sources under test. They are the maintainer's forks, not the
+# upstreams, because the fixes this suite exists to exercise land there first:
+#   hyoklee/hdf5     develop  -- upstream develop plus the HDF5 fixes in flight
+#   hyoklee/netcdf-c main     -- upstream main plus Unidata/netcdf-c#3446, which
+#                                is what makes nc_perf build with MSVC
+#   hyoklee/core     dev      -- the clio-core fork (note the repo is named
+#                                `core`, not `clio-core`), upstream dev plus
+#                                iowarp/clio-core#1063, the Windows shared-memory
+#                                commit-charge fix
+# Each fork is kept a superset of its upstream, so this is upstream plus the
+# patches, never a stale snapshot. Set them back to HDFGroup/hdf5,
+# Unidata/netcdf-c and iowarp/clio-core to test the upstreams alone; the check
+# job and the driver both read these, so one edit moves the whole workflow.
+env:
+  HDF5_REPO:   https://github.com/hyoklee/hdf5.git
+  NETCDF_REPO: https://github.com/hyoklee/netcdf-c.git
+  CLIO_REPO:   https://github.com/hyoklee/core.git
+
 defaults:
   run:
     shell: bash
@@ -97,9 +114,9 @@ jobs:
             echo "$sha"
           }
           {
-            echo "hdf5_sha=$(resolve https://github.com/HDFGroup/hdf5.git develop)"
-            echo "netcdf_sha=$(resolve https://github.com/Unidata/netcdf-c.git main)"
-            echo "clio_sha=$(resolve https://github.com/iowarp/clio-core.git dev)"
+            echo "hdf5_sha=$(resolve "$HDF5_REPO" develop)"
+            echo "netcdf_sha=$(resolve "$NETCDF_REPO" main)"
+            echo "clio_sha=$(resolve "$CLIO_REPO" dev)"
           } >> "$GITHUB_OUTPUT"
           cat "$GITHUB_OUTPUT"
 
@@ -228,15 +245,14 @@ jobs:
             --clone \
             --work-dir "$(pwd)/nc4-clio-work" \
             --results-dir "$(pwd)/test-results" \
-            --hdf5-ref develop \
-            --netcdf-ref main \
-            --clio-ref dev \
+            --hdf5-repo "$HDF5_REPO"     --hdf5-ref develop \
+            --netcdf-repo "$NETCDF_REPO" --netcdf-ref main \
+            --clio-repo "$CLIO_REPO"     --clio-ref dev \
             --variants "${{ inputs.variants || 'baseline,clio_vfd,clio_vol' }}" \
             --ctest-jobs "${{ inputs.ctest_jobs || '4' }}" \
             --test-timeout "${{ inputs.test_timeout || '1200' }}" \
             --run-timeout "${{ inputs.run_timeout || '60m' }}" \
             --allow-adapter-build-failure \
-            --allow-partial-netcdf-build \
             --jobs "${NUMBER_OF_PROCESSORS:-4}"
 
       # Guard the wiki update on there being something to publish. A run that
