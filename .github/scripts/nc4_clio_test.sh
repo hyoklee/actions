@@ -272,6 +272,15 @@ resolve_src() {
 
 head_of() { git -C "$1" rev-parse HEAD 2>/dev/null || echo unknown; }
 
+# origin_of <dir> <fallback-url>
+# Where the checkout really came from. A --*-src tree handed to us by the caller
+# (the macOS workflow clones clio-core itself) may be any fork, so ask git rather
+# than assuming the --*-repo we would have cloned. Falls back to that URL when
+# there is no remote to ask -- a tarball, or a run stage with no checkout.
+origin_of() {
+    git -C "$1" config --get remote.origin.url 2>/dev/null || printf '%s' "$2"
+}
+
 # The run stage does not need the sources -- it needs the trees the build stage
 # left behind -- so a `--stages run` against an existing work dir must not insist
 # on a checkout it will never read. It still wants sources.json, because the
@@ -289,11 +298,20 @@ if has_stage build; then
     if has_variant clio_vfd || has_variant clio_vol; then
         CLIO_SRC="$(resolve_src "$CLIO_SRC" "$CLIO_REPO" "$CLIO_REF" clio)"
     fi
+    # The repos and refs go in alongside the SHAs: the report links each commit,
+    # and a fork SHA under an upstream URL is a 404. Only the driver knows which
+    # repo a --*-src checkout actually came from, so record it here.
     cat >"$WORK_DIR/sources.json" <<JSON
 {
-  "hdf5_sha":   "$(head_of "$HDF5_SRC")",
-  "netcdf_sha": "$(head_of "$NETCDF_SRC")",
-  "clio_sha":   "$(head_of "${CLIO_SRC:-/nonexistent}")"
+  "hdf5_sha":    "$(head_of "$HDF5_SRC")",
+  "netcdf_sha":  "$(head_of "$NETCDF_SRC")",
+  "clio_sha":    "$(head_of "${CLIO_SRC:-/nonexistent}")",
+  "hdf5_repo":   "$(origin_of "$HDF5_SRC" "$HDF5_REPO")",
+  "netcdf_repo": "$(origin_of "$NETCDF_SRC" "$NETCDF_REPO")",
+  "clio_repo":   "$(origin_of "${CLIO_SRC:-/nonexistent}" "$CLIO_REPO")",
+  "hdf5_ref":    "$HDF5_REF",
+  "netcdf_ref":  "$NETCDF_REF",
+  "clio_ref":    "$CLIO_REF"
 }
 JSON
     cat "$WORK_DIR/sources.json"
