@@ -31,11 +31,12 @@ name: netCDF-C CLIO test suite (Windows)
 #     never registered on Windows -- ten behind an IF(NOT WIN32) or IF(NOT MSVC)
 #     in some CMakeLists.txt, one behind NETCDF_ENABLE_MMAP being forced off --
 #     so ctest said nothing about them and a Windows run was green over a
-#     smaller suite. hyoklee/netcdf-c#1 fixes all eleven; once it is on the
-#     fork's main this workflow will report 215/215, with the same 215 test
-#     names Linux reports. Until then, 204/204 here is expected and is not a
-#     regression. See the wiki page NetCDF-C-CLIO-Tests-Windows-Fixes, section
-#     "The eleven tests Windows never ran".
+#     smaller suite. hyoklee/netcdf-c#1 fixes all eleven and is merged into the
+#     fork's main, so this workflow now reports 215/215 -- the same 215 test
+#     names Linux reports, verified by diffing the two JUnit files in both
+#     directions. A run that reports 204 again means NETCDF_REPO no longer
+#     points at the fork. See the wiki page NetCDF-C-CLIO-Tests-Windows-Fixes,
+#     section "The eleven tests Windows never ran".
 #
 #   * clio-core's dependencies come from vcpkg (its ci-windows.yml route), which
 #     also installs an hdf5 of its own. Windows binds DLL imports by bare
