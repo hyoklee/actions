@@ -58,6 +58,12 @@ on:
           turns the CTE tier off, isolating its cost. Debugging only.'
         type: string
         default: ''
+      clio_ref:
+        description: 'clio-core branch to test instead of dev. Debugging only --
+          validates a candidate fix before it is merged, and does not publish to
+          the wiki.'
+        type: string
+        default: ''
 
 concurrency:
   group: nc4-clio-test-macos
@@ -110,7 +116,7 @@ jobs:
           {
             echo "hdf5_sha=$(resolve "$HDF5_REPO" develop)"
             echo "netcdf_sha=$(resolve "$NETCDF_REPO" main)"
-            echo "clio_sha=$(resolve "$CLIO_REPO" dev)"
+            echo "clio_sha=$(resolve "$CLIO_REPO" "${{ inputs.clio_ref || 'dev' }}")"
           } >> "$GITHUB_OUTPUT"
           cat "$GITHUB_OUTPUT"
 
@@ -186,7 +192,7 @@ jobs:
           set -euo pipefail
           mkdir -p nc4-clio-work
           if [ ! -d nc4-clio-work/clio-src/.git ]; then
-            git clone --depth 1 --branch dev --recurse-submodules \
+            git clone --depth 1 --branch "${{ inputs.clio_ref || 'dev' }}" --recurse-submodules \
               "$CLIO_REPO" nc4-clio-work/clio-src
           fi
           git -C nc4-clio-work/clio-src rev-parse HEAD
@@ -272,7 +278,7 @@ jobs:
           fi
 
       - name: Clone the wiki
-        if: always() && steps.results.outputs.have == 'true' && inputs.ctest_include == '' && inputs.vfd_config == ''
+        if: always() && steps.results.outputs.have == 'true' && inputs.ctest_include == '' && inputs.vfd_config == '' && inputs.clio_ref == ''
         run: |
           set -euo pipefail
           git clone "https://x-access-token:${WIKI_TOKEN}@github.com/${GITHUB_REPOSITORY}.wiki.git" wiki
@@ -280,7 +286,7 @@ jobs:
           WIKI_TOKEN: ${{ secrets.WIKI_TOKEN || secrets.GITHUB_TOKEN }}
 
       - name: Write the markdown report
-        if: always() && steps.results.outputs.have == 'true' && inputs.ctest_include == '' && inputs.vfd_config == ''
+        if: always() && steps.results.outputs.have == 'true' && inputs.ctest_include == '' && inputs.vfd_config == '' && inputs.clio_ref == ''
         run: |
           set -euo pipefail
           python3 .github/scripts/nc4_clio_report.py \
@@ -298,7 +304,7 @@ jobs:
           rm -f wiki/summary.md
 
       - name: Commit the wiki page
-        if: always() && steps.results.outputs.have == 'true' && inputs.ctest_include == '' && inputs.vfd_config == ''
+        if: always() && steps.results.outputs.have == 'true' && inputs.ctest_include == '' && inputs.vfd_config == '' && inputs.clio_ref == ''
         run: |
           set -euo pipefail
           cd wiki
