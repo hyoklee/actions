@@ -151,6 +151,9 @@ STAGES="build,run"
 JOBS="$NCPU"
 CTEST_JOBS=4
 CTEST_INCLUDE=""          # ctest -R regex; empty means the whole suite
+VFD_CONFIG="cache=1"      # HDF5_DRIVER_CONFIG for clio_vfd. cache=0 turns the
+                          # CTE tier off, which isolates its cost from the
+                          # driver's own write-through (debugging only).
 TEST_TIMEOUT=1200         # per test, seconds -- ctest --timeout. Large enough
                           # that the CLIO VOL, which runs write-heavy tests up to
                           # ~14x slower than the baseline, is reported as slow
@@ -177,6 +180,7 @@ Options:
   --jobs N                   compile parallelism
   --ctest-jobs N             ctest -j (same for every variant, for comparability)
   --ctest-include REGEX      ctest -R: run only matching tests (debugging only)
+  --vfd-config STR           HDF5_DRIVER_CONFIG for clio_vfd (default cache=1)
   --test-timeout SECS        ctest --timeout, per test (default 1200)
   --run-timeout DURATION     wall clock per variant (default 120m)
   --allow-adapter-build-failure   drop a CLIO variant whose adapter will not build
@@ -203,6 +207,7 @@ while [ $# -gt 0 ]; do
         --jobs)          JOBS="$2"; shift 2 ;;
         --ctest-jobs)    CTEST_JOBS="$2"; shift 2 ;;
         --ctest-include) CTEST_INCLUDE="$2"; shift 2 ;;
+        --vfd-config)    VFD_CONFIG="$2"; shift 2 ;;
         --test-timeout)  TEST_TIMEOUT="$2"; shift 2 ;;
         --run-timeout)   RUN_TIMEOUT="$2"; shift 2 ;;
         --allow-adapter-build-failure) ALLOW_ADAPTER_BUILD_FAILURE=1; shift ;;
@@ -883,7 +888,7 @@ if has_variant clio_vfd; then
           # key=value, parsed by clio's shared grammar; unparseable input is
           # rejected on purpose. netCDF-C reports ANY H5Fcreate failure as
           # "Permission denied", so a mistyped knob here is very hard to see.
-          export HDF5_DRIVER_CONFIG="cache=1"
+          export HDF5_DRIVER_CONFIG="$VFD_CONFIG"
           export CLIO_SERVER_CONF="$CLIO_CONF"
           run_suite clio_vfd )
     else

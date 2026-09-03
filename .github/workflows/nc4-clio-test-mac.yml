@@ -53,6 +53,11 @@ on:
           comparable with any other run.'
         type: string
         default: ''
+      vfd_config:
+        description: 'HDF5_DRIVER_CONFIG for clio_vfd (default cache=1). cache=0
+          turns the CTE tier off, isolating its cost. Debugging only.'
+        type: string
+        default: ''
 
 concurrency:
   group: nc4-clio-test-macos
@@ -210,6 +215,7 @@ jobs:
       - name: Build the three stacks and run the full netCDF-C test suite
         env:
           CTEST_INCLUDE: ${{ inputs.ctest_include }}
+          VFD_CONFIG: ${{ inputs.vfd_config }}
         run: |
           # Deliberately no `set -u` yet: conda's own activation hooks are not
           # nounset-clean (activate_cctools_osx-arm64.sh reads $AR before setting
@@ -241,6 +247,7 @@ jobs:
             --variants "${{ inputs.variants || 'baseline,clio_vfd,clio_vol' }}" \
             --ctest-jobs "${{ inputs.ctest_jobs || '4' }}" \
             ${CTEST_INCLUDE:+--ctest-include "$CTEST_INCLUDE"} \
+            ${VFD_CONFIG:+--vfd-config "$VFD_CONFIG"} \
             --test-timeout "${{ inputs.test_timeout || '1200' }}" \
             --run-timeout "${{ inputs.run_timeout || '60m' }}" \
             --allow-adapter-build-failure \
@@ -265,7 +272,7 @@ jobs:
           fi
 
       - name: Clone the wiki
-        if: always() && steps.results.outputs.have == 'true' && inputs.ctest_include == ''
+        if: always() && steps.results.outputs.have == 'true' && inputs.ctest_include == '' && inputs.vfd_config == ''
         run: |
           set -euo pipefail
           git clone "https://x-access-token:${WIKI_TOKEN}@github.com/${GITHUB_REPOSITORY}.wiki.git" wiki
@@ -273,7 +280,7 @@ jobs:
           WIKI_TOKEN: ${{ secrets.WIKI_TOKEN || secrets.GITHUB_TOKEN }}
 
       - name: Write the markdown report
-        if: always() && steps.results.outputs.have == 'true' && inputs.ctest_include == ''
+        if: always() && steps.results.outputs.have == 'true' && inputs.ctest_include == '' && inputs.vfd_config == ''
         run: |
           set -euo pipefail
           python3 .github/scripts/nc4_clio_report.py \
@@ -291,7 +298,7 @@ jobs:
           rm -f wiki/summary.md
 
       - name: Commit the wiki page
-        if: always() && steps.results.outputs.have == 'true' && inputs.ctest_include == ''
+        if: always() && steps.results.outputs.have == 'true' && inputs.ctest_include == '' && inputs.vfd_config == ''
         run: |
           set -euo pipefail
           cd wiki
