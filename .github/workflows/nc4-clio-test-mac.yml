@@ -47,6 +47,12 @@ on:
         description: 'ctest -j (the same for every variant, for comparability)'
         type: string
         default: '4'
+      ctest_include:
+        description: 'ctest -R regex: run only matching tests. Debugging only -- a
+          filtered run does not publish to the wiki, because its totals are not
+          comparable with any other run.'
+        type: string
+        default: ''
 
 concurrency:
   group: nc4-clio-test-macos
@@ -202,6 +208,8 @@ jobs:
           ./CI/ci-deps.sh --only-deps release
 
       - name: Build the three stacks and run the full netCDF-C test suite
+        env:
+          CTEST_INCLUDE: ${{ inputs.ctest_include }}
         run: |
           # Deliberately no `set -u` yet: conda's own activation hooks are not
           # nounset-clean (activate_cctools_osx-arm64.sh reads $AR before setting
@@ -232,6 +240,7 @@ jobs:
             --netcdf-repo "$NETCDF_REPO" --netcdf-ref main \
             --variants "${{ inputs.variants || 'baseline,clio_vfd,clio_vol' }}" \
             --ctest-jobs "${{ inputs.ctest_jobs || '4' }}" \
+            ${CTEST_INCLUDE:+--ctest-include "$CTEST_INCLUDE"} \
             --test-timeout "${{ inputs.test_timeout || '1200' }}" \
             --run-timeout "${{ inputs.run_timeout || '60m' }}" \
             --allow-adapter-build-failure \
@@ -256,7 +265,7 @@ jobs:
           fi
 
       - name: Clone the wiki
-        if: always() && steps.results.outputs.have == 'true'
+        if: always() && steps.results.outputs.have == 'true' && inputs.ctest_include == ''
         run: |
           set -euo pipefail
           git clone "https://x-access-token:${WIKI_TOKEN}@github.com/${GITHUB_REPOSITORY}.wiki.git" wiki
@@ -264,7 +273,7 @@ jobs:
           WIKI_TOKEN: ${{ secrets.WIKI_TOKEN || secrets.GITHUB_TOKEN }}
 
       - name: Write the markdown report
-        if: always() && steps.results.outputs.have == 'true'
+        if: always() && steps.results.outputs.have == 'true' && inputs.ctest_include == ''
         run: |
           set -euo pipefail
           python3 .github/scripts/nc4_clio_report.py \
@@ -282,7 +291,7 @@ jobs:
           rm -f wiki/summary.md
 
       - name: Commit the wiki page
-        if: always() && steps.results.outputs.have == 'true'
+        if: always() && steps.results.outputs.have == 'true' && inputs.ctest_include == ''
         run: |
           set -euo pipefail
           cd wiki
