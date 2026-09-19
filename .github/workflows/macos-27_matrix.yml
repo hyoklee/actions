@@ -16,7 +16,7 @@ jobs:
         include:
           # Shared libraries with OpenMPI
           - name: "macos-27 Shared OpenMPI Fortran Java"
-            os: macos-27
+            os: xcode-27
             mpi: openmpi
             shared_libs: ON
             static_libs: OFF
@@ -34,7 +34,7 @@ jobs:
 
           # Shared libraries with MPICH
           - name: "macos-27 Shared MPICH Fortran"
-            os: macos-27
+            os: xcode-27
             mpi: mpich
             shared_libs: ON
             static_libs: OFF
@@ -52,7 +52,7 @@ jobs:
 
           # Static libraries with OpenMPI
           - name: "macos-27 Static OpenMPI"
-            os: macos-27
+            os: xcode-27
             mpi: openmpi
             shared_libs: OFF
             static_libs: ON
@@ -70,7 +70,7 @@ jobs:
 
           # Both static and shared with MPICH
           - name: "macos-27 Both MPICH All Features"
-            os: macos-27
+            os: xcode-27
             mpi: mpich
             shared_libs: ON
             static_libs: ON
@@ -88,7 +88,7 @@ jobs:
 
           # Serial build with thread-safety
           - name: "macos-27 Serial Threadsafe"
-            os: macos-27
+            os: xcode-27
             mpi: none
             shared_libs: ON
             static_libs: ON
@@ -106,7 +106,7 @@ jobs:
 
           # Minimal configuration
           - name: "macos-27 Minimal Config"
-            os: macos-27
+            os: xcode-27
             mpi: none
             shared_libs: ON
             static_libs: OFF
@@ -124,7 +124,7 @@ jobs:
 
           # Plugin support with OpenMPI
           - name: "macos-27 Plugins OpenMPI"
-            os: macos-27
+            os: xcode-27
             mpi: openmpi
             shared_libs: ON
             static_libs: OFF
@@ -143,7 +143,7 @@ jobs:
 
           # No High Level API with MPICH
           - name: "macos-27 No HL MPICH"
-            os: macos-27
+            os: xcode-27
             mpi: mpich
             shared_libs: ON
             static_libs: ON
