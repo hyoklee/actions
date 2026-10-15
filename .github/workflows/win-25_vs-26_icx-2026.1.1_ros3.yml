@@ -1,0 +1,80 @@
+name: win-25 vs-26 icx-2026.1.1 ros3
+
+on:
+  workflow_dispatch:
+  push:
+    branches: main
+
+env:
+  WINDOWS_TOOLKIT_URL: https://registrationcenter-download.intel.com/akdlm/IRC_NAS/0cb67a0d-67f6-410b-868b-f4a0a17ff0cf/intel-oneapi-toolkit-2026.1.1.32_offline.exe
+  WINDOWS_CPP_COMPONENTS: intel.oneapi.win.cpp-dpcpp-common
+  VCPKG_TRIPLET: x64-windows
+  CACHE_NUMBER: 1
+  VCPKG_BINARY_CACHE: C:\vcpkg-bincache
+
+jobs:
+  build:
+    runs-on: windows-2025-vs2026
+    steps:
+      - name: h5
+        uses: actions/checkout@v6
+        with:
+          repository: HDFGroup/hdf5
+      # The runner's vcpkg changes with the image, so key the binary cache on it.
+      - name: vcpkg cache key
+        id: vcpkg-key
+        shell: bash
+        run: echo "key=vcpkg-${{ env.CACHE_NUMBER }}-${{ env.VCPKG_TRIPLET }}-aws-c-s3-$ImageOS-$ImageVersion" >> $GITHUB_OUTPUT
+      - name: restore vcpkg
+        id: cache-vcpkg
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ env.VCPKG_BINARY_CACHE }}
+          key: ${{ steps.vcpkg-key.outputs.key }}
+          restore-keys: vcpkg-${{ env.CACHE_NUMBER }}-${{ env.VCPKG_TRIPLET }}-aws-c-s3-
+      - name: aws-c-s3
+        shell: cmd
+        env:
+          VCPKG_BINARY_SOURCES: clear;files,${{ env.VCPKG_BINARY_CACHE }},readwrite
+        run: |
+          if not exist "${{ env.VCPKG_BINARY_CACHE }}" mkdir "${{ env.VCPKG_BINARY_CACHE }}"
+          "%VCPKG_INSTALLATION_ROOT%\vcpkg" install aws-c-s3:${{ env.VCPKG_TRIPLET }}
+          echo %VCPKG_INSTALLATION_ROOT%\installed\${{ env.VCPKG_TRIPLET }}\bin>> %GITHUB_PATH%
+      - name: save vcpkg
+        if: steps.cache-vcpkg.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ env.VCPKG_BINARY_CACHE }}
+          key: ${{ steps.vcpkg-key.outputs.key }}
+      - name: restore oneapi
+        id: cache-oneapi
+        uses: actions/cache/restore@v4
+        with:
+          path: C:\Program Files (x86)\Intel\oneAPI
+          key: oneapi-${{ env.CACHE_NUMBER }}-${{ env.WINDOWS_TOOLKIT_URL }}-${{ env.WINDOWS_CPP_COMPONENTS }}
+      - name: oneapi
+        if: steps.cache-oneapi.outputs.cache-hit != 'true'
+        run: |
+          git clone --depth=1 https://github.com/oneapi-src/oneapi-ci.git oneapi-ci
+          cd oneapi-ci
+          scripts/install_windows.bat ${{ env.WINDOWS_TOOLKIT_URL }} ${{ env.WINDOWS_CPP_COMPONENTS }}
+      # Save right after install so a later test failure doesn't skip caching.
+      - name: save oneapi
+        if: steps.cache-oneapi.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: C:\Program Files (x86)\Intel\oneAPI
+          key: ${{ steps.cache-oneapi.outputs.cache-primary-key }}
+      - name: test
+        shell: cmd
+        env:
+          vc_arch: x64
+        run: |
+          call "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" %vc_arch%
+          set SETVARS="%ProgramFiles(x86)%\Intel\oneAPI\setvars.bat"
+          call %SETVARS%
+          icx --version
+          mkdir build
+          cd build
+          cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE="%VCPKG_INSTALLATION_ROOT%/scripts/buildsystems/vcpkg.cmake" -DVCPKG_TARGET_TRIPLET=${{ env.VCPKG_TRIPLET }} -DCMAKE_C_COMPILER="C:/Program Files (x86)/Intel/oneAPI/compiler/latest/bin/icx.exe" -DCMAKE_CXX_COMPILER="C:/Program Files (x86)/Intel/oneAPI/compiler/latest/bin/icpx.exe" -DHDF5_ENABLE_ROS3_VFD:BOOL=ON -DHDF5_ENABLE_ZLIB_SUPPORT:BOOL=OFF -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF -DCTEST_DROP_SITE_INIT=my.cdash.org -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" -DSITE="win-25" -DBUILDNAME="vs2026/ninja/icx-2026.1.1/ros3" ..
+          ctest -D Experimental
