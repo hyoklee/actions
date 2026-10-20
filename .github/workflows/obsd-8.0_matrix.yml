@@ -1,0 +1,47 @@
+name: obsd-8.0 matrix
+
+on:
+  workflow_dispatch:
+  push:
+    branches: main
+
+jobs:
+  test:
+    name: obsd-8.0 ${{ matrix.arch }}
+    # vmactions runs every arch on the plain x86_64 runner; aarch64,
+    # riscv64 and sparc64 are emulated with qemu, so they are slow.
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    strategy:
+      fail-fast: false
+      matrix:
+        arch: [x86_64, aarch64, riscv64, sparc64]
+    steps:
+      - name: h5
+        uses: actions/checkout@v6
+        with:
+          repository: HDFGroup/hdf5
+
+      - name: test
+        uses: vmactions/openbsd-vm@v1
+        with:
+          release: "8.0"
+          arch: ${{ matrix.arch }}
+          copyback: false
+          # Cache the VM image after pkg_add so re-runs on the emulated
+          # architectures skip the slow package install.
+          cache-after-prepare: true
+          prepare: |
+            pkg_add cmake
+          run: |
+            cc --version
+            mkdir build
+            cd build
+            cmake \
+              -DCMAKE_BUILD_TYPE=Release \
+              -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
+              -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" \
+              -DSITE:STRING="obsd-8.0" \
+              -DBUILDNAME:STRING="${{ matrix.arch }}/develop" \
+              ..
+            ctest -D Experimental -C Release
