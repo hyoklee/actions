@@ -1,0 +1,28 @@
+name: kvm probe
+
+# Check whether GitHub's arm64 runners expose hardware virtualization,
+# which anyvm (vmactions) needs to run aarch64 guests without TCG.
+on:
+  workflow_dispatch:
+
+jobs:
+  probe:
+    name: probe ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04-arm, macos-15]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: linux /dev/kvm
+        if: runner.os == 'Linux'
+        run: |
+          uname -m
+          ls -l /dev/kvm || echo "no /dev/kvm"
+          [ -r /dev/kvm ] && [ -w /dev/kvm ] && echo "kvm usable" || echo "kvm not usable"
+
+      - name: macos hvf
+        if: runner.os == 'macOS'
+        run: |
+          uname -m
+          echo "kern.hv_support=$(sysctl -n kern.hv_support 2>/dev/null || echo missing)"
