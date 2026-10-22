@@ -3,7 +3,7 @@ name: win-25 vs-26 icx-2026.1.1 ros3 f p
 on:
   workflow_dispatch:
   push:
-    branches: main
+    branches: main-
 
 env:
   WINDOWS_TOOLKIT_URL: https://registrationcenter-download.intel.com/akdlm/IRC_NAS/0cb67a0d-67f6-410b-868b-f4a0a17ff0cf/intel-oneapi-toolkit-2026.1.1.32_offline.exe

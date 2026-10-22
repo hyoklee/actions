@@ -20,6 +20,7 @@ Actions speak louder than codes.
 | NetBSD 10.0 | [![nbsd](https://github.com/hyoklee/actions/actions/workflows/nbsd.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/nbsd.yml) |
 | NetBSD 9.3 | [![nbsd](https://github.com/hyoklee/actions/actions/workflows/nbsd-9.3.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/nbsd-9.3.yml) |
 | OpenBSD 7.5 | [![obsd](https://github.com/hyoklee/actions/actions/workflows/obsd.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/obsd.yml) |
+| OpenBSD 8.0 (x86_64, aarch64, riscv64, sparc64) | [![obsd-8.0 matrix](https://github.com/hyoklee/actions/actions/workflows/obsd-8.0_matrix.yml/badge.svg)](https://github.com/hyoklee/actions/actions/workflows/obsd-8.0_matrix.yml) |
 
 ### Linux
 
