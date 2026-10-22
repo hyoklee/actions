@@ -62,8 +62,13 @@ jobs:
               -DSITE:STRING="obsd-8.0" \
               -DBUILDNAME:STRING="${{ matrix.arch }}/develop" \
               ..
-            ctest -D Experimental -C Release -j2
-            echo $? > ../ctest.rc
+            # HDF5's CTestConfig.cmake FORCEs DART_TESTING_TIMEOUT to 1200, so
+            # double it with --timeout (tests with their own TIMEOUT keep it).
+            # The script runs under sh -e; capture the rc so a test failure
+            # doesn't skip the copyback of .ccache.
+            rc=0
+            ctest -D Experimental -C Release -j2 --timeout 2400 || rc=$?
+            echo $rc > ../ctest.rc
             cd ..
             ccache -s
             # Keep copyback small: only .ccache and ctest.rc need to come out.
