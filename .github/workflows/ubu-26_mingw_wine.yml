@@ -1,0 +1,82 @@
+name: ubu mingw64 wine test
+
+# Temporary: check whether HDF5's mingw-w64-x86-64-wine.sh emulator
+# (/usr/lib/wine/wine64) still works with Wine 10 on ubuntu-26.04.
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  wine:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, ubuntu-26.04]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          repository: HDFGroup/hdf5
+      - name: install
+        run: |
+          sudo apt update
+          sudo apt install -y wine64 winbind ninja-build mingw-w64 gfortran-mingw-w64-x86-64-win32
+      - name: wine layout
+        if: always()
+        run: |
+          dpkg -l | grep -i wine || true
+          dpkg -L wine64 wine | grep -E 'bin/|lib/wine/[^/]*$' || true
+          ls -la /usr/lib/wine || true
+          ls -la /usr/lib/x86_64-linux-gnu/wine || true
+          which wine wine64 || true
+          wine --version || true
+          test -x /usr/lib/wine/wine64 && echo "/usr/lib/wine/wine64 exists" || echo "/usr/lib/wine/wine64 MISSING"
+      - name: build test programs
+        if: always()
+        run: |
+          cat > hello.c <<'EOF'
+          #include <stdio.h>
+          int main(void) { printf("hello from C\n"); return 0; }
+          EOF
+          cat > kinds.f90 <<'EOF'
+          program kinds
+            implicit none
+            print *, 'hello from Fortran', selected_int_kind(18), selected_real_kind(15)
+          end program kinds
+          EOF
+          x86_64-w64-mingw32-gcc hello.c -o hello.exe
+          x86_64-w64-mingw32-gfortran kinds.f90 -o kinds.exe
+          ls -la *.exe
+      - name: run via HDF5 emulator script
+        if: always()
+        run: |
+          set -x
+          sh config/toolchain/mingw-w64-x86-64-wine.sh ./hello.exe; echo "exit=$?"
+          sh config/toolchain/mingw-w64-x86-64-wine.sh ./kinds.exe; echo "exit=$?"
+      - name: run via wine
+        if: always()
+        run: |
+          set -x
+          export WINEPATH=$(dirname $(ls /usr/lib/gcc/x86_64-w64-mingw32/*/libgfortran.dll.a | head -1))
+          wine ./hello.exe; echo "exit=$?"
+          wine ./kinds.exe; echo "exit=$?"
+      - name: hdf5 cmake configure
+        if: always()
+        run: |
+          mkdir build
+          cd build
+          cmake -C ../config/cmake/cacheinit.cmake \
+            -G Ninja \
+            -DCMAKE_TOOLCHAIN_FILE:STRING=config/toolchain/mingw64.cmake \
+            -DCMAKE_CROSSCOMPILING_EMULATOR:PATH=$GITHUB_WORKSPACE/config/toolchain/mingw-w64-x86-64-wine.sh \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DHDF5_BUILD_JAVA:BOOL=OFF \
+            -DHDF5_ENABLE_PLUGIN_SUPPORT:BOOL=OFF \
+            -DHDF5_ENABLE_ZLIB_SUPPORT:BOOL=OFF \
+            -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF \
+            -DHDF5_TEST_API:BOOL=OFF \
+            -DHDF5_USE_PREGEN:BOOL=ON \
+            ..
