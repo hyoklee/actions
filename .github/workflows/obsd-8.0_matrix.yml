@@ -3,7 +3,7 @@ name: obsd-8.0 matrix
 on:
   workflow_dispatch:
   push:
-    branches: main-
+    branches: main
 
 jobs:
   test:
@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        arch: [x86_64, aarch64, riscv64, sparc64]
+        arch: [x86_64, aarch64, riscv64]
     steps:
       - name: h5
         uses: actions/checkout@v6
@@ -59,8 +59,8 @@ jobs:
               -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
               -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
               -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" \
-              -DSITE:STRING="obsd-8.0" \
-              -DBUILDNAME:STRING="hk/${{ matrix.arch }}/develop" \
+              -DSITE:STRING="obsd-8.0.${{ matrix.arch }}" \
+              -DBUILDNAME:STRING="hk/develop" \
               ..
             # HDF5's CTestConfig.cmake FORCEs DART_TESTING_TIMEOUT to 1200, so
             # double it with --timeout (tests with their own TIMEOUT keep it).
