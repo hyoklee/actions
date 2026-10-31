@@ -1,0 +1,75 @@
+name: i386 ubu-26 seccomp test
+
+# Temporary: on ubuntu-26.04 Docker 29.4.2's default seccomp profile (moby
+# seccomp/v0.2.2) returns ENOSYS for socketcall(2), which Debian's i386 glibc
+# uses for every socket call, so linux/386 glibc containers have no network
+# (actions/runner-images#14790). Check whether passing the fixed profile
+# (seccomp/v0.2.3) with --security-opt restores name resolution and lets the
+# HDF5 i386 job's apt-get step succeed.
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  seccomp:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, ubuntu-26.04]
+    runs-on: ${{ matrix.os }}
+    env:
+      IMAGE: i386/debian:bookworm
+    steps:
+      - name: docker version
+        run: docker version --format 'client {{.Client.Version}} server {{.Server.Version}}'
+
+      - name: baseline, default seccomp (expected to fail on 26.04)
+        continue-on-error: true
+        run: |
+          set -x
+          docker run --rm --platform linux/386 "$IMAGE" getent hosts deb.debian.org
+
+      - name: fetch moby seccomp/v0.2.3 default profile
+        run: |
+          curl -fsSL -o seccomp.json \
+            https://raw.githubusercontent.com/moby/profiles/seccomp/v0.2.3/seccomp/default.json
+          ls -l seccomp.json
+          grep -c socketcall seccomp.json || true
+
+      - name: with seccomp/v0.2.3 profile
+        run: |
+          set -x
+          docker run --rm --platform linux/386 \
+            --security-opt seccomp="$PWD/seccomp.json" \
+            "$IMAGE" getent hosts deb.debian.org
+
+      - name: with seccomp=unconfined (reference)
+        continue-on-error: true
+        run: |
+          set -x
+          docker run --rm --platform linux/386 \
+            --security-opt seccomp=unconfined \
+            "$IMAGE" getent hosts deb.debian.org
+
+      # The step that fails in HDF5's i386.yml, run the same way but with the profile
+      - name: HDF5 i386 Install dependencies step with profile
+        run: |
+          docker run -d --name i386_build --platform linux/386 \
+            --security-opt seccomp="$PWD/seccomp.json" \
+            -e CTEST_OUTPUT_ON_FAILURE=1 \
+            "$IMAGE" sleep infinity
+          docker exec i386_build bash -c "
+            echo 'deb http://deb.debian.org/debian bookworm-backports main' > /etc/apt/sources.list.d/backports.list
+            apt-get update -y
+            apt-get install -y build-essential libaec-dev libgit2-dev
+            apt-get install -y -t bookworm-backports cmake
+            cmake --version
+            gcc --version | head -1
+          "
+
+      - name: Cleanup
+        if: always()
+        run: docker rm -f i386_build || true
