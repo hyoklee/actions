@@ -10,7 +10,7 @@ name: i386 ubu-26 seccomp test
 on:
   push:
     branches:
-      - main
+      - main-
   workflow_dispatch:
 
 jobs:

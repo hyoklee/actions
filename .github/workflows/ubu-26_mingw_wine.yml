@@ -6,7 +6,7 @@ name: ubu mingw64 wine test
 on:
   push:
     branches:
-      - main
+      - main-
   workflow_dispatch:
 
 jobs:
