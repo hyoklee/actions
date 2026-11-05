@@ -48,12 +48,17 @@ jobs:
           sudo cmake --install . --config Release --prefix="/usr/local"
         working-directory: ${{ runner.workspace }}/build
 
-#      - name: Download HDF-EOS5 3.0
-#        shell: bash
-#        run: |
-#          curl --user "${{ secrets.EARTHDATA_LOGIN }}" -o hdf-eos5-3.0-src.tar.gz  -L   "https://git.earthdata.nasa.gov/projects/DAS/repos/hdfeos/raw/hdf-eos2-3.0-src.tar.gz?at=3128a738021501c821549955f6c78348e5f33850"	  
-#          tar zxvf hdf-eos5-3.0-src.tar.gz
-#          cd hdf-eos5-3.0
+      - name: Download HDF-EOS5 3.0
+        shell: bash
+        run: |
+          curl --user "${{ secrets.EARTHDATA_LOGIN }}" -o hdf-eos5-3.0-src.tar.gz  -L   "https://git.earthdata.nasa.gov/projects/DAS/repos/hdfeos/raw/hdf-eos2-.0-src.tar.gz?at=3128a738021501c821549955f6c78348e5f33850"	  
+          tar zxvf hdf-eos5-3.0-src.tar.gz
+          cd hdf-eos5-3.0
+          ./configure CC=/usr/local/bin/h5cc --prefix=/usr/local/ --enable-install-include
+          make
+          LD_LIBRARY_PATH="/usr/local/lib:${LD_LIBRARY_PATH}"
+          LD_LIBRARY_PATH=${LD_LIBRARY_PATH} make check
+          sudo make install
 
 
       - name: Download HDF-EOS5
