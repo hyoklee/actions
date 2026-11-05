@@ -21,7 +21,7 @@ jobs:
         uses: actions/checkout@v6
         with:
           repository: HDFGroup/hdf5
-          ref: filter-config/02-parser
+          ref: filter-config/03-class3
 
       # Every run starts from a fresh checkout in a fresh VM, so make's
       # timestamps can't skip anything (ctest -D Continuous wouldn't help).
@@ -63,7 +63,7 @@ jobs:
               -DHDF5_ENABLE_ZLIB_SUPPORT:BOOL=ON \
               -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=ON \
               -DSITE:STRING="obsd-8.0.${{ matrix.arch }}" \
-              -DBUILDNAME:STRING="pr6698/develop" \
+              -DBUILDNAME:STRING="pr6699/sz/zl" \
               ..
             # HDF5's CTestConfig.cmake FORCEs DART_TESTING_TIMEOUT to 1200, so
             # double it with --timeout (tests with their own TIMEOUT keep it).
