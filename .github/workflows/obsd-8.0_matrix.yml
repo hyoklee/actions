@@ -3,7 +3,7 @@ name: obsd-8.0 matrix
 on:
   workflow_dispatch:
   push:
-    branches: main
+    branches: main-
 
 jobs:
   test:
