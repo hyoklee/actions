@@ -1,0 +1,84 @@
+name: fbsd-15.1 ppc64
+
+on:
+  workflow_dispatch:
+  push:
+    branches: main
+
+jobs:
+  test:
+    name: fbsd-15.1 powerpc64
+    # vmactions emulates big-endian powerpc64 (pseries, power9) with qemu on
+    # the x86_64 runner, so it is slow.
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - name: h5
+        uses: actions/checkout@v6
+        with:
+          repository: HDFGroup/hdf5
+          ref: filter-config/03-class3
+
+      # Each run starts from a fresh checkout in a fresh VM, so ccache (which
+      # hashes contents) is what avoids recompiling unchanged sources.
+      # Restore after the checkout, which would otherwise wipe .ccache.
+      - name: restore ccache
+        uses: actions/cache/restore@v4
+        with:
+          path: .ccache
+          key: ccache-fbsd-15.1-powerpc64-${{ github.run_id }}
+          restore-keys: ccache-fbsd-15.1-powerpc64-
+
+      - name: test
+        uses: vmactions/freebsd-vm@v1
+        with:
+          release: "15.1"
+          arch: powerpc64
+          # powerpc64 defaults to an nfs mount of the workspace; copy it to the
+          # VM's own disk instead (faster builds) and copy back for .ccache.
+          sync: tar
+          copyback: true
+          # Cache the VM image after pkg install so re-runs skip it.
+          cache-after-prepare: true
+          prepare: |
+            env ASSUME_ALWAYS_YES=yes pkg install -y cmake ccache libaec
+          run: |
+            cc --version
+            export CCACHE_DIR="$PWD/.ccache" CCACHE_BASEDIR="$PWD"
+            export CCACHE_MAXSIZE=1G CMAKE_BUILD_PARALLEL_LEVEL=2
+            ccache -z
+            mkdir build
+            cd build
+            cmake \
+              -DCMAKE_BUILD_TYPE=Release \
+              -DCMAKE_C_COMPILER_LAUNCHER=ccache \
+              -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
+              -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
+              -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" \
+              -DHDF5_ENABLE_ZLIB_SUPPORT:BOOL=ON \
+              -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=ON \
+              -DSITE:STRING="fbsd-15.1.powerpc64" \
+              -DBUILDNAME:STRING="pr6699/sz/zl" \
+              ..
+            # HDF5's CTestConfig.cmake FORCEs DART_TESTING_TIMEOUT to 1200, so
+            # double it with --timeout (tests with their own TIMEOUT keep it).
+            # Capture the rc so a test failure doesn't skip the copyback.
+            rc=0
+            ctest -D Experimental -C Release -j2 --timeout 2400 || rc=$?
+            echo $rc > ../ctest.rc
+            cd ..
+            ccache -s
+            # Keep copyback small: only .ccache and ctest.rc need to come out.
+            rm -rf build
+            exit 0
+
+      # Save even when tests fail; the compiled objects are still valid.
+      - name: save ccache
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: .ccache
+          key: ccache-fbsd-15.1-powerpc64-${{ github.run_id }}
+
+      - name: check ctest result
+        run: exit "$(cat ctest.rc)"
