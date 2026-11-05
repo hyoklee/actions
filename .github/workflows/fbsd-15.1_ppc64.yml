@@ -38,10 +38,35 @@ jobs:
           # VM's own disk instead (faster builds) and copy back for .ccache.
           sync: tar
           copyback: true
-          # Cache the VM image after pkg install so re-runs skip it.
+          # pkg.FreeBSD.org builds no ports packages for powerpc64 (only base
+          # and kmods), so build cmake, libaec and ccache from source. That
+          # is slow under emulation; the VM image is cached after prepare so
+          # later runs skip it.
           cache-after-prepare: true
           prepare: |
-            env ASSUME_ALWAYS_YES=yes pkg install -y cmake ccache libaec
+            set -e
+            cd /tmp
+            get() {
+              fetch -q -o "$2" "$1"
+              [ "$(sha256 -q "$2")" = "$3" ]
+              tar xzf "$2"
+            }
+            get https://github.com/Kitware/CMake/releases/download/v3.31.6/cmake-3.31.6.tar.gz \
+              cmake.tgz 653427f0f5014750aafff22727fb2aa60c6c732ca91808cfb78ce22ddd9e55f0
+            (cd cmake-3.31.6 &&
+              ./bootstrap --prefix=/usr/local --parallel=2 --no-qt-gui -- \
+                -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=OFF -DCMAKE_USE_OPENSSL=ON &&
+              make -j2 && make install)
+            get https://github.com/MathisRosenhauer/libaec/releases/download/v1.1.4/libaec-1.1.4.tar.gz \
+              libaec.tgz 1b9f3b913d9111469a83820ab62bb6a9f3ec7a5f9b6d681761776aecbc7fefbe
+            (cmake -S libaec-1.1.4 -B libaec-build -DCMAKE_BUILD_TYPE=Release \
+                -DCMAKE_INSTALL_PREFIX=/usr/local &&
+              cmake --build libaec-build -j2 && cmake --install libaec-build)
+            get https://github.com/ccache/ccache/releases/download/v3.7.12/ccache-3.7.12.tar.gz \
+              ccache.tgz d2abe88d4c283ce960e233583061127b156ffb027c6da3cf10770fc0c7244194
+            (cd ccache-3.7.12 && ./configure --prefix=/usr/local && make -j2 && make install)
+            rm -rf /tmp/cmake* /tmp/libaec* /tmp/ccache*
+            cmake --version
           run: |
             cc --version
             export CCACHE_DIR="$PWD/.ccache" CCACHE_BASEDIR="$PWD"
