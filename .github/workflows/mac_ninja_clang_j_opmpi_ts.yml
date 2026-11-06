@@ -1,0 +1,37 @@
+name: mac hk ninja clang j ompi ts
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - name: brew
+        run: brew install openmpi libaec
+      - name: h5
+        uses: actions/checkout@v5
+        with:
+          repository: hyoklee/hdf5
+      - name: test
+        run: |
+          mkdir build
+          cd build
+          cmake \
+          -G Ninja \
+          -DBUILD_SHARED_LIBS=ON \
+          -DCMAKE_TOOLCHAIN_FILE=config/toolchain/clang.cmake \
+          -DHDF5_ALLOW_UNSUPPORTED=ON \
+          -DHDF5_BUILD_CPP_LIB:BOOL=OFF \
+          -DHDF5_BUILD_FORTRAN:BOOL=OFF \
+          -DHDF5_BUILD_HL_LIB:BOOL=OFF \
+          -DHDF5_BUILD_JAVA:BOOL=ON \
+          -DHDF5_ENABLE_ALL_WARNINGS=ON \
+          -DHDF5_ENABLE_PARALLEL:BOOL=ON \
+          -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF \
+          -DHDF5_ENABLE_THREADSAFE:BOOL=ON \
+          -DMPIEXEC_MAX_NUMPROCS:STRING=3 \
+          ..
+          ctest -T Build
+          ctest -C Release -T Test
