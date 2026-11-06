@@ -1,9 +1,9 @@
 name: fbsd-15.1 ppc64
 
+# Manual runs only: emulated powerpc64 can't finish in the 6 h job limit
+# (the first run was still building cmake from source when it timed out).
 on:
   workflow_dispatch:
-  push:
-    branches: main
 
 jobs:
   test:
