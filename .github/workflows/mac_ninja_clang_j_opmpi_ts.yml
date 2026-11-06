@@ -15,6 +15,11 @@ jobs:
         with:
           repository: hyoklee/hdf5
       - name: test
+        env:
+          # ompio's posix backend uses POSIX AIO, which macOS limits to a few
+          # outstanding requests per process; with 3 ranks t_bigio's collective
+          # writes hit EAGAIN in vulcan_write_all and the test hangs. Use ROMIO.
+          OMPI_MCA_io: romio341
         run: |
           mkdir build
           cd build
