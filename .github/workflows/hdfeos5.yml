@@ -55,7 +55,7 @@ jobs:
           tar zxvf HDF-EOS5.2.0.tar.gz
           cd hdf-eos5-2.0
           ./configure CC=/usr/local/bin/h5cc \
-          CFLAGS="-std=gnu17 -g -O2 -Wno-error=implicit-function-declaration -Wno-error=incompatible-pointer-types" \
+          CFLAGS="-std=gnu17 -g -O2 -Wno-error=implicit-function-declaration -Wno-error=incompatible-pointer-types -Wno-error=implicit-int -Wno-error=int-conversion" \
           --prefix=/usr/local/ --enable-install-include
           make
           LD_LIBRARY_PATH="/usr/local/lib:${LD_LIBRARY_PATH}"
