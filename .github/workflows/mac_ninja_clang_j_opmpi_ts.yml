@@ -3,7 +3,7 @@ name: mac hk ninja clang j ompi ts
 on:
   push:
     branches:
-      - main
+      - main-
 jobs:
   build:
     runs-on: macos-latest
