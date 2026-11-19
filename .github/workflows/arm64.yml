@@ -1,45 +1,117 @@
 name: arm64
 
+# OpenBSD 8.0 arm64 build of hyoklee/hdf5 develop with the ROS3 (S3) VFD,
+# zlib and szip (libaec), using the same options as the local run
+# (~/h5p/bin/obsd-aarch64-hk.sh, CDash site obsd-8.0.aarch64).  The ros3 and
+# s3comms tests read from an s3proxy container on the runner, set up the
+# way HDF5's HDF5_ENABLE_ROS3_VFD_DOCKER_PROXY option (runProxy.cmake) does.
 on:
   push:
-    branches: main-
+    branches: main
+  workflow_dispatch:
 
 jobs:
-  test: # make sure the action works on a clean machine without building
-    name: ${{ matrix.os.name }} ${{ matrix.os.architecture }} ${{ matrix.os.version }} on ${{ matrix.os.host }}
-    runs-on: ${{ matrix.os.host }}
-    strategy:
-      fail-fast: false
-      matrix:
-        os:
-          - name: openbsd
-            architecture: arm64
-            version: '7.9'
-            host: ubuntu-latest
+  test:
+    name: obsd-8.0 arm64 ros3
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 360
+    env:
+      S3_ID: remote-identity        # fixed test credentials from runProxy.cmake
+      S3_KEY: remote-credential
+      S3_BUCKET: hdf5ros3
     steps:
-      - name: Checkout
+      - name: h5
         uses: actions/checkout@v6
         with:
-          repository: HDFGroup/hdf5
-      - name: ${{ matrix.os.name }}
-        uses: cross-platform-actions/action@master
-        with:
-          operating_system: ${{ matrix.os.name }}
-          architecture: ${{ matrix.os.architecture }}
-          version: '${{ matrix.os.version }}'
-          shell: bash
-      - name: Build and test
-        shell: cpa.sh {0}
+          repository: hyoklee/hdf5
+          ref: develop
+
+      # The guest reaches the runner at 192.168.122.2 (anyvm slirp net=192.168.122.0/24, default host .2).
+      - name: s3proxy
         run: |
-          sudo pkg_add cmake
-          mkdir build
-          cd build
-          cmake \
-          -DBUILDNAME:STRING="r" \
-          -DCMAKE_BUILD_TYPE=Release \
-          -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \
-          -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
-          -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF \
-          -DSITE:STRING=obsd-7.9.arm64 \
-          ..
-          ctest -D Experimental
+          command -v aws >/dev/null || pipx install awscli
+          docker run -d --name s3proxy --publish 9001:80 \
+            --env S3PROXY_AUTHORIZATION=aws-v4 --env S3PROXY_ENDPOINT=http://0.0.0.0:80 \
+            --env S3PROXY_IDENTITY=$S3_ID --env S3PROXY_CREDENTIAL=$S3_KEY \
+            --env S3PROXY_CORS_ALLOW_ALL=true andrewgaul/s3proxy
+          for i in $(seq 30); do curl -s -o /dev/null http://127.0.0.1:9001/ && break; sleep 2; done
+          export AWS_ACCESS_KEY_ID=$S3_ID AWS_SECRET_ACCESS_KEY=$S3_KEY AWS_DEFAULT_REGION=us-east-2
+          s3="aws s3api --endpoint-url=http://127.0.0.1:9001"
+          t=test/testfiles
+          $s3 create-bucket --bucket $S3_BUCKET
+          $s3 put-object --bucket $S3_BUCKET --key t8.shakespeare.txt --body $t/t8.shakespeare.txt
+          $s3 put-object --bucket $S3_BUCKET --key Poe_Raven.txt --body $t/Poe_Raven.txt --acl public-read
+          $s3 put-object --bucket $S3_BUCKET --key charsets.h5 --body $t/charsets.h5 --acl public-read
+          $s3 put-object --bucket $S3_BUCKET --key "src=h5test/fmt=hive+style@cloud/charsets.h5" \
+            --body $t/charsets.h5
+
+      - name: test
+        uses: vmactions/openbsd-vm@v1
+        with:
+          release: "8.0"
+          arch: aarch64
+          envs: S3_ID S3_KEY S3_BUCKET
+          # Cache the VM image after prepare, so the AWS libraries are
+          # built only when prepare changes.
+          cache-after-prepare: true
+          # OpenBSD has no aws-c-s3 package: build it and its dependencies
+          # at the commits aws-crt-cpp v0.34.5 pins, as static PIC libraries
+          # (CMake 4 rejects aws-c-common's shared-library export), against
+          # OpenSSL 3.5 (aws-c-cal needs headers LibreSSL lacks).
+          prepare: |
+            pkg_add cmake openssl%3.5 libaec
+            O=/usr/local/lib/eopenssl35
+            OSSL="-DOPENSSL_INCLUDE_DIR=/usr/local/include/eopenssl35 -DOPENSSL_CRYPTO_LIBRARY=$O/libcrypto.so.37.0 -DOPENSSL_SSL_LIBRARY=$O/libssl.so.37.0 -Dcrypto_INCLUDE_DIR=/usr/local/include/eopenssl35 -Dcrypto_LIBRARY=$O/libcrypto.so.37.0 -Dcrypto_SHARED_LIBRARY=$O/libcrypto.so.37.0"
+            mkdir -p /tmp/aws && cd /tmp/aws
+            build() {
+              repo=$1 sha=$2; shift 2
+              name=${repo#*/}
+              ftp -V -o $name.tgz https://github.com/$repo/archive/$sha.tar.gz
+              tar xzf $name.tgz
+              cmake -S $name-$sha -B $name-build -DCMAKE_BUILD_TYPE=Release \
+                -DCMAKE_INSTALL_PREFIX=/usr/local -DCMAKE_PREFIX_PATH=/usr/local \
+                -DBUILD_SHARED_LIBS=OFF -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
+                -DBUILD_TESTING=OFF $OSSL "$@"
+              cmake --build $name-build -j4
+              cmake --install $name-build
+            }
+            build awslabs/aws-c-common 2b67a658e461520f1de20d64342b91ddcedc7ebb
+            build awslabs/aws-checksums 9978ba2c33a7a259c1a6bd0f62abe26827d03b85
+            build awslabs/aws-c-cal 8703b3e5930c9fd508025b268ab837fc9df3c4fd -DUSE_OPENSSL=ON
+            build aws/s2n-tls a7862238a9d6703e0a3e2d7ea4341de8d57429bd -DUNSAFE_TREAT_WARNINGS_AS_ERRORS=OFF
+            build awslabs/aws-c-io db7a1bddc9a29eca18734d0af189c3924775dcf1
+            build awslabs/aws-c-compression f951ab2b819fc6993b6e5e6cfef64b1a1554bfc8
+            build awslabs/aws-c-http ce0d65623bff28f03204756d9d1b3366bd0b387d
+            build awslabs/aws-c-sdkutils f678bda9e21f7217e4bbf35e0d1ea59540687933
+            build awslabs/aws-c-auth ab03bdd996437d9097953ebb9495de71b6adc537
+            build awslabs/aws-c-s3 3afa5d08be95e82199a153e3abbe59bbb42638d7
+            ldconfig -m $O
+            cd / && rm -rf /tmp/aws
+          run: |
+            ldconfig -m /usr/local/lib/eopenssl35
+            O=/usr/local/lib/eopenssl35
+            OSSL="-DOPENSSL_INCLUDE_DIR=/usr/local/include/eopenssl35 -DOPENSSL_CRYPTO_LIBRARY=$O/libcrypto.so.37.0 -DOPENSSL_SSL_LIBRARY=$O/libssl.so.37.0 -Dcrypto_INCLUDE_DIR=/usr/local/include/eopenssl35 -Dcrypto_LIBRARY=$O/libcrypto.so.37.0 -Dcrypto_SHARED_LIBRARY=$O/libcrypto.so.37.0"
+            # Fail early if the guest cannot reach the s3proxy on the runner.
+            ftp -V -o /dev/null http://192.168.122.2:9001/$S3_BUCKET/Poe_Raven.txt
+            printf '[ros3_vfd_test]\naws_access_key_id = %s\naws_secret_access_key = %s\nregion = us-east-2\n' \
+              $S3_ID $S3_KEY > $HOME/s3-credentials
+            # No 1 h alarm in testhdf5 and a 3 h per-test timeout, as locally.
+            sed -i 's/HDF5_ALARM_SECONDS=3600/HDF5_ALARM_SECONDS=0/g' test/CMakeTests.cmake
+            mkdir build
+            cd build
+            cmake \
+              -DCMAKE_BUILD_TYPE=Release \
+              -DCMAKE_PREFIX_PATH=/usr/local $OSSL \
+              -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
+              -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" \
+              -DHDF5_ENABLE_ZLIB_SUPPORT:BOOL=ON \
+              -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=ON \
+              -DHDF5_ENABLE_ROS3_VFD:BOOL=ON \
+              -DSITE:STRING=obsd-8.0.arm64 \
+              -DBUILDNAME:STRING="hk/develop/ros3" \
+              ..
+            export HDF5_ROS3_TEST_BUCKET_URL=http://192.168.122.2:9001/$S3_BUCKET
+            export AWS_ENDPOINT_URL=http://192.168.122.2:9001
+            export HDF5_ROS3_VFD_FORCE_PATH_STYLE=1
+            export AWS_SHARED_CREDENTIALS_FILE=$HOME/s3-credentials AWS_PROFILE=ros3_vfd_test
+            CMAKE_BUILD_PARALLEL_LEVEL=4 ctest -D Experimental -C Release -j4 --timeout 10800
