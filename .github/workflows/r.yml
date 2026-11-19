@@ -1,7 +1,8 @@
 name: r obsd-8.0 ros3
 
-# OpenBSD 8.0 x86_64 build of hyoklee/hdf5 develop with C++, HL, thread
-# safety, the API and VFD tests, and the ROS3 (S3) VFD.  The ros3 and
+# OpenBSD 8.0 x86_64 build of hyoklee/hdf5 develop with the ROS3 (S3) VFD,
+# zlib and szip (libaec), using the same options as the local run
+# (~/h5p/bin/obsd-amd64-hk.sh, CDash site obsd-8.0.amd64).  The ros3 and
 # s3comms tests read from an s3proxy container on the runner, set up the
 # way HDF5's HDF5_ENABLE_ROS3_VFD_DOCKER_PROXY option (runProxy.cmake) does.
 on:
@@ -57,7 +58,7 @@ jobs:
           # (CMake 4 rejects aws-c-common's shared-library export), against
           # OpenSSL 3.5 (aws-c-cal needs headers LibreSSL lacks).
           prepare: |
-            pkg_add cmake openssl%3.5
+            pkg_add cmake openssl%3.5 libaec
             O=/usr/local/lib/eopenssl35
             OSSL="-DOPENSSL_INCLUDE_DIR=/usr/local/include/eopenssl35 -DOPENSSL_CRYPTO_LIBRARY=$O/libcrypto.so.37.0 -DOPENSSL_SSL_LIBRARY=$O/libssl.so.37.0 -Dcrypto_INCLUDE_DIR=/usr/local/include/eopenssl35 -Dcrypto_LIBRARY=$O/libcrypto.so.37.0 -Dcrypto_SHARED_LIBRARY=$O/libcrypto.so.37.0"
             mkdir -p /tmp/aws && cd /tmp/aws
@@ -93,26 +94,23 @@ jobs:
             ftp -V -o /dev/null http://192.168.122.2:9001/$S3_BUCKET/Poe_Raven.txt
             printf '[ros3_vfd_test]\naws_access_key_id = %s\naws_secret_access_key = %s\nregion = us-east-2\n' \
               $S3_ID $S3_KEY > $HOME/s3-credentials
+            # No 1 h alarm in testhdf5 and a 3 h per-test timeout, as locally.
+            sed -i 's/HDF5_ALARM_SECONDS=3600/HDF5_ALARM_SECONDS=0/g' test/CMakeTests.cmake
             mkdir build
             cd build
             cmake \
-              -DBUILDNAME:STRING="develop/r/cpp/+hl+ts+s3-sz-zl/da+dw+tv" \
               -DCMAKE_BUILD_TYPE=Release \
               -DCMAKE_PREFIX_PATH=/usr/local $OSSL \
-              -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \
               -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
-              -DHDF5_ALLOW_UNSUPPORTED:BOOL=ON \
-              -DHDF5_BUILD_CPP_LIB:BOOL=ON \
-              -DHDF5_BUILD_HL_LIB:BOOL=ON \
-              -DHDF5_ENABLE_THREADSAFE:BOOL=ON \
+              -DCTEST_DROP_LOCATION_INIT:STRING="/submit.php?project=HDF5" \
+              -DHDF5_ENABLE_ZLIB_SUPPORT:BOOL=ON \
+              -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=ON \
               -DHDF5_ENABLE_ROS3_VFD:BOOL=ON \
-              -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=OFF \
-              -DHDF5_ENABLE_ZLIB_SUPPORT:BOOL=OFF \
               -DSITE:STRING=obsd-8.0.x86_64 \
-              -DHDF5_TEST_API=ON -DHDF5_ENABLE_ALL_WARNINGS=ON -DHDF5_ENABLE_DEBUG_APIS:BOOL=ON -DHDF5_ENABLE_DEV_WARNINGS=ON -DHDF5_TEST_VFD:BOOL=ON \
+              -DBUILDNAME:STRING="hk/develop/ros3" \
               ..
             export HDF5_ROS3_TEST_BUCKET_URL=http://192.168.122.2:9001/$S3_BUCKET
             export AWS_ENDPOINT_URL=http://192.168.122.2:9001
             export HDF5_ROS3_VFD_FORCE_PATH_STYLE=1
             export AWS_SHARED_CREDENTIALS_FILE=$HOME/s3-credentials AWS_PROFILE=ros3_vfd_test
-            CMAKE_BUILD_PARALLEL_LEVEL=4 ctest -D Experimental -C Release -j4 --timeout 2400
+            CMAKE_BUILD_PARALLEL_LEVEL=4 ctest -D Experimental -C Release -j4 --timeout 10800
