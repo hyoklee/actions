@@ -25,7 +25,7 @@ jobs:
           repository: hyoklee/hdf5
           ref: develop
 
-      # The guest reaches the runner at 192.168.122.1 (libvirt default network).
+      # The guest reaches the runner at 192.168.122.2 (anyvm slirp net=192.168.122.0/24, default host .2).
       - name: s3proxy
         run: |
           docker run -d --name s3proxy --publish 9001:80 \
@@ -90,7 +90,7 @@ jobs:
             O=/usr/local/lib/eopenssl35
             OSSL="-DOPENSSL_INCLUDE_DIR=/usr/local/include/eopenssl35 -DOPENSSL_CRYPTO_LIBRARY=$O/libcrypto.so.37.0 -DOPENSSL_SSL_LIBRARY=$O/libssl.so.37.0 -Dcrypto_INCLUDE_DIR=/usr/local/include/eopenssl35 -Dcrypto_LIBRARY=$O/libcrypto.so.37.0 -Dcrypto_SHARED_LIBRARY=$O/libcrypto.so.37.0"
             # Fail early if the guest cannot reach the s3proxy on the runner.
-            ftp -V -o /dev/null http://192.168.122.1:9001/$S3_BUCKET/Poe_Raven.txt
+            ftp -V -o /dev/null http://192.168.122.2:9001/$S3_BUCKET/Poe_Raven.txt
             printf '[ros3_vfd_test]\naws_access_key_id = %s\naws_secret_access_key = %s\nregion = us-east-2\n' \
               $S3_ID $S3_KEY > $HOME/s3-credentials
             mkdir build
@@ -111,8 +111,8 @@ jobs:
               -DSITE:STRING=obsd-8.0.x86_64 \
               -DHDF5_TEST_API=ON -DHDF5_ENABLE_ALL_WARNINGS=ON -DHDF5_ENABLE_DEBUG_APIS:BOOL=ON -DHDF5_ENABLE_DEV_WARNINGS=ON -DHDF5_TEST_VFD:BOOL=ON \
               ..
-            export HDF5_ROS3_TEST_BUCKET_URL=http://192.168.122.1:9001/$S3_BUCKET
-            export AWS_ENDPOINT_URL=http://192.168.122.1:9001
+            export HDF5_ROS3_TEST_BUCKET_URL=http://192.168.122.2:9001/$S3_BUCKET
+            export AWS_ENDPOINT_URL=http://192.168.122.2:9001
             export HDF5_ROS3_VFD_FORCE_PATH_STYLE=1
             export AWS_SHARED_CREDENTIALS_FILE=$HOME/s3-credentials AWS_PROFILE=ros3_vfd_test
             CMAKE_BUILD_PARALLEL_LEVEL=4 ctest -D Experimental -C Release -j4 --timeout 2400
