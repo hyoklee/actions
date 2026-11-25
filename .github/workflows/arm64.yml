@@ -7,7 +7,7 @@ name: arm64
 # way HDF5's HDF5_ENABLE_ROS3_VFD_DOCKER_PROXY option (runProxy.cmake) does.
 on:
   push:
-    branches: main
+    branches: main-
   workflow_dispatch:
 
 jobs:
