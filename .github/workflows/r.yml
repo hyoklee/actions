@@ -7,7 +7,7 @@ name: r obsd-8.0 ros3
 # way HDF5's HDF5_ENABLE_ROS3_VFD_DOCKER_PROXY option (runProxy.cmake) does.
 on:
   push:
-    branches: main
+    branches: main-
   workflow_dispatch:
 
 jobs:
@@ -106,8 +106,8 @@ jobs:
               -DHDF5_ENABLE_ZLIB_SUPPORT:BOOL=ON \
               -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=ON \
               -DHDF5_ENABLE_ROS3_VFD:BOOL=ON \
-              -DSITE:STRING=obsd-8.0.x86_64 \
-              -DBUILDNAME:STRING="hk/develop/ros3" \
+              -DSITE:STRING=obsd-8.0 \
+              -DBUILDNAME:STRING="hk/sz/zl/ros3" \
               ..
             export HDF5_ROS3_TEST_BUCKET_URL=http://192.168.122.2:9001/$S3_BUCKET
             export AWS_ENDPOINT_URL=http://192.168.122.2:9001
