@@ -32,6 +32,11 @@ jobs:
           run: |
             sudo pkg_add git
             sudo pkg_add cmake
+            # The core VFD tests (istore, io_perf) keep files of about 800 MB in
+            # memory, and MALLOC_OPTIONS=R copies on every realloc, which
+            # exceeds the 1536 MB datasize-cur of the staff login class.
+            # Raise it to the class's hard limit ("unlimited" is rejected).
+            ulimit -d $(ulimit -H -d)
             export MALLOC_OPTIONS="SCFGJRU"
             mkdir build
             cd build
