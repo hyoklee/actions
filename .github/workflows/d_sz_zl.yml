@@ -33,16 +33,22 @@ jobs:
             sudo pkg_add git
             sudo pkg_add cmake
             sudo pkg_add libaec
+            ulimit -d $(ulimit -H -d)
             export MALLOC_OPTIONS="SCFGJRU"
             mkdir build
             cd build
             cmake \
-            -DBUILDNAME:STRING="hk/d/sz/zl/MO=SCFGJRU" \
+            -DBUILDNAME:STRING="hk/d/cpp/hl/ts/aw/da/dw/sz/zl/vfd/MO=SCFGJRU" \
             -DCMAKE_BUILD_TYPE=Debug \
             -DCTEST_DROP_LOCATION_INIT="/submit.php?project=HDF5" \
             -DCTEST_DROP_SITE_INIT:STRING="my.cdash.org" \
+            -DHDF5_ALLOW_UNSUPPORTED:BOOL=ON \
+            -DHDF5_BUILD_CPP_LIB:BOOL=ON \
+            -DHDF5_BUILD_HL_LIB:BOOL=ON \
+            -DHDF5_ENABLE_THREADSAFE:BOOL=ON \
             -DHDF5_ENABLE_SZIP_SUPPORT:BOOL=ON \
             -DHDF5_ENABLE_ZLIB_SUPPORT:BOOL=ON \
             -DSITE:STRING=obsd-8.0 \
+            -DHDF5_TEST_API=ON -DHDF5_ENABLE_ALL_WARNINGS=ON -DHDF5_ENABLE_DEBUG_APIS:BOOL=ON -DHDF5_ENABLE_DEV_WARNINGS=ON -DHDF5_TEST_VFD:BOOL=ON \
             ..
             ctest -D Experimental -C Debug
